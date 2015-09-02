@@ -1,0 +1,90 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('FeetCenter '. $this->translate('Administrador'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                        ->prependStylesheet('https://fonts.googleapis.com/css?family=Roboto:300,400,700')
+                        ->prependStylesheet($this->basePath('css/style.css'))
+                        ->prependStylesheet($this->basePath('css/kube.css')) ?>
+                        
+        <!-- Scripts -->
+        <?php echo $this->headScript()
+            ->prependFile($this->basePath('js/kube.min.js'))
+            ->prependFile($this->basePath('js/jquery.min.js'))
+        ; ?>
+
+    </head>
+    <body>
+        <nav id="main_menu"class="navbar fullwidth" data-tools="navigation-fixed">
+            <li>LOGOTIPO</li>
+            <li><a href="#">Agenda</a></li>
+            <li><a href="#" data-tools="dropdown" data-target="#dropdown-pacientes">Pacientes</a></li>
+            <li><a href="#" data-tools="dropdown" data-target="#dropdown-ventas">Ventas</a></li>
+            <li><a href="#"  data-tools="dropdown" data-target="#dropdown-inventarios">Inventarios</a></li>
+            <li><a href="#">Comisiones</a></li>
+            <li><a href="#" data-tools="dropdown" data-target="#dropdown-egresos">Egresos</a></li>
+            <li><a href="#" data-tools="dropdown" data-target="#dropdown-compras">Compras</a></li>
+            <li><a href="#" data-tools="dropdown" data-target="#dropdown-catalogos">Catalogos</a></li>
+            <li><a href="#">Configuracion</a></li>
+            <li><a href="#" data-tools="dropdown" data-target="#dropdown-reportes">Reportes</a></li>
+            <li id="profile_container" ><img width="35" height="35" src="/img/profile/1_daniel castanedo_profile.jpg" class="circle"></li>
+        </nav>
+        <!--Dropdown-->
+        <ul id="dropdown-pacientes" class="dropdown">
+            <li><a href="#">Nuevo paciente</a></li>
+            <li><a href="#">Pacientes</a></li>
+            <li><a href="#">Expediente</a></li>
+            <li><a href="#">Seguimiento</a></li>
+        </ul>
+        <ul id="dropdown-ventas" class="dropdown">
+            <li><a href="#">Ventas</a></li>
+            <li><a href="#">Nueva venta</a></li>
+            <li><a href="#">Balance</a></li>
+        </ul>
+        <ul id="dropdown-inventarios" class="dropdown">
+            <li><a href="#">Transferencias</a></li>
+            <li><a href="#">Nueva</a></li>
+            <li><a href="#">Productos</a></li>
+            <li><a href="#">Insumos</a></li>
+        </ul>
+        <ul id="dropdown-egresos" class="dropdown">
+            <li><a href="#">Egresos</a></li>
+            <li><a href="#">Nuevo egreso</a></li>
+        </ul>
+        <ul id="dropdown-compras" class="dropdown">
+            <li><a href="#">Compras</a></li>
+            <li><a href="#">Nueva compra</a></li>
+        </ul>
+        <ul id="dropdown-catalogos" class="dropdown">
+            <li><a href="#">Clinicas</a></li>
+            <li><a href="#">Empleados</a></li>
+            <li><a href="#">Servicios</a></li>
+            <li><a href="#">Productos</a></li>
+            <li><a href="#">Insumos</a></li>
+            <li><a href="#">Roles</a></li>
+            <li><a href="#">Proveedores</a></li>
+            <li><a href="#">Canal de comunicación</a></li>
+        </ul>
+        <ul id="dropdown-reportes" class="dropdown">
+            <li><a href="#">Clinicas</a></li>
+            <li><a href="#">Empleados</a></li>
+        </ul>
+        <div class="container">
+            <?php echo $this->content; ?>
+            <hr>
+            <footer>
+                
+            </footer>
+        </div> <!-- /container -->
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>
