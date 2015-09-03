@@ -20,6 +20,26 @@ return array(
                     ),
                 ),
             ),
+            'catalogos' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/catalogos',
+                ),
+                'may_terminate' => false,
+                'child_routes' => array(
+                    'clinica' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/clinica[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Clinica',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -73,7 +93,9 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Feetcenter\Controller\Index' => 'Feetcenter\Controller\IndexController'
+            'Feetcenter\Controller\Index' => 'Feetcenter\Controller\IndexController',
+            //Catalogos
+            'Catalogos\Controller\Clinica' => 'Catalogos\Controller\ClinicaController',
         ),
     ),
     'view_manager' => array(

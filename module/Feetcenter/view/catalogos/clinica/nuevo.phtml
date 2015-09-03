@@ -1,0 +1,40 @@
+<h1>Nueva clínica</h1>
+<?php 
+    $form->setAttribute('action', '/catalogos/clinica/nuevo');
+    $form->setAttribute('novalidate', true);
+    $form->setAttribute('class', 'forms');
+    $form->prepare();
+    echo $this->form()->openTag($form); 
+?>
+<div class="units-row">
+    <div class="unit-50">
+        <label>
+            Nombre <span class="req">*</span>
+            <?php echo $this->formText($form->get('clinica_nombre')); ?>
+        </label>
+    </div>
+    <div class="unit-50">
+        <label>
+            Dirección <span class="req">*</span>
+            <?php echo $this->formText($form->get('clinica_direccion')); ?>
+        </label>
+    </div>
+    
+</div>
+<div class="units-row">
+    <div class="unit-50">
+        <label>
+            Registro patronal <span class="req">*</span>
+            <?php echo $this->formText($form->get('clinica_registropatronal')); ?>
+        </label>
+    </div>
+    <div class="unit-50">
+        <label>
+            Telefono
+            <?php echo $this->formText($form->get('clinica_telefono')); ?>
+        </label>
+    </div>
+</div>
+<div class="units-row">
+    <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+</div>

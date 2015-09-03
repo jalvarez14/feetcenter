@@ -1,0 +1,24 @@
+<h1>Clínicas</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Registro patronal</th>
+            <th>Telefono</th>
+            <th>Opciones</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($collection as $entity) : ?>
+            <tr>
+                <td><?php echo $entity['clinica_nombre']?></td>
+                <td><?php echo $entity['clinica_direccion']?></td>
+                <td><?php echo $entity['clinica_registropatronal']?></td>
+                <td><?php echo $entity['clinica_telefono']?></td>
+                <td class="tr_options"><a>Editar</a><a>Eliminar</a></td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>

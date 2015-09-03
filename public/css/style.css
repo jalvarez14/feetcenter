@@ -10,13 +10,13 @@ and open the template in the editor.
 
 
 /*General*/
-body{
-    font-family: 'Roboto';
+body *{
+    font-family: 'Roboto' !important;
     font-size: 12px;
 }
 
 /*Materialize*/
-.z-depth-1, nav, .card-panel, .card, .toast, .btn, .btn-large, .btn-floating, .dropdown-content, .collapsible, ul.side-nav {
+.z-depth-1, .card-panel, .card, .toast, .btn, .btn-large, .btn-floating, .dropdown-content, .collapsible, ul.side-nav {
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); }
@@ -57,4 +57,43 @@ body{
 #profile_container img{
     padding-top: 12px;
     padding-bottom: 12px;
+}
+
+#top_header{
+    margin-bottom: 30px;
+}
+
+#top_header nav{
+    margin: 0;
+}
+
+#top_header_resources li:not(:first-child) {
+    padding-top: 25px;
+}
+
+h1{
+    //font-family: 'Roboto';
+    color: #204824;
+    font-weight: 400;
+    border-bottom: solid 1px #204824;
+    font-size: 3em;
+}
+
+/*Form*/
+form > *{
+    
+}
+form .units-row{
+    margin: 0;
+}
+
+form button{
+    height: 40px;
+    margin-top: 19px !important;
+    width: 100%;
+}
+
+/*Tables*/
+.tr_options a:not(:first-child){
+    margin-left: 12px;
 }

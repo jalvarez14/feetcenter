@@ -11,35 +11,48 @@
         ?>
 
         <!-- Le styles -->
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet('https://fonts.googleapis.com/css?family=Roboto:300,400,700')
+                        
                         ->prependStylesheet($this->basePath('css/style.css'))
                         ->prependStylesheet($this->basePath('css/kube.css')) ?>
+
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+            ->prependFile($this->basePath('js/form.js'))
             ->prependFile($this->basePath('js/kube.min.js'))
-            ->prependFile($this->basePath('js/jquery.min.js'))
-        ; ?>
+            ->prependFile($this->basePath('js/jquery.min.js'));
+        ?>
 
     </head>
     <body>
-        <nav id="main_menu"class="navbar fullwidth" data-tools="navigation-fixed">
-            <li>LOGOTIPO</li>
-            <li><a href="#">Agenda</a></li>
-            <li><a href="#" data-tools="dropdown" data-target="#dropdown-pacientes">Pacientes</a></li>
-            <li><a href="#" data-tools="dropdown" data-target="#dropdown-ventas">Ventas</a></li>
-            <li><a href="#"  data-tools="dropdown" data-target="#dropdown-inventarios">Inventarios</a></li>
-            <li><a href="#">Comisiones</a></li>
-            <li><a href="#" data-tools="dropdown" data-target="#dropdown-egresos">Egresos</a></li>
-            <li><a href="#" data-tools="dropdown" data-target="#dropdown-compras">Compras</a></li>
-            <li><a href="#" data-tools="dropdown" data-target="#dropdown-catalogos">Catalogos</a></li>
-            <li><a href="#">Configuracion</a></li>
-            <li><a href="#" data-tools="dropdown" data-target="#dropdown-reportes">Reportes</a></li>
-            <li style="float: right" id="profile_container" ><img width="35" height="35" src="/img/profile/1_daniel castanedo_profile.jpg" class="circle"></li>
-            
-        </nav>
+        <header id="top_header" class="group z-depth-1">
+            <nav id="top_header_resources" class="navbar navbar-left">
+                <ul>
+                    <li><img width="60" height="60" src="/img/logo/top_logo.png"></li>
+                    <li><a href="#">Agenda</a></li>
+                    <li><a href="#" data-tools="dropdown" data-target="#dropdown-pacientes">Pacientes</a></li>
+                    <li><a href="#" data-tools="dropdown" data-target="#dropdown-ventas">Ventas</a></li>
+                    <li><a href="#"  data-tools="dropdown" data-target="#dropdown-inventarios">Inventarios</a></li>
+                    <li><a href="#">Comisiones</a></li>
+                    <li><a href="#" data-tools="dropdown" data-target="#dropdown-egresos">Egresos</a></li>
+                    <li><a href="#" data-tools="dropdown" data-target="#dropdown-compras">Compras</a></li>
+                    <li><a href="#" data-tools="dropdown" data-target="#dropdown-catalogos">Catalogos</a></li>
+                    <li><a href="#">Configuracion</a></li>
+                    <li><a href="#" data-tools="dropdown" data-target="#dropdown-reportes">Reportes</a></li>
+                </ul>
+            </nav>
+            <nav class="navbar navbar-right">
+                <ul>
+                    <li style="float: right" id="profile_container" ><img width="35" height="35" src="/img/profile/1_daniel castanedo_profile.jpg" class="circle"><a href="#" data-tools="dropdown" data-target="#dropdown-profile" style="display: inline; margin-left: 12px; margin-right: 12px;">Daniel Castanedo</a></li>
+                </ul>
+            </nav>
+        </header>
         <!--Dropdown-->
+        <ul id="dropdown-profile" class="dropdown">
+            <li><a href="#">Cerrar sesión</a></li>
+        </ul>
         <ul id="dropdown-pacientes" class="dropdown">
             <li><a href="#">Nuevo paciente</a></li>
             <li><a href="#">Pacientes</a></li>
@@ -79,9 +92,13 @@
             <li><a href="#">Clinicas</a></li>
             <li><a href="#">Empleados</a></li>
         </ul>
-        <div class="container">
-            <?php echo $this->content; ?>
-            <hr>
+            <div class="units-row">
+                <div class="unit-centered unit-90">
+                    <?php echo $this->content; ?>
+                </div>
+            </div>
+            
+ 
             <footer>
                 
             </footer>
