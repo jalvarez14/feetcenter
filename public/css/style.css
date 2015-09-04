@@ -93,6 +93,10 @@ form button{
     width: 100%;
 }
 
+form select{
+    height: 30px;
+}
+
 /*Tables*/
 .tr_options a:not(:first-child){
     margin-left: 12px;

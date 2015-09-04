@@ -1,5 +1,8 @@
 $(document).ready(function(){
+    
     //Validate requiered fields
+    
+    
     $('form').delegate('button[data-action=submit]','click',function(e){
         
         var $form = $(this).closest('form');
@@ -19,7 +22,13 @@ $(document).ready(function(){
         if(empty){
             e.preventDefault();
         }
-
+        
     });
+    
+    
+    
+    
+    
+    
 });
 
