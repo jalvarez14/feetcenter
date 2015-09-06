@@ -20,6 +20,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+            ->prependFile($this->basePath('js/plugin/numeric.js'))     
             ->prependFile($this->basePath('js/form.js'))
             ->prependFile($this->basePath('js/kube.min.js'))
             ->prependFile($this->basePath('js/jquery.min.js'));
@@ -82,7 +83,7 @@
             <li><a href="/catalogos/clinica">Clinicas</a></li>
             <li><a href="#">Empleados</a></li>
             <li><a href="#">Servicios</a></li>
-            <li><a href="#">Productos</a></li>
+            <li><a href="/catalogos/producto">Productos</a></li>
             <li><a href="/catalogos/insumo">Insumos</a></li>
             <li><a href="/catalogos/rol">Roles</a></li>
             <li><a href="/catalogos/proveedor">Proveedores</a></li>

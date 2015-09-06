@@ -1,0 +1,97 @@
+<div id="producto_container">
+    <h1>Nuevo producto</h1>
+    <?php 
+        $form->setAttribute('action', '/catalogos/insumo/nuevo');
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('producto_nombre')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Costo <span class="req">*</span>
+                <?php echo $this->formText($form->get('producto_costo')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Precio <span class="req">*</span>
+                <?php echo $this->formText($form->get('producto_precio')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Descripción <span class="req">*</span>
+                <?php echo $this->formTextarea($form->get('producto_descripcion')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Ingresos y comisiones</legend>
+                <div class="units-row">
+                    <div class="unit-33">
+                        <label><b>Genera ingreso</b></label>
+                        <ul class="forms-inline-list">
+                            <li>
+                                <input checked type="radio" name="producto_generaingreso" id="radio-1">
+                                <label for="radio-1">Si</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="producto_generaingreso" id="radio-1">
+                                <label for="radio-1">No</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="unit-33">
+                        <label><b>Genera comisión</b></label>
+                        <ul class="forms-inline-list">
+                            <li>
+                                <input  type="radio" name="producto_generacomision" value="1">
+                                <label for="radio-1">Si</label>
+                            </li>
+                            <li>
+                                <input checked type="radio" name="producto_generacomision" value="0">
+                                <label>No</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="unit-33">
+                        <div class="units-row">
+                            <div class="unit-50">
+                                <label><b>Tipo de comisión</b></label>
+                                <select name="producto_tipocomision" disabled="disabled" style="padding-right: 4px;">
+                                    <option>Cantidad fija</option>
+                                    <option>Porcentaje</option>
+                                </select>
+                            </div>
+                            <div class="unit-50">
+                                <label><b>Cantidad de comisión</b></label>
+                                <input name="producto_comision" type="text" disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script src="/js/catalogos/producto.js"></script>
+<script>
+    $('#producto_container').producto();
+</script>

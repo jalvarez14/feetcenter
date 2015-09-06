@@ -82,6 +82,17 @@ return array(
                         ),
                         
                     ),
+                    'producto' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/producto[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Producto',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
                 ),
             ),
             // The following is a route to simplify getting started creating
@@ -143,7 +154,8 @@ return array(
             'Catalogos\Controller\Insumo' => 'Catalogos\Controller\InsumoController',
             'Catalogos\Controller\Proveedor' => 'Catalogos\Controller\ProveedorController',
             'Catalogos\Controller\Canal' => 'Catalogos\Controller\CanalController',
-            'Catalogos\Controller\Rol' => 'Catalogos\Controller\RolController'
+            'Catalogos\Controller\Rol' => 'Catalogos\Controller\RolController',
+            'Catalogos\Controller\Producto' => 'Catalogos\Controller\ProductoController',
         ),
     ),
     'view_manager' => array(
