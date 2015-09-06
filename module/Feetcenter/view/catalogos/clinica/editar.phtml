@@ -1,7 +1,7 @@
 <div id="clinica_container">
-    <h1>Nueva clínica</h1>
+    <h1>Clinica: <?php echo $form->get('clinica_nombre')->getValue()?></h1>
     <?php 
-        $form->setAttribute('action', '/catalogos/clinica/nuevo');
+        $form->setAttribute('action', '/catalogos/clinica/editar/'.$id);
         $form->setAttribute('novalidate', true);
         $form->setAttribute('class', 'forms');
         $form->prepare();
@@ -62,7 +62,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach ($clinica_encargados as $encargado) : ?>
+                            <tr id="<?php echo $encargado['idempleado']?>">
+                                <input type="hidden" value="<?php echo $encargado['idempleado']?>" name="clinica_encargado[]">
+                                <td><?php echo $encargado['empleado_nombre']?></td>
+                                <td><a href="javascript:void(0)">Eliminar</a></td>
 
+
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </fieldset>
@@ -94,7 +102,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach ($clinica_empleados as $empleado) : ?>
+                            <tr id="<?php echo $empleado['idempleado']?>">
+                                <input type="hidden" value="<?php echo $empleado['idempleado']?>" name="clinica_empleado[]">
+                                <td><?php echo $empleado['empleado_nombre']?></td>
+                                <td><a href="javascript:void(0)">Eliminar</a></td>
 
+
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </fieldset>

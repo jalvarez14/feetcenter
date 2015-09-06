@@ -154,6 +154,25 @@
             $container.find('a[data-action=addEncargado]').on('click',addEncargado);
             $container.find('a[data-action=addEmpleado]').on('click',addEmpleado);
             
+            //Inicializamos el evento para los registros precargados(edit)
+            $container.find('table#table_encargado').find('a').one('click',function(){
+                var idempleado = $(this).closest('tr').attr('id');
+                var nombre = $(this).closest('tr').find('td').eq(0).text();
+                $('select[name=clinica_encargado]').append('<option value="'+idempleado+'">'+nombre+'</option>');
+                $('select[name=clinica_empleado]').append('<option value="'+idempleado+'">'+nombre+'</option>');
+                $(this).closest('tr').remove();
+                
+            });
+            
+            $container.find('table#table_empleado').find('a').one('click',function(){
+                var idempleado = $(this).closest('tr').attr('id');
+                var nombre = $(this).closest('tr').find('td').eq(0).text();
+                $('select[name=clinica_encargado]').append('<option value="'+idempleado+'">'+nombre+'</option>');
+                $('select[name=clinica_empleado]').append('<option value="'+idempleado+'">'+nombre+'</option>');
+                $(this).closest('tr').remove();
+                
+            });
+            
         }
 
         /*

@@ -38,6 +38,50 @@ return array(
                         ),
                         
                     ),
+                    'insumo' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/insumo[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Insumo',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
+                    'proveedor' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/proveedor[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Proveedor',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
+                    'canal' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/canal[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Canal',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
+                    'rol' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/rol[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Rol',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
                 ),
             ),
             // The following is a route to simplify getting started creating
@@ -96,6 +140,10 @@ return array(
             'Feetcenter\Controller\Index' => 'Feetcenter\Controller\IndexController',
             //Catalogos
             'Catalogos\Controller\Clinica' => 'Catalogos\Controller\ClinicaController',
+            'Catalogos\Controller\Insumo' => 'Catalogos\Controller\InsumoController',
+            'Catalogos\Controller\Proveedor' => 'Catalogos\Controller\ProveedorController',
+            'Catalogos\Controller\Canal' => 'Catalogos\Controller\CanalController',
+            'Catalogos\Controller\Rol' => 'Catalogos\Controller\RolController'
         ),
     ),
     'view_manager' => array(

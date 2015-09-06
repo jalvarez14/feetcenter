@@ -1,0 +1,64 @@
+<div id="clinica_container">
+    <h1>Rol: <?php echo $form->get('rol_nombre')->getValue()?></h1>
+    <?php 
+        $form->setAttribute('action', '/catalogos/rol/editar/'.$id);
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('rol_nombre')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Descripción
+                <?php echo $this->formTextarea($form->get('rol_descripcion')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100" id="rol_recursos">
+            <fieldset>
+                <legend>Recurso (s)</legend>
+                <div class="units-row">
+                    <div class="unit-50">
+                        <ul class="forms-list">
+                            <?php for($i=0;$i<5;$i++):?>
+                            <li>
+                                <input value="<?php echo $recursos[$i]['idrecurso']?>"type="checkbox" name="recursos[]" id="checkbox-1">
+                                <label for="checkbox-1"><?php echo $recursos[$i]['recurso_nombre']?></label>
+                            </li>
+                            <?php endfor;?>
+                        </ul>
+                    </div>
+                    <div class="unit-50">
+                        <ul class="forms-list">
+                            <?php for($i=5;$i<10;$i++):?>
+                            <li>
+                                <input value="<?php echo $recursos[$i]['idrecurso']?>"type="checkbox" name="recursos[]" id="checkbox-1">
+                                <label for="checkbox-1"><?php echo $recursos[$i]['recurso_nombre']?></label>
+                            </li>
+                            <?php endfor;?>
+                        </ul>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script>
+    var recuros_checked = <?php echo json_encode($recursos_checked)?>;
+    $.each(recuros_checked,function(){
+        $('#rol_recursos').find('input[value='+this.idrecurso+']').prop('checked',true);
+    });
+</script>

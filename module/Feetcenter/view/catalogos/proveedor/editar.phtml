@@ -1,0 +1,83 @@
+<div id="clinica_container">
+    <h1>Proveedor: <?php echo $form->get('proveedor_nombre')->getValue()?></h1>
+    <?php 
+        $form->setAttribute('action', '/catalogos/proveedor/editar/'.$id);
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('proveedor_nombre')); ?>
+            </label>
+        </div>
+         <div class="unit-50">
+            <label>
+                RFC
+                <?php echo $this->formText($form->get('proveedor_rfc')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Nombre de contacto
+                <?php echo $this->formText($form->get('proveedor_contacto')); ?>
+            </label>
+        </div>
+         <div class="unit-50">
+            <label>
+                Teléfono
+                <?php echo $this->formText($form->get('proveedor_telefono')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Celular
+                <?php echo $this->formText($form->get('proveedor_celular')); ?>
+            </label>
+        </div>
+         <div class="unit-50">
+            <label>
+                Dirección
+                <?php echo $this->formText($form->get('proveedor_direccion')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Código postal
+                <?php echo $this->formText($form->get('proveedor_codigopostal')); ?>
+            </label>
+        </div>
+         <div class="unit-50">
+            <label>
+                Ciudad
+                <?php echo $this->formText($form->get('proveedor_ciudad')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Estado
+                <?php echo $this->formText($form->get('proveedor_codigopostal')); ?>
+            </label>
+        </div>
+         <div class="unit-50">
+            <label>
+                Correo electrónico
+                <?php echo $this->formText($form->get('proveedor_email')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>

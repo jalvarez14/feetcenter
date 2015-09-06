@@ -1,4 +1,4 @@
-<h1>Clínicas<a style="float: right; text-decoration: none"href="/catalogos/clinica/nuevo">Nuevo</a></h1>
+<h1>Insumos<a style="float: right; text-decoration: none"href="/catalogos/insumo/nuevo">Nuevo</a></h1>
 <?php if(count($successMessages)) :?>
     <div class="units-row">
         <?php foreach ($successMessages as $message) :?>
@@ -14,21 +14,16 @@
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Dirección</th>
-            <th>Registro patronal</th>
-            <th>Telefono</th>
-            <th>Opciones</th>
-            
+            <th>Descripción</th>
+            <th>Opciones</th>   
         </tr>
     </thead>
     <tbody>
         <?php foreach($collection as $entity) : ?>
-            <tr id="<?php echo $entity['idclinica']?>">
-                <td><?php echo $entity['clinica_nombre']?></td>
-                <td><?php echo $entity['clinica_direccion']?></td>
-                <td><?php echo $entity['clinica_registropatronal']?></td>
-                <td><?php echo $entity['clinica_telefono']?></td>
-                <td class="tr_options"><a href="<?php echo '/catalogos/clinica/editar/'.$entity['idclinica']?>">Editar</a><a class="delete-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Advertencia</h2>" data-content="/catalogos/clinica/eliminar?html=true" >Eliminar</a></td>
+            <tr id="<?php echo $entity['idcanalcomunicacion']?>">
+                <td><?php echo $entity['canalcomunicacion_nombre']?></td>
+                <td><?php echo $entity['canalcomunicacion_descripcion']?></td>
+                <td class="tr_options"><a href="<?php echo '/catalogos/canal/editar/'.$entity['idcanalcomunicacion']?>">Editar</a><a class="delete-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Advertencia</h2>" data-content="/catalogos/canal/eliminar?html=true" >Eliminar</a></td>
             </tr>
         <?php endforeach;?>
     </tbody>
@@ -51,13 +46,13 @@ $(function()
         {
             //Hacemos la peticion ajax
             $.ajax({
-                url:'/catalogos/clinica/eliminar/'+id,
+                url:'/catalogos/canal/eliminar/'+id,
                 dataType: 'json',
                 method:'POST',
                 success: function(data){
                     if(data.response){
                         $modal.close();
-                        window.location.replace('/catalogos/clinica');
+                        window.location.replace('/catalogos/canal');
                     }
                 }
             });

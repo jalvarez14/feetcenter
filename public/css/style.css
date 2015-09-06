@@ -101,3 +101,21 @@ form select{
 .tr_options a:not(:first-child){
     margin-left: 12px;
 }
+
+table tr a {
+    text-decoration: none;
+}
+
+/*Modal warnings*/
+.modal_header_warning{
+    background: #DE2C3B;
+    color: white;
+    padding-top: 10px;
+}
+
+.modal_header_warning h2{
+    background: #DE2C3B;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+}

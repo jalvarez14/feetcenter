@@ -1,0 +1,29 @@
+<div id="clinica_container">
+    <h1>Canal de comunicación: <?php echo $form->get('canalcomunicacion_nombre')->getValue()?></h1>
+    <?php 
+        $form->setAttribute('action', '/catalogos/canal/editar/'.$id);
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('canalcomunicacion_nombre')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Descripción <span class="req">*</span>
+                <?php echo $this->formTextarea($form->get('canalcomunicacion_descripcion')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
