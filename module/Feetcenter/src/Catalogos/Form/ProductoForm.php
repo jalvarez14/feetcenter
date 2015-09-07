@@ -47,7 +47,13 @@ class ProductoForm extends Form
                 'required' => true,
             ),
         ));
-       
+       $this->add(array(
+            'name' => 'producto_comision',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'width-100',
+            ),
+        ));
 
 
  

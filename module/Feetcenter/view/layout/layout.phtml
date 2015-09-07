@@ -20,6 +20,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+            ->prependFile($this->basePath('js/plugin/accounting.js')) 
             ->prependFile($this->basePath('js/plugin/numeric.js'))     
             ->prependFile($this->basePath('js/form.js'))
             ->prependFile($this->basePath('js/kube.min.js'))

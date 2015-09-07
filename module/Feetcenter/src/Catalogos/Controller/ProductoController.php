@@ -16,7 +16,7 @@ class ProductoController extends AbstractActionController
 {
     public function indexAction()
     {
-        $collection = \InsumoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+        $collection = \ProductoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
 
         
         return new ViewModel(array(
@@ -37,33 +37,40 @@ class ProductoController extends AbstractActionController
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-                        
+          
             foreach ($post_data as $k => $v){
-                if(empty($v)){
+                if(empty($v) && $v!="0" && $v!="1"){
                     unset($post_data[$k]);
                 }
             }
-            
+          
             //Le ponemos los datos a nuestro formulario
             $form->setData($post_data);
             
             //Validamos nuestro formulario
             if ($form->isValid()) {
                 
-                $entity = new \Insumo();
+                $entity = new \Producto();
 
                 foreach ($form->getData() as $key => $value) {
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
+                $entity->setProductoGeneraingreso($post_data['producto_generaingreso']);
+                $entity->setProductoGeneracomision($post_data['producto_generacomision']);
                 
-                //Guardamos en nuestra base de datos
+                if($entity->getProductoGeneracomision()){
+                    $entity->setProductoTipocomision($post_data['producto_tipocomision']);
+                    $entity->setProductoGeneracomision($post_data['producto_comision']);
+                }
+                
+                //Guard amos en nuestra base de datos
                 $entity->save();
-                
+                    
                 //Agregamos un mensaje
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 
                 //Redireccionamos a nuestro list
-                return $this->redirect()->toRoute('catalogos/insumo');
+                return $this->redirect()->toRoute('catalogos/producto');
 
             }
         }
@@ -82,17 +89,17 @@ class ProductoController extends AbstractActionController
             $id = $this->params()->fromRoute('id');
             
             //Verificamos que el Id lugar que se quiere modificar exista
-            if(!\InsumoQuery::create()->filterByIdinsumo($id)->exists()){
+            if(!\ProductoQuery::create()->filterByIdproducto($id)->exists()){
                 $id =0;
             }
             
             //Si es incorrecto redireccionavos al action nuevo
             if (!$id) {
-                return $this->redirect()->toRoute('catalogos/insumo');
+                return $this->redirect()->toRoute('catalogos/producto');
             }
             
             //Instanciamos nuestro lugar
-            $entity = \InsumoQuery::create()->findPk($id);
+            $entity = \ProductoQuery::create()->findPk($id);
             
             $entity->delete();
             
@@ -119,19 +126,19 @@ class ProductoController extends AbstractActionController
         //Cachamos el valor desde nuestro params
         $id = (int) $this->params()->fromRoute('id');
         //Verificamos que el Id lugar que se quiere modificar exista
-        if(!\InsumoQuery::create()->filterByIdinsumo($id)->exists()){
+        if(!\ProductoQuery::create()->filterByIdproducto($id)->exists()){
             $id =0;
         }
         //Si es incorrecto redireccionavos al action nuevo
         if (!$id) {
-            return $this->redirect()->toRoute('catalogos/insumo');
+            return $this->redirect()->toRoute('catalogos/producto');
         }
 
             //Instanciamos nuestro lugar
-            $entity = \InsumoQuery::create()->findPk($id);
+            $entity = \ProductoQuery::create()->findPk($id);
             
             //Instanciamos nuestro formulario
-            $form = new \Catalogos\Form\InsumoForm();
+            $form = new \Catalogos\Form\ProductoForm();
 
             //Le ponemos los datos de nuestro lugar a nuestro formulario
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
@@ -151,6 +158,17 @@ class ProductoController extends AbstractActionController
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
                     
+                    $entity->setProductoGeneraingreso($post_data['producto_generaingreso']);
+                    $entity->setProductoGeneracomision($post_data['producto_generacomision']);
+
+                    if($entity->getProductoGeneracomision()){
+                        $entity->setProductoTipocomision($post_data['producto_tipocomision']);
+                        $entity->setProductoGeneracomision($post_data['producto_comision']);
+                    }else{
+                        $entity->setProductoTipocomision(NULL);
+                        $entity->setProductoGeneracomision(NULL);
+                    }
+                    
                     //Guardamos en nuestra base de datos
                     $entity->save();
 
@@ -158,7 +176,7 @@ class ProductoController extends AbstractActionController
                     $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
 
                     //Redireccionamos a nuestro list
-                    return $this->redirect()->toRoute('catalogos/insumo');
+                    return $this->redirect()->toRoute('catalogos/producto');
 
                 }else{
                     
@@ -166,6 +184,7 @@ class ProductoController extends AbstractActionController
             }
             
             return new ViewModel(array(
+                'entity' => $entity->toArray(\BasePeer::TYPE_FIELDNAME),
                 'id'  => $id,
                 'form' => $form,
             ));

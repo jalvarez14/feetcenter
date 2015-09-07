@@ -1,7 +1,7 @@
 <div id="producto_container">
     <h1>Nuevo producto</h1>
     <?php 
-        $form->setAttribute('action', '/catalogos/insumo/nuevo');
+        $form->setAttribute('action', '/catalogos/producto/nuevo');
         $form->setAttribute('novalidate', true);
         $form->setAttribute('class', 'forms');
         $form->prepare();
@@ -46,11 +46,11 @@
                         <label><b>Genera ingreso</b></label>
                         <ul class="forms-inline-list">
                             <li>
-                                <input checked type="radio" name="producto_generaingreso" id="radio-1">
+                                <input checked type="radio" name="producto_generaingreso" value="1">
                                 <label for="radio-1">Si</label>
                             </li>
                             <li>
-                                <input type="radio" name="producto_generaingreso" id="radio-1">
+                                <input type="radio" name="producto_generaingreso" value="0">
                                 <label for="radio-1">No</label>
                             </li>
                         </ul>
@@ -73,13 +73,14 @@
                             <div class="unit-50">
                                 <label><b>Tipo de comisión</b></label>
                                 <select name="producto_tipocomision" disabled="disabled" style="padding-right: 4px;">
-                                    <option>Cantidad fija</option>
-                                    <option>Porcentaje</option>
+                                    <option value="cantidad">Cantidad fija</option>
+                                    <option value="procentaje">Porcentaje</option>
                                 </select>
                             </div>
                             <div class="unit-50">
                                 <label><b>Cantidad de comisión</b></label>
-                                <input name="producto_comision" type="text" disabled="disabled">
+                                <?php $form->get('producto_comision')->setAttribute('disabled',true);?>
+                                <?php echo $this->formText($form->get('producto_comision')); ?>
                             </div>
                         </div>
                     </div>
