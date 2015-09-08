@@ -95,7 +95,7 @@
 <script src="/js/catalogos/producto.js"></script>
 <script>
     var producto = <?php echo json_encode($entity)?>;
-    
+    console.log(producto);
     $('#producto_container').producto();
     
     if(producto.producto_generacomision){
