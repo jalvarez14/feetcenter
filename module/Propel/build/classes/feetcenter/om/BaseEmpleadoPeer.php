@@ -24,13 +24,13 @@ abstract class BaseEmpleadoPeer
     const TM_CLASS = 'EmpleadoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 21;
+    const NUM_COLUMNS = 22;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 21;
+    const NUM_HYDRATE_COLUMNS = 22;
 
     /** the column name for the idempleado field */
     const IDEMPLEADO = 'empleado.idempleado';
@@ -95,6 +95,9 @@ abstract class BaseEmpleadoPeer
     /** the column name for the empleado_password field */
     const EMPLEADO_PASSWORD = 'empleado.empleado_password';
 
+    /** the column name for the empleado_foto field */
+    const EMPLEADO_FOTO = 'empleado.empleado_foto';
+
     /** The enumerated values for the empleado_sexo field */
     const EMPLEADO_SEXO_HOMBRE = 'Hombre';
     const EMPLEADO_SEXO_MUJER = 'Mujer';
@@ -127,12 +130,12 @@ abstract class BaseEmpleadoPeer
      * e.g. EmpleadoPeer::$fieldNames[EmpleadoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleado', 'Idrol', 'EmpleadoRegistradoen', 'EmpleadoNombre', 'EmpleadoNss', 'EmpleadoRfc', 'EmpleadoCalle', 'EmpleadoNumero', 'EmpleadoColonia', 'EmpleadoCodigopostal', 'EmpleadoCiudad', 'EmpleadoSexo', 'EmpleadoFechanacimiento', 'EmpleadoTelefono', 'EmpleadoCelular', 'EmpleadoComprobantedomiclio', 'EmpleadoComprobanteidentificacion', 'EmpleadoSueldo', 'EmpleadoDiadescanso', 'EmpleadoUsername', 'EmpleadoPassword', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado', 'idrol', 'empleadoRegistradoen', 'empleadoNombre', 'empleadoNss', 'empleadoRfc', 'empleadoCalle', 'empleadoNumero', 'empleadoColonia', 'empleadoCodigopostal', 'empleadoCiudad', 'empleadoSexo', 'empleadoFechanacimiento', 'empleadoTelefono', 'empleadoCelular', 'empleadoComprobantedomiclio', 'empleadoComprobanteidentificacion', 'empleadoSueldo', 'empleadoDiadescanso', 'empleadoUsername', 'empleadoPassword', ),
-        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO, EmpleadoPeer::IDROL, EmpleadoPeer::EMPLEADO_REGISTRADOEN, EmpleadoPeer::EMPLEADO_NOMBRE, EmpleadoPeer::EMPLEADO_NSS, EmpleadoPeer::EMPLEADO_RFC, EmpleadoPeer::EMPLEADO_CALLE, EmpleadoPeer::EMPLEADO_NUMERO, EmpleadoPeer::EMPLEADO_COLONIA, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL, EmpleadoPeer::EMPLEADO_CIUDAD, EmpleadoPeer::EMPLEADO_SEXO, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO, EmpleadoPeer::EMPLEADO_TELEFONO, EmpleadoPeer::EMPLEADO_CELULAR, EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO, EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION, EmpleadoPeer::EMPLEADO_SUELDO, EmpleadoPeer::EMPLEADO_DIADESCANSO, EmpleadoPeer::EMPLEADO_USERNAME, EmpleadoPeer::EMPLEADO_PASSWORD, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO', 'IDROL', 'EMPLEADO_REGISTRADOEN', 'EMPLEADO_NOMBRE', 'EMPLEADO_NSS', 'EMPLEADO_RFC', 'EMPLEADO_CALLE', 'EMPLEADO_NUMERO', 'EMPLEADO_COLONIA', 'EMPLEADO_CODIGOPOSTAL', 'EMPLEADO_CIUDAD', 'EMPLEADO_SEXO', 'EMPLEADO_FECHANACIMIENTO', 'EMPLEADO_TELEFONO', 'EMPLEADO_CELULAR', 'EMPLEADO_COMPROBANTEDOMICLIO', 'EMPLEADO_COMPROBANTEIDENTIFICACION', 'EMPLEADO_SUELDO', 'EMPLEADO_DIADESCANSO', 'EMPLEADO_USERNAME', 'EMPLEADO_PASSWORD', ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleado', 'idrol', 'empleado_registradoen', 'empleado_nombre', 'empleado_nss', 'empleado_rfc', 'empleado_calle', 'empleado_numero', 'empleado_colonia', 'empleado_codigopostal', 'empleado_ciudad', 'empleado_sexo', 'empleado_fechanacimiento', 'empleado_telefono', 'empleado_celular', 'empleado_comprobantedomiclio', 'empleado_comprobanteidentificacion', 'empleado_sueldo', 'empleado_diadescanso', 'empleado_username', 'empleado_password', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleado', 'Idrol', 'EmpleadoRegistradoen', 'EmpleadoNombre', 'EmpleadoNss', 'EmpleadoRfc', 'EmpleadoCalle', 'EmpleadoNumero', 'EmpleadoColonia', 'EmpleadoCodigopostal', 'EmpleadoCiudad', 'EmpleadoSexo', 'EmpleadoFechanacimiento', 'EmpleadoTelefono', 'EmpleadoCelular', 'EmpleadoComprobantedomiclio', 'EmpleadoComprobanteidentificacion', 'EmpleadoSueldo', 'EmpleadoDiadescanso', 'EmpleadoUsername', 'EmpleadoPassword', 'EmpleadoFoto', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado', 'idrol', 'empleadoRegistradoen', 'empleadoNombre', 'empleadoNss', 'empleadoRfc', 'empleadoCalle', 'empleadoNumero', 'empleadoColonia', 'empleadoCodigopostal', 'empleadoCiudad', 'empleadoSexo', 'empleadoFechanacimiento', 'empleadoTelefono', 'empleadoCelular', 'empleadoComprobantedomiclio', 'empleadoComprobanteidentificacion', 'empleadoSueldo', 'empleadoDiadescanso', 'empleadoUsername', 'empleadoPassword', 'empleadoFoto', ),
+        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO, EmpleadoPeer::IDROL, EmpleadoPeer::EMPLEADO_REGISTRADOEN, EmpleadoPeer::EMPLEADO_NOMBRE, EmpleadoPeer::EMPLEADO_NSS, EmpleadoPeer::EMPLEADO_RFC, EmpleadoPeer::EMPLEADO_CALLE, EmpleadoPeer::EMPLEADO_NUMERO, EmpleadoPeer::EMPLEADO_COLONIA, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL, EmpleadoPeer::EMPLEADO_CIUDAD, EmpleadoPeer::EMPLEADO_SEXO, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO, EmpleadoPeer::EMPLEADO_TELEFONO, EmpleadoPeer::EMPLEADO_CELULAR, EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO, EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION, EmpleadoPeer::EMPLEADO_SUELDO, EmpleadoPeer::EMPLEADO_DIADESCANSO, EmpleadoPeer::EMPLEADO_USERNAME, EmpleadoPeer::EMPLEADO_PASSWORD, EmpleadoPeer::EMPLEADO_FOTO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO', 'IDROL', 'EMPLEADO_REGISTRADOEN', 'EMPLEADO_NOMBRE', 'EMPLEADO_NSS', 'EMPLEADO_RFC', 'EMPLEADO_CALLE', 'EMPLEADO_NUMERO', 'EMPLEADO_COLONIA', 'EMPLEADO_CODIGOPOSTAL', 'EMPLEADO_CIUDAD', 'EMPLEADO_SEXO', 'EMPLEADO_FECHANACIMIENTO', 'EMPLEADO_TELEFONO', 'EMPLEADO_CELULAR', 'EMPLEADO_COMPROBANTEDOMICLIO', 'EMPLEADO_COMPROBANTEIDENTIFICACION', 'EMPLEADO_SUELDO', 'EMPLEADO_DIADESCANSO', 'EMPLEADO_USERNAME', 'EMPLEADO_PASSWORD', 'EMPLEADO_FOTO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleado', 'idrol', 'empleado_registradoen', 'empleado_nombre', 'empleado_nss', 'empleado_rfc', 'empleado_calle', 'empleado_numero', 'empleado_colonia', 'empleado_codigopostal', 'empleado_ciudad', 'empleado_sexo', 'empleado_fechanacimiento', 'empleado_telefono', 'empleado_celular', 'empleado_comprobantedomiclio', 'empleado_comprobanteidentificacion', 'empleado_sueldo', 'empleado_diadescanso', 'empleado_username', 'empleado_password', 'empleado_foto', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
     );
 
     /**
@@ -142,12 +145,12 @@ abstract class BaseEmpleadoPeer
      * e.g. EmpleadoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleado' => 0, 'Idrol' => 1, 'EmpleadoRegistradoen' => 2, 'EmpleadoNombre' => 3, 'EmpleadoNss' => 4, 'EmpleadoRfc' => 5, 'EmpleadoCalle' => 6, 'EmpleadoNumero' => 7, 'EmpleadoColonia' => 8, 'EmpleadoCodigopostal' => 9, 'EmpleadoCiudad' => 10, 'EmpleadoSexo' => 11, 'EmpleadoFechanacimiento' => 12, 'EmpleadoTelefono' => 13, 'EmpleadoCelular' => 14, 'EmpleadoComprobantedomiclio' => 15, 'EmpleadoComprobanteidentificacion' => 16, 'EmpleadoSueldo' => 17, 'EmpleadoDiadescanso' => 18, 'EmpleadoUsername' => 19, 'EmpleadoPassword' => 20, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado' => 0, 'idrol' => 1, 'empleadoRegistradoen' => 2, 'empleadoNombre' => 3, 'empleadoNss' => 4, 'empleadoRfc' => 5, 'empleadoCalle' => 6, 'empleadoNumero' => 7, 'empleadoColonia' => 8, 'empleadoCodigopostal' => 9, 'empleadoCiudad' => 10, 'empleadoSexo' => 11, 'empleadoFechanacimiento' => 12, 'empleadoTelefono' => 13, 'empleadoCelular' => 14, 'empleadoComprobantedomiclio' => 15, 'empleadoComprobanteidentificacion' => 16, 'empleadoSueldo' => 17, 'empleadoDiadescanso' => 18, 'empleadoUsername' => 19, 'empleadoPassword' => 20, ),
-        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO => 0, EmpleadoPeer::IDROL => 1, EmpleadoPeer::EMPLEADO_REGISTRADOEN => 2, EmpleadoPeer::EMPLEADO_NOMBRE => 3, EmpleadoPeer::EMPLEADO_NSS => 4, EmpleadoPeer::EMPLEADO_RFC => 5, EmpleadoPeer::EMPLEADO_CALLE => 6, EmpleadoPeer::EMPLEADO_NUMERO => 7, EmpleadoPeer::EMPLEADO_COLONIA => 8, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL => 9, EmpleadoPeer::EMPLEADO_CIUDAD => 10, EmpleadoPeer::EMPLEADO_SEXO => 11, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO => 12, EmpleadoPeer::EMPLEADO_TELEFONO => 13, EmpleadoPeer::EMPLEADO_CELULAR => 14, EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO => 15, EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION => 16, EmpleadoPeer::EMPLEADO_SUELDO => 17, EmpleadoPeer::EMPLEADO_DIADESCANSO => 18, EmpleadoPeer::EMPLEADO_USERNAME => 19, EmpleadoPeer::EMPLEADO_PASSWORD => 20, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO' => 0, 'IDROL' => 1, 'EMPLEADO_REGISTRADOEN' => 2, 'EMPLEADO_NOMBRE' => 3, 'EMPLEADO_NSS' => 4, 'EMPLEADO_RFC' => 5, 'EMPLEADO_CALLE' => 6, 'EMPLEADO_NUMERO' => 7, 'EMPLEADO_COLONIA' => 8, 'EMPLEADO_CODIGOPOSTAL' => 9, 'EMPLEADO_CIUDAD' => 10, 'EMPLEADO_SEXO' => 11, 'EMPLEADO_FECHANACIMIENTO' => 12, 'EMPLEADO_TELEFONO' => 13, 'EMPLEADO_CELULAR' => 14, 'EMPLEADO_COMPROBANTEDOMICLIO' => 15, 'EMPLEADO_COMPROBANTEIDENTIFICACION' => 16, 'EMPLEADO_SUELDO' => 17, 'EMPLEADO_DIADESCANSO' => 18, 'EMPLEADO_USERNAME' => 19, 'EMPLEADO_PASSWORD' => 20, ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleado' => 0, 'idrol' => 1, 'empleado_registradoen' => 2, 'empleado_nombre' => 3, 'empleado_nss' => 4, 'empleado_rfc' => 5, 'empleado_calle' => 6, 'empleado_numero' => 7, 'empleado_colonia' => 8, 'empleado_codigopostal' => 9, 'empleado_ciudad' => 10, 'empleado_sexo' => 11, 'empleado_fechanacimiento' => 12, 'empleado_telefono' => 13, 'empleado_celular' => 14, 'empleado_comprobantedomiclio' => 15, 'empleado_comprobanteidentificacion' => 16, 'empleado_sueldo' => 17, 'empleado_diadescanso' => 18, 'empleado_username' => 19, 'empleado_password' => 20, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleado' => 0, 'Idrol' => 1, 'EmpleadoRegistradoen' => 2, 'EmpleadoNombre' => 3, 'EmpleadoNss' => 4, 'EmpleadoRfc' => 5, 'EmpleadoCalle' => 6, 'EmpleadoNumero' => 7, 'EmpleadoColonia' => 8, 'EmpleadoCodigopostal' => 9, 'EmpleadoCiudad' => 10, 'EmpleadoSexo' => 11, 'EmpleadoFechanacimiento' => 12, 'EmpleadoTelefono' => 13, 'EmpleadoCelular' => 14, 'EmpleadoComprobantedomiclio' => 15, 'EmpleadoComprobanteidentificacion' => 16, 'EmpleadoSueldo' => 17, 'EmpleadoDiadescanso' => 18, 'EmpleadoUsername' => 19, 'EmpleadoPassword' => 20, 'EmpleadoFoto' => 21, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado' => 0, 'idrol' => 1, 'empleadoRegistradoen' => 2, 'empleadoNombre' => 3, 'empleadoNss' => 4, 'empleadoRfc' => 5, 'empleadoCalle' => 6, 'empleadoNumero' => 7, 'empleadoColonia' => 8, 'empleadoCodigopostal' => 9, 'empleadoCiudad' => 10, 'empleadoSexo' => 11, 'empleadoFechanacimiento' => 12, 'empleadoTelefono' => 13, 'empleadoCelular' => 14, 'empleadoComprobantedomiclio' => 15, 'empleadoComprobanteidentificacion' => 16, 'empleadoSueldo' => 17, 'empleadoDiadescanso' => 18, 'empleadoUsername' => 19, 'empleadoPassword' => 20, 'empleadoFoto' => 21, ),
+        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO => 0, EmpleadoPeer::IDROL => 1, EmpleadoPeer::EMPLEADO_REGISTRADOEN => 2, EmpleadoPeer::EMPLEADO_NOMBRE => 3, EmpleadoPeer::EMPLEADO_NSS => 4, EmpleadoPeer::EMPLEADO_RFC => 5, EmpleadoPeer::EMPLEADO_CALLE => 6, EmpleadoPeer::EMPLEADO_NUMERO => 7, EmpleadoPeer::EMPLEADO_COLONIA => 8, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL => 9, EmpleadoPeer::EMPLEADO_CIUDAD => 10, EmpleadoPeer::EMPLEADO_SEXO => 11, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO => 12, EmpleadoPeer::EMPLEADO_TELEFONO => 13, EmpleadoPeer::EMPLEADO_CELULAR => 14, EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO => 15, EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION => 16, EmpleadoPeer::EMPLEADO_SUELDO => 17, EmpleadoPeer::EMPLEADO_DIADESCANSO => 18, EmpleadoPeer::EMPLEADO_USERNAME => 19, EmpleadoPeer::EMPLEADO_PASSWORD => 20, EmpleadoPeer::EMPLEADO_FOTO => 21, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO' => 0, 'IDROL' => 1, 'EMPLEADO_REGISTRADOEN' => 2, 'EMPLEADO_NOMBRE' => 3, 'EMPLEADO_NSS' => 4, 'EMPLEADO_RFC' => 5, 'EMPLEADO_CALLE' => 6, 'EMPLEADO_NUMERO' => 7, 'EMPLEADO_COLONIA' => 8, 'EMPLEADO_CODIGOPOSTAL' => 9, 'EMPLEADO_CIUDAD' => 10, 'EMPLEADO_SEXO' => 11, 'EMPLEADO_FECHANACIMIENTO' => 12, 'EMPLEADO_TELEFONO' => 13, 'EMPLEADO_CELULAR' => 14, 'EMPLEADO_COMPROBANTEDOMICLIO' => 15, 'EMPLEADO_COMPROBANTEIDENTIFICACION' => 16, 'EMPLEADO_SUELDO' => 17, 'EMPLEADO_DIADESCANSO' => 18, 'EMPLEADO_USERNAME' => 19, 'EMPLEADO_PASSWORD' => 20, 'EMPLEADO_FOTO' => 21, ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleado' => 0, 'idrol' => 1, 'empleado_registradoen' => 2, 'empleado_nombre' => 3, 'empleado_nss' => 4, 'empleado_rfc' => 5, 'empleado_calle' => 6, 'empleado_numero' => 7, 'empleado_colonia' => 8, 'empleado_codigopostal' => 9, 'empleado_ciudad' => 10, 'empleado_sexo' => 11, 'empleado_fechanacimiento' => 12, 'empleado_telefono' => 13, 'empleado_celular' => 14, 'empleado_comprobantedomiclio' => 15, 'empleado_comprobanteidentificacion' => 16, 'empleado_sueldo' => 17, 'empleado_diadescanso' => 18, 'empleado_username' => 19, 'empleado_password' => 20, 'empleado_foto' => 21, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
     );
 
     /** The enumerated values for this table */
@@ -304,6 +307,7 @@ abstract class BaseEmpleadoPeer
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_DIADESCANSO);
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_USERNAME);
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_PASSWORD);
+            $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_FOTO);
         } else {
             $criteria->addSelectColumn($alias . '.idempleado');
             $criteria->addSelectColumn($alias . '.idrol');
@@ -326,6 +330,7 @@ abstract class BaseEmpleadoPeer
             $criteria->addSelectColumn($alias . '.empleado_diadescanso');
             $criteria->addSelectColumn($alias . '.empleado_username');
             $criteria->addSelectColumn($alias . '.empleado_password');
+            $criteria->addSelectColumn($alias . '.empleado_foto');
         }
     }
 

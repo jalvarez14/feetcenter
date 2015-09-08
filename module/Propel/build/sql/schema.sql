@@ -223,6 +223,7 @@ CREATE TABLE `empleado`
     `empleado_diadescanso` enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo') NOT NULL,
     `empleado_username` VARCHAR(45),
     `empleado_password` VARCHAR(45),
+    `empleado_foto` TEXT,
     PRIMARY KEY (`idempleado`),
     INDEX `idrol_empleado_idx` (`idrol`),
     CONSTRAINT `idrol_empleado`

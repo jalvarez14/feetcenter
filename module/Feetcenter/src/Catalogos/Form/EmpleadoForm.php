@@ -25,15 +25,6 @@ class EmpleadoForm extends Form
         ));
         
         $this->add(array(
-            'name' => 'empleado_registradoen',
-            'type' => 'Text',
-            'attributes' => array(
-                'class' => 'width-100',
-                'required' => true,
-            ),
-        ));
-        
-        $this->add(array(
             'name' => 'empleado_nombre',
             'type' => 'Text',
             'attributes' => array(
@@ -142,6 +133,7 @@ class EmpleadoForm extends Form
             'type' => 'File',
             'attributes' => array(
                 'class' => 'width-100',
+                'accept'=>"image/*"
             ),
         ));
         
@@ -150,6 +142,7 @@ class EmpleadoForm extends Form
             'type' => 'File',
             'attributes' => array(
                 'class' => 'width-100',
+                'accept'=>  "image/*"
             ),
         ));
         

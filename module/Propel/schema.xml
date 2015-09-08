@@ -166,6 +166,7 @@
     <column name="empleado_diadescanso" phpName="EmpleadoDiadescanso" type="CHAR" sqlType="enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo')" required="true"/>
     <column name="empleado_username" phpName="EmpleadoUsername" type="VARCHAR" size="45" required="false"/>
     <column name="empleado_password" phpName="EmpleadoPassword" type="VARCHAR" size="45" required="false"/>
+    <column name="empleado_foto" phpName="EmpleadoFoto" type="LONGVARCHAR" required="false"/>
     <foreign-key foreignTable="rol" name="idrol_empleado" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idrol" foreign="idrol"/>
     </foreign-key>

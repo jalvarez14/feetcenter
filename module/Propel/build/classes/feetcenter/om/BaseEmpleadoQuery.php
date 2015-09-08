@@ -27,6 +27,7 @@
  * @method EmpleadoQuery orderByEmpleadoDiadescanso($order = Criteria::ASC) Order by the empleado_diadescanso column
  * @method EmpleadoQuery orderByEmpleadoUsername($order = Criteria::ASC) Order by the empleado_username column
  * @method EmpleadoQuery orderByEmpleadoPassword($order = Criteria::ASC) Order by the empleado_password column
+ * @method EmpleadoQuery orderByEmpleadoFoto($order = Criteria::ASC) Order by the empleado_foto column
  *
  * @method EmpleadoQuery groupByIdempleado() Group by the idempleado column
  * @method EmpleadoQuery groupByIdrol() Group by the idrol column
@@ -49,6 +50,7 @@
  * @method EmpleadoQuery groupByEmpleadoDiadescanso() Group by the empleado_diadescanso column
  * @method EmpleadoQuery groupByEmpleadoUsername() Group by the empleado_username column
  * @method EmpleadoQuery groupByEmpleadoPassword() Group by the empleado_password column
+ * @method EmpleadoQuery groupByEmpleadoFoto() Group by the empleado_foto column
  *
  * @method EmpleadoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method EmpleadoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -133,6 +135,7 @@
  * @method Empleado findOneByEmpleadoDiadescanso(string $empleado_diadescanso) Return the first Empleado filtered by the empleado_diadescanso column
  * @method Empleado findOneByEmpleadoUsername(string $empleado_username) Return the first Empleado filtered by the empleado_username column
  * @method Empleado findOneByEmpleadoPassword(string $empleado_password) Return the first Empleado filtered by the empleado_password column
+ * @method Empleado findOneByEmpleadoFoto(string $empleado_foto) Return the first Empleado filtered by the empleado_foto column
  *
  * @method array findByIdempleado(int $idempleado) Return Empleado objects filtered by the idempleado column
  * @method array findByIdrol(int $idrol) Return Empleado objects filtered by the idrol column
@@ -155,6 +158,7 @@
  * @method array findByEmpleadoDiadescanso(string $empleado_diadescanso) Return Empleado objects filtered by the empleado_diadescanso column
  * @method array findByEmpleadoUsername(string $empleado_username) Return Empleado objects filtered by the empleado_username column
  * @method array findByEmpleadoPassword(string $empleado_password) Return Empleado objects filtered by the empleado_password column
+ * @method array findByEmpleadoFoto(string $empleado_foto) Return Empleado objects filtered by the empleado_foto column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -262,7 +266,7 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idempleado`, `idrol`, `empleado_registradoen`, `empleado_nombre`, `empleado_nss`, `empleado_rfc`, `empleado_calle`, `empleado_numero`, `empleado_colonia`, `empleado_codigopostal`, `empleado_ciudad`, `empleado_sexo`, `empleado_fechanacimiento`, `empleado_telefono`, `empleado_celular`, `empleado_comprobantedomiclio`, `empleado_comprobanteidentificacion`, `empleado_sueldo`, `empleado_diadescanso`, `empleado_username`, `empleado_password` FROM `empleado` WHERE `idempleado` = :p0';
+        $sql = 'SELECT `idempleado`, `idrol`, `empleado_registradoen`, `empleado_nombre`, `empleado_nss`, `empleado_rfc`, `empleado_calle`, `empleado_numero`, `empleado_colonia`, `empleado_codigopostal`, `empleado_ciudad`, `empleado_sexo`, `empleado_fechanacimiento`, `empleado_telefono`, `empleado_celular`, `empleado_comprobantedomiclio`, `empleado_comprobanteidentificacion`, `empleado_sueldo`, `empleado_diadescanso`, `empleado_username`, `empleado_password`, `empleado_foto` FROM `empleado` WHERE `idempleado` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1027,6 +1031,35 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EmpleadoPeer::EMPLEADO_PASSWORD, $empleadoPassword, $comparison);
+    }
+
+    /**
+     * Filter the query on the empleado_foto column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmpleadoFoto('fooValue');   // WHERE empleado_foto = 'fooValue'
+     * $query->filterByEmpleadoFoto('%fooValue%'); // WHERE empleado_foto LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $empleadoFoto The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function filterByEmpleadoFoto($empleadoFoto = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($empleadoFoto)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $empleadoFoto)) {
+                $empleadoFoto = str_replace('*', '%', $empleadoFoto);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(EmpleadoPeer::EMPLEADO_FOTO, $empleadoFoto, $comparison);
     }
 
     /**

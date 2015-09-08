@@ -16,7 +16,7 @@ class EmpleadoController extends AbstractActionController
 {
     public function indexAction()
     {
-        $collection = \InsumoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+        $collection = \EmpleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
 
         
         return new ViewModel(array(
@@ -40,32 +40,85 @@ class EmpleadoController extends AbstractActionController
             $roles[$idrol] = $rol['rol_nombre'];
         }
         
-       
-       
         $form = new \Catalogos\Form\EmpleadoForm($roles);
         
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-                        
+
             foreach ($post_data as $k => $v){
                 if(empty($v)){
                     unset($post_data[$k]);
                 }
             }
             
+            
             //Le ponemos los datos a nuestro formulario
+            unset($post_data['empleado_fechanacimiento']);
             $form->setData($post_data);
             
             //Validamos nuestro formulario
             if ($form->isValid()) {
                 
-                $entity = new \Insumo();
-
-                foreach ($form->getData() as $key => $value) {
-                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                $entity = new \Empleado();
+                
+                //La fecha de creacion del empleado
+                $entity->setEmpleadoRegistradoen(new \DateTime());
+               
+                //Recorremos nuestro formulario y seteamos los valores a nuestro objeto Lugar
+                    foreach ($form->getData() as $key => $value){
+                        if($key == 'empleado_password'){
+                            $entity->setByName($key, md5($value), \BasePeer::TYPE_FIELDNAME);
+                        }else{
+                            $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                        }
+                         
+                    }
+                
+                //Fecha de nacimiento
+                $entity->setEmpleadoFechanacimiento($post_data['empleado_fechanacimiento_submit']);
+                
+                $entity->save();
+                
+                //Los archivos
+                if(isset($_FILES['empleado_comprobantedomiclio']) && !empty($_FILES['empleado_comprobantedomiclio']['name'])){
+                        //Si tiene una foto guurdada anteriormente
+                        $upload_folder ='/img/empleados/comprobantes/';
+                        $tipo_archivo = $_FILES['empleado_comprobantedomiclio']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = $tipo_archivo[1];  
+                        $nombre_archivo = 'comprobante_domicilio_'.$entity->getIdempleado().'.'.$tipo_archivo;
+                        $tmp_archivo = $_FILES['empleado_comprobantedomiclio']['tmp_name'];
+                        $archivador = $upload_folder.$nombre_archivo;
+                        if(!move_uploaded_file($tmp_archivo, $_SERVER["DOCUMENT_ROOT"].$archivador)) {
+                            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => false, 'msg' => 'Ocurrio un error al subir el archivo. No pudo guardarse.', 'status' => 'error')));
+                        } 
+                        $entity->setEmpleadoComprobantedomiclio($archivador);
                 }
                 
+                if(isset($_FILES['empleado_comprobanteidentificacion']) && !empty($_FILES['empleado_comprobanteidentificacion']['name'])){
+                        $upload_folder ='/img/empleados/comprobantes/';
+                        $tipo_archivo = $_FILES['empleado_comprobanteidentificacion']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = $tipo_archivo[1];  
+                        $nombre_archivo = 'comprobante_identificacion_'.$entity->getIdempleado().'.'.$tipo_archivo;
+                        $tmp_archivo = $_FILES['empleado_comprobanteidentificacion']['tmp_name'];
+                        $archivador = $upload_folder.$nombre_archivo;
+                        if(!move_uploaded_file($tmp_archivo, $_SERVER["DOCUMENT_ROOT"].$archivador)) {
+                            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => false, 'msg' => 'Ocurrio un error al subir el archivo. No pudo guardarse.', 'status' => 'error')));
+                        } 
+                        $entity->setEmpleadoComprobanteidentificacion($archivador);
+                }
+                
+                if(isset($_FILES['empleado_foto']) && !empty($_FILES['empleado_foto']['name'])){
+                        
+                        $upload_folder ='/img/empleados/';
+                        $tipo_archivo = $_FILES['empleado_foto']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = $tipo_archivo[1];  
+                        $nombre_archivo = 'empleado_foto_'.$entity->getIdempleado().'.'.$tipo_archivo;
+                        $tmp_archivo = $_FILES['empleado_foto']['tmp_name'];
+                        $archivador = $upload_folder.$nombre_archivo;
+                        if(!move_uploaded_file($tmp_archivo, $_SERVER["DOCUMENT_ROOT"].$archivador)) {
+                            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => false, 'msg' => 'Ocurrio un error al subir el archivo. No pudo guardarse.', 'status' => 'error')));
+                        } 
+                        $entity->setEmpleadoFoto($archivador);
+                }
+                                
                 //Guardamos en nuestra base de datos
                 $entity->save();
                 
@@ -73,7 +126,7 @@ class EmpleadoController extends AbstractActionController
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 
                 //Redireccionamos a nuestro list
-                return $this->redirect()->toRoute('catalogos/insumo');
+                return $this->redirect()->toRoute('catalogos/empleado');
 
             }
         }
@@ -92,17 +145,17 @@ class EmpleadoController extends AbstractActionController
             $id = $this->params()->fromRoute('id');
             
             //Verificamos que el Id lugar que se quiere modificar exista
-            if(!\InsumoQuery::create()->filterByIdinsumo($id)->exists()){
+            if(!\EmpleadoQuery::create()->filterByIdempleado($id)->exists()){
                 $id =0;
             }
             
             //Si es incorrecto redireccionavos al action nuevo
             if (!$id) {
-                return $this->redirect()->toRoute('catalogos/insumo');
+                return $this->redirect()->toRoute('catalogos/empleado');
             }
             
             //Instanciamos nuestro lugar
-            $entity = \InsumoQuery::create()->findPk($id);
+            $entity = \EmpleadoQuery::create()->findPk($id);
             
 
             $entity->delete();
@@ -130,7 +183,7 @@ class EmpleadoController extends AbstractActionController
         //Cachamos el valor desde nuestro params
         $id = (int) $this->params()->fromRoute('id');
         //Verificamos que el Id lugar que se quiere modificar exista
-        if(!\InsumoQuery::create()->filterByIdinsumo($id)->exists()){
+        if(!\EmpleadoQuery::create()->filterByIdempleado($id)->exists()){
             $id =0;
         }
         //Si es incorrecto redireccionavos al action nuevo
@@ -139,10 +192,17 @@ class EmpleadoController extends AbstractActionController
         }
 
             //Instanciamos nuestro lugar
-            $entity = \InsumoQuery::create()->findPk($id);
+            $entity = \EmpleadoQuery::create()->findPk($id);
             
-            //Instanciamos nuestro formulario
-            $form = new \Catalogos\Form\InsumoForm();
+            //Los roles
+            $query = \RolQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            $roles = array();
+            foreach ($query as $rol){
+                $idrol = $rol['idrol'];
+                $roles[$idrol] = $rol['rol_nombre'];
+            }
+
+            $form = new \Catalogos\Form\EmpleadoForm($roles);
 
             //Le ponemos los datos de nuestro lugar a nuestro formulario
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
@@ -151,15 +211,113 @@ class EmpleadoController extends AbstractActionController
                 
                 $post_data = $request->getPost();
                 
+                
+                
+                foreach ($post_data as $k => $v){
+                    if(empty($v)){
+                        unset($post_data[$k]);
+                    }
+                }
+                
                 //Le ponemos los datos a nuestro formulario
                 $form->setData($post_data);
                 
                 //Validamos nuestro formulario
                 if($form->isValid()){
+     
+                    $empleado_comprobantedomicilio = $entity->getEmpleadoComprobantedomiclio();
+                    $empleado_comprobanteidentificacion = $entity->getEmpleadoComprobanteidentificacion();
+                    $empleado_foto = $entity->getEmpleadoFoto();
                     
                     //Recorremos nuestro formulario y seteamos los valores a nuestro objeto Lugar
                     foreach ($form->getData() as $key => $value){
-                        $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                        if($key == 'empleado_password'){
+                            $entity->setByName($key, md5($value), \BasePeer::TYPE_FIELDNAME);
+                        }else{
+                            $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                        }
+                    }
+                    $entity->setEmpleadoComprobantedomiclio($empleado_comprobantedomicilio);
+                    $entity->setEmpleadoComprobanteidentificacion($empleado_comprobanteidentificacion);
+                    $entity->setEmpleadoFoto($empleado_foto);
+ 
+                    //Fecha de nacimiento
+                    $entity->setEmpleadoFechanacimiento($post_data['empleado_fechanacimiento_submit']);
+                   
+                    //Los archivos
+                    if(isset($_FILES['empleado_comprobantedomiclio']) && !empty($_FILES['empleado_comprobantedomiclio']['name'])){
+                            $upload_folder ='/img/empleados/comprobantes/';
+                            $tipo_archivo = $_FILES['empleado_comprobantedomiclio']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = $tipo_archivo[1];  
+                            $nombre_archivo = 'comprobante_domicilio_'.$entity->getIdempleado().'.'.$tipo_archivo;
+                            $tmp_archivo = $_FILES['empleado_comprobantedomiclio']['tmp_name'];
+                            $archivador = $upload_folder.$nombre_archivo;
+                            if(!move_uploaded_file($tmp_archivo, $_SERVER["DOCUMENT_ROOT"].$archivador)) {
+                                return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => false, 'msg' => 'Ocurrio un error al subir el archivo. No pudo guardarse.', 'status' => 'error')));
+                            } 
+                            $entity->setEmpleadoComprobantedomiclio($archivador);
+                            
+                    }else{
+                       
+                        //Si fue eliminado
+                        if(isset($post_data['empleado_comprobantedomiclio_submit']) && isset($post_data['empleado_comprobantedomiclio_submit']) == 'delete'){
+                             
+                            if(!is_null($entity->getEmpleadoComprobantedomiclio())){
+                                
+                                unlink($_SERVER['DOCUMENT_ROOT'].$entity->getEmpleadoComprobantedomiclio());
+                            }
+                           
+                            $entity->setEmpleadoComprobantedomiclio(NULL);
+                        }
+                        
+                    }
+
+                    if(isset($_FILES['empleado_comprobanteidentificacion']) && !empty($_FILES['empleado_comprobanteidentificacion']['name'])){
+                        //Si tiene una foto guurdada anteriormente
+                            if(!is_null($entity->getEmpleadoComprobanteidentificacion())){
+                                unlink($_SERVER['DOCUMENT_ROOT'].$entity->getEmpleadoComprobanteidentificacion());
+                            }
+                            $upload_folder ='/img/empleados/comprobantes/';
+                            $tipo_archivo = $_FILES['empleado_comprobanteidentificacion']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = $tipo_archivo[1];  
+                            $nombre_archivo = 'comprobante_identificacion_'.$entity->getIdempleado().'.'.$tipo_archivo;
+                            $tmp_archivo = $_FILES['empleado_comprobanteidentificacion']['tmp_name'];
+                            $archivador = $upload_folder.$nombre_archivo;
+                            if(!move_uploaded_file($tmp_archivo, $_SERVER["DOCUMENT_ROOT"].$archivador)) {
+                                return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => false, 'msg' => 'Ocurrio un error al subir el archivo. No pudo guardarse.', 'status' => 'error')));
+                            } 
+                            $entity->setEmpleadoComprobanteidentificacion($archivador);
+                    }else{
+                        //Si fue eliminado
+                        if(isset($post_data['empleado_comprobanteidentificacion_submit']) && isset($post_data['empleado_comprobanteidentificacion_submit']) == 'delete'){
+                            if(!is_null($entity->getEmpleadoComprobanteidentificacion())){
+                                unlink($_SERVER['DOCUMENT_ROOT'].$entity->getEmpleadoComprobanteidentificacion());
+                            }
+                            $entity->setEmpleadoComprobanteidentificacion(NULL);
+                        }
+                    }
+
+                    if(isset($_FILES['empleado_foto']) && !empty($_FILES['empleado_foto']['name'])){
+                            //Si tiene una foto guurdada anteriormente
+                            if(!is_null($entity->getEmpleadoFoto())){
+                                unlink($_SERVER['DOCUMENT_ROOT'].$entity->getEmpleadoFoto());
+                            }
+                            $upload_folder ='/img/empleados/';
+                            $tipo_archivo = $_FILES['empleado_foto']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = $tipo_archivo[1];  
+                            $nombre_archivo = 'empleado_foto_'.$entity->getIdempleado().'.'.$tipo_archivo;
+                            $tmp_archivo = $_FILES['empleado_foto']['tmp_name'];
+                            $archivador = $upload_folder.$nombre_archivo;
+                            if(!move_uploaded_file($tmp_archivo, $_SERVER["DOCUMENT_ROOT"].$archivador)) {
+                                return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => false, 'msg' => 'Ocurrio un error al subir el archivo. No pudo guardarse.', 'status' => 'error')));
+                            } 
+                            $entity->setEmpleadoFoto($archivador);
+                    }else{
+                        //Si fue eliminado
+                        if(isset($post_data['empleado_foto_submit']) && isset($post_data['empleado_foto_submit']) == 'delete'){
+                            if(!is_null($entity->getEmpleadoFoto())){
+                                unlink($_SERVER['DOCUMENT_ROOT'].$entity->getEmpleadoFoto());
+                            }
+                            $entity->setEmpleadoFoto(NULL);
+                        }
+                        
                     }
                     
                     //Guardamos en nuestra base de datos
@@ -169,7 +327,7 @@ class EmpleadoController extends AbstractActionController
                     $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
 
                     //Redireccionamos a nuestro list
-                    return $this->redirect()->toRoute('catalogos/insumo');
+                    return $this->redirect()->toRoute('catalogos/empleado');
 
                 }else{
                     
@@ -179,6 +337,7 @@ class EmpleadoController extends AbstractActionController
             return new ViewModel(array(
                 'id'  => $id,
                 'form' => $form,
+                'entity' => $entity->toArray(\BasePeer::TYPE_FIELDNAME),
             ));
         
 

@@ -156,6 +156,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     protected $empleado_password;
 
     /**
+     * The value for the empleado_foto field.
+     * @var        string
+     */
+    protected $empleado_foto;
+
+    /**
      * @var        Rol
      */
     protected $aRol;
@@ -626,6 +632,17 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [empleado_foto] column value.
+     *
+     * @return string
+     */
+    public function getEmpleadoFoto()
+    {
+
+        return $this->empleado_foto;
+    }
+
+    /**
      * Set the value of [idempleado] column.
      *
      * @param  int $v new value
@@ -1075,6 +1092,27 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     } // setEmpleadoPassword()
 
     /**
+     * Set the value of [empleado_foto] column.
+     *
+     * @param  string $v new value
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setEmpleadoFoto($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->empleado_foto !== $v) {
+            $this->empleado_foto = $v;
+            $this->modifiedColumns[] = EmpleadoPeer::EMPLEADO_FOTO;
+        }
+
+
+        return $this;
+    } // setEmpleadoFoto()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1127,6 +1165,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->empleado_diadescanso = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
             $this->empleado_username = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->empleado_password = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->empleado_foto = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1136,7 +1175,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 21; // 21 = EmpleadoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 22; // 22 = EmpleadoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Empleado object", $e);
@@ -1674,6 +1713,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_PASSWORD)) {
             $modifiedColumns[':p' . $index++]  = '`empleado_password`';
         }
+        if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_FOTO)) {
+            $modifiedColumns[':p' . $index++]  = '`empleado_foto`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `empleado` (%s) VALUES (%s)',
@@ -1747,6 +1789,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                         break;
                     case '`empleado_password`':
                         $stmt->bindValue($identifier, $this->empleado_password, PDO::PARAM_STR);
+                        break;
+                    case '`empleado_foto`':
+                        $stmt->bindValue($identifier, $this->empleado_foto, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -2061,6 +2106,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             case 20:
                 return $this->getEmpleadoPassword();
                 break;
+            case 21:
+                return $this->getEmpleadoFoto();
+                break;
             default:
                 return null;
                 break;
@@ -2111,6 +2159,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $keys[18] => $this->getEmpleadoDiadescanso(),
             $keys[19] => $this->getEmpleadoUsername(),
             $keys[20] => $this->getEmpleadoPassword(),
+            $keys[21] => $this->getEmpleadoFoto(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2257,6 +2306,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             case 20:
                 $this->setEmpleadoPassword($value);
                 break;
+            case 21:
+                $this->setEmpleadoFoto($value);
+                break;
         } // switch()
     }
 
@@ -2302,6 +2354,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if (array_key_exists($keys[18], $arr)) $this->setEmpleadoDiadescanso($arr[$keys[18]]);
         if (array_key_exists($keys[19], $arr)) $this->setEmpleadoUsername($arr[$keys[19]]);
         if (array_key_exists($keys[20], $arr)) $this->setEmpleadoPassword($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setEmpleadoFoto($arr[$keys[21]]);
     }
 
     /**
@@ -2334,6 +2387,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_DIADESCANSO)) $criteria->add(EmpleadoPeer::EMPLEADO_DIADESCANSO, $this->empleado_diadescanso);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_USERNAME)) $criteria->add(EmpleadoPeer::EMPLEADO_USERNAME, $this->empleado_username);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_PASSWORD)) $criteria->add(EmpleadoPeer::EMPLEADO_PASSWORD, $this->empleado_password);
+        if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_FOTO)) $criteria->add(EmpleadoPeer::EMPLEADO_FOTO, $this->empleado_foto);
 
         return $criteria;
     }
@@ -2417,6 +2471,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $copyObj->setEmpleadoDiadescanso($this->getEmpleadoDiadescanso());
         $copyObj->setEmpleadoUsername($this->getEmpleadoUsername());
         $copyObj->setEmpleadoPassword($this->getEmpleadoPassword());
+        $copyObj->setEmpleadoFoto($this->getEmpleadoFoto());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -5958,6 +6013,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $this->empleado_diadescanso = null;
         $this->empleado_username = null;
         $this->empleado_password = null;
+        $this->empleado_foto = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

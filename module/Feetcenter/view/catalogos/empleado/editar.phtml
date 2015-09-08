@@ -1,7 +1,7 @@
 <div id="empleado_container">
-    <h1>Nuevo empleado</h1>
+    <h1>Empleado: <?php echo $form->get('empleado_nombre')->getValue()?></h1>
     <?php 
-        $form->setAttribute('action', '/catalogos/empleado/nuevo');
+        $form->setAttribute('action', '/catalogos/empleado/editar/'.$id);
         $form->setAttribute('novalidate', true);
         $form->setAttribute('class', 'forms');
         $form->prepare();
@@ -120,10 +120,12 @@
                 <div class="units-row">
                     <div class="unit-50">
                         <label>Comprobante de domicilio</b</label>
-                         
+                        <input type="hidden" name="empleado_comprobantedomiclio_submit">
                         <?php echo $this->formFile($form->get('empleado_comprobantedomiclio')); ?>
                     </div>
                     <div class="unit-50">
+                        <label>Comprobante de identificación</b</label>
+                        <input type="hidden" name="empleado_comprobanteidentificacion_submit">
                         <?php echo $this->formFile($form->get('empleado_comprobanteidentificacion')); ?>
                     </div>
                 </div>
@@ -155,6 +157,7 @@
                     <div class="unit-centered unit-30">
                         <img style="width: 250px; height: 210px; cursor: pointer; padding-left: 35px; margin-bottom: 6px;" align="middle" id="empleado_foto" src="/img/empleados/default.jpg">
                         <input type="file" name="empleado_foto" style="display: none" accept="image/*">
+                         <input type="hidden" name="empleado_foto_submit">
                         <p id="eliminar_imagen" style="text-align: center; display: none"><a style="text-decoration: none" href="javascript:void(0)">Eliminar Imagen</a></p>
                     </div>
                 </div>
@@ -167,5 +170,6 @@
 </div>
 <script src="/js/catalogos/empleado.js"></script>
 <script>
-    $('#empleado_container').empleado();
+    var empleado = <?php echo json_encode($entity)?>;
+    $('#empleado_container').empleado(empleado);
 </script>
