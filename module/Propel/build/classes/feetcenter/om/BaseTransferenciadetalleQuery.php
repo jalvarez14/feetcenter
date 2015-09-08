@@ -493,7 +493,7 @@ abstract class BaseTransferenciadetalleQuery extends ModelCriteria
      *
      * @return TransferenciadetalleQuery The current query, for fluid interface
      */
-    public function joinInsumoclinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinInsumoclinica($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Insumoclinica');
@@ -528,7 +528,7 @@ abstract class BaseTransferenciadetalleQuery extends ModelCriteria
      *
      * @return   InsumoclinicaQuery A secondary query class using the current class as primary query
      */
-    public function useInsumoclinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useInsumoclinicaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinInsumoclinica($relationAlias, $joinType)
@@ -569,7 +569,7 @@ abstract class BaseTransferenciadetalleQuery extends ModelCriteria
      *
      * @return TransferenciadetalleQuery The current query, for fluid interface
      */
-    public function joinProductoclinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinProductoclinica($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Productoclinica');
@@ -604,7 +604,7 @@ abstract class BaseTransferenciadetalleQuery extends ModelCriteria
      *
      * @return   ProductoclinicaQuery A secondary query class using the current class as primary query
      */
-    public function useProductoclinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useProductoclinicaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinProductoclinica($relationAlias, $joinType)

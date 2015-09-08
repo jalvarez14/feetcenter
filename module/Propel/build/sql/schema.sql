@@ -121,16 +121,23 @@ CREATE TABLE `compradetalle`
 (
     `idcompradetalle` INTEGER NOT NULL AUTO_INCREMENT,
     `idcompra` INTEGER NOT NULL,
-    `idproductoclinica` INTEGER NOT NULL,
+    `idproductoclinica` INTEGER,
+    `idinsumoclinica` INTEGER,
     `compradetalle_cantidad` DECIMAL(10,2) NOT NULL,
     `compradetalle_costounitario` DECIMAL(10,2) NOT NULL,
     `compradetalle_subtotal` DECIMAL(10,2),
     PRIMARY KEY (`idcompradetalle`),
     INDEX `idcompra` (`idcompra`),
     INDEX `idproductoclinica` (`idproductoclinica`),
+    INDEX `idinsumoclinica` (`idinsumoclinica`),
     CONSTRAINT `idcompra_compradetalle`
         FOREIGN KEY (`idcompra`)
         REFERENCES `compra` (`idcompra`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idinsumoclinica_compradetalle`
+        FOREIGN KEY (`idinsumoclinica`)
+        REFERENCES `insumoclinica` (`idinsumoclinica`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idproductoclinica_compradetalle`
@@ -214,8 +221,10 @@ CREATE TABLE `empleado`
     `empleado_comprobanteidentificacion` TEXT,
     `empleado_sueldo` DECIMAL(10,2),
     `empleado_diadescanso` enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo') NOT NULL,
+    `empleado_username` VARCHAR(45),
+    `empleado_password` VARCHAR(45),
     PRIMARY KEY (`idempleado`),
-    INDEX `idrol_empleado` (`idrol`),
+    INDEX `idrol_empleado_idx` (`idrol`),
     CONSTRAINT `idrol_empleado`
         FOREIGN KEY (`idrol`)
         REFERENCES `rol` (`idrol`)
@@ -282,16 +291,31 @@ DROP TABLE IF EXISTS `empleadoreporte`;
 CREATE TABLE `empleadoreporte`
 (
     `idempleadoreporte` INTEGER NOT NULL AUTO_INCREMENT,
-    `idclinica` INTEGER,
-    `idempleado` INTEGER,
-    `idempleadoreportado` INTEGER,
-    `empleadoreporte_comentario` TEXT,
-    `empleadoreporte_fechasuceso` DATE,
-    `empleadoreporte_fechacreacion` DATETIME,
+    `idclinica` INTEGER NOT NULL,
+    `idempleado` INTEGER NOT NULL,
+    `idempleadoreportado` INTEGER NOT NULL,
+    `empleadoreporte_fechacreacion` DATETIME NOT NULL,
+    `empleadoreporte_comentario` TEXT NOT NULL,
+    `empleadoreporte_fechasuceso` DATE NOT NULL,
     PRIMARY KEY (`idempleadoreporte`),
     INDEX `idclinica` (`idclinica`),
     INDEX `idempleado` (`idempleado`),
-    INDEX `idempleadoreportado` (`idempleadoreportado`)
+    INDEX `idempleadoreportado` (`idempleadoreportado`),
+    CONSTRAINT `idclinica_empleadoreporte`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idempleado_empleadoreporte`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idempleadoreportado_empleadoreporte`
+        FOREIGN KEY (`idempleadoreportado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -350,7 +374,7 @@ CREATE TABLE `insumo`
 (
     `idinsumo` INTEGER NOT NULL AUTO_INCREMENT,
     `insumo_nombre` VARCHAR(255) NOT NULL,
-    `insumo_descripcion` VARCHAR(45),
+    `insumo_descripcion` TEXT,
     PRIMARY KEY (`idinsumo`)
 ) ENGINE=InnoDB;
 
@@ -365,7 +389,10 @@ CREATE TABLE `insumoclinica`
     `idinsumoclinica` INTEGER NOT NULL AUTO_INCREMENT,
     `idinsumo` INTEGER NOT NULL,
     `idclinica` INTEGER NOT NULL,
-    `insumoclinica_cantidad` DECIMAL(10,2) NOT NULL,
+    `insumoclinica_existencia` DECIMAL(10,2) NOT NULL,
+    `insumoclinica_minimo` DECIMAL(10,2),
+    `insumoclinica_maximo` DECIMAL(10,2),
+    `insumoclinica_reorden` DECIMAL(10,2),
     PRIMARY KEY (`idinsumoclinica`),
     INDEX `idinsumo` (`idinsumo`),
     INDEX `idclinica` (`idclinica`),
@@ -444,8 +471,8 @@ CREATE TABLE `producto`
     `producto_precio` VARCHAR(45) NOT NULL,
     `producto_generaingreso` TINYINT(1) NOT NULL,
     `producto_generacomision` TINYINT(1) NOT NULL,
-    `producto_tipocomision` enum('cantidad','porcentaje') NOT NULL,
-    `producto_comision` DECIMAL(10,2) NOT NULL,
+    `producto_tipocomision` enum('cantidad','porcentaje'),
+    `producto_comision` DECIMAL(10,2),
     PRIMARY KEY (`idproducto`)
 ) ENGINE=InnoDB;
 
@@ -460,10 +487,11 @@ CREATE TABLE `productoclinica`
     `idproductoclinica` INTEGER NOT NULL AUTO_INCREMENT,
     `idproducto` INTEGER NOT NULL,
     `idclinica` INTEGER NOT NULL,
-    `productoclinica_existencia` INTEGER NOT NULL,
-    `productoclinica_minimo` INTEGER NOT NULL,
-    `productoclinica_maximo` INTEGER NOT NULL,
+    `productoclinica_existencia` DECIMAL(10,2) NOT NULL,
+    `productoclinica_minimo` DECIMAL(10,2) NOT NULL,
+    `productoclinica_maximo` DECIMAL(10,2) NOT NULL,
     `productoclinica_precio` DECIMAL(10,2) NOT NULL,
+    `productoclinica_reorden` DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (`idproductoclinica`),
     INDEX `idproducto` (`idproducto`),
     INDEX `idclnica` (`idclinica`),
@@ -568,8 +596,8 @@ CREATE TABLE `servicio`
     `servicio_descripcion` TEXT NOT NULL,
     `servicio_generaingreso` TINYINT(1) NOT NULL,
     `servicio_generacomision` TINYINT(1) NOT NULL,
-    `servicio_tipocomision` enum('porcentaje','cantidad') NOT NULL,
-    `servicio_comision` DECIMAL(10,2) NOT NULL,
+    `servicio_tipocomision` enum('porcentaje','cantidad'),
+    `servicio_comision` DECIMAL(10,2),
     PRIMARY KEY (`idservicio`)
 ) ENGINE=InnoDB;
 
@@ -625,17 +653,19 @@ CREATE TABLE `transferencia`
 (
     `idtransferencia` INTEGER NOT NULL AUTO_INCREMENT,
     `idempleado` INTEGER NOT NULL,
-    `idempleadoreceptor` INTEGER NOT NULL,
+    `idempleadoreceptor` INTEGER,
     `idclinicaremitente` INTEGER NOT NULL,
     `idclinicadestinataria` INTEGER NOT NULL,
-    `transferencia_fecha` DATETIME NOT NULL,
+    `transferencia_creadaen` DATETIME NOT NULL,
     `transferencia_estatus` enum('enviada','aceptada','rechazada','cancelada') NOT NULL,
-    `transferencia_fechamovimiento` VARCHAR(45),
+    `transferencia_fechamovimiento` DATE NOT NULL,
+    `transferencia_comprobante` TEXT,
+    `transferencia_nota` TEXT,
     PRIMARY KEY (`idtransferencia`),
-    INDEX `idclinicaremitente_transferencia` (`idclinicaremitente`),
-    INDEX `idclinicadestinataria_transferencia` (`idclinicadestinataria`),
-    INDEX `idempleado_transferencia` (`idempleado`),
-    INDEX `idempleadoreceptor_transferencia` (`idempleadoreceptor`),
+    INDEX `idclinicaremitente` (`idclinicaremitente`),
+    INDEX `idclinicadestinataria` (`idclinicadestinataria`),
+    INDEX `idempleado` (`idempleado`),
+    INDEX `idempleadoreceptor` (`idempleadoreceptor`),
     CONSTRAINT `idclinicadestinataria_transferencia`
         FOREIGN KEY (`idclinicadestinataria`)
         REFERENCES `clinica` (`idclinica`)
@@ -648,7 +678,9 @@ CREATE TABLE `transferencia`
         ON DELETE CASCADE,
     CONSTRAINT `idempleado_transferencia`
         FOREIGN KEY (`idempleado`)
-        REFERENCES `empleado` (`idempleado`),
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT `idempleadoreceptor_transferencia`
         FOREIGN KEY (`idempleadoreceptor`)
         REFERENCES `empleado` (`idempleado`)
@@ -666,13 +698,13 @@ CREATE TABLE `transferenciadetalle`
 (
     `idtransferenciadetalle` INTEGER NOT NULL AUTO_INCREMENT,
     `idtransferencia` INTEGER NOT NULL,
-    `idproductoclinica` INTEGER NOT NULL,
-    `idinsumoclinica` INTEGER NOT NULL,
+    `idproductoclinica` INTEGER,
+    `idinsumoclinica` INTEGER,
     `transferenciadetalle_cantidad` DECIMAL(10,2),
     PRIMARY KEY (`idtransferenciadetalle`),
-    INDEX `idtransferencia_transferenciadetalle` (`idtransferencia`),
-    INDEX `idproductoclinica_transferenciadetalle` (`idproductoclinica`),
-    INDEX `idinsumoclinica_transferenciadetalle` (`idinsumoclinica`),
+    INDEX `idtransferencia` (`idtransferencia`),
+    INDEX `idproductoclinica` (`idproductoclinica`),
+    INDEX `idinsumoclinica` (`idinsumoclinica`),
     CONSTRAINT `idinsumoclinica_transferenciadetalle`
         FOREIGN KEY (`idinsumoclinica`)
         REFERENCES `insumoclinica` (`idinsumoclinica`)
@@ -680,11 +712,14 @@ CREATE TABLE `transferenciadetalle`
         ON DELETE CASCADE,
     CONSTRAINT `idproductoclinica_transferenciadetalle`
         FOREIGN KEY (`idproductoclinica`)
-        REFERENCES `productoclinica` (`idproductoclinica`),
+        REFERENCES `productoclinica` (`idproductoclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT `idtransferencia_transferenciadetalle`
         FOREIGN KEY (`idtransferencia`)
         REFERENCES `transferencia` (`idtransferencia`)
         ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -710,10 +745,10 @@ CREATE TABLE `visita`
     `visita_metodopago` enum('efectivo','tarjeta'),
     `visita_pagoreferencia` TEXT,
     PRIMARY KEY (`idvisita`),
-    INDEX `idempleado_visita` (`idempleado`),
-    INDEX `idempleadocreador_visita` (`idempleadocreador`),
-    INDEX `idpaciente_visita` (`idpaciente`),
-    INDEX `idclinica_visita` (`idclinica`),
+    INDEX `idempleadocreador` (`idempleadocreador`),
+    INDEX `idempleado` (`idempleado`),
+    INDEX `idpaciente` (`idpaciente`),
+    INDEX `idclinica` (`idclinica`),
     CONSTRAINT `idclinica_visita`
         FOREIGN KEY (`idclinica`)
         REFERENCES `clinica` (`idclinica`)
@@ -721,7 +756,9 @@ CREATE TABLE `visita`
         ON DELETE CASCADE,
     CONSTRAINT `idempleado_visita`
         FOREIGN KEY (`idempleado`)
-        REFERENCES `empleado` (`idempleado`),
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT `idempleadocreador_visita`
         FOREIGN KEY (`idempleadocreador`)
         REFERENCES `empleado` (`idempleado`)

@@ -11,18 +11,22 @@
  * @method TransferenciaQuery orderByIdempleadoreceptor($order = Criteria::ASC) Order by the idempleadoreceptor column
  * @method TransferenciaQuery orderByIdclinicaremitente($order = Criteria::ASC) Order by the idclinicaremitente column
  * @method TransferenciaQuery orderByIdclinicadestinataria($order = Criteria::ASC) Order by the idclinicadestinataria column
- * @method TransferenciaQuery orderByTransferenciaFecha($order = Criteria::ASC) Order by the transferencia_fecha column
+ * @method TransferenciaQuery orderByTransferenciaCreadaen($order = Criteria::ASC) Order by the transferencia_creadaen column
  * @method TransferenciaQuery orderByTransferenciaEstatus($order = Criteria::ASC) Order by the transferencia_estatus column
  * @method TransferenciaQuery orderByTransferenciaFechamovimiento($order = Criteria::ASC) Order by the transferencia_fechamovimiento column
+ * @method TransferenciaQuery orderByTransferenciaComprobante($order = Criteria::ASC) Order by the transferencia_comprobante column
+ * @method TransferenciaQuery orderByTransferenciaNota($order = Criteria::ASC) Order by the transferencia_nota column
  *
  * @method TransferenciaQuery groupByIdtransferencia() Group by the idtransferencia column
  * @method TransferenciaQuery groupByIdempleado() Group by the idempleado column
  * @method TransferenciaQuery groupByIdempleadoreceptor() Group by the idempleadoreceptor column
  * @method TransferenciaQuery groupByIdclinicaremitente() Group by the idclinicaremitente column
  * @method TransferenciaQuery groupByIdclinicadestinataria() Group by the idclinicadestinataria column
- * @method TransferenciaQuery groupByTransferenciaFecha() Group by the transferencia_fecha column
+ * @method TransferenciaQuery groupByTransferenciaCreadaen() Group by the transferencia_creadaen column
  * @method TransferenciaQuery groupByTransferenciaEstatus() Group by the transferencia_estatus column
  * @method TransferenciaQuery groupByTransferenciaFechamovimiento() Group by the transferencia_fechamovimiento column
+ * @method TransferenciaQuery groupByTransferenciaComprobante() Group by the transferencia_comprobante column
+ * @method TransferenciaQuery groupByTransferenciaNota() Group by the transferencia_nota column
  *
  * @method TransferenciaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method TransferenciaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -55,18 +59,22 @@
  * @method Transferencia findOneByIdempleadoreceptor(int $idempleadoreceptor) Return the first Transferencia filtered by the idempleadoreceptor column
  * @method Transferencia findOneByIdclinicaremitente(int $idclinicaremitente) Return the first Transferencia filtered by the idclinicaremitente column
  * @method Transferencia findOneByIdclinicadestinataria(int $idclinicadestinataria) Return the first Transferencia filtered by the idclinicadestinataria column
- * @method Transferencia findOneByTransferenciaFecha(string $transferencia_fecha) Return the first Transferencia filtered by the transferencia_fecha column
+ * @method Transferencia findOneByTransferenciaCreadaen(string $transferencia_creadaen) Return the first Transferencia filtered by the transferencia_creadaen column
  * @method Transferencia findOneByTransferenciaEstatus(string $transferencia_estatus) Return the first Transferencia filtered by the transferencia_estatus column
  * @method Transferencia findOneByTransferenciaFechamovimiento(string $transferencia_fechamovimiento) Return the first Transferencia filtered by the transferencia_fechamovimiento column
+ * @method Transferencia findOneByTransferenciaComprobante(string $transferencia_comprobante) Return the first Transferencia filtered by the transferencia_comprobante column
+ * @method Transferencia findOneByTransferenciaNota(string $transferencia_nota) Return the first Transferencia filtered by the transferencia_nota column
  *
  * @method array findByIdtransferencia(int $idtransferencia) Return Transferencia objects filtered by the idtransferencia column
  * @method array findByIdempleado(int $idempleado) Return Transferencia objects filtered by the idempleado column
  * @method array findByIdempleadoreceptor(int $idempleadoreceptor) Return Transferencia objects filtered by the idempleadoreceptor column
  * @method array findByIdclinicaremitente(int $idclinicaremitente) Return Transferencia objects filtered by the idclinicaremitente column
  * @method array findByIdclinicadestinataria(int $idclinicadestinataria) Return Transferencia objects filtered by the idclinicadestinataria column
- * @method array findByTransferenciaFecha(string $transferencia_fecha) Return Transferencia objects filtered by the transferencia_fecha column
+ * @method array findByTransferenciaCreadaen(string $transferencia_creadaen) Return Transferencia objects filtered by the transferencia_creadaen column
  * @method array findByTransferenciaEstatus(string $transferencia_estatus) Return Transferencia objects filtered by the transferencia_estatus column
  * @method array findByTransferenciaFechamovimiento(string $transferencia_fechamovimiento) Return Transferencia objects filtered by the transferencia_fechamovimiento column
+ * @method array findByTransferenciaComprobante(string $transferencia_comprobante) Return Transferencia objects filtered by the transferencia_comprobante column
+ * @method array findByTransferenciaNota(string $transferencia_nota) Return Transferencia objects filtered by the transferencia_nota column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -174,7 +182,7 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idtransferencia`, `idempleado`, `idempleadoreceptor`, `idclinicaremitente`, `idclinicadestinataria`, `transferencia_fecha`, `transferencia_estatus`, `transferencia_fechamovimiento` FROM `transferencia` WHERE `idtransferencia` = :p0';
+        $sql = 'SELECT `idtransferencia`, `idempleado`, `idempleadoreceptor`, `idclinicaremitente`, `idclinicadestinataria`, `transferencia_creadaen`, `transferencia_estatus`, `transferencia_fechamovimiento`, `transferencia_comprobante`, `transferencia_nota` FROM `transferencia` WHERE `idtransferencia` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -482,16 +490,16 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the transferencia_fecha column
+     * Filter the query on the transferencia_creadaen column
      *
      * Example usage:
      * <code>
-     * $query->filterByTransferenciaFecha('2011-03-14'); // WHERE transferencia_fecha = '2011-03-14'
-     * $query->filterByTransferenciaFecha('now'); // WHERE transferencia_fecha = '2011-03-14'
-     * $query->filterByTransferenciaFecha(array('max' => 'yesterday')); // WHERE transferencia_fecha < '2011-03-13'
+     * $query->filterByTransferenciaCreadaen('2011-03-14'); // WHERE transferencia_creadaen = '2011-03-14'
+     * $query->filterByTransferenciaCreadaen('now'); // WHERE transferencia_creadaen = '2011-03-14'
+     * $query->filterByTransferenciaCreadaen(array('max' => 'yesterday')); // WHERE transferencia_creadaen < '2011-03-13'
      * </code>
      *
-     * @param     mixed $transferenciaFecha The value to use as filter.
+     * @param     mixed $transferenciaCreadaen The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
@@ -501,16 +509,16 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
      *
      * @return TransferenciaQuery The current query, for fluid interface
      */
-    public function filterByTransferenciaFecha($transferenciaFecha = null, $comparison = null)
+    public function filterByTransferenciaCreadaen($transferenciaCreadaen = null, $comparison = null)
     {
-        if (is_array($transferenciaFecha)) {
+        if (is_array($transferenciaCreadaen)) {
             $useMinMax = false;
-            if (isset($transferenciaFecha['min'])) {
-                $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_FECHA, $transferenciaFecha['min'], Criteria::GREATER_EQUAL);
+            if (isset($transferenciaCreadaen['min'])) {
+                $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_CREADAEN, $transferenciaCreadaen['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($transferenciaFecha['max'])) {
-                $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_FECHA, $transferenciaFecha['max'], Criteria::LESS_EQUAL);
+            if (isset($transferenciaCreadaen['max'])) {
+                $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_CREADAEN, $transferenciaCreadaen['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -521,7 +529,7 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_FECHA, $transferenciaFecha, $comparison);
+        return $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_CREADAEN, $transferenciaCreadaen, $comparison);
     }
 
     /**
@@ -558,28 +566,100 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByTransferenciaFechamovimiento('fooValue');   // WHERE transferencia_fechamovimiento = 'fooValue'
-     * $query->filterByTransferenciaFechamovimiento('%fooValue%'); // WHERE transferencia_fechamovimiento LIKE '%fooValue%'
+     * $query->filterByTransferenciaFechamovimiento('2011-03-14'); // WHERE transferencia_fechamovimiento = '2011-03-14'
+     * $query->filterByTransferenciaFechamovimiento('now'); // WHERE transferencia_fechamovimiento = '2011-03-14'
+     * $query->filterByTransferenciaFechamovimiento(array('max' => 'yesterday')); // WHERE transferencia_fechamovimiento < '2011-03-13'
      * </code>
      *
-     * @param     string $transferenciaFechamovimiento The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     mixed $transferenciaFechamovimiento The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return TransferenciaQuery The current query, for fluid interface
      */
     public function filterByTransferenciaFechamovimiento($transferenciaFechamovimiento = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($transferenciaFechamovimiento)) {
+        if (is_array($transferenciaFechamovimiento)) {
+            $useMinMax = false;
+            if (isset($transferenciaFechamovimiento['min'])) {
+                $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO, $transferenciaFechamovimiento['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($transferenciaFechamovimiento['max'])) {
+                $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO, $transferenciaFechamovimiento['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $transferenciaFechamovimiento)) {
-                $transferenciaFechamovimiento = str_replace('*', '%', $transferenciaFechamovimiento);
-                $comparison = Criteria::LIKE;
             }
         }
 
         return $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO, $transferenciaFechamovimiento, $comparison);
+    }
+
+    /**
+     * Filter the query on the transferencia_comprobante column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTransferenciaComprobante('fooValue');   // WHERE transferencia_comprobante = 'fooValue'
+     * $query->filterByTransferenciaComprobante('%fooValue%'); // WHERE transferencia_comprobante LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $transferenciaComprobante The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return TransferenciaQuery The current query, for fluid interface
+     */
+    public function filterByTransferenciaComprobante($transferenciaComprobante = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($transferenciaComprobante)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $transferenciaComprobante)) {
+                $transferenciaComprobante = str_replace('*', '%', $transferenciaComprobante);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_COMPROBANTE, $transferenciaComprobante, $comparison);
+    }
+
+    /**
+     * Filter the query on the transferencia_nota column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTransferenciaNota('fooValue');   // WHERE transferencia_nota = 'fooValue'
+     * $query->filterByTransferenciaNota('%fooValue%'); // WHERE transferencia_nota LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $transferenciaNota The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return TransferenciaQuery The current query, for fluid interface
+     */
+    public function filterByTransferenciaNota($transferenciaNota = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($transferenciaNota)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $transferenciaNota)) {
+                $transferenciaNota = str_replace('*', '%', $transferenciaNota);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_NOTA, $transferenciaNota, $comparison);
     }
 
     /**
@@ -844,7 +924,7 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
      *
      * @return TransferenciaQuery The current query, for fluid interface
      */
-    public function joinEmpleadoRelatedByIdempleadoreceptor($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinEmpleadoRelatedByIdempleadoreceptor($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('EmpleadoRelatedByIdempleadoreceptor');
@@ -879,7 +959,7 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
      *
      * @return   EmpleadoQuery A secondary query class using the current class as primary query
      */
-    public function useEmpleadoRelatedByIdempleadoreceptorQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useEmpleadoRelatedByIdempleadoreceptorQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinEmpleadoRelatedByIdempleadoreceptor($relationAlias, $joinType)

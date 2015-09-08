@@ -40,7 +40,8 @@ class CompradetalleTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idcompradetalle', 'Idcompradetalle', 'INTEGER', true, null, null);
         $this->addForeignKey('idcompra', 'Idcompra', 'INTEGER', 'compra', 'idcompra', true, null, null);
-        $this->addForeignKey('idproductoclinica', 'Idproductoclinica', 'INTEGER', 'productoclinica', 'idproductoclinica', true, null, null);
+        $this->addForeignKey('idproductoclinica', 'Idproductoclinica', 'INTEGER', 'productoclinica', 'idproductoclinica', false, null, null);
+        $this->addForeignKey('idinsumoclinica', 'Idinsumoclinica', 'INTEGER', 'insumoclinica', 'idinsumoclinica', false, null, null);
         $this->addColumn('compradetalle_cantidad', 'CompradetalleCantidad', 'DECIMAL', true, 10, null);
         $this->addColumn('compradetalle_costounitario', 'CompradetalleCostounitario', 'DECIMAL', true, 10, null);
         $this->addColumn('compradetalle_subtotal', 'CompradetalleSubtotal', 'DECIMAL', false, 10, null);
@@ -53,6 +54,7 @@ class CompradetalleTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Compra', 'Compra', RelationMap::MANY_TO_ONE, array('idcompra' => 'idcompra', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Insumoclinica', 'Insumoclinica', RelationMap::MANY_TO_ONE, array('idinsumoclinica' => 'idinsumoclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Productoclinica', 'Productoclinica', RelationMap::MANY_TO_ONE, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 

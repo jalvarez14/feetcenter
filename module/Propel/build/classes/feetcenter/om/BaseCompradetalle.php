@@ -48,6 +48,12 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
     protected $idproductoclinica;
 
     /**
+     * The value for the idinsumoclinica field.
+     * @var        int
+     */
+    protected $idinsumoclinica;
+
+    /**
      * The value for the compradetalle_cantidad field.
      * @var        string
      */
@@ -69,6 +75,11 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
      * @var        Compra
      */
     protected $aCompra;
+
+    /**
+     * @var        Insumoclinica
+     */
+    protected $aInsumoclinica;
 
     /**
      * @var        Productoclinica
@@ -126,6 +137,17 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
     {
 
         return $this->idproductoclinica;
+    }
+
+    /**
+     * Get the [idinsumoclinica] column value.
+     *
+     * @return int
+     */
+    public function getIdinsumoclinica()
+    {
+
+        return $this->idinsumoclinica;
     }
 
     /**
@@ -233,6 +255,31 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
     } // setIdproductoclinica()
 
     /**
+     * Set the value of [idinsumoclinica] column.
+     *
+     * @param  int $v new value
+     * @return Compradetalle The current object (for fluent API support)
+     */
+    public function setIdinsumoclinica($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idinsumoclinica !== $v) {
+            $this->idinsumoclinica = $v;
+            $this->modifiedColumns[] = CompradetallePeer::IDINSUMOCLINICA;
+        }
+
+        if ($this->aInsumoclinica !== null && $this->aInsumoclinica->getIdinsumoclinica() !== $v) {
+            $this->aInsumoclinica = null;
+        }
+
+
+        return $this;
+    } // setIdinsumoclinica()
+
+    /**
      * Set the value of [compradetalle_cantidad] column.
      *
      * @param  string $v new value
@@ -330,9 +377,10 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
             $this->idcompradetalle = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idcompra = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->idproductoclinica = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->compradetalle_cantidad = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->compradetalle_costounitario = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->compradetalle_subtotal = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->idinsumoclinica = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->compradetalle_cantidad = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->compradetalle_costounitario = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->compradetalle_subtotal = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -342,7 +390,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 6; // 6 = CompradetallePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = CompradetallePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Compradetalle object", $e);
@@ -370,6 +418,9 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         }
         if ($this->aProductoclinica !== null && $this->idproductoclinica !== $this->aProductoclinica->getIdproductoclinica()) {
             $this->aProductoclinica = null;
+        }
+        if ($this->aInsumoclinica !== null && $this->idinsumoclinica !== $this->aInsumoclinica->getIdinsumoclinica()) {
+            $this->aInsumoclinica = null;
         }
     } // ensureConsistency
 
@@ -411,6 +462,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aCompra = null;
+            $this->aInsumoclinica = null;
             $this->aProductoclinica = null;
         } // if (deep)
     }
@@ -537,6 +589,13 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
                 $this->setCompra($this->aCompra);
             }
 
+            if ($this->aInsumoclinica !== null) {
+                if ($this->aInsumoclinica->isModified() || $this->aInsumoclinica->isNew()) {
+                    $affectedRows += $this->aInsumoclinica->save($con);
+                }
+                $this->setInsumoclinica($this->aInsumoclinica);
+            }
+
             if ($this->aProductoclinica !== null) {
                 if ($this->aProductoclinica->isModified() || $this->aProductoclinica->isNew()) {
                     $affectedRows += $this->aProductoclinica->save($con);
@@ -590,6 +649,9 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         if ($this->isColumnModified(CompradetallePeer::IDPRODUCTOCLINICA)) {
             $modifiedColumns[':p' . $index++]  = '`idproductoclinica`';
         }
+        if ($this->isColumnModified(CompradetallePeer::IDINSUMOCLINICA)) {
+            $modifiedColumns[':p' . $index++]  = '`idinsumoclinica`';
+        }
         if ($this->isColumnModified(CompradetallePeer::COMPRADETALLE_CANTIDAD)) {
             $modifiedColumns[':p' . $index++]  = '`compradetalle_cantidad`';
         }
@@ -618,6 +680,9 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
                         break;
                     case '`idproductoclinica`':
                         $stmt->bindValue($identifier, $this->idproductoclinica, PDO::PARAM_INT);
+                        break;
+                    case '`idinsumoclinica`':
+                        $stmt->bindValue($identifier, $this->idinsumoclinica, PDO::PARAM_INT);
                         break;
                     case '`compradetalle_cantidad`':
                         $stmt->bindValue($identifier, $this->compradetalle_cantidad, PDO::PARAM_STR);
@@ -733,6 +798,12 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->aInsumoclinica !== null) {
+                if (!$this->aInsumoclinica->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aInsumoclinica->getValidationFailures());
+                }
+            }
+
             if ($this->aProductoclinica !== null) {
                 if (!$this->aProductoclinica->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aProductoclinica->getValidationFailures());
@@ -790,12 +861,15 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
                 return $this->getIdproductoclinica();
                 break;
             case 3:
-                return $this->getCompradetalleCantidad();
+                return $this->getIdinsumoclinica();
                 break;
             case 4:
-                return $this->getCompradetalleCostounitario();
+                return $this->getCompradetalleCantidad();
                 break;
             case 5:
+                return $this->getCompradetalleCostounitario();
+                break;
+            case 6:
                 return $this->getCompradetalleSubtotal();
                 break;
             default:
@@ -830,9 +904,10 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
             $keys[0] => $this->getIdcompradetalle(),
             $keys[1] => $this->getIdcompra(),
             $keys[2] => $this->getIdproductoclinica(),
-            $keys[3] => $this->getCompradetalleCantidad(),
-            $keys[4] => $this->getCompradetalleCostounitario(),
-            $keys[5] => $this->getCompradetalleSubtotal(),
+            $keys[3] => $this->getIdinsumoclinica(),
+            $keys[4] => $this->getCompradetalleCantidad(),
+            $keys[5] => $this->getCompradetalleCostounitario(),
+            $keys[6] => $this->getCompradetalleSubtotal(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -842,6 +917,9 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->aCompra) {
                 $result['Compra'] = $this->aCompra->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aInsumoclinica) {
+                $result['Insumoclinica'] = $this->aInsumoclinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aProductoclinica) {
                 $result['Productoclinica'] = $this->aProductoclinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -890,12 +968,15 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
                 $this->setIdproductoclinica($value);
                 break;
             case 3:
-                $this->setCompradetalleCantidad($value);
+                $this->setIdinsumoclinica($value);
                 break;
             case 4:
-                $this->setCompradetalleCostounitario($value);
+                $this->setCompradetalleCantidad($value);
                 break;
             case 5:
+                $this->setCompradetalleCostounitario($value);
+                break;
+            case 6:
                 $this->setCompradetalleSubtotal($value);
                 break;
         } // switch()
@@ -925,9 +1006,10 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setIdcompradetalle($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setIdcompra($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setIdproductoclinica($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCompradetalleCantidad($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCompradetalleCostounitario($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCompradetalleSubtotal($arr[$keys[5]]);
+        if (array_key_exists($keys[3], $arr)) $this->setIdinsumoclinica($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCompradetalleCantidad($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCompradetalleCostounitario($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCompradetalleSubtotal($arr[$keys[6]]);
     }
 
     /**
@@ -942,6 +1024,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         if ($this->isColumnModified(CompradetallePeer::IDCOMPRADETALLE)) $criteria->add(CompradetallePeer::IDCOMPRADETALLE, $this->idcompradetalle);
         if ($this->isColumnModified(CompradetallePeer::IDCOMPRA)) $criteria->add(CompradetallePeer::IDCOMPRA, $this->idcompra);
         if ($this->isColumnModified(CompradetallePeer::IDPRODUCTOCLINICA)) $criteria->add(CompradetallePeer::IDPRODUCTOCLINICA, $this->idproductoclinica);
+        if ($this->isColumnModified(CompradetallePeer::IDINSUMOCLINICA)) $criteria->add(CompradetallePeer::IDINSUMOCLINICA, $this->idinsumoclinica);
         if ($this->isColumnModified(CompradetallePeer::COMPRADETALLE_CANTIDAD)) $criteria->add(CompradetallePeer::COMPRADETALLE_CANTIDAD, $this->compradetalle_cantidad);
         if ($this->isColumnModified(CompradetallePeer::COMPRADETALLE_COSTOUNITARIO)) $criteria->add(CompradetallePeer::COMPRADETALLE_COSTOUNITARIO, $this->compradetalle_costounitario);
         if ($this->isColumnModified(CompradetallePeer::COMPRADETALLE_SUBTOTAL)) $criteria->add(CompradetallePeer::COMPRADETALLE_SUBTOTAL, $this->compradetalle_subtotal);
@@ -1010,6 +1093,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
     {
         $copyObj->setIdcompra($this->getIdcompra());
         $copyObj->setIdproductoclinica($this->getIdproductoclinica());
+        $copyObj->setIdinsumoclinica($this->getIdinsumoclinica());
         $copyObj->setCompradetalleCantidad($this->getCompradetalleCantidad());
         $copyObj->setCompradetalleCostounitario($this->getCompradetalleCostounitario());
         $copyObj->setCompradetalleSubtotal($this->getCompradetalleSubtotal());
@@ -1124,6 +1208,58 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a Insumoclinica object.
+     *
+     * @param                  Insumoclinica $v
+     * @return Compradetalle The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setInsumoclinica(Insumoclinica $v = null)
+    {
+        if ($v === null) {
+            $this->setIdinsumoclinica(NULL);
+        } else {
+            $this->setIdinsumoclinica($v->getIdinsumoclinica());
+        }
+
+        $this->aInsumoclinica = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Insumoclinica object, it will not be re-added.
+        if ($v !== null) {
+            $v->addCompradetalle($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Insumoclinica object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Insumoclinica The associated Insumoclinica object.
+     * @throws PropelException
+     */
+    public function getInsumoclinica(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aInsumoclinica === null && ($this->idinsumoclinica !== null) && $doQuery) {
+            $this->aInsumoclinica = InsumoclinicaQuery::create()->findPk($this->idinsumoclinica, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aInsumoclinica->addCompradetalles($this);
+             */
+        }
+
+        return $this->aInsumoclinica;
+    }
+
+    /**
      * Declares an association between this object and a Productoclinica object.
      *
      * @param                  Productoclinica $v
@@ -1183,6 +1319,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         $this->idcompradetalle = null;
         $this->idcompra = null;
         $this->idproductoclinica = null;
+        $this->idinsumoclinica = null;
         $this->compradetalle_cantidad = null;
         $this->compradetalle_costounitario = null;
         $this->compradetalle_subtotal = null;
@@ -1211,6 +1348,9 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
             if ($this->aCompra instanceof Persistent) {
               $this->aCompra->clearAllReferences($deep);
             }
+            if ($this->aInsumoclinica instanceof Persistent) {
+              $this->aInsumoclinica->clearAllReferences($deep);
+            }
             if ($this->aProductoclinica instanceof Persistent) {
               $this->aProductoclinica->clearAllReferences($deep);
             }
@@ -1219,6 +1359,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         } // if ($deep)
 
         $this->aCompra = null;
+        $this->aInsumoclinica = null;
         $this->aProductoclinica = null;
     }
 

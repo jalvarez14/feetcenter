@@ -13,6 +13,7 @@
  * @method ProductoclinicaQuery orderByProductoclinicaMinimo($order = Criteria::ASC) Order by the productoclinica_minimo column
  * @method ProductoclinicaQuery orderByProductoclinicaMaximo($order = Criteria::ASC) Order by the productoclinica_maximo column
  * @method ProductoclinicaQuery orderByProductoclinicaPrecio($order = Criteria::ASC) Order by the productoclinica_precio column
+ * @method ProductoclinicaQuery orderByProductoclinicaReorden($order = Criteria::ASC) Order by the productoclinica_reorden column
  *
  * @method ProductoclinicaQuery groupByIdproductoclinica() Group by the idproductoclinica column
  * @method ProductoclinicaQuery groupByIdproducto() Group by the idproducto column
@@ -21,6 +22,7 @@
  * @method ProductoclinicaQuery groupByProductoclinicaMinimo() Group by the productoclinica_minimo column
  * @method ProductoclinicaQuery groupByProductoclinicaMaximo() Group by the productoclinica_maximo column
  * @method ProductoclinicaQuery groupByProductoclinicaPrecio() Group by the productoclinica_precio column
+ * @method ProductoclinicaQuery groupByProductoclinicaReorden() Group by the productoclinica_reorden column
  *
  * @method ProductoclinicaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ProductoclinicaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -51,18 +53,20 @@
  *
  * @method Productoclinica findOneByIdproducto(int $idproducto) Return the first Productoclinica filtered by the idproducto column
  * @method Productoclinica findOneByIdclinica(int $idclinica) Return the first Productoclinica filtered by the idclinica column
- * @method Productoclinica findOneByProductoclinicaExistencia(int $productoclinica_existencia) Return the first Productoclinica filtered by the productoclinica_existencia column
- * @method Productoclinica findOneByProductoclinicaMinimo(int $productoclinica_minimo) Return the first Productoclinica filtered by the productoclinica_minimo column
- * @method Productoclinica findOneByProductoclinicaMaximo(int $productoclinica_maximo) Return the first Productoclinica filtered by the productoclinica_maximo column
+ * @method Productoclinica findOneByProductoclinicaExistencia(string $productoclinica_existencia) Return the first Productoclinica filtered by the productoclinica_existencia column
+ * @method Productoclinica findOneByProductoclinicaMinimo(string $productoclinica_minimo) Return the first Productoclinica filtered by the productoclinica_minimo column
+ * @method Productoclinica findOneByProductoclinicaMaximo(string $productoclinica_maximo) Return the first Productoclinica filtered by the productoclinica_maximo column
  * @method Productoclinica findOneByProductoclinicaPrecio(string $productoclinica_precio) Return the first Productoclinica filtered by the productoclinica_precio column
+ * @method Productoclinica findOneByProductoclinicaReorden(string $productoclinica_reorden) Return the first Productoclinica filtered by the productoclinica_reorden column
  *
  * @method array findByIdproductoclinica(int $idproductoclinica) Return Productoclinica objects filtered by the idproductoclinica column
  * @method array findByIdproducto(int $idproducto) Return Productoclinica objects filtered by the idproducto column
  * @method array findByIdclinica(int $idclinica) Return Productoclinica objects filtered by the idclinica column
- * @method array findByProductoclinicaExistencia(int $productoclinica_existencia) Return Productoclinica objects filtered by the productoclinica_existencia column
- * @method array findByProductoclinicaMinimo(int $productoclinica_minimo) Return Productoclinica objects filtered by the productoclinica_minimo column
- * @method array findByProductoclinicaMaximo(int $productoclinica_maximo) Return Productoclinica objects filtered by the productoclinica_maximo column
+ * @method array findByProductoclinicaExistencia(string $productoclinica_existencia) Return Productoclinica objects filtered by the productoclinica_existencia column
+ * @method array findByProductoclinicaMinimo(string $productoclinica_minimo) Return Productoclinica objects filtered by the productoclinica_minimo column
+ * @method array findByProductoclinicaMaximo(string $productoclinica_maximo) Return Productoclinica objects filtered by the productoclinica_maximo column
  * @method array findByProductoclinicaPrecio(string $productoclinica_precio) Return Productoclinica objects filtered by the productoclinica_precio column
+ * @method array findByProductoclinicaReorden(string $productoclinica_reorden) Return Productoclinica objects filtered by the productoclinica_reorden column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -170,7 +174,7 @@ abstract class BaseProductoclinicaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproductoclinica`, `idproducto`, `idclinica`, `productoclinica_existencia`, `productoclinica_minimo`, `productoclinica_maximo`, `productoclinica_precio` FROM `productoclinica` WHERE `idproductoclinica` = :p0';
+        $sql = 'SELECT `idproductoclinica`, `idproducto`, `idclinica`, `productoclinica_existencia`, `productoclinica_minimo`, `productoclinica_maximo`, `productoclinica_precio`, `productoclinica_reorden` FROM `productoclinica` WHERE `idproductoclinica` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -558,6 +562,48 @@ abstract class BaseProductoclinicaQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the productoclinica_reorden column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProductoclinicaReorden(1234); // WHERE productoclinica_reorden = 1234
+     * $query->filterByProductoclinicaReorden(array(12, 34)); // WHERE productoclinica_reorden IN (12, 34)
+     * $query->filterByProductoclinicaReorden(array('min' => 12)); // WHERE productoclinica_reorden >= 12
+     * $query->filterByProductoclinicaReorden(array('max' => 12)); // WHERE productoclinica_reorden <= 12
+     * </code>
+     *
+     * @param     mixed $productoclinicaReorden The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProductoclinicaQuery The current query, for fluid interface
+     */
+    public function filterByProductoclinicaReorden($productoclinicaReorden = null, $comparison = null)
+    {
+        if (is_array($productoclinicaReorden)) {
+            $useMinMax = false;
+            if (isset($productoclinicaReorden['min'])) {
+                $this->addUsingAlias(ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN, $productoclinicaReorden['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($productoclinicaReorden['max'])) {
+                $this->addUsingAlias(ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN, $productoclinicaReorden['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN, $productoclinicaReorden, $comparison);
+    }
+
+    /**
      * Filter the query by a related Clinica object
      *
      * @param   Clinica|PropelObjectCollection $clinica The related object(s) to use as filter
@@ -741,7 +787,7 @@ abstract class BaseProductoclinicaQuery extends ModelCriteria
      *
      * @return ProductoclinicaQuery The current query, for fluid interface
      */
-    public function joinCompradetalle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinCompradetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Compradetalle');
@@ -776,7 +822,7 @@ abstract class BaseProductoclinicaQuery extends ModelCriteria
      *
      * @return   CompradetalleQuery A secondary query class using the current class as primary query
      */
-    public function useCompradetalleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useCompradetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinCompradetalle($relationAlias, $joinType)
@@ -815,7 +861,7 @@ abstract class BaseProductoclinicaQuery extends ModelCriteria
      *
      * @return ProductoclinicaQuery The current query, for fluid interface
      */
-    public function joinTransferenciadetalle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinTransferenciadetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Transferenciadetalle');
@@ -850,7 +896,7 @@ abstract class BaseProductoclinicaQuery extends ModelCriteria
      *
      * @return   TransferenciadetalleQuery A secondary query class using the current class as primary query
      */
-    public function useTransferenciadetalleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useTransferenciadetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinTransferenciadetalle($relationAlias, $joinType)

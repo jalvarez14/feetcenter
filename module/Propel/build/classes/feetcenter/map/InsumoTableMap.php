@@ -40,7 +40,7 @@ class InsumoTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idinsumo', 'Idinsumo', 'INTEGER', true, null, null);
         $this->addColumn('insumo_nombre', 'InsumoNombre', 'VARCHAR', true, 255, null);
-        $this->addColumn('insumo_descripcion', 'InsumoDescripcion', 'VARCHAR', false, 45, null);
+        $this->addColumn('insumo_descripcion', 'InsumoDescripcion', 'LONGVARCHAR', false, null, null);
         // validators
     } // initialize()
 

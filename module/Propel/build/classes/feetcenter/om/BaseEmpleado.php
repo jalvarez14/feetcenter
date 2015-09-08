@@ -144,6 +144,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     protected $empleado_diadescanso;
 
     /**
+     * The value for the empleado_username field.
+     * @var        string
+     */
+    protected $empleado_username;
+
+    /**
+     * The value for the empleado_password field.
+     * @var        string
+     */
+    protected $empleado_password;
+
+    /**
      * @var        Rol
      */
     protected $aRol;
@@ -177,6 +189,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      */
     protected $collEmpleadohorarios;
     protected $collEmpleadohorariosPartial;
+
+    /**
+     * @var        PropelObjectCollection|Empleadoreporte[] Collection to store aggregation of Empleadoreporte objects.
+     */
+    protected $collEmpleadoreportesRelatedByIdempleado;
+    protected $collEmpleadoreportesRelatedByIdempleadoPartial;
+
+    /**
+     * @var        PropelObjectCollection|Empleadoreporte[] Collection to store aggregation of Empleadoreporte objects.
+     */
+    protected $collEmpleadoreportesRelatedByIdempleadoreportado;
+    protected $collEmpleadoreportesRelatedByIdempleadoreportadoPartial;
 
     /**
      * @var        PropelObjectCollection|Faltante[] Collection to store aggregation of Faltante objects.
@@ -263,6 +287,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $empleadohorariosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $empleadoreportesRelatedByIdempleadoScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -565,6 +601,28 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     {
 
         return $this->empleado_diadescanso;
+    }
+
+    /**
+     * Get the [empleado_username] column value.
+     *
+     * @return string
+     */
+    public function getEmpleadoUsername()
+    {
+
+        return $this->empleado_username;
+    }
+
+    /**
+     * Get the [empleado_password] column value.
+     *
+     * @return string
+     */
+    public function getEmpleadoPassword()
+    {
+
+        return $this->empleado_password;
     }
 
     /**
@@ -975,6 +1033,48 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     } // setEmpleadoDiadescanso()
 
     /**
+     * Set the value of [empleado_username] column.
+     *
+     * @param  string $v new value
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setEmpleadoUsername($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->empleado_username !== $v) {
+            $this->empleado_username = $v;
+            $this->modifiedColumns[] = EmpleadoPeer::EMPLEADO_USERNAME;
+        }
+
+
+        return $this;
+    } // setEmpleadoUsername()
+
+    /**
+     * Set the value of [empleado_password] column.
+     *
+     * @param  string $v new value
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setEmpleadoPassword($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->empleado_password !== $v) {
+            $this->empleado_password = $v;
+            $this->modifiedColumns[] = EmpleadoPeer::EMPLEADO_PASSWORD;
+        }
+
+
+        return $this;
+    } // setEmpleadoPassword()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1025,6 +1125,8 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->empleado_comprobanteidentificacion = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
             $this->empleado_sueldo = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
             $this->empleado_diadescanso = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->empleado_username = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->empleado_password = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1034,7 +1136,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 19; // 19 = EmpleadoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 21; // 21 = EmpleadoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Empleado object", $e);
@@ -1109,6 +1211,10 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->collEmpleadocomisions = null;
 
             $this->collEmpleadohorarios = null;
+
+            $this->collEmpleadoreportesRelatedByIdempleado = null;
+
+            $this->collEmpleadoreportesRelatedByIdempleadoreportado = null;
 
             $this->collFaltantesRelatedByIdempleadodeudor = null;
 
@@ -1343,6 +1449,40 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->empleadoreportesRelatedByIdempleadoScheduledForDeletion !== null) {
+                if (!$this->empleadoreportesRelatedByIdempleadoScheduledForDeletion->isEmpty()) {
+                    EmpleadoreporteQuery::create()
+                        ->filterByPrimaryKeys($this->empleadoreportesRelatedByIdempleadoScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->empleadoreportesRelatedByIdempleadoScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collEmpleadoreportesRelatedByIdempleado !== null) {
+                foreach ($this->collEmpleadoreportesRelatedByIdempleado as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion !== null) {
+                if (!$this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion->isEmpty()) {
+                    EmpleadoreporteQuery::create()
+                        ->filterByPrimaryKeys($this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collEmpleadoreportesRelatedByIdempleadoreportado !== null) {
+                foreach ($this->collEmpleadoreportesRelatedByIdempleadoreportado as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->faltantesRelatedByIdempleadodeudorScheduledForDeletion !== null) {
                 if (!$this->faltantesRelatedByIdempleadodeudorScheduledForDeletion->isEmpty()) {
                     FaltanteQuery::create()
@@ -1528,6 +1668,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_DIADESCANSO)) {
             $modifiedColumns[':p' . $index++]  = '`empleado_diadescanso`';
         }
+        if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_USERNAME)) {
+            $modifiedColumns[':p' . $index++]  = '`empleado_username`';
+        }
+        if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_PASSWORD)) {
+            $modifiedColumns[':p' . $index++]  = '`empleado_password`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `empleado` (%s) VALUES (%s)',
@@ -1595,6 +1741,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                         break;
                     case '`empleado_diadescanso`':
                         $stmt->bindValue($identifier, $this->empleado_diadescanso, PDO::PARAM_STR);
+                        break;
+                    case '`empleado_username`':
+                        $stmt->bindValue($identifier, $this->empleado_username, PDO::PARAM_STR);
+                        break;
+                    case '`empleado_password`':
+                        $stmt->bindValue($identifier, $this->empleado_password, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1747,6 +1899,22 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collEmpleadoreportesRelatedByIdempleado !== null) {
+                    foreach ($this->collEmpleadoreportesRelatedByIdempleado as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collEmpleadoreportesRelatedByIdempleadoreportado !== null) {
+                    foreach ($this->collEmpleadoreportesRelatedByIdempleadoreportado as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collFaltantesRelatedByIdempleadodeudor !== null) {
                     foreach ($this->collFaltantesRelatedByIdempleadodeudor as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1887,6 +2055,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             case 18:
                 return $this->getEmpleadoDiadescanso();
                 break;
+            case 19:
+                return $this->getEmpleadoUsername();
+                break;
+            case 20:
+                return $this->getEmpleadoPassword();
+                break;
             default:
                 return null;
                 break;
@@ -1935,6 +2109,8 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $keys[16] => $this->getEmpleadoComprobanteidentificacion(),
             $keys[17] => $this->getEmpleadoSueldo(),
             $keys[18] => $this->getEmpleadoDiadescanso(),
+            $keys[19] => $this->getEmpleadoUsername(),
+            $keys[20] => $this->getEmpleadoPassword(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1959,6 +2135,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
             if (null !== $this->collEmpleadohorarios) {
                 $result['Empleadohorarios'] = $this->collEmpleadohorarios->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collEmpleadoreportesRelatedByIdempleado) {
+                $result['EmpleadoreportesRelatedByIdempleado'] = $this->collEmpleadoreportesRelatedByIdempleado->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collEmpleadoreportesRelatedByIdempleadoreportado) {
+                $result['EmpleadoreportesRelatedByIdempleadoreportado'] = $this->collEmpleadoreportesRelatedByIdempleadoreportado->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collFaltantesRelatedByIdempleadodeudor) {
                 $result['FaltantesRelatedByIdempleadodeudor'] = $this->collFaltantesRelatedByIdempleadodeudor->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2069,6 +2251,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             case 18:
                 $this->setEmpleadoDiadescanso($value);
                 break;
+            case 19:
+                $this->setEmpleadoUsername($value);
+                break;
+            case 20:
+                $this->setEmpleadoPassword($value);
+                break;
         } // switch()
     }
 
@@ -2112,6 +2300,8 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if (array_key_exists($keys[16], $arr)) $this->setEmpleadoComprobanteidentificacion($arr[$keys[16]]);
         if (array_key_exists($keys[17], $arr)) $this->setEmpleadoSueldo($arr[$keys[17]]);
         if (array_key_exists($keys[18], $arr)) $this->setEmpleadoDiadescanso($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setEmpleadoUsername($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setEmpleadoPassword($arr[$keys[20]]);
     }
 
     /**
@@ -2142,6 +2332,8 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION)) $criteria->add(EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION, $this->empleado_comprobanteidentificacion);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_SUELDO)) $criteria->add(EmpleadoPeer::EMPLEADO_SUELDO, $this->empleado_sueldo);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_DIADESCANSO)) $criteria->add(EmpleadoPeer::EMPLEADO_DIADESCANSO, $this->empleado_diadescanso);
+        if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_USERNAME)) $criteria->add(EmpleadoPeer::EMPLEADO_USERNAME, $this->empleado_username);
+        if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_PASSWORD)) $criteria->add(EmpleadoPeer::EMPLEADO_PASSWORD, $this->empleado_password);
 
         return $criteria;
     }
@@ -2223,6 +2415,8 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $copyObj->setEmpleadoComprobanteidentificacion($this->getEmpleadoComprobanteidentificacion());
         $copyObj->setEmpleadoSueldo($this->getEmpleadoSueldo());
         $copyObj->setEmpleadoDiadescanso($this->getEmpleadoDiadescanso());
+        $copyObj->setEmpleadoUsername($this->getEmpleadoUsername());
+        $copyObj->setEmpleadoPassword($this->getEmpleadoPassword());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2258,6 +2452,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             foreach ($this->getEmpleadohorarios() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addEmpleadohorario($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getEmpleadoreportesRelatedByIdempleado() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addEmpleadoreporteRelatedByIdempleado($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getEmpleadoreportesRelatedByIdempleadoreportado() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addEmpleadoreporteRelatedByIdempleadoreportado($relObj->copy($deepCopy));
                 }
             }
 
@@ -2424,6 +2630,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         }
         if ('Empleadohorario' == $relationName) {
             $this->initEmpleadohorarios();
+        }
+        if ('EmpleadoreporteRelatedByIdempleado' == $relationName) {
+            $this->initEmpleadoreportesRelatedByIdempleado();
+        }
+        if ('EmpleadoreporteRelatedByIdempleadoreportado' == $relationName) {
+            $this->initEmpleadoreportesRelatedByIdempleadoreportado();
         }
         if ('FaltanteRelatedByIdempleadodeudor' == $relationName) {
             $this->initFaltantesRelatedByIdempleadodeudor();
@@ -3671,6 +3883,506 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collEmpleadoreportesRelatedByIdempleado collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addEmpleadoreportesRelatedByIdempleado()
+     */
+    public function clearEmpleadoreportesRelatedByIdempleado()
+    {
+        $this->collEmpleadoreportesRelatedByIdempleado = null; // important to set this to null since that means it is uninitialized
+        $this->collEmpleadoreportesRelatedByIdempleadoPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collEmpleadoreportesRelatedByIdempleado collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialEmpleadoreportesRelatedByIdempleado($v = true)
+    {
+        $this->collEmpleadoreportesRelatedByIdempleadoPartial = $v;
+    }
+
+    /**
+     * Initializes the collEmpleadoreportesRelatedByIdempleado collection.
+     *
+     * By default this just sets the collEmpleadoreportesRelatedByIdempleado collection to an empty array (like clearcollEmpleadoreportesRelatedByIdempleado());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initEmpleadoreportesRelatedByIdempleado($overrideExisting = true)
+    {
+        if (null !== $this->collEmpleadoreportesRelatedByIdempleado && !$overrideExisting) {
+            return;
+        }
+        $this->collEmpleadoreportesRelatedByIdempleado = new PropelObjectCollection();
+        $this->collEmpleadoreportesRelatedByIdempleado->setModel('Empleadoreporte');
+    }
+
+    /**
+     * Gets an array of Empleadoreporte objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     * @throws PropelException
+     */
+    public function getEmpleadoreportesRelatedByIdempleado($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collEmpleadoreportesRelatedByIdempleadoPartial && !$this->isNew();
+        if (null === $this->collEmpleadoreportesRelatedByIdempleado || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collEmpleadoreportesRelatedByIdempleado) {
+                // return empty collection
+                $this->initEmpleadoreportesRelatedByIdempleado();
+            } else {
+                $collEmpleadoreportesRelatedByIdempleado = EmpleadoreporteQuery::create(null, $criteria)
+                    ->filterByEmpleadoRelatedByIdempleado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collEmpleadoreportesRelatedByIdempleadoPartial && count($collEmpleadoreportesRelatedByIdempleado)) {
+                      $this->initEmpleadoreportesRelatedByIdempleado(false);
+
+                      foreach ($collEmpleadoreportesRelatedByIdempleado as $obj) {
+                        if (false == $this->collEmpleadoreportesRelatedByIdempleado->contains($obj)) {
+                          $this->collEmpleadoreportesRelatedByIdempleado->append($obj);
+                        }
+                      }
+
+                      $this->collEmpleadoreportesRelatedByIdempleadoPartial = true;
+                    }
+
+                    $collEmpleadoreportesRelatedByIdempleado->getInternalIterator()->rewind();
+
+                    return $collEmpleadoreportesRelatedByIdempleado;
+                }
+
+                if ($partial && $this->collEmpleadoreportesRelatedByIdempleado) {
+                    foreach ($this->collEmpleadoreportesRelatedByIdempleado as $obj) {
+                        if ($obj->isNew()) {
+                            $collEmpleadoreportesRelatedByIdempleado[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collEmpleadoreportesRelatedByIdempleado = $collEmpleadoreportesRelatedByIdempleado;
+                $this->collEmpleadoreportesRelatedByIdempleadoPartial = false;
+            }
+        }
+
+        return $this->collEmpleadoreportesRelatedByIdempleado;
+    }
+
+    /**
+     * Sets a collection of EmpleadoreporteRelatedByIdempleado objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $empleadoreportesRelatedByIdempleado A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setEmpleadoreportesRelatedByIdempleado(PropelCollection $empleadoreportesRelatedByIdempleado, PropelPDO $con = null)
+    {
+        $empleadoreportesRelatedByIdempleadoToDelete = $this->getEmpleadoreportesRelatedByIdempleado(new Criteria(), $con)->diff($empleadoreportesRelatedByIdempleado);
+
+
+        $this->empleadoreportesRelatedByIdempleadoScheduledForDeletion = $empleadoreportesRelatedByIdempleadoToDelete;
+
+        foreach ($empleadoreportesRelatedByIdempleadoToDelete as $empleadoreporteRelatedByIdempleadoRemoved) {
+            $empleadoreporteRelatedByIdempleadoRemoved->setEmpleadoRelatedByIdempleado(null);
+        }
+
+        $this->collEmpleadoreportesRelatedByIdempleado = null;
+        foreach ($empleadoreportesRelatedByIdempleado as $empleadoreporteRelatedByIdempleado) {
+            $this->addEmpleadoreporteRelatedByIdempleado($empleadoreporteRelatedByIdempleado);
+        }
+
+        $this->collEmpleadoreportesRelatedByIdempleado = $empleadoreportesRelatedByIdempleado;
+        $this->collEmpleadoreportesRelatedByIdempleadoPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Empleadoreporte objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Empleadoreporte objects.
+     * @throws PropelException
+     */
+    public function countEmpleadoreportesRelatedByIdempleado(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collEmpleadoreportesRelatedByIdempleadoPartial && !$this->isNew();
+        if (null === $this->collEmpleadoreportesRelatedByIdempleado || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collEmpleadoreportesRelatedByIdempleado) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getEmpleadoreportesRelatedByIdempleado());
+            }
+            $query = EmpleadoreporteQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleadoRelatedByIdempleado($this)
+                ->count($con);
+        }
+
+        return count($this->collEmpleadoreportesRelatedByIdempleado);
+    }
+
+    /**
+     * Method called to associate a Empleadoreporte object to this object
+     * through the Empleadoreporte foreign key attribute.
+     *
+     * @param    Empleadoreporte $l Empleadoreporte
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addEmpleadoreporteRelatedByIdempleado(Empleadoreporte $l)
+    {
+        if ($this->collEmpleadoreportesRelatedByIdempleado === null) {
+            $this->initEmpleadoreportesRelatedByIdempleado();
+            $this->collEmpleadoreportesRelatedByIdempleadoPartial = true;
+        }
+
+        if (!in_array($l, $this->collEmpleadoreportesRelatedByIdempleado->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddEmpleadoreporteRelatedByIdempleado($l);
+
+            if ($this->empleadoreportesRelatedByIdempleadoScheduledForDeletion and $this->empleadoreportesRelatedByIdempleadoScheduledForDeletion->contains($l)) {
+                $this->empleadoreportesRelatedByIdempleadoScheduledForDeletion->remove($this->empleadoreportesRelatedByIdempleadoScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	EmpleadoreporteRelatedByIdempleado $empleadoreporteRelatedByIdempleado The empleadoreporteRelatedByIdempleado object to add.
+     */
+    protected function doAddEmpleadoreporteRelatedByIdempleado($empleadoreporteRelatedByIdempleado)
+    {
+        $this->collEmpleadoreportesRelatedByIdempleado[]= $empleadoreporteRelatedByIdempleado;
+        $empleadoreporteRelatedByIdempleado->setEmpleadoRelatedByIdempleado($this);
+    }
+
+    /**
+     * @param	EmpleadoreporteRelatedByIdempleado $empleadoreporteRelatedByIdempleado The empleadoreporteRelatedByIdempleado object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeEmpleadoreporteRelatedByIdempleado($empleadoreporteRelatedByIdempleado)
+    {
+        if ($this->getEmpleadoreportesRelatedByIdempleado()->contains($empleadoreporteRelatedByIdempleado)) {
+            $this->collEmpleadoreportesRelatedByIdempleado->remove($this->collEmpleadoreportesRelatedByIdempleado->search($empleadoreporteRelatedByIdempleado));
+            if (null === $this->empleadoreportesRelatedByIdempleadoScheduledForDeletion) {
+                $this->empleadoreportesRelatedByIdempleadoScheduledForDeletion = clone $this->collEmpleadoreportesRelatedByIdempleado;
+                $this->empleadoreportesRelatedByIdempleadoScheduledForDeletion->clear();
+            }
+            $this->empleadoreportesRelatedByIdempleadoScheduledForDeletion[]= clone $empleadoreporteRelatedByIdempleado;
+            $empleadoreporteRelatedByIdempleado->setEmpleadoRelatedByIdempleado(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related EmpleadoreportesRelatedByIdempleado from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     */
+    public function getEmpleadoreportesRelatedByIdempleadoJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = EmpleadoreporteQuery::create(null, $criteria);
+        $query->joinWith('Clinica', $join_behavior);
+
+        return $this->getEmpleadoreportesRelatedByIdempleado($query, $con);
+    }
+
+    /**
+     * Clears out the collEmpleadoreportesRelatedByIdempleadoreportado collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addEmpleadoreportesRelatedByIdempleadoreportado()
+     */
+    public function clearEmpleadoreportesRelatedByIdempleadoreportado()
+    {
+        $this->collEmpleadoreportesRelatedByIdempleadoreportado = null; // important to set this to null since that means it is uninitialized
+        $this->collEmpleadoreportesRelatedByIdempleadoreportadoPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collEmpleadoreportesRelatedByIdempleadoreportado collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialEmpleadoreportesRelatedByIdempleadoreportado($v = true)
+    {
+        $this->collEmpleadoreportesRelatedByIdempleadoreportadoPartial = $v;
+    }
+
+    /**
+     * Initializes the collEmpleadoreportesRelatedByIdempleadoreportado collection.
+     *
+     * By default this just sets the collEmpleadoreportesRelatedByIdempleadoreportado collection to an empty array (like clearcollEmpleadoreportesRelatedByIdempleadoreportado());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initEmpleadoreportesRelatedByIdempleadoreportado($overrideExisting = true)
+    {
+        if (null !== $this->collEmpleadoreportesRelatedByIdempleadoreportado && !$overrideExisting) {
+            return;
+        }
+        $this->collEmpleadoreportesRelatedByIdempleadoreportado = new PropelObjectCollection();
+        $this->collEmpleadoreportesRelatedByIdempleadoreportado->setModel('Empleadoreporte');
+    }
+
+    /**
+     * Gets an array of Empleadoreporte objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     * @throws PropelException
+     */
+    public function getEmpleadoreportesRelatedByIdempleadoreportado($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collEmpleadoreportesRelatedByIdempleadoreportadoPartial && !$this->isNew();
+        if (null === $this->collEmpleadoreportesRelatedByIdempleadoreportado || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collEmpleadoreportesRelatedByIdempleadoreportado) {
+                // return empty collection
+                $this->initEmpleadoreportesRelatedByIdempleadoreportado();
+            } else {
+                $collEmpleadoreportesRelatedByIdempleadoreportado = EmpleadoreporteQuery::create(null, $criteria)
+                    ->filterByEmpleadoRelatedByIdempleadoreportado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collEmpleadoreportesRelatedByIdempleadoreportadoPartial && count($collEmpleadoreportesRelatedByIdempleadoreportado)) {
+                      $this->initEmpleadoreportesRelatedByIdempleadoreportado(false);
+
+                      foreach ($collEmpleadoreportesRelatedByIdempleadoreportado as $obj) {
+                        if (false == $this->collEmpleadoreportesRelatedByIdempleadoreportado->contains($obj)) {
+                          $this->collEmpleadoreportesRelatedByIdempleadoreportado->append($obj);
+                        }
+                      }
+
+                      $this->collEmpleadoreportesRelatedByIdempleadoreportadoPartial = true;
+                    }
+
+                    $collEmpleadoreportesRelatedByIdempleadoreportado->getInternalIterator()->rewind();
+
+                    return $collEmpleadoreportesRelatedByIdempleadoreportado;
+                }
+
+                if ($partial && $this->collEmpleadoreportesRelatedByIdempleadoreportado) {
+                    foreach ($this->collEmpleadoreportesRelatedByIdempleadoreportado as $obj) {
+                        if ($obj->isNew()) {
+                            $collEmpleadoreportesRelatedByIdempleadoreportado[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collEmpleadoreportesRelatedByIdempleadoreportado = $collEmpleadoreportesRelatedByIdempleadoreportado;
+                $this->collEmpleadoreportesRelatedByIdempleadoreportadoPartial = false;
+            }
+        }
+
+        return $this->collEmpleadoreportesRelatedByIdempleadoreportado;
+    }
+
+    /**
+     * Sets a collection of EmpleadoreporteRelatedByIdempleadoreportado objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $empleadoreportesRelatedByIdempleadoreportado A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setEmpleadoreportesRelatedByIdempleadoreportado(PropelCollection $empleadoreportesRelatedByIdempleadoreportado, PropelPDO $con = null)
+    {
+        $empleadoreportesRelatedByIdempleadoreportadoToDelete = $this->getEmpleadoreportesRelatedByIdempleadoreportado(new Criteria(), $con)->diff($empleadoreportesRelatedByIdempleadoreportado);
+
+
+        $this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion = $empleadoreportesRelatedByIdempleadoreportadoToDelete;
+
+        foreach ($empleadoreportesRelatedByIdempleadoreportadoToDelete as $empleadoreporteRelatedByIdempleadoreportadoRemoved) {
+            $empleadoreporteRelatedByIdempleadoreportadoRemoved->setEmpleadoRelatedByIdempleadoreportado(null);
+        }
+
+        $this->collEmpleadoreportesRelatedByIdempleadoreportado = null;
+        foreach ($empleadoreportesRelatedByIdempleadoreportado as $empleadoreporteRelatedByIdempleadoreportado) {
+            $this->addEmpleadoreporteRelatedByIdempleadoreportado($empleadoreporteRelatedByIdempleadoreportado);
+        }
+
+        $this->collEmpleadoreportesRelatedByIdempleadoreportado = $empleadoreportesRelatedByIdempleadoreportado;
+        $this->collEmpleadoreportesRelatedByIdempleadoreportadoPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Empleadoreporte objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Empleadoreporte objects.
+     * @throws PropelException
+     */
+    public function countEmpleadoreportesRelatedByIdempleadoreportado(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collEmpleadoreportesRelatedByIdempleadoreportadoPartial && !$this->isNew();
+        if (null === $this->collEmpleadoreportesRelatedByIdempleadoreportado || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collEmpleadoreportesRelatedByIdempleadoreportado) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getEmpleadoreportesRelatedByIdempleadoreportado());
+            }
+            $query = EmpleadoreporteQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleadoRelatedByIdempleadoreportado($this)
+                ->count($con);
+        }
+
+        return count($this->collEmpleadoreportesRelatedByIdempleadoreportado);
+    }
+
+    /**
+     * Method called to associate a Empleadoreporte object to this object
+     * through the Empleadoreporte foreign key attribute.
+     *
+     * @param    Empleadoreporte $l Empleadoreporte
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addEmpleadoreporteRelatedByIdempleadoreportado(Empleadoreporte $l)
+    {
+        if ($this->collEmpleadoreportesRelatedByIdempleadoreportado === null) {
+            $this->initEmpleadoreportesRelatedByIdempleadoreportado();
+            $this->collEmpleadoreportesRelatedByIdempleadoreportadoPartial = true;
+        }
+
+        if (!in_array($l, $this->collEmpleadoreportesRelatedByIdempleadoreportado->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddEmpleadoreporteRelatedByIdempleadoreportado($l);
+
+            if ($this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion and $this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion->contains($l)) {
+                $this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion->remove($this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	EmpleadoreporteRelatedByIdempleadoreportado $empleadoreporteRelatedByIdempleadoreportado The empleadoreporteRelatedByIdempleadoreportado object to add.
+     */
+    protected function doAddEmpleadoreporteRelatedByIdempleadoreportado($empleadoreporteRelatedByIdempleadoreportado)
+    {
+        $this->collEmpleadoreportesRelatedByIdempleadoreportado[]= $empleadoreporteRelatedByIdempleadoreportado;
+        $empleadoreporteRelatedByIdempleadoreportado->setEmpleadoRelatedByIdempleadoreportado($this);
+    }
+
+    /**
+     * @param	EmpleadoreporteRelatedByIdempleadoreportado $empleadoreporteRelatedByIdempleadoreportado The empleadoreporteRelatedByIdempleadoreportado object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeEmpleadoreporteRelatedByIdempleadoreportado($empleadoreporteRelatedByIdempleadoreportado)
+    {
+        if ($this->getEmpleadoreportesRelatedByIdempleadoreportado()->contains($empleadoreporteRelatedByIdempleadoreportado)) {
+            $this->collEmpleadoreportesRelatedByIdempleadoreportado->remove($this->collEmpleadoreportesRelatedByIdempleadoreportado->search($empleadoreporteRelatedByIdempleadoreportado));
+            if (null === $this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion) {
+                $this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion = clone $this->collEmpleadoreportesRelatedByIdempleadoreportado;
+                $this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion->clear();
+            }
+            $this->empleadoreportesRelatedByIdempleadoreportadoScheduledForDeletion[]= clone $empleadoreporteRelatedByIdempleadoreportado;
+            $empleadoreporteRelatedByIdempleadoreportado->setEmpleadoRelatedByIdempleadoreportado(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related EmpleadoreportesRelatedByIdempleadoreportado from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     */
+    public function getEmpleadoreportesRelatedByIdempleadoreportadoJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = EmpleadoreporteQuery::create(null, $criteria);
+        $query->joinWith('Clinica', $join_behavior);
+
+        return $this->getEmpleadoreportesRelatedByIdempleadoreportado($query, $con);
+    }
+
+    /**
      * Clears out the collFaltantesRelatedByIdempleadodeudor collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -4613,7 +5325,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion = clone $this->collTransferenciasRelatedByIdempleadoreceptor;
                 $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion->clear();
             }
-            $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion[]= clone $transferenciaRelatedByIdempleadoreceptor;
+            $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion[]= $transferenciaRelatedByIdempleadoreceptor;
             $transferenciaRelatedByIdempleadoreceptor->setEmpleadoRelatedByIdempleadoreceptor(null);
         }
 
@@ -5244,6 +5956,8 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $this->empleado_comprobanteidentificacion = null;
         $this->empleado_sueldo = null;
         $this->empleado_diadescanso = null;
+        $this->empleado_username = null;
+        $this->empleado_password = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -5288,6 +6002,16 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
             if ($this->collEmpleadohorarios) {
                 foreach ($this->collEmpleadohorarios as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collEmpleadoreportesRelatedByIdempleado) {
+                foreach ($this->collEmpleadoreportesRelatedByIdempleado as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collEmpleadoreportesRelatedByIdempleadoreportado) {
+                foreach ($this->collEmpleadoreportesRelatedByIdempleadoreportado as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -5348,6 +6072,14 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->collEmpleadohorarios->clearIterator();
         }
         $this->collEmpleadohorarios = null;
+        if ($this->collEmpleadoreportesRelatedByIdempleado instanceof PropelCollection) {
+            $this->collEmpleadoreportesRelatedByIdempleado->clearIterator();
+        }
+        $this->collEmpleadoreportesRelatedByIdempleado = null;
+        if ($this->collEmpleadoreportesRelatedByIdempleadoreportado instanceof PropelCollection) {
+            $this->collEmpleadoreportesRelatedByIdempleadoreportado->clearIterator();
+        }
+        $this->collEmpleadoreportesRelatedByIdempleadoreportado = null;
         if ($this->collFaltantesRelatedByIdempleadodeudor instanceof PropelCollection) {
             $this->collFaltantesRelatedByIdempleadodeudor->clearIterator();
         }

@@ -221,7 +221,9 @@ class ClinicaController extends AbstractActionController
             $clinica_empleados = $entity->getClinicaempleados();
             $clinica_empleados_array = array();
             foreach ($clinica_empleados as $clinica_empleado){
-                $empleado = $clinica_empleado->getEmpleado()->toArray(\BasePeer::TYPE_FIELDNAME);
+                $empleado = $clinica_empleado->getEmpleado();
+                echo '<pre>';var_dump($empleado);echo'<pre>';exit();
+
                 if(!in_array($empleado['idempleado'], $clinica_encargados_ids_array)){
                      $clinica_empleados_array[] = $empleado;
                 } 

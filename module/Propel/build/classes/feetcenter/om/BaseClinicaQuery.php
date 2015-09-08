@@ -34,6 +34,10 @@
  * @method ClinicaQuery rightJoinEgresoclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Egresoclinica relation
  * @method ClinicaQuery innerJoinEgresoclinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Egresoclinica relation
  *
+ * @method ClinicaQuery leftJoinEmpleadoreporte($relationAlias = null) Adds a LEFT JOIN clause to the query using the Empleadoreporte relation
+ * @method ClinicaQuery rightJoinEmpleadoreporte($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleadoreporte relation
+ * @method ClinicaQuery innerJoinEmpleadoreporte($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleadoreporte relation
+ *
  * @method ClinicaQuery leftJoinInsumoclinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Insumoclinica relation
  * @method ClinicaQuery rightJoinInsumoclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Insumoclinica relation
  * @method ClinicaQuery innerJoinInsumoclinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Insumoclinica relation
@@ -641,6 +645,80 @@ abstract class BaseClinicaQuery extends ModelCriteria
         return $this
             ->joinEgresoclinica($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Egresoclinica', 'EgresoclinicaQuery');
+    }
+
+    /**
+     * Filter the query by a related Empleadoreporte object
+     *
+     * @param   Empleadoreporte|PropelObjectCollection $empleadoreporte  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ClinicaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByEmpleadoreporte($empleadoreporte, $comparison = null)
+    {
+        if ($empleadoreporte instanceof Empleadoreporte) {
+            return $this
+                ->addUsingAlias(ClinicaPeer::IDCLINICA, $empleadoreporte->getIdclinica(), $comparison);
+        } elseif ($empleadoreporte instanceof PropelObjectCollection) {
+            return $this
+                ->useEmpleadoreporteQuery()
+                ->filterByPrimaryKeys($empleadoreporte->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByEmpleadoreporte() only accepts arguments of type Empleadoreporte or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Empleadoreporte relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ClinicaQuery The current query, for fluid interface
+     */
+    public function joinEmpleadoreporte($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Empleadoreporte');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Empleadoreporte');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Empleadoreporte relation Empleadoreporte object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EmpleadoreporteQuery A secondary query class using the current class as primary query
+     */
+    public function useEmpleadoreporteQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEmpleadoreporte($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Empleadoreporte', 'EmpleadoreporteQuery');
     }
 
     /**

@@ -41,7 +41,10 @@ class InsumoclinicaTableMap extends TableMap
         $this->addPrimaryKey('idinsumoclinica', 'Idinsumoclinica', 'INTEGER', true, null, null);
         $this->addForeignKey('idinsumo', 'Idinsumo', 'INTEGER', 'insumo', 'idinsumo', true, null, null);
         $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
-        $this->addColumn('insumoclinica_cantidad', 'InsumoclinicaCantidad', 'DECIMAL', true, 10, null);
+        $this->addColumn('insumoclinica_existencia', 'InsumoclinicaExistencia', 'DECIMAL', true, 10, null);
+        $this->addColumn('insumoclinica_minimo', 'InsumoclinicaMinimo', 'DECIMAL', false, 10, null);
+        $this->addColumn('insumoclinica_maximo', 'InsumoclinicaMaximo', 'DECIMAL', false, 10, null);
+        $this->addColumn('insumoclinica_reorden', 'InsumoclinicaReorden', 'DECIMAL', false, 10, null);
         // validators
     } // initialize()
 
@@ -52,6 +55,7 @@ class InsumoclinicaTableMap extends TableMap
     {
         $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Insumo', 'Insumo', RelationMap::MANY_TO_ONE, array('idinsumo' => 'idinsumo', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Compradetalle', 'Compradetalle', RelationMap::ONE_TO_MANY, array('idinsumoclinica' => 'idinsumoclinica', ), 'CASCADE', 'CASCADE', 'Compradetalles');
         $this->addRelation('Transferenciadetalle', 'Transferenciadetalle', RelationMap::ONE_TO_MANY, array('idinsumoclinica' => 'idinsumoclinica', ), 'CASCADE', 'CASCADE', 'Transferenciadetalles');
     } // buildRelations()
 

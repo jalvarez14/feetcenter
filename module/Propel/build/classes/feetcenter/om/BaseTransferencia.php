@@ -60,10 +60,10 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
     protected $idclinicadestinataria;
 
     /**
-     * The value for the transferencia_fecha field.
+     * The value for the transferencia_creadaen field.
      * @var        string
      */
-    protected $transferencia_fecha;
+    protected $transferencia_creadaen;
 
     /**
      * The value for the transferencia_estatus field.
@@ -76,6 +76,18 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
      * @var        string
      */
     protected $transferencia_fechamovimiento;
+
+    /**
+     * The value for the transferencia_comprobante field.
+     * @var        string
+     */
+    protected $transferencia_comprobante;
+
+    /**
+     * The value for the transferencia_nota field.
+     * @var        string
+     */
+    protected $transferencia_nota;
 
     /**
      * @var        Clinica
@@ -185,7 +197,7 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [optionally formatted] temporal [transferencia_fecha] column value.
+     * Get the [optionally formatted] temporal [transferencia_creadaen] column value.
      *
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
@@ -193,22 +205,22 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getTransferenciaFecha($format = 'Y-m-d H:i:s')
+    public function getTransferenciaCreadaen($format = 'Y-m-d H:i:s')
     {
-        if ($this->transferencia_fecha === null) {
+        if ($this->transferencia_creadaen === null) {
             return null;
         }
 
-        if ($this->transferencia_fecha === '0000-00-00 00:00:00') {
+        if ($this->transferencia_creadaen === '0000-00-00 00:00:00') {
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
         }
 
         try {
-            $dt = new DateTime($this->transferencia_fecha);
+            $dt = new DateTime($this->transferencia_creadaen);
         } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->transferencia_fecha, true), $x);
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->transferencia_creadaen, true), $x);
         }
 
         if ($format === null) {
@@ -236,14 +248,65 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [transferencia_fechamovimiento] column value.
+     * Get the [optionally formatted] temporal [transferencia_fechamovimiento] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getTransferenciaFechamovimiento($format = '%x')
+    {
+        if ($this->transferencia_fechamovimiento === null) {
+            return null;
+        }
+
+        if ($this->transferencia_fechamovimiento === '0000-00-00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->transferencia_fechamovimiento);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->transferencia_fechamovimiento, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [transferencia_comprobante] column value.
      *
      * @return string
      */
-    public function getTransferenciaFechamovimiento()
+    public function getTransferenciaComprobante()
     {
 
-        return $this->transferencia_fechamovimiento;
+        return $this->transferencia_comprobante;
+    }
+
+    /**
+     * Get the [transferencia_nota] column value.
+     *
+     * @return string
+     */
+    public function getTransferenciaNota()
+    {
+
+        return $this->transferencia_nota;
     }
 
     /**
@@ -368,27 +431,27 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
     } // setIdclinicadestinataria()
 
     /**
-     * Sets the value of [transferencia_fecha] column to a normalized version of the date/time value specified.
+     * Sets the value of [transferencia_creadaen] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
      * @return Transferencia The current object (for fluent API support)
      */
-    public function setTransferenciaFecha($v)
+    public function setTransferenciaCreadaen($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->transferencia_fecha !== null || $dt !== null) {
-            $currentDateAsString = ($this->transferencia_fecha !== null && $tmpDt = new DateTime($this->transferencia_fecha)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+        if ($this->transferencia_creadaen !== null || $dt !== null) {
+            $currentDateAsString = ($this->transferencia_creadaen !== null && $tmpDt = new DateTime($this->transferencia_creadaen)) ? $tmpDt->format('Y-m-d H:i:s') : null;
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
-                $this->transferencia_fecha = $newDateAsString;
-                $this->modifiedColumns[] = TransferenciaPeer::TRANSFERENCIA_FECHA;
+                $this->transferencia_creadaen = $newDateAsString;
+                $this->modifiedColumns[] = TransferenciaPeer::TRANSFERENCIA_CREADAEN;
             }
         } // if either are not null
 
 
         return $this;
-    } // setTransferenciaFecha()
+    } // setTransferenciaCreadaen()
 
     /**
      * Set the value of [transferencia_estatus] column.
@@ -412,25 +475,69 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
     } // setTransferenciaEstatus()
 
     /**
-     * Set the value of [transferencia_fechamovimiento] column.
+     * Sets the value of [transferencia_fechamovimiento] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Transferencia The current object (for fluent API support)
+     */
+    public function setTransferenciaFechamovimiento($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->transferencia_fechamovimiento !== null || $dt !== null) {
+            $currentDateAsString = ($this->transferencia_fechamovimiento !== null && $tmpDt = new DateTime($this->transferencia_fechamovimiento)) ? $tmpDt->format('Y-m-d') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->transferencia_fechamovimiento = $newDateAsString;
+                $this->modifiedColumns[] = TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setTransferenciaFechamovimiento()
+
+    /**
+     * Set the value of [transferencia_comprobante] column.
      *
      * @param  string $v new value
      * @return Transferencia The current object (for fluent API support)
      */
-    public function setTransferenciaFechamovimiento($v)
+    public function setTransferenciaComprobante($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->transferencia_fechamovimiento !== $v) {
-            $this->transferencia_fechamovimiento = $v;
-            $this->modifiedColumns[] = TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO;
+        if ($this->transferencia_comprobante !== $v) {
+            $this->transferencia_comprobante = $v;
+            $this->modifiedColumns[] = TransferenciaPeer::TRANSFERENCIA_COMPROBANTE;
         }
 
 
         return $this;
-    } // setTransferenciaFechamovimiento()
+    } // setTransferenciaComprobante()
+
+    /**
+     * Set the value of [transferencia_nota] column.
+     *
+     * @param  string $v new value
+     * @return Transferencia The current object (for fluent API support)
+     */
+    public function setTransferenciaNota($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->transferencia_nota !== $v) {
+            $this->transferencia_nota = $v;
+            $this->modifiedColumns[] = TransferenciaPeer::TRANSFERENCIA_NOTA;
+        }
+
+
+        return $this;
+    } // setTransferenciaNota()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -469,9 +576,11 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
             $this->idempleadoreceptor = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->idclinicaremitente = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->idclinicadestinataria = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->transferencia_fecha = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->transferencia_creadaen = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->transferencia_estatus = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->transferencia_fechamovimiento = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->transferencia_comprobante = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->transferencia_nota = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -481,7 +590,7 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 8; // 8 = TransferenciaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = TransferenciaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Transferencia object", $e);
@@ -776,14 +885,20 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
         if ($this->isColumnModified(TransferenciaPeer::IDCLINICADESTINATARIA)) {
             $modifiedColumns[':p' . $index++]  = '`idclinicadestinataria`';
         }
-        if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_FECHA)) {
-            $modifiedColumns[':p' . $index++]  = '`transferencia_fecha`';
+        if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_CREADAEN)) {
+            $modifiedColumns[':p' . $index++]  = '`transferencia_creadaen`';
         }
         if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_ESTATUS)) {
             $modifiedColumns[':p' . $index++]  = '`transferencia_estatus`';
         }
         if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO)) {
             $modifiedColumns[':p' . $index++]  = '`transferencia_fechamovimiento`';
+        }
+        if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_COMPROBANTE)) {
+            $modifiedColumns[':p' . $index++]  = '`transferencia_comprobante`';
+        }
+        if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_NOTA)) {
+            $modifiedColumns[':p' . $index++]  = '`transferencia_nota`';
         }
 
         $sql = sprintf(
@@ -811,14 +926,20 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
                     case '`idclinicadestinataria`':
                         $stmt->bindValue($identifier, $this->idclinicadestinataria, PDO::PARAM_INT);
                         break;
-                    case '`transferencia_fecha`':
-                        $stmt->bindValue($identifier, $this->transferencia_fecha, PDO::PARAM_STR);
+                    case '`transferencia_creadaen`':
+                        $stmt->bindValue($identifier, $this->transferencia_creadaen, PDO::PARAM_STR);
                         break;
                     case '`transferencia_estatus`':
                         $stmt->bindValue($identifier, $this->transferencia_estatus, PDO::PARAM_STR);
                         break;
                     case '`transferencia_fechamovimiento`':
                         $stmt->bindValue($identifier, $this->transferencia_fechamovimiento, PDO::PARAM_STR);
+                        break;
+                    case '`transferencia_comprobante`':
+                        $stmt->bindValue($identifier, $this->transferencia_comprobante, PDO::PARAM_STR);
+                        break;
+                    case '`transferencia_nota`':
+                        $stmt->bindValue($identifier, $this->transferencia_nota, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1008,13 +1129,19 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
                 return $this->getIdclinicadestinataria();
                 break;
             case 5:
-                return $this->getTransferenciaFecha();
+                return $this->getTransferenciaCreadaen();
                 break;
             case 6:
                 return $this->getTransferenciaEstatus();
                 break;
             case 7:
                 return $this->getTransferenciaFechamovimiento();
+                break;
+            case 8:
+                return $this->getTransferenciaComprobante();
+                break;
+            case 9:
+                return $this->getTransferenciaNota();
                 break;
             default:
                 return null;
@@ -1050,9 +1177,11 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
             $keys[2] => $this->getIdempleadoreceptor(),
             $keys[3] => $this->getIdclinicaremitente(),
             $keys[4] => $this->getIdclinicadestinataria(),
-            $keys[5] => $this->getTransferenciaFecha(),
+            $keys[5] => $this->getTransferenciaCreadaen(),
             $keys[6] => $this->getTransferenciaEstatus(),
             $keys[7] => $this->getTransferenciaFechamovimiento(),
+            $keys[8] => $this->getTransferenciaComprobante(),
+            $keys[9] => $this->getTransferenciaNota(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1125,13 +1254,19 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
                 $this->setIdclinicadestinataria($value);
                 break;
             case 5:
-                $this->setTransferenciaFecha($value);
+                $this->setTransferenciaCreadaen($value);
                 break;
             case 6:
                 $this->setTransferenciaEstatus($value);
                 break;
             case 7:
                 $this->setTransferenciaFechamovimiento($value);
+                break;
+            case 8:
+                $this->setTransferenciaComprobante($value);
+                break;
+            case 9:
+                $this->setTransferenciaNota($value);
                 break;
         } // switch()
     }
@@ -1162,9 +1297,11 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setIdempleadoreceptor($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setIdclinicaremitente($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setIdclinicadestinataria($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setTransferenciaFecha($arr[$keys[5]]);
+        if (array_key_exists($keys[5], $arr)) $this->setTransferenciaCreadaen($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setTransferenciaEstatus($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setTransferenciaFechamovimiento($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setTransferenciaComprobante($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setTransferenciaNota($arr[$keys[9]]);
     }
 
     /**
@@ -1181,9 +1318,11 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
         if ($this->isColumnModified(TransferenciaPeer::IDEMPLEADORECEPTOR)) $criteria->add(TransferenciaPeer::IDEMPLEADORECEPTOR, $this->idempleadoreceptor);
         if ($this->isColumnModified(TransferenciaPeer::IDCLINICAREMITENTE)) $criteria->add(TransferenciaPeer::IDCLINICAREMITENTE, $this->idclinicaremitente);
         if ($this->isColumnModified(TransferenciaPeer::IDCLINICADESTINATARIA)) $criteria->add(TransferenciaPeer::IDCLINICADESTINATARIA, $this->idclinicadestinataria);
-        if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_FECHA)) $criteria->add(TransferenciaPeer::TRANSFERENCIA_FECHA, $this->transferencia_fecha);
+        if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_CREADAEN)) $criteria->add(TransferenciaPeer::TRANSFERENCIA_CREADAEN, $this->transferencia_creadaen);
         if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_ESTATUS)) $criteria->add(TransferenciaPeer::TRANSFERENCIA_ESTATUS, $this->transferencia_estatus);
         if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO)) $criteria->add(TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO, $this->transferencia_fechamovimiento);
+        if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_COMPROBANTE)) $criteria->add(TransferenciaPeer::TRANSFERENCIA_COMPROBANTE, $this->transferencia_comprobante);
+        if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_NOTA)) $criteria->add(TransferenciaPeer::TRANSFERENCIA_NOTA, $this->transferencia_nota);
 
         return $criteria;
     }
@@ -1251,9 +1390,11 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
         $copyObj->setIdempleadoreceptor($this->getIdempleadoreceptor());
         $copyObj->setIdclinicaremitente($this->getIdclinicaremitente());
         $copyObj->setIdclinicadestinataria($this->getIdclinicadestinataria());
-        $copyObj->setTransferenciaFecha($this->getTransferenciaFecha());
+        $copyObj->setTransferenciaCreadaen($this->getTransferenciaCreadaen());
         $copyObj->setTransferenciaEstatus($this->getTransferenciaEstatus());
         $copyObj->setTransferenciaFechamovimiento($this->getTransferenciaFechamovimiento());
+        $copyObj->setTransferenciaComprobante($this->getTransferenciaComprobante());
+        $copyObj->setTransferenciaNota($this->getTransferenciaNota());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1827,9 +1968,11 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
         $this->idempleadoreceptor = null;
         $this->idclinicaremitente = null;
         $this->idclinicadestinataria = null;
-        $this->transferencia_fecha = null;
+        $this->transferencia_creadaen = null;
         $this->transferencia_estatus = null;
         $this->transferencia_fechamovimiento = null;
+        $this->transferencia_comprobante = null;
+        $this->transferencia_nota = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

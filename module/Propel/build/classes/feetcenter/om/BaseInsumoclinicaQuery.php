@@ -9,12 +9,18 @@
  * @method InsumoclinicaQuery orderByIdinsumoclinica($order = Criteria::ASC) Order by the idinsumoclinica column
  * @method InsumoclinicaQuery orderByIdinsumo($order = Criteria::ASC) Order by the idinsumo column
  * @method InsumoclinicaQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
- * @method InsumoclinicaQuery orderByInsumoclinicaCantidad($order = Criteria::ASC) Order by the insumoclinica_cantidad column
+ * @method InsumoclinicaQuery orderByInsumoclinicaExistencia($order = Criteria::ASC) Order by the insumoclinica_existencia column
+ * @method InsumoclinicaQuery orderByInsumoclinicaMinimo($order = Criteria::ASC) Order by the insumoclinica_minimo column
+ * @method InsumoclinicaQuery orderByInsumoclinicaMaximo($order = Criteria::ASC) Order by the insumoclinica_maximo column
+ * @method InsumoclinicaQuery orderByInsumoclinicaReorden($order = Criteria::ASC) Order by the insumoclinica_reorden column
  *
  * @method InsumoclinicaQuery groupByIdinsumoclinica() Group by the idinsumoclinica column
  * @method InsumoclinicaQuery groupByIdinsumo() Group by the idinsumo column
  * @method InsumoclinicaQuery groupByIdclinica() Group by the idclinica column
- * @method InsumoclinicaQuery groupByInsumoclinicaCantidad() Group by the insumoclinica_cantidad column
+ * @method InsumoclinicaQuery groupByInsumoclinicaExistencia() Group by the insumoclinica_existencia column
+ * @method InsumoclinicaQuery groupByInsumoclinicaMinimo() Group by the insumoclinica_minimo column
+ * @method InsumoclinicaQuery groupByInsumoclinicaMaximo() Group by the insumoclinica_maximo column
+ * @method InsumoclinicaQuery groupByInsumoclinicaReorden() Group by the insumoclinica_reorden column
  *
  * @method InsumoclinicaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method InsumoclinicaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -28,6 +34,10 @@
  * @method InsumoclinicaQuery rightJoinInsumo($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Insumo relation
  * @method InsumoclinicaQuery innerJoinInsumo($relationAlias = null) Adds a INNER JOIN clause to the query using the Insumo relation
  *
+ * @method InsumoclinicaQuery leftJoinCompradetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Compradetalle relation
+ * @method InsumoclinicaQuery rightJoinCompradetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Compradetalle relation
+ * @method InsumoclinicaQuery innerJoinCompradetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Compradetalle relation
+ *
  * @method InsumoclinicaQuery leftJoinTransferenciadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Transferenciadetalle relation
  * @method InsumoclinicaQuery rightJoinTransferenciadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Transferenciadetalle relation
  * @method InsumoclinicaQuery innerJoinTransferenciadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Transferenciadetalle relation
@@ -37,12 +47,18 @@
  *
  * @method Insumoclinica findOneByIdinsumo(int $idinsumo) Return the first Insumoclinica filtered by the idinsumo column
  * @method Insumoclinica findOneByIdclinica(int $idclinica) Return the first Insumoclinica filtered by the idclinica column
- * @method Insumoclinica findOneByInsumoclinicaCantidad(string $insumoclinica_cantidad) Return the first Insumoclinica filtered by the insumoclinica_cantidad column
+ * @method Insumoclinica findOneByInsumoclinicaExistencia(string $insumoclinica_existencia) Return the first Insumoclinica filtered by the insumoclinica_existencia column
+ * @method Insumoclinica findOneByInsumoclinicaMinimo(string $insumoclinica_minimo) Return the first Insumoclinica filtered by the insumoclinica_minimo column
+ * @method Insumoclinica findOneByInsumoclinicaMaximo(string $insumoclinica_maximo) Return the first Insumoclinica filtered by the insumoclinica_maximo column
+ * @method Insumoclinica findOneByInsumoclinicaReorden(string $insumoclinica_reorden) Return the first Insumoclinica filtered by the insumoclinica_reorden column
  *
  * @method array findByIdinsumoclinica(int $idinsumoclinica) Return Insumoclinica objects filtered by the idinsumoclinica column
  * @method array findByIdinsumo(int $idinsumo) Return Insumoclinica objects filtered by the idinsumo column
  * @method array findByIdclinica(int $idclinica) Return Insumoclinica objects filtered by the idclinica column
- * @method array findByInsumoclinicaCantidad(string $insumoclinica_cantidad) Return Insumoclinica objects filtered by the insumoclinica_cantidad column
+ * @method array findByInsumoclinicaExistencia(string $insumoclinica_existencia) Return Insumoclinica objects filtered by the insumoclinica_existencia column
+ * @method array findByInsumoclinicaMinimo(string $insumoclinica_minimo) Return Insumoclinica objects filtered by the insumoclinica_minimo column
+ * @method array findByInsumoclinicaMaximo(string $insumoclinica_maximo) Return Insumoclinica objects filtered by the insumoclinica_maximo column
+ * @method array findByInsumoclinicaReorden(string $insumoclinica_reorden) Return Insumoclinica objects filtered by the insumoclinica_reorden column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -150,7 +166,7 @@ abstract class BaseInsumoclinicaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idinsumoclinica`, `idinsumo`, `idclinica`, `insumoclinica_cantidad` FROM `insumoclinica` WHERE `idinsumoclinica` = :p0';
+        $sql = 'SELECT `idinsumoclinica`, `idinsumo`, `idclinica`, `insumoclinica_existencia`, `insumoclinica_minimo`, `insumoclinica_maximo`, `insumoclinica_reorden` FROM `insumoclinica` WHERE `idinsumoclinica` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -370,17 +386,17 @@ abstract class BaseInsumoclinicaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the insumoclinica_cantidad column
+     * Filter the query on the insumoclinica_existencia column
      *
      * Example usage:
      * <code>
-     * $query->filterByInsumoclinicaCantidad(1234); // WHERE insumoclinica_cantidad = 1234
-     * $query->filterByInsumoclinicaCantidad(array(12, 34)); // WHERE insumoclinica_cantidad IN (12, 34)
-     * $query->filterByInsumoclinicaCantidad(array('min' => 12)); // WHERE insumoclinica_cantidad >= 12
-     * $query->filterByInsumoclinicaCantidad(array('max' => 12)); // WHERE insumoclinica_cantidad <= 12
+     * $query->filterByInsumoclinicaExistencia(1234); // WHERE insumoclinica_existencia = 1234
+     * $query->filterByInsumoclinicaExistencia(array(12, 34)); // WHERE insumoclinica_existencia IN (12, 34)
+     * $query->filterByInsumoclinicaExistencia(array('min' => 12)); // WHERE insumoclinica_existencia >= 12
+     * $query->filterByInsumoclinicaExistencia(array('max' => 12)); // WHERE insumoclinica_existencia <= 12
      * </code>
      *
-     * @param     mixed $insumoclinicaCantidad The value to use as filter.
+     * @param     mixed $insumoclinicaExistencia The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -388,16 +404,16 @@ abstract class BaseInsumoclinicaQuery extends ModelCriteria
      *
      * @return InsumoclinicaQuery The current query, for fluid interface
      */
-    public function filterByInsumoclinicaCantidad($insumoclinicaCantidad = null, $comparison = null)
+    public function filterByInsumoclinicaExistencia($insumoclinicaExistencia = null, $comparison = null)
     {
-        if (is_array($insumoclinicaCantidad)) {
+        if (is_array($insumoclinicaExistencia)) {
             $useMinMax = false;
-            if (isset($insumoclinicaCantidad['min'])) {
-                $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_CANTIDAD, $insumoclinicaCantidad['min'], Criteria::GREATER_EQUAL);
+            if (isset($insumoclinicaExistencia['min'])) {
+                $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_EXISTENCIA, $insumoclinicaExistencia['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($insumoclinicaCantidad['max'])) {
-                $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_CANTIDAD, $insumoclinicaCantidad['max'], Criteria::LESS_EQUAL);
+            if (isset($insumoclinicaExistencia['max'])) {
+                $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_EXISTENCIA, $insumoclinicaExistencia['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -408,7 +424,133 @@ abstract class BaseInsumoclinicaQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_CANTIDAD, $insumoclinicaCantidad, $comparison);
+        return $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_EXISTENCIA, $insumoclinicaExistencia, $comparison);
+    }
+
+    /**
+     * Filter the query on the insumoclinica_minimo column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByInsumoclinicaMinimo(1234); // WHERE insumoclinica_minimo = 1234
+     * $query->filterByInsumoclinicaMinimo(array(12, 34)); // WHERE insumoclinica_minimo IN (12, 34)
+     * $query->filterByInsumoclinicaMinimo(array('min' => 12)); // WHERE insumoclinica_minimo >= 12
+     * $query->filterByInsumoclinicaMinimo(array('max' => 12)); // WHERE insumoclinica_minimo <= 12
+     * </code>
+     *
+     * @param     mixed $insumoclinicaMinimo The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return InsumoclinicaQuery The current query, for fluid interface
+     */
+    public function filterByInsumoclinicaMinimo($insumoclinicaMinimo = null, $comparison = null)
+    {
+        if (is_array($insumoclinicaMinimo)) {
+            $useMinMax = false;
+            if (isset($insumoclinicaMinimo['min'])) {
+                $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_MINIMO, $insumoclinicaMinimo['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($insumoclinicaMinimo['max'])) {
+                $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_MINIMO, $insumoclinicaMinimo['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_MINIMO, $insumoclinicaMinimo, $comparison);
+    }
+
+    /**
+     * Filter the query on the insumoclinica_maximo column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByInsumoclinicaMaximo(1234); // WHERE insumoclinica_maximo = 1234
+     * $query->filterByInsumoclinicaMaximo(array(12, 34)); // WHERE insumoclinica_maximo IN (12, 34)
+     * $query->filterByInsumoclinicaMaximo(array('min' => 12)); // WHERE insumoclinica_maximo >= 12
+     * $query->filterByInsumoclinicaMaximo(array('max' => 12)); // WHERE insumoclinica_maximo <= 12
+     * </code>
+     *
+     * @param     mixed $insumoclinicaMaximo The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return InsumoclinicaQuery The current query, for fluid interface
+     */
+    public function filterByInsumoclinicaMaximo($insumoclinicaMaximo = null, $comparison = null)
+    {
+        if (is_array($insumoclinicaMaximo)) {
+            $useMinMax = false;
+            if (isset($insumoclinicaMaximo['min'])) {
+                $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_MAXIMO, $insumoclinicaMaximo['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($insumoclinicaMaximo['max'])) {
+                $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_MAXIMO, $insumoclinicaMaximo['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_MAXIMO, $insumoclinicaMaximo, $comparison);
+    }
+
+    /**
+     * Filter the query on the insumoclinica_reorden column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByInsumoclinicaReorden(1234); // WHERE insumoclinica_reorden = 1234
+     * $query->filterByInsumoclinicaReorden(array(12, 34)); // WHERE insumoclinica_reorden IN (12, 34)
+     * $query->filterByInsumoclinicaReorden(array('min' => 12)); // WHERE insumoclinica_reorden >= 12
+     * $query->filterByInsumoclinicaReorden(array('max' => 12)); // WHERE insumoclinica_reorden <= 12
+     * </code>
+     *
+     * @param     mixed $insumoclinicaReorden The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return InsumoclinicaQuery The current query, for fluid interface
+     */
+    public function filterByInsumoclinicaReorden($insumoclinicaReorden = null, $comparison = null)
+    {
+        if (is_array($insumoclinicaReorden)) {
+            $useMinMax = false;
+            if (isset($insumoclinicaReorden['min'])) {
+                $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_REORDEN, $insumoclinicaReorden['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($insumoclinicaReorden['max'])) {
+                $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_REORDEN, $insumoclinicaReorden['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(InsumoclinicaPeer::INSUMOCLINICA_REORDEN, $insumoclinicaReorden, $comparison);
     }
 
     /**
@@ -564,6 +706,80 @@ abstract class BaseInsumoclinicaQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related Compradetalle object
+     *
+     * @param   Compradetalle|PropelObjectCollection $compradetalle  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 InsumoclinicaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByCompradetalle($compradetalle, $comparison = null)
+    {
+        if ($compradetalle instanceof Compradetalle) {
+            return $this
+                ->addUsingAlias(InsumoclinicaPeer::IDINSUMOCLINICA, $compradetalle->getIdinsumoclinica(), $comparison);
+        } elseif ($compradetalle instanceof PropelObjectCollection) {
+            return $this
+                ->useCompradetalleQuery()
+                ->filterByPrimaryKeys($compradetalle->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCompradetalle() only accepts arguments of type Compradetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Compradetalle relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return InsumoclinicaQuery The current query, for fluid interface
+     */
+    public function joinCompradetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Compradetalle');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Compradetalle');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Compradetalle relation Compradetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   CompradetalleQuery A secondary query class using the current class as primary query
+     */
+    public function useCompradetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinCompradetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Compradetalle', 'CompradetalleQuery');
+    }
+
+    /**
      * Filter the query by a related Transferenciadetalle object
      *
      * @param   Transferenciadetalle|PropelObjectCollection $transferenciadetalle  the related object to use as filter
@@ -595,7 +811,7 @@ abstract class BaseInsumoclinicaQuery extends ModelCriteria
      *
      * @return InsumoclinicaQuery The current query, for fluid interface
      */
-    public function joinTransferenciadetalle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinTransferenciadetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Transferenciadetalle');
@@ -630,7 +846,7 @@ abstract class BaseInsumoclinicaQuery extends ModelCriteria
      *
      * @return   TransferenciadetalleQuery A secondary query class using the current class as primary query
      */
-    public function useTransferenciadetalleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useTransferenciadetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinTransferenciadetalle($relationAlias, $joinType)

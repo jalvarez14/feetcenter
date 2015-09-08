@@ -40,10 +40,10 @@ class TransferenciaTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idtransferencia', 'Idtransferencia', 'INTEGER', true, null, null);
         $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', true, null, null);
-        $this->addForeignKey('idempleadoreceptor', 'Idempleadoreceptor', 'INTEGER', 'empleado', 'idempleado', true, null, null);
+        $this->addForeignKey('idempleadoreceptor', 'Idempleadoreceptor', 'INTEGER', 'empleado', 'idempleado', false, null, null);
         $this->addForeignKey('idclinicaremitente', 'Idclinicaremitente', 'INTEGER', 'clinica', 'idclinica', true, null, null);
         $this->addForeignKey('idclinicadestinataria', 'Idclinicadestinataria', 'INTEGER', 'clinica', 'idclinica', true, null, null);
-        $this->addColumn('transferencia_fecha', 'TransferenciaFecha', 'TIMESTAMP', true, null, null);
+        $this->addColumn('transferencia_creadaen', 'TransferenciaCreadaen', 'TIMESTAMP', true, null, null);
         $this->addColumn('transferencia_estatus', 'TransferenciaEstatus', 'CHAR', true, null, null);
         $this->getColumn('transferencia_estatus', false)->setValueSet(array (
   0 => 'enviada',
@@ -51,7 +51,9 @@ class TransferenciaTableMap extends TableMap
   2 => 'rechazada',
   3 => 'cancelada',
 ));
-        $this->addColumn('transferencia_fechamovimiento', 'TransferenciaFechamovimiento', 'VARCHAR', false, 45, null);
+        $this->addColumn('transferencia_fechamovimiento', 'TransferenciaFechamovimiento', 'DATE', true, null, null);
+        $this->addColumn('transferencia_comprobante', 'TransferenciaComprobante', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('transferencia_nota', 'TransferenciaNota', 'LONGVARCHAR', false, null, null);
         // validators
     } // initialize()
 
@@ -62,9 +64,9 @@ class TransferenciaTableMap extends TableMap
     {
         $this->addRelation('ClinicaRelatedByIdclinicadestinataria', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinicadestinataria' => 'idclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('ClinicaRelatedByIdclinicaremitente', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinicaremitente' => 'idclinica', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('EmpleadoRelatedByIdempleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), null, null);
+        $this->addRelation('EmpleadoRelatedByIdempleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE');
         $this->addRelation('EmpleadoRelatedByIdempleadoreceptor', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleadoreceptor' => 'idempleado', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Transferenciadetalle', 'Transferenciadetalle', RelationMap::ONE_TO_MANY, array('idtransferencia' => 'idtransferencia', ), null, 'CASCADE', 'Transferenciadetalles');
+        $this->addRelation('Transferenciadetalle', 'Transferenciadetalle', RelationMap::ONE_TO_MANY, array('idtransferencia' => 'idtransferencia', ), 'CASCADE', 'CASCADE', 'Transferenciadetalles');
     } // buildRelations()
 
 } // TransferenciaTableMap

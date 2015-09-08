@@ -25,6 +25,8 @@
  * @method EmpleadoQuery orderByEmpleadoComprobanteidentificacion($order = Criteria::ASC) Order by the empleado_comprobanteidentificacion column
  * @method EmpleadoQuery orderByEmpleadoSueldo($order = Criteria::ASC) Order by the empleado_sueldo column
  * @method EmpleadoQuery orderByEmpleadoDiadescanso($order = Criteria::ASC) Order by the empleado_diadescanso column
+ * @method EmpleadoQuery orderByEmpleadoUsername($order = Criteria::ASC) Order by the empleado_username column
+ * @method EmpleadoQuery orderByEmpleadoPassword($order = Criteria::ASC) Order by the empleado_password column
  *
  * @method EmpleadoQuery groupByIdempleado() Group by the idempleado column
  * @method EmpleadoQuery groupByIdrol() Group by the idrol column
@@ -45,6 +47,8 @@
  * @method EmpleadoQuery groupByEmpleadoComprobanteidentificacion() Group by the empleado_comprobanteidentificacion column
  * @method EmpleadoQuery groupByEmpleadoSueldo() Group by the empleado_sueldo column
  * @method EmpleadoQuery groupByEmpleadoDiadescanso() Group by the empleado_diadescanso column
+ * @method EmpleadoQuery groupByEmpleadoUsername() Group by the empleado_username column
+ * @method EmpleadoQuery groupByEmpleadoPassword() Group by the empleado_password column
  *
  * @method EmpleadoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method EmpleadoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -73,6 +77,14 @@
  * @method EmpleadoQuery leftJoinEmpleadohorario($relationAlias = null) Adds a LEFT JOIN clause to the query using the Empleadohorario relation
  * @method EmpleadoQuery rightJoinEmpleadohorario($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleadohorario relation
  * @method EmpleadoQuery innerJoinEmpleadohorario($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleadohorario relation
+ *
+ * @method EmpleadoQuery leftJoinEmpleadoreporteRelatedByIdempleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the EmpleadoreporteRelatedByIdempleado relation
+ * @method EmpleadoQuery rightJoinEmpleadoreporteRelatedByIdempleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EmpleadoreporteRelatedByIdempleado relation
+ * @method EmpleadoQuery innerJoinEmpleadoreporteRelatedByIdempleado($relationAlias = null) Adds a INNER JOIN clause to the query using the EmpleadoreporteRelatedByIdempleado relation
+ *
+ * @method EmpleadoQuery leftJoinEmpleadoreporteRelatedByIdempleadoreportado($relationAlias = null) Adds a LEFT JOIN clause to the query using the EmpleadoreporteRelatedByIdempleadoreportado relation
+ * @method EmpleadoQuery rightJoinEmpleadoreporteRelatedByIdempleadoreportado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EmpleadoreporteRelatedByIdempleadoreportado relation
+ * @method EmpleadoQuery innerJoinEmpleadoreporteRelatedByIdempleadoreportado($relationAlias = null) Adds a INNER JOIN clause to the query using the EmpleadoreporteRelatedByIdempleadoreportado relation
  *
  * @method EmpleadoQuery leftJoinFaltanteRelatedByIdempleadodeudor($relationAlias = null) Adds a LEFT JOIN clause to the query using the FaltanteRelatedByIdempleadodeudor relation
  * @method EmpleadoQuery rightJoinFaltanteRelatedByIdempleadodeudor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FaltanteRelatedByIdempleadodeudor relation
@@ -119,6 +131,8 @@
  * @method Empleado findOneByEmpleadoComprobanteidentificacion(string $empleado_comprobanteidentificacion) Return the first Empleado filtered by the empleado_comprobanteidentificacion column
  * @method Empleado findOneByEmpleadoSueldo(string $empleado_sueldo) Return the first Empleado filtered by the empleado_sueldo column
  * @method Empleado findOneByEmpleadoDiadescanso(string $empleado_diadescanso) Return the first Empleado filtered by the empleado_diadescanso column
+ * @method Empleado findOneByEmpleadoUsername(string $empleado_username) Return the first Empleado filtered by the empleado_username column
+ * @method Empleado findOneByEmpleadoPassword(string $empleado_password) Return the first Empleado filtered by the empleado_password column
  *
  * @method array findByIdempleado(int $idempleado) Return Empleado objects filtered by the idempleado column
  * @method array findByIdrol(int $idrol) Return Empleado objects filtered by the idrol column
@@ -139,6 +153,8 @@
  * @method array findByEmpleadoComprobanteidentificacion(string $empleado_comprobanteidentificacion) Return Empleado objects filtered by the empleado_comprobanteidentificacion column
  * @method array findByEmpleadoSueldo(string $empleado_sueldo) Return Empleado objects filtered by the empleado_sueldo column
  * @method array findByEmpleadoDiadescanso(string $empleado_diadescanso) Return Empleado objects filtered by the empleado_diadescanso column
+ * @method array findByEmpleadoUsername(string $empleado_username) Return Empleado objects filtered by the empleado_username column
+ * @method array findByEmpleadoPassword(string $empleado_password) Return Empleado objects filtered by the empleado_password column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -246,7 +262,7 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idempleado`, `idrol`, `empleado_registradoen`, `empleado_nombre`, `empleado_nss`, `empleado_rfc`, `empleado_calle`, `empleado_numero`, `empleado_colonia`, `empleado_codigopostal`, `empleado_ciudad`, `empleado_sexo`, `empleado_fechanacimiento`, `empleado_telefono`, `empleado_celular`, `empleado_comprobantedomiclio`, `empleado_comprobanteidentificacion`, `empleado_sueldo`, `empleado_diadescanso` FROM `empleado` WHERE `idempleado` = :p0';
+        $sql = 'SELECT `idempleado`, `idrol`, `empleado_registradoen`, `empleado_nombre`, `empleado_nss`, `empleado_rfc`, `empleado_calle`, `empleado_numero`, `empleado_colonia`, `empleado_codigopostal`, `empleado_ciudad`, `empleado_sexo`, `empleado_fechanacimiento`, `empleado_telefono`, `empleado_celular`, `empleado_comprobantedomiclio`, `empleado_comprobanteidentificacion`, `empleado_sueldo`, `empleado_diadescanso`, `empleado_username`, `empleado_password` FROM `empleado` WHERE `idempleado` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -956,6 +972,64 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the empleado_username column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmpleadoUsername('fooValue');   // WHERE empleado_username = 'fooValue'
+     * $query->filterByEmpleadoUsername('%fooValue%'); // WHERE empleado_username LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $empleadoUsername The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function filterByEmpleadoUsername($empleadoUsername = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($empleadoUsername)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $empleadoUsername)) {
+                $empleadoUsername = str_replace('*', '%', $empleadoUsername);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(EmpleadoPeer::EMPLEADO_USERNAME, $empleadoUsername, $comparison);
+    }
+
+    /**
+     * Filter the query on the empleado_password column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmpleadoPassword('fooValue');   // WHERE empleado_password = 'fooValue'
+     * $query->filterByEmpleadoPassword('%fooValue%'); // WHERE empleado_password LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $empleadoPassword The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function filterByEmpleadoPassword($empleadoPassword = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($empleadoPassword)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $empleadoPassword)) {
+                $empleadoPassword = str_replace('*', '%', $empleadoPassword);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(EmpleadoPeer::EMPLEADO_PASSWORD, $empleadoPassword, $comparison);
+    }
+
+    /**
      * Filter the query by a related Rol object
      *
      * @param   Rol|PropelObjectCollection $rol The related object(s) to use as filter
@@ -1402,6 +1476,154 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related Empleadoreporte object
+     *
+     * @param   Empleadoreporte|PropelObjectCollection $empleadoreporte  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByEmpleadoreporteRelatedByIdempleado($empleadoreporte, $comparison = null)
+    {
+        if ($empleadoreporte instanceof Empleadoreporte) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $empleadoreporte->getIdempleado(), $comparison);
+        } elseif ($empleadoreporte instanceof PropelObjectCollection) {
+            return $this
+                ->useEmpleadoreporteRelatedByIdempleadoQuery()
+                ->filterByPrimaryKeys($empleadoreporte->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByEmpleadoreporteRelatedByIdempleado() only accepts arguments of type Empleadoreporte or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the EmpleadoreporteRelatedByIdempleado relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinEmpleadoreporteRelatedByIdempleado($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('EmpleadoreporteRelatedByIdempleado');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'EmpleadoreporteRelatedByIdempleado');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the EmpleadoreporteRelatedByIdempleado relation Empleadoreporte object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EmpleadoreporteQuery A secondary query class using the current class as primary query
+     */
+    public function useEmpleadoreporteRelatedByIdempleadoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEmpleadoreporteRelatedByIdempleado($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'EmpleadoreporteRelatedByIdempleado', 'EmpleadoreporteQuery');
+    }
+
+    /**
+     * Filter the query by a related Empleadoreporte object
+     *
+     * @param   Empleadoreporte|PropelObjectCollection $empleadoreporte  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByEmpleadoreporteRelatedByIdempleadoreportado($empleadoreporte, $comparison = null)
+    {
+        if ($empleadoreporte instanceof Empleadoreporte) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $empleadoreporte->getIdempleadoreportado(), $comparison);
+        } elseif ($empleadoreporte instanceof PropelObjectCollection) {
+            return $this
+                ->useEmpleadoreporteRelatedByIdempleadoreportadoQuery()
+                ->filterByPrimaryKeys($empleadoreporte->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByEmpleadoreporteRelatedByIdempleadoreportado() only accepts arguments of type Empleadoreporte or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the EmpleadoreporteRelatedByIdempleadoreportado relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinEmpleadoreporteRelatedByIdempleadoreportado($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('EmpleadoreporteRelatedByIdempleadoreportado');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'EmpleadoreporteRelatedByIdempleadoreportado');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the EmpleadoreporteRelatedByIdempleadoreportado relation Empleadoreporte object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EmpleadoreporteQuery A secondary query class using the current class as primary query
+     */
+    public function useEmpleadoreporteRelatedByIdempleadoreportadoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEmpleadoreporteRelatedByIdempleadoreportado($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'EmpleadoreporteRelatedByIdempleadoreportado', 'EmpleadoreporteQuery');
+    }
+
+    /**
      * Filter the query by a related Faltante object
      *
      * @param   Faltante|PropelObjectCollection $faltante  the related object to use as filter
@@ -1655,7 +1877,7 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
      *
      * @return EmpleadoQuery The current query, for fluid interface
      */
-    public function joinTransferenciaRelatedByIdempleadoreceptor($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinTransferenciaRelatedByIdempleadoreceptor($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('TransferenciaRelatedByIdempleadoreceptor');
@@ -1690,7 +1912,7 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
      *
      * @return   TransferenciaQuery A secondary query class using the current class as primary query
      */
-    public function useTransferenciaRelatedByIdempleadoreceptorQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useTransferenciaRelatedByIdempleadoreceptorQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinTransferenciaRelatedByIdempleadoreceptor($relationAlias, $joinType)

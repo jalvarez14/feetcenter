@@ -40,8 +40,8 @@ class TransferenciadetalleTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idtransferenciadetalle', 'Idtransferenciadetalle', 'INTEGER', true, null, null);
         $this->addForeignKey('idtransferencia', 'Idtransferencia', 'INTEGER', 'transferencia', 'idtransferencia', true, null, null);
-        $this->addForeignKey('idproductoclinica', 'Idproductoclinica', 'INTEGER', 'productoclinica', 'idproductoclinica', true, null, null);
-        $this->addForeignKey('idinsumoclinica', 'Idinsumoclinica', 'INTEGER', 'insumoclinica', 'idinsumoclinica', true, null, null);
+        $this->addForeignKey('idproductoclinica', 'Idproductoclinica', 'INTEGER', 'productoclinica', 'idproductoclinica', false, null, null);
+        $this->addForeignKey('idinsumoclinica', 'Idinsumoclinica', 'INTEGER', 'insumoclinica', 'idinsumoclinica', false, null, null);
         $this->addColumn('transferenciadetalle_cantidad', 'TransferenciadetalleCantidad', 'DECIMAL', false, 10, null);
         // validators
     } // initialize()
@@ -52,8 +52,8 @@ class TransferenciadetalleTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Insumoclinica', 'Insumoclinica', RelationMap::MANY_TO_ONE, array('idinsumoclinica' => 'idinsumoclinica', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Productoclinica', 'Productoclinica', RelationMap::MANY_TO_ONE, array('idproductoclinica' => 'idproductoclinica', ), null, null);
-        $this->addRelation('Transferencia', 'Transferencia', RelationMap::MANY_TO_ONE, array('idtransferencia' => 'idtransferencia', ), null, 'CASCADE');
+        $this->addRelation('Productoclinica', 'Productoclinica', RelationMap::MANY_TO_ONE, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Transferencia', 'Transferencia', RelationMap::MANY_TO_ONE, array('idtransferencia' => 'idtransferencia', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
 } // TransferenciadetalleTableMap

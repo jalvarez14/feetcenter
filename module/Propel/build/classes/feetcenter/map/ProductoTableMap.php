@@ -45,12 +45,12 @@ class ProductoTableMap extends TableMap
         $this->addColumn('producto_precio', 'ProductoPrecio', 'VARCHAR', true, 45, null);
         $this->addColumn('producto_generaingreso', 'ProductoGeneraingreso', 'BOOLEAN', true, 1, null);
         $this->addColumn('producto_generacomision', 'ProductoGeneracomision', 'BOOLEAN', true, 1, null);
-        $this->addColumn('producto_tipocomision', 'ProductoTipocomision', 'CHAR', true, null, null);
+        $this->addColumn('producto_tipocomision', 'ProductoTipocomision', 'CHAR', false, null, null);
         $this->getColumn('producto_tipocomision', false)->setValueSet(array (
   0 => 'cantidad',
   1 => 'porcentaje',
 ));
-        $this->addColumn('producto_comision', 'ProductoComision', 'DECIMAL', true, 10, null);
+        $this->addColumn('producto_comision', 'ProductoComision', 'DECIMAL', false, 10, null);
         // validators
     } // initialize()
 

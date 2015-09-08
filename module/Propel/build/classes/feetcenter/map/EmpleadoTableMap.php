@@ -70,6 +70,8 @@ class EmpleadoTableMap extends TableMap
   5 => 'sabado',
   6 => 'domingo',
 ));
+        $this->addColumn('empleado_username', 'EmpleadoUsername', 'VARCHAR', false, 45, null);
+        $this->addColumn('empleado_password', 'EmpleadoPassword', 'VARCHAR', false, 45, null);
         // validators
     } // initialize()
 
@@ -84,11 +86,13 @@ class EmpleadoTableMap extends TableMap
         $this->addRelation('Egresoclinica', 'Egresoclinica', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Egresoclinicas');
         $this->addRelation('Empleadocomision', 'Empleadocomision', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempledo', ), 'CASCADE', 'CASCADE', 'Empleadocomisions');
         $this->addRelation('Empleadohorario', 'Empleadohorario', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Empleadohorarios');
+        $this->addRelation('EmpleadoreporteRelatedByIdempleado', 'Empleadoreporte', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'EmpleadoreportesRelatedByIdempleado');
+        $this->addRelation('EmpleadoreporteRelatedByIdempleadoreportado', 'Empleadoreporte', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadoreportado', ), 'CASCADE', 'CASCADE', 'EmpleadoreportesRelatedByIdempleadoreportado');
         $this->addRelation('FaltanteRelatedByIdempleadodeudor', 'Faltante', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadodeudor', ), 'CASCADE', 'CASCADE', 'FaltantesRelatedByIdempleadodeudor');
         $this->addRelation('FaltanteRelatedByIdempleadogenerador', 'Faltante', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadogenerador', ), 'CASCADE', 'CASCADE', 'FaltantesRelatedByIdempleadogenerador');
-        $this->addRelation('TransferenciaRelatedByIdempleado', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), null, null, 'TransferenciasRelatedByIdempleado');
+        $this->addRelation('TransferenciaRelatedByIdempleado', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdempleado');
         $this->addRelation('TransferenciaRelatedByIdempleadoreceptor', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadoreceptor', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdempleadoreceptor');
-        $this->addRelation('VisitaRelatedByIdempleado', 'Visita', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), null, null, 'VisitasRelatedByIdempleado');
+        $this->addRelation('VisitaRelatedByIdempleado', 'Visita', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'VisitasRelatedByIdempleado');
         $this->addRelation('VisitaRelatedByIdempleadocreador', 'Visita', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadocreador', ), 'CASCADE', 'CASCADE', 'VisitasRelatedByIdempleadocreador');
     } // buildRelations()
 

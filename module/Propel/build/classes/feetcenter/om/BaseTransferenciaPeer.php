@@ -24,13 +24,13 @@ abstract class BaseTransferenciaPeer
     const TM_CLASS = 'TransferenciaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the idtransferencia field */
     const IDTRANSFERENCIA = 'transferencia.idtransferencia';
@@ -47,14 +47,20 @@ abstract class BaseTransferenciaPeer
     /** the column name for the idclinicadestinataria field */
     const IDCLINICADESTINATARIA = 'transferencia.idclinicadestinataria';
 
-    /** the column name for the transferencia_fecha field */
-    const TRANSFERENCIA_FECHA = 'transferencia.transferencia_fecha';
+    /** the column name for the transferencia_creadaen field */
+    const TRANSFERENCIA_CREADAEN = 'transferencia.transferencia_creadaen';
 
     /** the column name for the transferencia_estatus field */
     const TRANSFERENCIA_ESTATUS = 'transferencia.transferencia_estatus';
 
     /** the column name for the transferencia_fechamovimiento field */
     const TRANSFERENCIA_FECHAMOVIMIENTO = 'transferencia.transferencia_fechamovimiento';
+
+    /** the column name for the transferencia_comprobante field */
+    const TRANSFERENCIA_COMPROBANTE = 'transferencia.transferencia_comprobante';
+
+    /** the column name for the transferencia_nota field */
+    const TRANSFERENCIA_NOTA = 'transferencia.transferencia_nota';
 
     /** The enumerated values for the transferencia_estatus field */
     const TRANSFERENCIA_ESTATUS_ENVIADA = 'enviada';
@@ -81,12 +87,12 @@ abstract class BaseTransferenciaPeer
      * e.g. TransferenciaPeer::$fieldNames[TransferenciaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idtransferencia', 'Idempleado', 'Idempleadoreceptor', 'Idclinicaremitente', 'Idclinicadestinataria', 'TransferenciaFecha', 'TransferenciaEstatus', 'TransferenciaFechamovimiento', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idtransferencia', 'idempleado', 'idempleadoreceptor', 'idclinicaremitente', 'idclinicadestinataria', 'transferenciaFecha', 'transferenciaEstatus', 'transferenciaFechamovimiento', ),
-        BasePeer::TYPE_COLNAME => array (TransferenciaPeer::IDTRANSFERENCIA, TransferenciaPeer::IDEMPLEADO, TransferenciaPeer::IDEMPLEADORECEPTOR, TransferenciaPeer::IDCLINICAREMITENTE, TransferenciaPeer::IDCLINICADESTINATARIA, TransferenciaPeer::TRANSFERENCIA_FECHA, TransferenciaPeer::TRANSFERENCIA_ESTATUS, TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDTRANSFERENCIA', 'IDEMPLEADO', 'IDEMPLEADORECEPTOR', 'IDCLINICAREMITENTE', 'IDCLINICADESTINATARIA', 'TRANSFERENCIA_FECHA', 'TRANSFERENCIA_ESTATUS', 'TRANSFERENCIA_FECHAMOVIMIENTO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idtransferencia', 'idempleado', 'idempleadoreceptor', 'idclinicaremitente', 'idclinicadestinataria', 'transferencia_fecha', 'transferencia_estatus', 'transferencia_fechamovimiento', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Idtransferencia', 'Idempleado', 'Idempleadoreceptor', 'Idclinicaremitente', 'Idclinicadestinataria', 'TransferenciaCreadaen', 'TransferenciaEstatus', 'TransferenciaFechamovimiento', 'TransferenciaComprobante', 'TransferenciaNota', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idtransferencia', 'idempleado', 'idempleadoreceptor', 'idclinicaremitente', 'idclinicadestinataria', 'transferenciaCreadaen', 'transferenciaEstatus', 'transferenciaFechamovimiento', 'transferenciaComprobante', 'transferenciaNota', ),
+        BasePeer::TYPE_COLNAME => array (TransferenciaPeer::IDTRANSFERENCIA, TransferenciaPeer::IDEMPLEADO, TransferenciaPeer::IDEMPLEADORECEPTOR, TransferenciaPeer::IDCLINICAREMITENTE, TransferenciaPeer::IDCLINICADESTINATARIA, TransferenciaPeer::TRANSFERENCIA_CREADAEN, TransferenciaPeer::TRANSFERENCIA_ESTATUS, TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO, TransferenciaPeer::TRANSFERENCIA_COMPROBANTE, TransferenciaPeer::TRANSFERENCIA_NOTA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDTRANSFERENCIA', 'IDEMPLEADO', 'IDEMPLEADORECEPTOR', 'IDCLINICAREMITENTE', 'IDCLINICADESTINATARIA', 'TRANSFERENCIA_CREADAEN', 'TRANSFERENCIA_ESTATUS', 'TRANSFERENCIA_FECHAMOVIMIENTO', 'TRANSFERENCIA_COMPROBANTE', 'TRANSFERENCIA_NOTA', ),
+        BasePeer::TYPE_FIELDNAME => array ('idtransferencia', 'idempleado', 'idempleadoreceptor', 'idclinicaremitente', 'idclinicadestinataria', 'transferencia_creadaen', 'transferencia_estatus', 'transferencia_fechamovimiento', 'transferencia_comprobante', 'transferencia_nota', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -96,12 +102,12 @@ abstract class BaseTransferenciaPeer
      * e.g. TransferenciaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idtransferencia' => 0, 'Idempleado' => 1, 'Idempleadoreceptor' => 2, 'Idclinicaremitente' => 3, 'Idclinicadestinataria' => 4, 'TransferenciaFecha' => 5, 'TransferenciaEstatus' => 6, 'TransferenciaFechamovimiento' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idtransferencia' => 0, 'idempleado' => 1, 'idempleadoreceptor' => 2, 'idclinicaremitente' => 3, 'idclinicadestinataria' => 4, 'transferenciaFecha' => 5, 'transferenciaEstatus' => 6, 'transferenciaFechamovimiento' => 7, ),
-        BasePeer::TYPE_COLNAME => array (TransferenciaPeer::IDTRANSFERENCIA => 0, TransferenciaPeer::IDEMPLEADO => 1, TransferenciaPeer::IDEMPLEADORECEPTOR => 2, TransferenciaPeer::IDCLINICAREMITENTE => 3, TransferenciaPeer::IDCLINICADESTINATARIA => 4, TransferenciaPeer::TRANSFERENCIA_FECHA => 5, TransferenciaPeer::TRANSFERENCIA_ESTATUS => 6, TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDTRANSFERENCIA' => 0, 'IDEMPLEADO' => 1, 'IDEMPLEADORECEPTOR' => 2, 'IDCLINICAREMITENTE' => 3, 'IDCLINICADESTINATARIA' => 4, 'TRANSFERENCIA_FECHA' => 5, 'TRANSFERENCIA_ESTATUS' => 6, 'TRANSFERENCIA_FECHAMOVIMIENTO' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('idtransferencia' => 0, 'idempleado' => 1, 'idempleadoreceptor' => 2, 'idclinicaremitente' => 3, 'idclinicadestinataria' => 4, 'transferencia_fecha' => 5, 'transferencia_estatus' => 6, 'transferencia_fechamovimiento' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Idtransferencia' => 0, 'Idempleado' => 1, 'Idempleadoreceptor' => 2, 'Idclinicaremitente' => 3, 'Idclinicadestinataria' => 4, 'TransferenciaCreadaen' => 5, 'TransferenciaEstatus' => 6, 'TransferenciaFechamovimiento' => 7, 'TransferenciaComprobante' => 8, 'TransferenciaNota' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idtransferencia' => 0, 'idempleado' => 1, 'idempleadoreceptor' => 2, 'idclinicaremitente' => 3, 'idclinicadestinataria' => 4, 'transferenciaCreadaen' => 5, 'transferenciaEstatus' => 6, 'transferenciaFechamovimiento' => 7, 'transferenciaComprobante' => 8, 'transferenciaNota' => 9, ),
+        BasePeer::TYPE_COLNAME => array (TransferenciaPeer::IDTRANSFERENCIA => 0, TransferenciaPeer::IDEMPLEADO => 1, TransferenciaPeer::IDEMPLEADORECEPTOR => 2, TransferenciaPeer::IDCLINICAREMITENTE => 3, TransferenciaPeer::IDCLINICADESTINATARIA => 4, TransferenciaPeer::TRANSFERENCIA_CREADAEN => 5, TransferenciaPeer::TRANSFERENCIA_ESTATUS => 6, TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO => 7, TransferenciaPeer::TRANSFERENCIA_COMPROBANTE => 8, TransferenciaPeer::TRANSFERENCIA_NOTA => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDTRANSFERENCIA' => 0, 'IDEMPLEADO' => 1, 'IDEMPLEADORECEPTOR' => 2, 'IDCLINICAREMITENTE' => 3, 'IDCLINICADESTINATARIA' => 4, 'TRANSFERENCIA_CREADAEN' => 5, 'TRANSFERENCIA_ESTATUS' => 6, 'TRANSFERENCIA_FECHAMOVIMIENTO' => 7, 'TRANSFERENCIA_COMPROBANTE' => 8, 'TRANSFERENCIA_NOTA' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('idtransferencia' => 0, 'idempleado' => 1, 'idempleadoreceptor' => 2, 'idclinicaremitente' => 3, 'idclinicadestinataria' => 4, 'transferencia_creadaen' => 5, 'transferencia_estatus' => 6, 'transferencia_fechamovimiento' => 7, 'transferencia_comprobante' => 8, 'transferencia_nota' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /** The enumerated values for this table */
@@ -235,18 +241,22 @@ abstract class BaseTransferenciaPeer
             $criteria->addSelectColumn(TransferenciaPeer::IDEMPLEADORECEPTOR);
             $criteria->addSelectColumn(TransferenciaPeer::IDCLINICAREMITENTE);
             $criteria->addSelectColumn(TransferenciaPeer::IDCLINICADESTINATARIA);
-            $criteria->addSelectColumn(TransferenciaPeer::TRANSFERENCIA_FECHA);
+            $criteria->addSelectColumn(TransferenciaPeer::TRANSFERENCIA_CREADAEN);
             $criteria->addSelectColumn(TransferenciaPeer::TRANSFERENCIA_ESTATUS);
             $criteria->addSelectColumn(TransferenciaPeer::TRANSFERENCIA_FECHAMOVIMIENTO);
+            $criteria->addSelectColumn(TransferenciaPeer::TRANSFERENCIA_COMPROBANTE);
+            $criteria->addSelectColumn(TransferenciaPeer::TRANSFERENCIA_NOTA);
         } else {
             $criteria->addSelectColumn($alias . '.idtransferencia');
             $criteria->addSelectColumn($alias . '.idempleado');
             $criteria->addSelectColumn($alias . '.idempleadoreceptor');
             $criteria->addSelectColumn($alias . '.idclinicaremitente');
             $criteria->addSelectColumn($alias . '.idclinicadestinataria');
-            $criteria->addSelectColumn($alias . '.transferencia_fecha');
+            $criteria->addSelectColumn($alias . '.transferencia_creadaen');
             $criteria->addSelectColumn($alias . '.transferencia_estatus');
             $criteria->addSelectColumn($alias . '.transferencia_fechamovimiento');
+            $criteria->addSelectColumn($alias . '.transferencia_comprobante');
+            $criteria->addSelectColumn($alias . '.transferencia_nota');
         }
     }
 
@@ -451,6 +461,9 @@ abstract class BaseTransferenciaPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in TransferenciadetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        TransferenciadetallePeer::clearInstancePool();
     }
 
     /**
@@ -1951,6 +1964,7 @@ abstract class BaseTransferenciaPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
+            $affectedRows += TransferenciaPeer::doOnDeleteCascade(new Criteria(TransferenciaPeer::DATABASE_NAME), $con);
             $affectedRows += BasePeer::doDeleteAll(TransferenciaPeer::TABLE_NAME, $con, TransferenciaPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
@@ -1984,24 +1998,14 @@ abstract class BaseTransferenciaPeer
         }
 
         if ($values instanceof Criteria) {
-            // invalidate the cache for all objects of this type, since we have no
-            // way of knowing (without running a query) what objects should be invalidated
-            // from the cache based on this Criteria.
-            TransferenciaPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
         } elseif ($values instanceof Transferencia) { // it's a model object
-            // invalidate the cache for this single object
-            TransferenciaPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(TransferenciaPeer::DATABASE_NAME);
             $criteria->add(TransferenciaPeer::IDTRANSFERENCIA, (array) $values, Criteria::IN);
-            // invalidate the cache for this object(s)
-            foreach ((array) $values as $singleval) {
-                TransferenciaPeer::removeInstanceFromPool($singleval);
-            }
         }
 
         // Set the correct dbName
@@ -2014,6 +2018,23 @@ abstract class BaseTransferenciaPeer
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
 
+            // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
+            $c = clone $criteria;
+            $affectedRows += TransferenciaPeer::doOnDeleteCascade($c, $con);
+
+            // Because this db requires some delete cascade/set null emulation, we have to
+            // clear the cached instance *after* the emulation has happened (since
+            // instances get re-added by the select statement contained therein).
+            if ($values instanceof Criteria) {
+                TransferenciaPeer::clearInstancePool();
+            } elseif ($values instanceof Transferencia) { // it's a model object
+                TransferenciaPeer::removeInstanceFromPool($values);
+            } else { // it's a primary key, or an array of pks
+                foreach ((array) $values as $singleval) {
+                    TransferenciaPeer::removeInstanceFromPool($singleval);
+                }
+            }
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             TransferenciaPeer::clearRelatedInstancePool();
             $con->commit();
@@ -2023,6 +2044,39 @@ abstract class BaseTransferenciaPeer
             $con->rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
+     * feature (like MySQL or SQLite).
+     *
+     * This method is not very speedy because it must perform a query first to get
+     * the implicated records and then perform the deletes by calling those Peer classes.
+     *
+     * This method should be used within a transaction if possible.
+     *
+     * @param      Criteria $criteria
+     * @param      PropelPDO $con
+     * @return int The number of affected rows (if supported by underlying database driver).
+     */
+    protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
+    {
+        // initialize var to track total num of affected rows
+        $affectedRows = 0;
+
+        // first find the objects that are implicated by the $criteria
+        $objects = TransferenciaPeer::doSelect($criteria, $con);
+        foreach ($objects as $obj) {
+
+
+            // delete related Transferenciadetalle objects
+            $criteria = new Criteria(TransferenciadetallePeer::DATABASE_NAME);
+
+            $criteria->add(TransferenciadetallePeer::IDTRANSFERENCIA, $obj->getIdtransferencia());
+            $affectedRows += TransferenciadetallePeer::doDelete($criteria, $con);
+        }
+
+        return $affectedRows;
     }
 
     /**

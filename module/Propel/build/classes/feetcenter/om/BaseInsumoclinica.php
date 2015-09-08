@@ -48,10 +48,28 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
     protected $idclinica;
 
     /**
-     * The value for the insumoclinica_cantidad field.
+     * The value for the insumoclinica_existencia field.
      * @var        string
      */
-    protected $insumoclinica_cantidad;
+    protected $insumoclinica_existencia;
+
+    /**
+     * The value for the insumoclinica_minimo field.
+     * @var        string
+     */
+    protected $insumoclinica_minimo;
+
+    /**
+     * The value for the insumoclinica_maximo field.
+     * @var        string
+     */
+    protected $insumoclinica_maximo;
+
+    /**
+     * The value for the insumoclinica_reorden field.
+     * @var        string
+     */
+    protected $insumoclinica_reorden;
 
     /**
      * @var        Clinica
@@ -62,6 +80,12 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
      * @var        Insumo
      */
     protected $aInsumo;
+
+    /**
+     * @var        PropelObjectCollection|Compradetalle[] Collection to store aggregation of Compradetalle objects.
+     */
+    protected $collCompradetalles;
+    protected $collCompradetallesPartial;
 
     /**
      * @var        PropelObjectCollection|Transferenciadetalle[] Collection to store aggregation of Transferenciadetalle objects.
@@ -88,6 +112,12 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $compradetallesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -129,14 +159,47 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [insumoclinica_cantidad] column value.
+     * Get the [insumoclinica_existencia] column value.
      *
      * @return string
      */
-    public function getInsumoclinicaCantidad()
+    public function getInsumoclinicaExistencia()
     {
 
-        return $this->insumoclinica_cantidad;
+        return $this->insumoclinica_existencia;
+    }
+
+    /**
+     * Get the [insumoclinica_minimo] column value.
+     *
+     * @return string
+     */
+    public function getInsumoclinicaMinimo()
+    {
+
+        return $this->insumoclinica_minimo;
+    }
+
+    /**
+     * Get the [insumoclinica_maximo] column value.
+     *
+     * @return string
+     */
+    public function getInsumoclinicaMaximo()
+    {
+
+        return $this->insumoclinica_maximo;
+    }
+
+    /**
+     * Get the [insumoclinica_reorden] column value.
+     *
+     * @return string
+     */
+    public function getInsumoclinicaReorden()
+    {
+
+        return $this->insumoclinica_reorden;
     }
 
     /**
@@ -211,25 +274,88 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
     } // setIdclinica()
 
     /**
-     * Set the value of [insumoclinica_cantidad] column.
+     * Set the value of [insumoclinica_existencia] column.
      *
      * @param  string $v new value
      * @return Insumoclinica The current object (for fluent API support)
      */
-    public function setInsumoclinicaCantidad($v)
+    public function setInsumoclinicaExistencia($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->insumoclinica_cantidad !== $v) {
-            $this->insumoclinica_cantidad = $v;
-            $this->modifiedColumns[] = InsumoclinicaPeer::INSUMOCLINICA_CANTIDAD;
+        if ($this->insumoclinica_existencia !== $v) {
+            $this->insumoclinica_existencia = $v;
+            $this->modifiedColumns[] = InsumoclinicaPeer::INSUMOCLINICA_EXISTENCIA;
         }
 
 
         return $this;
-    } // setInsumoclinicaCantidad()
+    } // setInsumoclinicaExistencia()
+
+    /**
+     * Set the value of [insumoclinica_minimo] column.
+     *
+     * @param  string $v new value
+     * @return Insumoclinica The current object (for fluent API support)
+     */
+    public function setInsumoclinicaMinimo($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->insumoclinica_minimo !== $v) {
+            $this->insumoclinica_minimo = $v;
+            $this->modifiedColumns[] = InsumoclinicaPeer::INSUMOCLINICA_MINIMO;
+        }
+
+
+        return $this;
+    } // setInsumoclinicaMinimo()
+
+    /**
+     * Set the value of [insumoclinica_maximo] column.
+     *
+     * @param  string $v new value
+     * @return Insumoclinica The current object (for fluent API support)
+     */
+    public function setInsumoclinicaMaximo($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->insumoclinica_maximo !== $v) {
+            $this->insumoclinica_maximo = $v;
+            $this->modifiedColumns[] = InsumoclinicaPeer::INSUMOCLINICA_MAXIMO;
+        }
+
+
+        return $this;
+    } // setInsumoclinicaMaximo()
+
+    /**
+     * Set the value of [insumoclinica_reorden] column.
+     *
+     * @param  string $v new value
+     * @return Insumoclinica The current object (for fluent API support)
+     */
+    public function setInsumoclinicaReorden($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->insumoclinica_reorden !== $v) {
+            $this->insumoclinica_reorden = $v;
+            $this->modifiedColumns[] = InsumoclinicaPeer::INSUMOCLINICA_REORDEN;
+        }
+
+
+        return $this;
+    } // setInsumoclinicaReorden()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -266,7 +392,10 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
             $this->idinsumoclinica = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idinsumo = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->idclinica = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->insumoclinica_cantidad = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->insumoclinica_existencia = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->insumoclinica_minimo = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->insumoclinica_maximo = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->insumoclinica_reorden = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -276,7 +405,7 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = InsumoclinicaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = InsumoclinicaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Insumoclinica object", $e);
@@ -346,6 +475,8 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
 
             $this->aClinica = null;
             $this->aInsumo = null;
+            $this->collCompradetalles = null;
+
             $this->collTransferenciadetalles = null;
 
         } // if (deep)
@@ -491,6 +622,23 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
+            if ($this->compradetallesScheduledForDeletion !== null) {
+                if (!$this->compradetallesScheduledForDeletion->isEmpty()) {
+                    CompradetalleQuery::create()
+                        ->filterByPrimaryKeys($this->compradetallesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->compradetallesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCompradetalles !== null) {
+                foreach ($this->collCompradetalles as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->transferenciadetallesScheduledForDeletion !== null) {
                 if (!$this->transferenciadetallesScheduledForDeletion->isEmpty()) {
                     TransferenciadetalleQuery::create()
@@ -543,8 +691,17 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
         if ($this->isColumnModified(InsumoclinicaPeer::IDCLINICA)) {
             $modifiedColumns[':p' . $index++]  = '`idclinica`';
         }
-        if ($this->isColumnModified(InsumoclinicaPeer::INSUMOCLINICA_CANTIDAD)) {
-            $modifiedColumns[':p' . $index++]  = '`insumoclinica_cantidad`';
+        if ($this->isColumnModified(InsumoclinicaPeer::INSUMOCLINICA_EXISTENCIA)) {
+            $modifiedColumns[':p' . $index++]  = '`insumoclinica_existencia`';
+        }
+        if ($this->isColumnModified(InsumoclinicaPeer::INSUMOCLINICA_MINIMO)) {
+            $modifiedColumns[':p' . $index++]  = '`insumoclinica_minimo`';
+        }
+        if ($this->isColumnModified(InsumoclinicaPeer::INSUMOCLINICA_MAXIMO)) {
+            $modifiedColumns[':p' . $index++]  = '`insumoclinica_maximo`';
+        }
+        if ($this->isColumnModified(InsumoclinicaPeer::INSUMOCLINICA_REORDEN)) {
+            $modifiedColumns[':p' . $index++]  = '`insumoclinica_reorden`';
         }
 
         $sql = sprintf(
@@ -566,8 +723,17 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
                     case '`idclinica`':
                         $stmt->bindValue($identifier, $this->idclinica, PDO::PARAM_INT);
                         break;
-                    case '`insumoclinica_cantidad`':
-                        $stmt->bindValue($identifier, $this->insumoclinica_cantidad, PDO::PARAM_STR);
+                    case '`insumoclinica_existencia`':
+                        $stmt->bindValue($identifier, $this->insumoclinica_existencia, PDO::PARAM_STR);
+                        break;
+                    case '`insumoclinica_minimo`':
+                        $stmt->bindValue($identifier, $this->insumoclinica_minimo, PDO::PARAM_STR);
+                        break;
+                    case '`insumoclinica_maximo`':
+                        $stmt->bindValue($identifier, $this->insumoclinica_maximo, PDO::PARAM_STR);
+                        break;
+                    case '`insumoclinica_reorden`':
+                        $stmt->bindValue($identifier, $this->insumoclinica_reorden, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -686,6 +852,14 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
             }
 
 
+                if ($this->collCompradetalles !== null) {
+                    foreach ($this->collCompradetalles as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collTransferenciadetalles !== null) {
                     foreach ($this->collTransferenciadetalles as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -739,7 +913,16 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
                 return $this->getIdclinica();
                 break;
             case 3:
-                return $this->getInsumoclinicaCantidad();
+                return $this->getInsumoclinicaExistencia();
+                break;
+            case 4:
+                return $this->getInsumoclinicaMinimo();
+                break;
+            case 5:
+                return $this->getInsumoclinicaMaximo();
+                break;
+            case 6:
+                return $this->getInsumoclinicaReorden();
                 break;
             default:
                 return null;
@@ -773,7 +956,10 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
             $keys[0] => $this->getIdinsumoclinica(),
             $keys[1] => $this->getIdinsumo(),
             $keys[2] => $this->getIdclinica(),
-            $keys[3] => $this->getInsumoclinicaCantidad(),
+            $keys[3] => $this->getInsumoclinicaExistencia(),
+            $keys[4] => $this->getInsumoclinicaMinimo(),
+            $keys[5] => $this->getInsumoclinicaMaximo(),
+            $keys[6] => $this->getInsumoclinicaReorden(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -786,6 +972,9 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
             }
             if (null !== $this->aInsumo) {
                 $result['Insumo'] = $this->aInsumo->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collCompradetalles) {
+                $result['Compradetalles'] = $this->collCompradetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collTransferenciadetalles) {
                 $result['Transferenciadetalles'] = $this->collTransferenciadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -834,7 +1023,16 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
                 $this->setIdclinica($value);
                 break;
             case 3:
-                $this->setInsumoclinicaCantidad($value);
+                $this->setInsumoclinicaExistencia($value);
+                break;
+            case 4:
+                $this->setInsumoclinicaMinimo($value);
+                break;
+            case 5:
+                $this->setInsumoclinicaMaximo($value);
+                break;
+            case 6:
+                $this->setInsumoclinicaReorden($value);
                 break;
         } // switch()
     }
@@ -863,7 +1061,10 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setIdinsumoclinica($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setIdinsumo($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setIdclinica($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setInsumoclinicaCantidad($arr[$keys[3]]);
+        if (array_key_exists($keys[3], $arr)) $this->setInsumoclinicaExistencia($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setInsumoclinicaMinimo($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setInsumoclinicaMaximo($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setInsumoclinicaReorden($arr[$keys[6]]);
     }
 
     /**
@@ -878,7 +1079,10 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
         if ($this->isColumnModified(InsumoclinicaPeer::IDINSUMOCLINICA)) $criteria->add(InsumoclinicaPeer::IDINSUMOCLINICA, $this->idinsumoclinica);
         if ($this->isColumnModified(InsumoclinicaPeer::IDINSUMO)) $criteria->add(InsumoclinicaPeer::IDINSUMO, $this->idinsumo);
         if ($this->isColumnModified(InsumoclinicaPeer::IDCLINICA)) $criteria->add(InsumoclinicaPeer::IDCLINICA, $this->idclinica);
-        if ($this->isColumnModified(InsumoclinicaPeer::INSUMOCLINICA_CANTIDAD)) $criteria->add(InsumoclinicaPeer::INSUMOCLINICA_CANTIDAD, $this->insumoclinica_cantidad);
+        if ($this->isColumnModified(InsumoclinicaPeer::INSUMOCLINICA_EXISTENCIA)) $criteria->add(InsumoclinicaPeer::INSUMOCLINICA_EXISTENCIA, $this->insumoclinica_existencia);
+        if ($this->isColumnModified(InsumoclinicaPeer::INSUMOCLINICA_MINIMO)) $criteria->add(InsumoclinicaPeer::INSUMOCLINICA_MINIMO, $this->insumoclinica_minimo);
+        if ($this->isColumnModified(InsumoclinicaPeer::INSUMOCLINICA_MAXIMO)) $criteria->add(InsumoclinicaPeer::INSUMOCLINICA_MAXIMO, $this->insumoclinica_maximo);
+        if ($this->isColumnModified(InsumoclinicaPeer::INSUMOCLINICA_REORDEN)) $criteria->add(InsumoclinicaPeer::INSUMOCLINICA_REORDEN, $this->insumoclinica_reorden);
 
         return $criteria;
     }
@@ -944,7 +1148,10 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
     {
         $copyObj->setIdinsumo($this->getIdinsumo());
         $copyObj->setIdclinica($this->getIdclinica());
-        $copyObj->setInsumoclinicaCantidad($this->getInsumoclinicaCantidad());
+        $copyObj->setInsumoclinicaExistencia($this->getInsumoclinicaExistencia());
+        $copyObj->setInsumoclinicaMinimo($this->getInsumoclinicaMinimo());
+        $copyObj->setInsumoclinicaMaximo($this->getInsumoclinicaMaximo());
+        $copyObj->setInsumoclinicaReorden($this->getInsumoclinicaReorden());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -952,6 +1159,12 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
+
+            foreach ($this->getCompradetalles() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCompradetalle($relObj->copy($deepCopy));
+                }
+            }
 
             foreach ($this->getTransferenciadetalles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1124,9 +1337,287 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('Compradetalle' == $relationName) {
+            $this->initCompradetalles();
+        }
         if ('Transferenciadetalle' == $relationName) {
             $this->initTransferenciadetalles();
         }
+    }
+
+    /**
+     * Clears out the collCompradetalles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Insumoclinica The current object (for fluent API support)
+     * @see        addCompradetalles()
+     */
+    public function clearCompradetalles()
+    {
+        $this->collCompradetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collCompradetallesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collCompradetalles collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialCompradetalles($v = true)
+    {
+        $this->collCompradetallesPartial = $v;
+    }
+
+    /**
+     * Initializes the collCompradetalles collection.
+     *
+     * By default this just sets the collCompradetalles collection to an empty array (like clearcollCompradetalles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCompradetalles($overrideExisting = true)
+    {
+        if (null !== $this->collCompradetalles && !$overrideExisting) {
+            return;
+        }
+        $this->collCompradetalles = new PropelObjectCollection();
+        $this->collCompradetalles->setModel('Compradetalle');
+    }
+
+    /**
+     * Gets an array of Compradetalle objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Insumoclinica is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Compradetalle[] List of Compradetalle objects
+     * @throws PropelException
+     */
+    public function getCompradetalles($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collCompradetallesPartial && !$this->isNew();
+        if (null === $this->collCompradetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCompradetalles) {
+                // return empty collection
+                $this->initCompradetalles();
+            } else {
+                $collCompradetalles = CompradetalleQuery::create(null, $criteria)
+                    ->filterByInsumoclinica($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collCompradetallesPartial && count($collCompradetalles)) {
+                      $this->initCompradetalles(false);
+
+                      foreach ($collCompradetalles as $obj) {
+                        if (false == $this->collCompradetalles->contains($obj)) {
+                          $this->collCompradetalles->append($obj);
+                        }
+                      }
+
+                      $this->collCompradetallesPartial = true;
+                    }
+
+                    $collCompradetalles->getInternalIterator()->rewind();
+
+                    return $collCompradetalles;
+                }
+
+                if ($partial && $this->collCompradetalles) {
+                    foreach ($this->collCompradetalles as $obj) {
+                        if ($obj->isNew()) {
+                            $collCompradetalles[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCompradetalles = $collCompradetalles;
+                $this->collCompradetallesPartial = false;
+            }
+        }
+
+        return $this->collCompradetalles;
+    }
+
+    /**
+     * Sets a collection of Compradetalle objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $compradetalles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Insumoclinica The current object (for fluent API support)
+     */
+    public function setCompradetalles(PropelCollection $compradetalles, PropelPDO $con = null)
+    {
+        $compradetallesToDelete = $this->getCompradetalles(new Criteria(), $con)->diff($compradetalles);
+
+
+        $this->compradetallesScheduledForDeletion = $compradetallesToDelete;
+
+        foreach ($compradetallesToDelete as $compradetalleRemoved) {
+            $compradetalleRemoved->setInsumoclinica(null);
+        }
+
+        $this->collCompradetalles = null;
+        foreach ($compradetalles as $compradetalle) {
+            $this->addCompradetalle($compradetalle);
+        }
+
+        $this->collCompradetalles = $compradetalles;
+        $this->collCompradetallesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Compradetalle objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Compradetalle objects.
+     * @throws PropelException
+     */
+    public function countCompradetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collCompradetallesPartial && !$this->isNew();
+        if (null === $this->collCompradetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCompradetalles) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCompradetalles());
+            }
+            $query = CompradetalleQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByInsumoclinica($this)
+                ->count($con);
+        }
+
+        return count($this->collCompradetalles);
+    }
+
+    /**
+     * Method called to associate a Compradetalle object to this object
+     * through the Compradetalle foreign key attribute.
+     *
+     * @param    Compradetalle $l Compradetalle
+     * @return Insumoclinica The current object (for fluent API support)
+     */
+    public function addCompradetalle(Compradetalle $l)
+    {
+        if ($this->collCompradetalles === null) {
+            $this->initCompradetalles();
+            $this->collCompradetallesPartial = true;
+        }
+
+        if (!in_array($l, $this->collCompradetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddCompradetalle($l);
+
+            if ($this->compradetallesScheduledForDeletion and $this->compradetallesScheduledForDeletion->contains($l)) {
+                $this->compradetallesScheduledForDeletion->remove($this->compradetallesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Compradetalle $compradetalle The compradetalle object to add.
+     */
+    protected function doAddCompradetalle($compradetalle)
+    {
+        $this->collCompradetalles[]= $compradetalle;
+        $compradetalle->setInsumoclinica($this);
+    }
+
+    /**
+     * @param	Compradetalle $compradetalle The compradetalle object to remove.
+     * @return Insumoclinica The current object (for fluent API support)
+     */
+    public function removeCompradetalle($compradetalle)
+    {
+        if ($this->getCompradetalles()->contains($compradetalle)) {
+            $this->collCompradetalles->remove($this->collCompradetalles->search($compradetalle));
+            if (null === $this->compradetallesScheduledForDeletion) {
+                $this->compradetallesScheduledForDeletion = clone $this->collCompradetalles;
+                $this->compradetallesScheduledForDeletion->clear();
+            }
+            $this->compradetallesScheduledForDeletion[]= $compradetalle;
+            $compradetalle->setInsumoclinica(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Insumoclinica is new, it will return
+     * an empty collection; or if this Insumoclinica has previously
+     * been saved, it will retrieve related Compradetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Insumoclinica.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Compradetalle[] List of Compradetalle objects
+     */
+    public function getCompradetallesJoinCompra($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = CompradetalleQuery::create(null, $criteria);
+        $query->joinWith('Compra', $join_behavior);
+
+        return $this->getCompradetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Insumoclinica is new, it will return
+     * an empty collection; or if this Insumoclinica has previously
+     * been saved, it will retrieve related Compradetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Insumoclinica.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Compradetalle[] List of Compradetalle objects
+     */
+    public function getCompradetallesJoinProductoclinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = CompradetalleQuery::create(null, $criteria);
+        $query->joinWith('Productoclinica', $join_behavior);
+
+        return $this->getCompradetalles($query, $con);
     }
 
     /**
@@ -1347,7 +1838,7 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
                 $this->transferenciadetallesScheduledForDeletion = clone $this->collTransferenciadetalles;
                 $this->transferenciadetallesScheduledForDeletion->clear();
             }
-            $this->transferenciadetallesScheduledForDeletion[]= clone $transferenciadetalle;
+            $this->transferenciadetallesScheduledForDeletion[]= $transferenciadetalle;
             $transferenciadetalle->setInsumoclinica(null);
         }
 
@@ -1412,7 +1903,10 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
         $this->idinsumoclinica = null;
         $this->idinsumo = null;
         $this->idclinica = null;
-        $this->insumoclinica_cantidad = null;
+        $this->insumoclinica_existencia = null;
+        $this->insumoclinica_minimo = null;
+        $this->insumoclinica_maximo = null;
+        $this->insumoclinica_reorden = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1435,6 +1929,11 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collCompradetalles) {
+                foreach ($this->collCompradetalles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collTransferenciadetalles) {
                 foreach ($this->collTransferenciadetalles as $o) {
                     $o->clearAllReferences($deep);
@@ -1450,6 +1949,10 @@ abstract class BaseInsumoclinica extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collCompradetalles instanceof PropelCollection) {
+            $this->collCompradetalles->clearIterator();
+        }
+        $this->collCompradetalles = null;
         if ($this->collTransferenciadetalles instanceof PropelCollection) {
             $this->collTransferenciadetalles->clearIterator();
         }

@@ -384,6 +384,9 @@ abstract class BaseClinicaPeer
         // Invalidate objects in EgresoclinicaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         EgresoclinicaPeer::clearInstancePool();
+        // Invalidate objects in EmpleadoreportePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        EmpleadoreportePeer::clearInstancePool();
         // Invalidate objects in InsumoclinicaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         InsumoclinicaPeer::clearInstancePool();
@@ -750,6 +753,12 @@ abstract class BaseClinicaPeer
 
             $criteria->add(EgresoclinicaPeer::IDCLINICA, $obj->getIdclinica());
             $affectedRows += EgresoclinicaPeer::doDelete($criteria, $con);
+
+            // delete related Empleadoreporte objects
+            $criteria = new Criteria(EmpleadoreportePeer::DATABASE_NAME);
+
+            $criteria->add(EmpleadoreportePeer::IDCLINICA, $obj->getIdclinica());
+            $affectedRows += EmpleadoreportePeer::doDelete($criteria, $con);
 
             // delete related Insumoclinica objects
             $criteria = new Criteria(InsumoclinicaPeer::DATABASE_NAME);

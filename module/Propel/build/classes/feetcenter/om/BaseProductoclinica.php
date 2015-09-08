@@ -49,19 +49,19 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
 
     /**
      * The value for the productoclinica_existencia field.
-     * @var        int
+     * @var        string
      */
     protected $productoclinica_existencia;
 
     /**
      * The value for the productoclinica_minimo field.
-     * @var        int
+     * @var        string
      */
     protected $productoclinica_minimo;
 
     /**
      * The value for the productoclinica_maximo field.
-     * @var        int
+     * @var        string
      */
     protected $productoclinica_maximo;
 
@@ -70,6 +70,12 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
      * @var        string
      */
     protected $productoclinica_precio;
+
+    /**
+     * The value for the productoclinica_reorden field.
+     * @var        string
+     */
+    protected $productoclinica_reorden;
 
     /**
      * @var        Clinica
@@ -173,7 +179,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     /**
      * Get the [productoclinica_existencia] column value.
      *
-     * @return int
+     * @return string
      */
     public function getProductoclinicaExistencia()
     {
@@ -184,7 +190,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     /**
      * Get the [productoclinica_minimo] column value.
      *
-     * @return int
+     * @return string
      */
     public function getProductoclinicaMinimo()
     {
@@ -195,7 +201,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     /**
      * Get the [productoclinica_maximo] column value.
      *
-     * @return int
+     * @return string
      */
     public function getProductoclinicaMaximo()
     {
@@ -212,6 +218,17 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     {
 
         return $this->productoclinica_precio;
+    }
+
+    /**
+     * Get the [productoclinica_reorden] column value.
+     *
+     * @return string
+     */
+    public function getProductoclinicaReorden()
+    {
+
+        return $this->productoclinica_reorden;
     }
 
     /**
@@ -288,13 +305,13 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     /**
      * Set the value of [productoclinica_existencia] column.
      *
-     * @param  int $v new value
+     * @param  string $v new value
      * @return Productoclinica The current object (for fluent API support)
      */
     public function setProductoclinicaExistencia($v)
     {
         if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->productoclinica_existencia !== $v) {
@@ -309,13 +326,13 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     /**
      * Set the value of [productoclinica_minimo] column.
      *
-     * @param  int $v new value
+     * @param  string $v new value
      * @return Productoclinica The current object (for fluent API support)
      */
     public function setProductoclinicaMinimo($v)
     {
         if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->productoclinica_minimo !== $v) {
@@ -330,13 +347,13 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     /**
      * Set the value of [productoclinica_maximo] column.
      *
-     * @param  int $v new value
+     * @param  string $v new value
      * @return Productoclinica The current object (for fluent API support)
      */
     public function setProductoclinicaMaximo($v)
     {
         if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->productoclinica_maximo !== $v) {
@@ -368,6 +385,27 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
 
         return $this;
     } // setProductoclinicaPrecio()
+
+    /**
+     * Set the value of [productoclinica_reorden] column.
+     *
+     * @param  string $v new value
+     * @return Productoclinica The current object (for fluent API support)
+     */
+    public function setProductoclinicaReorden($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->productoclinica_reorden !== $v) {
+            $this->productoclinica_reorden = $v;
+            $this->modifiedColumns[] = ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN;
+        }
+
+
+        return $this;
+    } // setProductoclinicaReorden()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -404,10 +442,11 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
             $this->idproductoclinica = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idproducto = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->idclinica = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->productoclinica_existencia = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->productoclinica_minimo = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->productoclinica_maximo = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->productoclinica_existencia = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->productoclinica_minimo = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->productoclinica_maximo = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->productoclinica_precio = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->productoclinica_reorden = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -417,7 +456,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = ProductoclinicaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = ProductoclinicaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Productoclinica object", $e);
@@ -734,6 +773,9 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO)) {
             $modifiedColumns[':p' . $index++]  = '`productoclinica_precio`';
         }
+        if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN)) {
+            $modifiedColumns[':p' . $index++]  = '`productoclinica_reorden`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `productoclinica` (%s) VALUES (%s)',
@@ -755,16 +797,19 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
                         $stmt->bindValue($identifier, $this->idclinica, PDO::PARAM_INT);
                         break;
                     case '`productoclinica_existencia`':
-                        $stmt->bindValue($identifier, $this->productoclinica_existencia, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->productoclinica_existencia, PDO::PARAM_STR);
                         break;
                     case '`productoclinica_minimo`':
-                        $stmt->bindValue($identifier, $this->productoclinica_minimo, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->productoclinica_minimo, PDO::PARAM_STR);
                         break;
                     case '`productoclinica_maximo`':
-                        $stmt->bindValue($identifier, $this->productoclinica_maximo, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->productoclinica_maximo, PDO::PARAM_STR);
                         break;
                     case '`productoclinica_precio`':
                         $stmt->bindValue($identifier, $this->productoclinica_precio, PDO::PARAM_STR);
+                        break;
+                    case '`productoclinica_reorden`':
+                        $stmt->bindValue($identifier, $this->productoclinica_reorden, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -963,6 +1008,9 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
             case 6:
                 return $this->getProductoclinicaPrecio();
                 break;
+            case 7:
+                return $this->getProductoclinicaReorden();
+                break;
             default:
                 return null;
                 break;
@@ -999,6 +1047,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
             $keys[4] => $this->getProductoclinicaMinimo(),
             $keys[5] => $this->getProductoclinicaMaximo(),
             $keys[6] => $this->getProductoclinicaPrecio(),
+            $keys[7] => $this->getProductoclinicaReorden(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1076,6 +1125,9 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
             case 6:
                 $this->setProductoclinicaPrecio($value);
                 break;
+            case 7:
+                $this->setProductoclinicaReorden($value);
+                break;
         } // switch()
     }
 
@@ -1107,6 +1159,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setProductoclinicaMinimo($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setProductoclinicaMaximo($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setProductoclinicaPrecio($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setProductoclinicaReorden($arr[$keys[7]]);
     }
 
     /**
@@ -1125,6 +1178,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_MINIMO)) $criteria->add(ProductoclinicaPeer::PRODUCTOCLINICA_MINIMO, $this->productoclinica_minimo);
         if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO)) $criteria->add(ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO, $this->productoclinica_maximo);
         if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO)) $criteria->add(ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO, $this->productoclinica_precio);
+        if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN)) $criteria->add(ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN, $this->productoclinica_reorden);
 
         return $criteria;
     }
@@ -1194,6 +1248,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
         $copyObj->setProductoclinicaMinimo($this->getProductoclinicaMinimo());
         $copyObj->setProductoclinicaMaximo($this->getProductoclinicaMaximo());
         $copyObj->setProductoclinicaPrecio($this->getProductoclinicaPrecio());
+        $copyObj->setProductoclinicaReorden($this->getProductoclinicaReorden());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1614,7 +1669,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
                 $this->compradetallesScheduledForDeletion = clone $this->collCompradetalles;
                 $this->compradetallesScheduledForDeletion->clear();
             }
-            $this->compradetallesScheduledForDeletion[]= clone $compradetalle;
+            $this->compradetallesScheduledForDeletion[]= $compradetalle;
             $compradetalle->setProductoclinica(null);
         }
 
@@ -1642,6 +1697,31 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     {
         $query = CompradetalleQuery::create(null, $criteria);
         $query->joinWith('Compra', $join_behavior);
+
+        return $this->getCompradetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Productoclinica is new, it will return
+     * an empty collection; or if this Productoclinica has previously
+     * been saved, it will retrieve related Compradetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Productoclinica.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Compradetalle[] List of Compradetalle objects
+     */
+    public function getCompradetallesJoinInsumoclinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = CompradetalleQuery::create(null, $criteria);
+        $query->joinWith('Insumoclinica', $join_behavior);
 
         return $this->getCompradetalles($query, $con);
     }
@@ -1864,7 +1944,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
                 $this->transferenciadetallesScheduledForDeletion = clone $this->collTransferenciadetalles;
                 $this->transferenciadetallesScheduledForDeletion->clear();
             }
-            $this->transferenciadetallesScheduledForDeletion[]= clone $transferenciadetalle;
+            $this->transferenciadetallesScheduledForDeletion[]= $transferenciadetalle;
             $transferenciadetalle->setProductoclinica(null);
         }
 
@@ -2208,6 +2288,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
         $this->productoclinica_minimo = null;
         $this->productoclinica_maximo = null;
         $this->productoclinica_precio = null;
+        $this->productoclinica_reorden = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

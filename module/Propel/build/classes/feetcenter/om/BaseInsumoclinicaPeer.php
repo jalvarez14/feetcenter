@@ -24,13 +24,13 @@ abstract class BaseInsumoclinicaPeer
     const TM_CLASS = 'InsumoclinicaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the idinsumoclinica field */
     const IDINSUMOCLINICA = 'insumoclinica.idinsumoclinica';
@@ -41,8 +41,17 @@ abstract class BaseInsumoclinicaPeer
     /** the column name for the idclinica field */
     const IDCLINICA = 'insumoclinica.idclinica';
 
-    /** the column name for the insumoclinica_cantidad field */
-    const INSUMOCLINICA_CANTIDAD = 'insumoclinica.insumoclinica_cantidad';
+    /** the column name for the insumoclinica_existencia field */
+    const INSUMOCLINICA_EXISTENCIA = 'insumoclinica.insumoclinica_existencia';
+
+    /** the column name for the insumoclinica_minimo field */
+    const INSUMOCLINICA_MINIMO = 'insumoclinica.insumoclinica_minimo';
+
+    /** the column name for the insumoclinica_maximo field */
+    const INSUMOCLINICA_MAXIMO = 'insumoclinica.insumoclinica_maximo';
+
+    /** the column name for the insumoclinica_reorden field */
+    const INSUMOCLINICA_REORDEN = 'insumoclinica.insumoclinica_reorden';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -63,12 +72,12 @@ abstract class BaseInsumoclinicaPeer
      * e.g. InsumoclinicaPeer::$fieldNames[InsumoclinicaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idinsumoclinica', 'Idinsumo', 'Idclinica', 'InsumoclinicaCantidad', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idinsumoclinica', 'idinsumo', 'idclinica', 'insumoclinicaCantidad', ),
-        BasePeer::TYPE_COLNAME => array (InsumoclinicaPeer::IDINSUMOCLINICA, InsumoclinicaPeer::IDINSUMO, InsumoclinicaPeer::IDCLINICA, InsumoclinicaPeer::INSUMOCLINICA_CANTIDAD, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDINSUMOCLINICA', 'IDINSUMO', 'IDCLINICA', 'INSUMOCLINICA_CANTIDAD', ),
-        BasePeer::TYPE_FIELDNAME => array ('idinsumoclinica', 'idinsumo', 'idclinica', 'insumoclinica_cantidad', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Idinsumoclinica', 'Idinsumo', 'Idclinica', 'InsumoclinicaExistencia', 'InsumoclinicaMinimo', 'InsumoclinicaMaximo', 'InsumoclinicaReorden', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idinsumoclinica', 'idinsumo', 'idclinica', 'insumoclinicaExistencia', 'insumoclinicaMinimo', 'insumoclinicaMaximo', 'insumoclinicaReorden', ),
+        BasePeer::TYPE_COLNAME => array (InsumoclinicaPeer::IDINSUMOCLINICA, InsumoclinicaPeer::IDINSUMO, InsumoclinicaPeer::IDCLINICA, InsumoclinicaPeer::INSUMOCLINICA_EXISTENCIA, InsumoclinicaPeer::INSUMOCLINICA_MINIMO, InsumoclinicaPeer::INSUMOCLINICA_MAXIMO, InsumoclinicaPeer::INSUMOCLINICA_REORDEN, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDINSUMOCLINICA', 'IDINSUMO', 'IDCLINICA', 'INSUMOCLINICA_EXISTENCIA', 'INSUMOCLINICA_MINIMO', 'INSUMOCLINICA_MAXIMO', 'INSUMOCLINICA_REORDEN', ),
+        BasePeer::TYPE_FIELDNAME => array ('idinsumoclinica', 'idinsumo', 'idclinica', 'insumoclinica_existencia', 'insumoclinica_minimo', 'insumoclinica_maximo', 'insumoclinica_reorden', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -78,12 +87,12 @@ abstract class BaseInsumoclinicaPeer
      * e.g. InsumoclinicaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idinsumoclinica' => 0, 'Idinsumo' => 1, 'Idclinica' => 2, 'InsumoclinicaCantidad' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idinsumoclinica' => 0, 'idinsumo' => 1, 'idclinica' => 2, 'insumoclinicaCantidad' => 3, ),
-        BasePeer::TYPE_COLNAME => array (InsumoclinicaPeer::IDINSUMOCLINICA => 0, InsumoclinicaPeer::IDINSUMO => 1, InsumoclinicaPeer::IDCLINICA => 2, InsumoclinicaPeer::INSUMOCLINICA_CANTIDAD => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDINSUMOCLINICA' => 0, 'IDINSUMO' => 1, 'IDCLINICA' => 2, 'INSUMOCLINICA_CANTIDAD' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('idinsumoclinica' => 0, 'idinsumo' => 1, 'idclinica' => 2, 'insumoclinica_cantidad' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Idinsumoclinica' => 0, 'Idinsumo' => 1, 'Idclinica' => 2, 'InsumoclinicaExistencia' => 3, 'InsumoclinicaMinimo' => 4, 'InsumoclinicaMaximo' => 5, 'InsumoclinicaReorden' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idinsumoclinica' => 0, 'idinsumo' => 1, 'idclinica' => 2, 'insumoclinicaExistencia' => 3, 'insumoclinicaMinimo' => 4, 'insumoclinicaMaximo' => 5, 'insumoclinicaReorden' => 6, ),
+        BasePeer::TYPE_COLNAME => array (InsumoclinicaPeer::IDINSUMOCLINICA => 0, InsumoclinicaPeer::IDINSUMO => 1, InsumoclinicaPeer::IDCLINICA => 2, InsumoclinicaPeer::INSUMOCLINICA_EXISTENCIA => 3, InsumoclinicaPeer::INSUMOCLINICA_MINIMO => 4, InsumoclinicaPeer::INSUMOCLINICA_MAXIMO => 5, InsumoclinicaPeer::INSUMOCLINICA_REORDEN => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDINSUMOCLINICA' => 0, 'IDINSUMO' => 1, 'IDCLINICA' => 2, 'INSUMOCLINICA_EXISTENCIA' => 3, 'INSUMOCLINICA_MINIMO' => 4, 'INSUMOCLINICA_MAXIMO' => 5, 'INSUMOCLINICA_REORDEN' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('idinsumoclinica' => 0, 'idinsumo' => 1, 'idclinica' => 2, 'insumoclinica_existencia' => 3, 'insumoclinica_minimo' => 4, 'insumoclinica_maximo' => 5, 'insumoclinica_reorden' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -160,12 +169,18 @@ abstract class BaseInsumoclinicaPeer
             $criteria->addSelectColumn(InsumoclinicaPeer::IDINSUMOCLINICA);
             $criteria->addSelectColumn(InsumoclinicaPeer::IDINSUMO);
             $criteria->addSelectColumn(InsumoclinicaPeer::IDCLINICA);
-            $criteria->addSelectColumn(InsumoclinicaPeer::INSUMOCLINICA_CANTIDAD);
+            $criteria->addSelectColumn(InsumoclinicaPeer::INSUMOCLINICA_EXISTENCIA);
+            $criteria->addSelectColumn(InsumoclinicaPeer::INSUMOCLINICA_MINIMO);
+            $criteria->addSelectColumn(InsumoclinicaPeer::INSUMOCLINICA_MAXIMO);
+            $criteria->addSelectColumn(InsumoclinicaPeer::INSUMOCLINICA_REORDEN);
         } else {
             $criteria->addSelectColumn($alias . '.idinsumoclinica');
             $criteria->addSelectColumn($alias . '.idinsumo');
             $criteria->addSelectColumn($alias . '.idclinica');
-            $criteria->addSelectColumn($alias . '.insumoclinica_cantidad');
+            $criteria->addSelectColumn($alias . '.insumoclinica_existencia');
+            $criteria->addSelectColumn($alias . '.insumoclinica_minimo');
+            $criteria->addSelectColumn($alias . '.insumoclinica_maximo');
+            $criteria->addSelectColumn($alias . '.insumoclinica_reorden');
         }
     }
 
@@ -370,6 +385,9 @@ abstract class BaseInsumoclinicaPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in CompradetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        CompradetallePeer::clearInstancePool();
         // Invalidate objects in TransferenciadetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransferenciadetallePeer::clearInstancePool();
@@ -1337,6 +1355,12 @@ abstract class BaseInsumoclinicaPeer
         $objects = InsumoclinicaPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
+
+            // delete related Compradetalle objects
+            $criteria = new Criteria(CompradetallePeer::DATABASE_NAME);
+
+            $criteria->add(CompradetallePeer::IDINSUMOCLINICA, $obj->getIdinsumoclinica());
+            $affectedRows += CompradetallePeer::doDelete($criteria, $con);
 
             // delete related Transferenciadetalle objects
             $criteria = new Criteria(TransferenciadetallePeer::DATABASE_NAME);

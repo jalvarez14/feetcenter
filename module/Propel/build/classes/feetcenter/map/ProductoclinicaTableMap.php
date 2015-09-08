@@ -41,10 +41,11 @@ class ProductoclinicaTableMap extends TableMap
         $this->addPrimaryKey('idproductoclinica', 'Idproductoclinica', 'INTEGER', true, null, null);
         $this->addForeignKey('idproducto', 'Idproducto', 'INTEGER', 'producto', 'idproducto', true, null, null);
         $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
-        $this->addColumn('productoclinica_existencia', 'ProductoclinicaExistencia', 'INTEGER', true, null, null);
-        $this->addColumn('productoclinica_minimo', 'ProductoclinicaMinimo', 'INTEGER', true, null, null);
-        $this->addColumn('productoclinica_maximo', 'ProductoclinicaMaximo', 'INTEGER', true, null, null);
+        $this->addColumn('productoclinica_existencia', 'ProductoclinicaExistencia', 'DECIMAL', true, 10, null);
+        $this->addColumn('productoclinica_minimo', 'ProductoclinicaMinimo', 'DECIMAL', true, 10, null);
+        $this->addColumn('productoclinica_maximo', 'ProductoclinicaMaximo', 'DECIMAL', true, 10, null);
         $this->addColumn('productoclinica_precio', 'ProductoclinicaPrecio', 'DECIMAL', true, 10, null);
+        $this->addColumn('productoclinica_reorden', 'ProductoclinicaReorden', 'DECIMAL', true, 10, null);
         // validators
     } // initialize()
 
@@ -56,7 +57,7 @@ class ProductoclinicaTableMap extends TableMap
         $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Producto', 'Producto', RelationMap::MANY_TO_ONE, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Compradetalle', 'Compradetalle', RelationMap::ONE_TO_MANY, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE', 'Compradetalles');
-        $this->addRelation('Transferenciadetalle', 'Transferenciadetalle', RelationMap::ONE_TO_MANY, array('idproductoclinica' => 'idproductoclinica', ), null, null, 'Transferenciadetalles');
+        $this->addRelation('Transferenciadetalle', 'Transferenciadetalle', RelationMap::ONE_TO_MANY, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE', 'Transferenciadetalles');
         $this->addRelation('Visitadetalle', 'Visitadetalle', RelationMap::ONE_TO_MANY, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE', 'Visitadetalles');
     } // buildRelations()
 

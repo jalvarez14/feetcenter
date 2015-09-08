@@ -82,7 +82,7 @@ class VisitaTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('EmpleadoRelatedByIdempleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), null, null);
+        $this->addRelation('EmpleadoRelatedByIdempleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE');
         $this->addRelation('EmpleadoRelatedByIdempleadocreador', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleadocreador' => 'idempleado', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Paciente', 'Paciente', RelationMap::MANY_TO_ONE, array('idpaciente' => 'idpaciente', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Visitadetalle', 'Visitadetalle', RelationMap::ONE_TO_MANY, array('idvisita' => 'idvisita', ), 'CASCADE', 'CASCADE', 'Visitadetalles');

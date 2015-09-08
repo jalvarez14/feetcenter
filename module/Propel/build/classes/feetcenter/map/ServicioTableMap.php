@@ -43,12 +43,12 @@ class ServicioTableMap extends TableMap
         $this->addColumn('servicio_descripcion', 'ServicioDescripcion', 'LONGVARCHAR', true, null, null);
         $this->addColumn('servicio_generaingreso', 'ServicioGeneraingreso', 'BOOLEAN', true, 1, null);
         $this->addColumn('servicio_generacomision', 'ServicioGeneracomision', 'BOOLEAN', true, 1, null);
-        $this->addColumn('servicio_tipocomision', 'ServicioTipocomision', 'CHAR', true, null, null);
+        $this->addColumn('servicio_tipocomision', 'ServicioTipocomision', 'CHAR', false, null, null);
         $this->getColumn('servicio_tipocomision', false)->setValueSet(array (
   0 => 'porcentaje',
   1 => 'cantidad',
 ));
-        $this->addColumn('servicio_comision', 'ServicioComision', 'DECIMAL', true, 10, null);
+        $this->addColumn('servicio_comision', 'ServicioComision', 'DECIMAL', false, 10, null);
         // validators
     } // initialize()
 

@@ -12,7 +12,7 @@ namespace Catalogos\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class InsumoController extends AbstractActionController
+class ServicioController extends AbstractActionController
 {
     public function indexAction()
     {
@@ -32,43 +32,69 @@ class InsumoController extends AbstractActionController
         
         $request = $this->getRequest();
         
-        $form = new \Catalogos\Form\InsumoForm();
+        $form = new \Catalogos\Form\ServicioForm();
+        //Insumos
+        $insumos = \InsumoQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
         
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-                        
+            
             foreach ($post_data as $k => $v){
-                if(empty($v)){
+                if(empty($v) && $v!="0" && $v!="1"){
                     unset($post_data[$k]);
                 }
             }
             
+            
             //Le ponemos los datos a nuestro formulario
             $form->setData($post_data);
+      
             
             //Validamos nuestro formulario
             if ($form->isValid()) {
                 
-                $entity = new \Insumo();
+                $entity = new \Servicio();
 
                 foreach ($form->getData() as $key => $value) {
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
                 
+                $entity->setServicioGeneraingreso($post_data['servicio_generaingreso']);
+                $entity->setServicioGeneracomision($post_data['servicio_generacomision']);
+               
+                if($entity->getServicioGeneracomision()){
+                    $entity->setServicioTipocomision($post_data['servicio_tipocomision']);
+                    $entity->setServicioComision($post_data['servicio_comision']);
+                }
+                
                 //Guardamos en nuestra base de datos
                 $entity->save();
+                
+                //Los insumos del servicio
+                if(isset($post_data['insumo'])){
+                    foreach ($post_data['insumo'] as $key => $value){
+                        $servicio_insumo = new \Servicioinsumo();
+                        $servicio_insumo->setIdservicio($entity->getIdservicio())
+                                        ->setIdinsumo($key)
+                                        ->setServicioinsumoCantidad($value)
+                                        ->save();
+                    }
+                }
                 
                 //Agregamos un mensaje
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 
                 //Redireccionamos a nuestro list
-                return $this->redirect()->toRoute('catalogos/insumo');
+                return $this->redirect()->toRoute('catalogos/servicio');
 
             }
+             echo '<pre>';var_dump($form->getMessages());echo'<pre>';exit();
         }
+        
         return new ViewModel(array(
             'form' => $form,
+            'insumos' => $insumos,
         ));
 
     }
@@ -94,7 +120,6 @@ class InsumoController extends AbstractActionController
             //Instanciamos nuestro lugar
             $entity = \InsumoQuery::create()->findPk($id);
             
-
             $entity->delete();
             
             //Agregamos un mensaje

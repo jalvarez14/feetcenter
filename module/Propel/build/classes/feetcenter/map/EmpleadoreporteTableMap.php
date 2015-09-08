@@ -39,12 +39,12 @@ class EmpleadoreporteTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idempleadoreporte', 'Idempleadoreporte', 'INTEGER', true, null, null);
-        $this->addColumn('idclinica', 'Idclinica', 'INTEGER', false, null, null);
-        $this->addColumn('idempleado', 'Idempleado', 'INTEGER', false, null, null);
-        $this->addColumn('idempleadoreportado', 'Idempleadoreportado', 'INTEGER', false, null, null);
-        $this->addColumn('empleadoreporte_comentario', 'EmpleadoreporteComentario', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('empleadoreporte_fechasuceso', 'EmpleadoreporteFechasuceso', 'DATE', false, null, null);
-        $this->addColumn('empleadoreporte_fechacreacion', 'EmpleadoreporteFechacreacion', 'TIMESTAMP', false, null, null);
+        $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
+        $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', true, null, null);
+        $this->addForeignKey('idempleadoreportado', 'Idempleadoreportado', 'INTEGER', 'empleado', 'idempleado', true, null, null);
+        $this->addColumn('empleadoreporte_fechacreacion', 'EmpleadoreporteFechacreacion', 'TIMESTAMP', true, null, null);
+        $this->addColumn('empleadoreporte_comentario', 'EmpleadoreporteComentario', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('empleadoreporte_fechasuceso', 'EmpleadoreporteFechasuceso', 'DATE', true, null, null);
         // validators
     } // initialize()
 
@@ -53,6 +53,9 @@ class EmpleadoreporteTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('EmpleadoRelatedByIdempleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('EmpleadoRelatedByIdempleadoreportado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleadoreportado' => 'idempleado', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
 } // EmpleadoreporteTableMap

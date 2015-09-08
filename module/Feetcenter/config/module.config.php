@@ -91,7 +91,16 @@ return array(
                                 'action'        => 'index',
                             ),
                         ),
-                        
+                    ),
+                    'servicio' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/servicio[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Servicio',
+                                'action'        => 'index',
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -156,6 +165,7 @@ return array(
             'Catalogos\Controller\Canal' => 'Catalogos\Controller\CanalController',
             'Catalogos\Controller\Rol' => 'Catalogos\Controller\RolController',
             'Catalogos\Controller\Producto' => 'Catalogos\Controller\ProductoController',
+            'Catalogos\Controller\Servicio' => 'Catalogos\Controller\ServicioController',
         ),
     ),
     'view_manager' => array(
