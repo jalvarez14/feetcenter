@@ -1,0 +1,149 @@
+<div id="servicio_container">
+    <h1>Servicio: <?php echo $form->get('servicio_nombre')->getValue()?></h1>
+    <?php 
+        $form->setAttribute('action', '/catalogos/servicio/editar/'.$id);
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('servicio_nombre')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Descripción <span class="req">*</span>
+                <?php echo $this->formTextarea($form->get('servicio_descripcion')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Ingresos y comisiones</legend>
+                <div class="units-row">
+                    <div class="unit-33">
+                        <label><b>Genera ingreso</b></label>
+                        <ul class="forms-inline-list">
+                            <li>
+                                <input checked type="radio" name="servicio_generaingreso" value="1">
+                                <label for="radio-1">Si</label>
+                            </li>
+                            <li>
+                                <input type="radio" name="servicio_generaingreso" value="0">
+                                <label for="radio-1">No</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="unit-33">
+                        <label><b>Genera comisión</b></label>
+                        <ul class="forms-inline-list">
+                            <li>
+                                <input  type="radio" name="servicio_generacomision" value="1">
+                                <label for="radio-1">Si</label>
+                            </li>
+                            <li>
+                                <input checked type="radio" name="servicio_generacomision" value="0">
+                                <label>No</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="unit-33">
+                        <div class="units-row">
+                            <div class="unit-50">
+                                <label><b>Tipo de comisión</b></label>
+                                <select name="servicio_tipocomision" disabled="disabled" style="padding-right: 12px;">
+                                    <option value="cantidad">Cantidad fija</option>
+                                    <option value="porcentaje">Porcentaje</option>
+                                </select>
+                            </div>
+                            <div class="unit-50">
+                                <label><b>Cantidad de comisión</b></label>
+                                <?php $form->get('servicio_comision')->setAttribute('disabled',true);?>
+                                <?php echo $this->formText($form->get('servicio_comision')); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Insumos asociados</legend>
+                <div class="units-row">
+                    
+                
+                <div class="unit-60">
+                    Insumo
+                    <select name="servicio_insumo" class="width-100">
+                        <option value="">Selecione un insumo...</option>
+                        <?php foreach ($insumos as $insumo) :?>
+                        <option value="<?php echo $insumo['idinsumo']?>"><?php echo $insumo['insumo_nombre']?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+                <div class="unit-20" style="margin-top: 0px;">
+                    Cantidad
+                    <input type="text" name="servicio_insumo_cantidad">
+                </div>
+                <div class="unit-20" style="margin-top: 4px;">
+                    <a data-action="addInsumo" class="btn btn-blue" style="height: 30px; margin-top: 20px; width: 100%;">Agregar</a>
+                </div>
+                    </div>
+                <table id="table_insumos">
+                    <thead>
+                        <tr>
+                            <th>Cantidad</th>
+                            <th>Insumo</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($insumos_asignados as $insumo):?>
+                        <tr id="<?php echo $insumo['idinusmo']?>">
+                            <input type="hidden" name="<?php echo 'insumo['.$insumo['idinusmo'].']'?>" value="<?php echo (int)$insumo['cantidad']?>">
+                            <td><?php echo (int)$insumo['cantidad']?></td>
+                            <td><?php echo $insumo['nombre']?></td>
+                            <td><a href="javascript:void(0)">Eliminar</a></td>
+                        </tr>
+                        <?php endforeach;?>
+                    </tbody>
+                </table>
+            </fieldset>
+            
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script src="/js/catalogos/servicio.js"></script>
+<script>
+    
+    var servicio = <?php echo json_encode($entity)?>;
+  
+    $('#servicio_container').servicio();
+    
+    if(servicio.servicio_generacomision){
+        $('input[name=servicio_generacomision][value=1]').prop('checked',true);
+        $('select[name=servicio_tipocomision]').prop('disabled',false);
+        $('select[name=servicio_tipocomision]').val(servicio.servicio_tipocomision);
+        $('input[name=servicio_comision]').prop('disabled',false);
+    }else{
+        $('input[name=servicio_generacomision][value=0]').prop('checked',true);
+    }
+    
+    if(servicio.servicio_generaingreso){
+        $('input[name=servicio_generaingreso][value=1]').prop('checked',true);
+    }else{
+        $('input[name=servicio_generaingreso][value=0]').prop('checked',true);
+    }
+</script>

@@ -119,3 +119,11 @@ table tr a {
     text-align: center;
     font-size: 20px;
 }
+
+/*DATE PICKER*/
+
+.picker select{
+    display: initial;
+    height: 31px;
+}
+

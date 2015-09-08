@@ -102,6 +102,16 @@ return array(
                             ),
                         ),
                     ),
+                    'empleado' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/empleado[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Empleado',
+                                'action'        => 'index',
+                            ),
+                        ),
+                    ),
                 ),
             ),
             // The following is a route to simplify getting started creating
@@ -166,6 +176,7 @@ return array(
             'Catalogos\Controller\Rol' => 'Catalogos\Controller\RolController',
             'Catalogos\Controller\Producto' => 'Catalogos\Controller\ProductoController',
             'Catalogos\Controller\Servicio' => 'Catalogos\Controller\ServicioController',
+            'Catalogos\Controller\Empleado' => 'Catalogos\Controller\EmpleadoController',
         ),
     ),
     'view_manager' => array(

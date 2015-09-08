@@ -13,13 +13,19 @@
         <!-- Le styles -->
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        
                         ->prependStylesheet($this->basePath('css/style.css'))
+                        //->prependStylesheet($this->basePath('css/plugin/lolliclock.css'))
+                        ->prependStylesheet($this->basePath('css/plugin/default.date.css'))
+                        ->prependStylesheet($this->basePath('css/plugin/default.css'))
                         ->prependStylesheet($this->basePath('css/kube.css')) ?>
 
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+            
+            ->prependFile($this->basePath('js/plugin/picker.date.js'))
+            ->prependFile($this->basePath('js/plugin/picker.js'))
+            ->prependFile($this->basePath('js/plugin/lolliclock.js'))
             ->prependFile($this->basePath('js/plugin/accounting.js')) 
             ->prependFile($this->basePath('js/plugin/numeric.js'))     
             ->prependFile($this->basePath('js/form.js'))
@@ -82,7 +88,7 @@
         </ul>
         <ul id="dropdown-catalogos" class="dropdown">
             <li><a href="/catalogos/clinica">Clinicas</a></li>
-            <li><a href="#">Empleados</a></li>
+            <li><a href="/catalogos/empleado">Empleados</a></li>
             <li><a href="/catalogos/servicio">Servicios</a></li>
             <li><a href="/catalogos/producto">Productos</a></li>
             <li><a href="/catalogos/insumo">Insumos</a></li>

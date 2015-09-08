@@ -12,11 +12,11 @@ namespace Catalogos\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class ServicioController extends AbstractActionController
+class EmpleadoController extends AbstractActionController
 {
     public function indexAction()
     {
-        $collection = \ServicioQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+        $collection = \InsumoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
 
         
         return new ViewModel(array(
@@ -32,69 +32,53 @@ class ServicioController extends AbstractActionController
         
         $request = $this->getRequest();
         
-        $form = new \Catalogos\Form\ServicioForm();
-        //Insumos
-        $insumos = \InsumoQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        //Los roles
+        $query = \RolQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        $roles = array();
+        foreach ($query as $rol){
+            $idrol = $rol['idrol'];
+            $roles[$idrol] = $rol['rol_nombre'];
+        }
+        
+       
+       
+        $form = new \Catalogos\Form\EmpleadoForm($roles);
         
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-            
+                        
             foreach ($post_data as $k => $v){
-                if(empty($v) && $v!="0" && $v!="1"){
+                if(empty($v)){
                     unset($post_data[$k]);
                 }
             }
             
-            
             //Le ponemos los datos a nuestro formulario
             $form->setData($post_data);
-      
             
             //Validamos nuestro formulario
             if ($form->isValid()) {
                 
-                $entity = new \Servicio();
+                $entity = new \Insumo();
 
                 foreach ($form->getData() as $key => $value) {
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
                 
-                $entity->setServicioGeneraingreso($post_data['servicio_generaingreso']);
-                $entity->setServicioGeneracomision($post_data['servicio_generacomision']);
-               
-                if($entity->getServicioGeneracomision()){
-                    $entity->setServicioTipocomision($post_data['servicio_tipocomision']);
-                    $entity->setServicioComision($post_data['servicio_comision']);
-                }
-                
                 //Guardamos en nuestra base de datos
                 $entity->save();
-                
-                //Los insumos del servicio
-                if(isset($post_data['insumo'])){
-                    foreach ($post_data['insumo'] as $key => $value){
-                        $servicio_insumo = new \Servicioinsumo();
-                        $servicio_insumo->setIdservicio($entity->getIdservicio())
-                                        ->setIdinsumo($key)
-                                        ->setServicioinsumoCantidad($value)
-                                        ->save();
-                    }
-                }
                 
                 //Agregamos un mensaje
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 
                 //Redireccionamos a nuestro list
-                return $this->redirect()->toRoute('catalogos/servicio');
+                return $this->redirect()->toRoute('catalogos/insumo');
 
             }
-             echo '<pre>';var_dump($form->getMessages());echo'<pre>';exit();
         }
-        
         return new ViewModel(array(
             'form' => $form,
-            'insumos' => $insumos,
         ));
 
     }
@@ -108,18 +92,19 @@ class ServicioController extends AbstractActionController
             $id = $this->params()->fromRoute('id');
             
             //Verificamos que el Id lugar que se quiere modificar exista
-            if(!\ServicioQuery::create()->filterByIdservicio($id)->exists()){
+            if(!\InsumoQuery::create()->filterByIdinsumo($id)->exists()){
                 $id =0;
             }
             
             //Si es incorrecto redireccionavos al action nuevo
             if (!$id) {
-                return $this->redirect()->toRoute('catalogos/servicio');
+                return $this->redirect()->toRoute('catalogos/insumo');
             }
             
             //Instanciamos nuestro lugar
-            $entity = \ServicioQuery::create()->findPk($id);
+            $entity = \InsumoQuery::create()->findPk($id);
             
+
             $entity->delete();
             
             //Agregamos un mensaje
@@ -145,40 +130,27 @@ class ServicioController extends AbstractActionController
         //Cachamos el valor desde nuestro params
         $id = (int) $this->params()->fromRoute('id');
         //Verificamos que el Id lugar que se quiere modificar exista
-        if(!\ServicioQuery::create()->filterByIdservicio($id)->exists()){
+        if(!\InsumoQuery::create()->filterByIdinsumo($id)->exists()){
             $id =0;
         }
         //Si es incorrecto redireccionavos al action nuevo
         if (!$id) {
-            return $this->redirect()->toRoute('catalogos/servicio');
+            return $this->redirect()->toRoute('catalogos/insumo');
         }
 
             //Instanciamos nuestro lugar
-            $entity = \ServicioQuery::create()->findPk($id);
+            $entity = \InsumoQuery::create()->findPk($id);
             
             //Instanciamos nuestro formulario
-            $form = new \Catalogos\Form\ServicioForm();
+            $form = new \Catalogos\Form\InsumoForm();
 
             //Le ponemos los datos de nuestro lugar a nuestro formulario
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-            //Insumos
-            $insumos = \InsumoQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
-            //Insumos asignados
-            $insumos_asignados = array();
-            $query = \ServicioinsumoQuery::create()->filterByIdservicio($entity->getIdservicio())->find();
-           
-            foreach ($query as $insumo){
-                $tmp['idinusmo'] = $insumo->getIdinsumo();
-                $tmp['cantidad'] = $insumo->getServicioinsumoCantidad();
-                $tmp['nombre'] = $insumo->getInsumo()->getInsumoNombre();
-                $insumos_asignados[] = $tmp;
-            }
             
-        
             if ($request->isPost()) { //Si hicieron POST
                 
                 $post_data = $request->getPost();
-
+                
                 //Le ponemos los datos a nuestro formulario
                 $form->setData($post_data);
                 
@@ -189,39 +161,15 @@ class ServicioController extends AbstractActionController
                     foreach ($form->getData() as $key => $value){
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
-                    $entity->setServicioGeneraingreso($post_data['servicio_generaingreso']);
-                    $entity->setServicioGeneracomision($post_data['servicio_generacomision']);
-                    
-                    if($entity->getServicioGeneracomision()){
-                        $entity->setServicioTipocomision($post_data['servicio_tipocomision']);
-                        $entity->setServicioComision($post_data['servicio_comision']);
-                    }else{
-                        $entity->setServicioTipocomision(NULL);
-                        $entity->setServicioComision(NULL);
-                    }
                     
                     //Guardamos en nuestra base de datos
                     $entity->save();
-                    
-                    $insumos = \ServicioinsumoQuery::create()->filterByIdservicio($entity->getIdservicio())->find();
-                    $insumos->delete();
-                    
-                    //Los insumos del servicio
-                    if (isset($post_data['insumo'])) {
-                        foreach ($post_data['insumo'] as $key => $value) {
-                            $servicio_insumo = new \Servicioinsumo();
-                            $servicio_insumo->setIdservicio($entity->getIdservicio())
-                                    ->setIdinsumo($key)
-                                    ->setServicioinsumoCantidad($value)
-                                    ->save();
-                        }
-                    }
 
-                //Agregamos un mensaje
+                    //Agregamos un mensaje
                     $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
 
                     //Redireccionamos a nuestro list
-                    return $this->redirect()->toRoute('catalogos/servicio');
+                    return $this->redirect()->toRoute('catalogos/insumo');
 
                 }else{
                     
@@ -231,9 +179,6 @@ class ServicioController extends AbstractActionController
             return new ViewModel(array(
                 'id'  => $id,
                 'form' => $form,
-                'entity' => $entity->toArray(\BasePeer::TYPE_FIELDNAME),
-                'insumos' => $insumos,
-                'insumos_asignados' => $insumos_asignados,
             ));
         
 

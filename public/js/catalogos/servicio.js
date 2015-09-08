@@ -104,6 +104,18 @@
                 }
             });
             
+            $container.find('#table_insumos tbody tr').each(function(){
+                var idinsumo = $(this).attr('id');
+                $container.find('select[name=servicio_insumo] option[value='+idinsumo+']').hide();
+            });
+            
+            $container.find('#table_insumos tbody tr a').on('click',function(){
+                var idinsumo = $(this).closest('tr').attr('id');
+                $(this).closest('tr').remove();
+                $container.find('select[name=servicio_insumo] option[value="'+idinsumo+'"]').show();
+            });
+            
+            
         }
 
         /*

@@ -1,0 +1,159 @@
+<div id="empleado_container">
+    <h1>Nuevo empleado</h1>
+    <?php 
+        $form->setAttribute('action', '/catalogos/empleado/nuevo');
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('empleado_nombre')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Rol <span class="req">*</span>
+                <?php echo $this->formSelect($form->get('idrol')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Numero del seguro social
+                <?php echo $this->formText($form->get('empleado_nss')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                RFC
+                <?php echo $this->formText($form->get('empleado_rfc')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Calle
+                <?php echo $this->formText($form->get('empleado_calle')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Numero
+                <?php echo $this->formText($form->get('empleado_numero')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Colonia
+                <?php echo $this->formText($form->get('empleado_colonia')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Codigo postal
+                <?php echo $this->formText($form->get('empleado_codigopostal')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Ciudad
+                <?php echo $this->formText($form->get('empleado_ciudad')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Sexo
+                <?php echo $this->formSelect($form->get('empleado_sexo')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Fecha de nacimiento
+                <?php echo $this->formText($form->get('empleado_fechanacimiento')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Teléfono
+                <?php echo $this->formText($form->get('empleado_telefono')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Celular
+                <?php echo $this->formText($form->get('empleado_celular')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Dia de descanso
+                <?php echo $this->formSelect($form->get('empleado_diadescanso')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Comprobantes</legend>
+                <div class="units-row">
+                    <div class="unit-50">
+                        <label>Comprobante de domicilio</b</label>
+                        <?php echo $this->formFile($form->get('empleado_comprobantedomiclio')); ?>
+                    </div>
+                    <div class="unit-50">
+                        <label>Comprobante de identificación</b</label>
+                        <?php echo $this->formFile($form->get('empleado_comprobantedomiclio')); ?>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Datos de acceso al sistema</legend>
+                <div class="units-row">
+                    <div class="unit-50">
+                        <label>Nombre de usuario</b</label>
+                        <?php echo $this->formText($form->get('empleado_username')); ?>
+                    </div>
+                    <div class="unit-50">
+                        <label>Contraseña</b</label>
+                        <?php echo $this->formPassword($form->get('empleado_password')); ?>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Fotografia</legend>
+                <div class="units-row">
+                    <div class="unit-centered unit-30"><img src="/img/empleados/default.jpg"></div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script src="/js/catalogos/empleado.js"></script>
+<script>
+    $('#empleado_container').empleado();
+</script>
