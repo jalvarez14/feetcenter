@@ -74,7 +74,8 @@
                 format: 'd !de mmmm !de yyyy',
                 formatSubmit: 'yyyy/mm/dd',
                 selectYears: true,
-                selectMonths: true
+                selectMonths: true,
+                selectYears: 25,
             });
             
             //la foto del empleado
