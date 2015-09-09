@@ -210,7 +210,7 @@ class EmpleadoController extends AbstractActionController
             if ($request->isPost()) { //Si hicieron POST
                 
                 $post_data = $request->getPost();
-                
+               
                 
                 
                 foreach ($post_data as $k => $v){
@@ -233,17 +233,17 @@ class EmpleadoController extends AbstractActionController
                     foreach ($form->getData() as $key => $value){
                         if($key == 'empleado_password'){
                             $entity->setByName($key, md5($value), \BasePeer::TYPE_FIELDNAME);
-                        }else{
+                        }elseif ($key != 'empleado_fechanacimiento') {
                             $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                         }
                     }
                     $entity->setEmpleadoComprobantedomiclio($empleado_comprobantedomicilio);
                     $entity->setEmpleadoComprobanteidentificacion($empleado_comprobanteidentificacion);
                     $entity->setEmpleadoFoto($empleado_foto);
- 
+                    
                     //Fecha de nacimiento
                     $entity->setEmpleadoFechanacimiento($post_data['empleado_fechanacimiento_submit']);
-                   
+                    
                     //Los archivos
                     if(isset($_FILES['empleado_comprobantedomiclio']) && !empty($_FILES['empleado_comprobantedomiclio']['name'])){
                             $upload_folder ='/img/empleados/comprobantes/';
