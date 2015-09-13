@@ -51,6 +51,7 @@ class ProductoTableMap extends TableMap
   1 => 'porcentaje',
 ));
         $this->addColumn('producto_comision', 'ProductoComision', 'DECIMAL', false, 10, null);
+        $this->addColumn('producto_fotografia', 'ProductoFotografia', 'LONGVARCHAR', false, null, null);
         // validators
     } // initialize()
 

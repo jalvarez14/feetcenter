@@ -48,6 +48,12 @@ abstract class BaseInsumo extends BaseObject implements Persistent
     protected $insumo_descripcion;
 
     /**
+     * The value for the insumo_costo field.
+     * @var        string
+     */
+    protected $insumo_costo;
+
+    /**
      * @var        PropelObjectCollection|Insumoclinica[] Collection to store aggregation of Insumoclinica objects.
      */
     protected $collInsumoclinicas;
@@ -125,6 +131,17 @@ abstract class BaseInsumo extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [insumo_costo] column value.
+     *
+     * @return string
+     */
+    public function getInsumoCosto()
+    {
+
+        return $this->insumo_costo;
+    }
+
+    /**
      * Set the value of [idinsumo] column.
      *
      * @param  int $v new value
@@ -188,6 +205,27 @@ abstract class BaseInsumo extends BaseObject implements Persistent
     } // setInsumoDescripcion()
 
     /**
+     * Set the value of [insumo_costo] column.
+     *
+     * @param  string $v new value
+     * @return Insumo The current object (for fluent API support)
+     */
+    public function setInsumoCosto($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->insumo_costo !== $v) {
+            $this->insumo_costo = $v;
+            $this->modifiedColumns[] = InsumoPeer::INSUMO_COSTO;
+        }
+
+
+        return $this;
+    } // setInsumoCosto()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -222,6 +260,7 @@ abstract class BaseInsumo extends BaseObject implements Persistent
             $this->idinsumo = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->insumo_nombre = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->insumo_descripcion = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->insumo_costo = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -231,7 +270,7 @@ abstract class BaseInsumo extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 3; // 3 = InsumoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = InsumoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Insumo object", $e);
@@ -490,6 +529,9 @@ abstract class BaseInsumo extends BaseObject implements Persistent
         if ($this->isColumnModified(InsumoPeer::INSUMO_DESCRIPCION)) {
             $modifiedColumns[':p' . $index++]  = '`insumo_descripcion`';
         }
+        if ($this->isColumnModified(InsumoPeer::INSUMO_COSTO)) {
+            $modifiedColumns[':p' . $index++]  = '`insumo_costo`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `insumo` (%s) VALUES (%s)',
@@ -509,6 +551,9 @@ abstract class BaseInsumo extends BaseObject implements Persistent
                         break;
                     case '`insumo_descripcion`':
                         $stmt->bindValue($identifier, $this->insumo_descripcion, PDO::PARAM_STR);
+                        break;
+                    case '`insumo_costo`':
+                        $stmt->bindValue($identifier, $this->insumo_costo, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -669,6 +714,9 @@ abstract class BaseInsumo extends BaseObject implements Persistent
             case 2:
                 return $this->getInsumoDescripcion();
                 break;
+            case 3:
+                return $this->getInsumoCosto();
+                break;
             default:
                 return null;
                 break;
@@ -701,6 +749,7 @@ abstract class BaseInsumo extends BaseObject implements Persistent
             $keys[0] => $this->getIdinsumo(),
             $keys[1] => $this->getInsumoNombre(),
             $keys[2] => $this->getInsumoDescripcion(),
+            $keys[3] => $this->getInsumoCosto(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -757,6 +806,9 @@ abstract class BaseInsumo extends BaseObject implements Persistent
             case 2:
                 $this->setInsumoDescripcion($value);
                 break;
+            case 3:
+                $this->setInsumoCosto($value);
+                break;
         } // switch()
     }
 
@@ -784,6 +836,7 @@ abstract class BaseInsumo extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setIdinsumo($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setInsumoNombre($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setInsumoDescripcion($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setInsumoCosto($arr[$keys[3]]);
     }
 
     /**
@@ -798,6 +851,7 @@ abstract class BaseInsumo extends BaseObject implements Persistent
         if ($this->isColumnModified(InsumoPeer::IDINSUMO)) $criteria->add(InsumoPeer::IDINSUMO, $this->idinsumo);
         if ($this->isColumnModified(InsumoPeer::INSUMO_NOMBRE)) $criteria->add(InsumoPeer::INSUMO_NOMBRE, $this->insumo_nombre);
         if ($this->isColumnModified(InsumoPeer::INSUMO_DESCRIPCION)) $criteria->add(InsumoPeer::INSUMO_DESCRIPCION, $this->insumo_descripcion);
+        if ($this->isColumnModified(InsumoPeer::INSUMO_COSTO)) $criteria->add(InsumoPeer::INSUMO_COSTO, $this->insumo_costo);
 
         return $criteria;
     }
@@ -863,6 +917,7 @@ abstract class BaseInsumo extends BaseObject implements Persistent
     {
         $copyObj->setInsumoNombre($this->getInsumoNombre());
         $copyObj->setInsumoDescripcion($this->getInsumoDescripcion());
+        $copyObj->setInsumoCosto($this->getInsumoCosto());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1460,6 +1515,7 @@ abstract class BaseInsumo extends BaseObject implements Persistent
         $this->idinsumo = null;
         $this->insumo_nombre = null;
         $this->insumo_descripcion = null;
+        $this->insumo_costo = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

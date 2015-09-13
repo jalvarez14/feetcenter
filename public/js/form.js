@@ -24,17 +24,7 @@ $(document).ready(function(){
         }
         
     });
-    
-    
-    //Only Numbers inputs
-    $(document).delegate('input[data-action=submit]','click',function(e){
-        
-    });
-    
-    
-    
-    
-    
+
     
 });
 

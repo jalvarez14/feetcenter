@@ -114,6 +114,12 @@ abstract class BasePaciente extends BaseObject implements Persistent
     protected $idempleado;
 
     /**
+     * @var        PropelObjectCollection|Grupopaciente[] Collection to store aggregation of Grupopaciente objects.
+     */
+    protected $collGrupopacientes;
+    protected $collGrupopacientesPartial;
+
+    /**
      * @var        PropelObjectCollection|Pacienteseguimiento[] Collection to store aggregation of Pacienteseguimiento objects.
      */
     protected $collPacienteseguimientos;
@@ -144,6 +150,12 @@ abstract class BasePaciente extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $grupopacientesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -753,6 +765,8 @@ abstract class BasePaciente extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collGrupopacientes = null;
+
             $this->collPacienteseguimientos = null;
 
             $this->collVisitas = null;
@@ -879,6 +893,23 @@ abstract class BasePaciente extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->grupopacientesScheduledForDeletion !== null) {
+                if (!$this->grupopacientesScheduledForDeletion->isEmpty()) {
+                    GrupopacienteQuery::create()
+                        ->filterByPrimaryKeys($this->grupopacientesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->grupopacientesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collGrupopacientes !== null) {
+                foreach ($this->collGrupopacientes as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->pacienteseguimientosScheduledForDeletion !== null) {
@@ -1135,6 +1166,14 @@ abstract class BasePaciente extends BaseObject implements Persistent
             }
 
 
+                if ($this->collGrupopacientes !== null) {
+                    foreach ($this->collGrupopacientes as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPacienteseguimientos !== null) {
                     foreach ($this->collPacienteseguimientos as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1278,6 +1317,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collGrupopacientes) {
+                $result['Grupopacientes'] = $this->collGrupopacientes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPacienteseguimientos) {
                 $result['Pacienteseguimientos'] = $this->collPacienteseguimientos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1507,6 +1549,12 @@ abstract class BasePaciente extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getGrupopacientes() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addGrupopaciente($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPacienteseguimientos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPacienteseguimiento($relObj->copy($deepCopy));
@@ -1580,12 +1628,265 @@ abstract class BasePaciente extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('Grupopaciente' == $relationName) {
+            $this->initGrupopacientes();
+        }
         if ('Pacienteseguimiento' == $relationName) {
             $this->initPacienteseguimientos();
         }
         if ('Visita' == $relationName) {
             $this->initVisitas();
         }
+    }
+
+    /**
+     * Clears out the collGrupopacientes collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Paciente The current object (for fluent API support)
+     * @see        addGrupopacientes()
+     */
+    public function clearGrupopacientes()
+    {
+        $this->collGrupopacientes = null; // important to set this to null since that means it is uninitialized
+        $this->collGrupopacientesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collGrupopacientes collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialGrupopacientes($v = true)
+    {
+        $this->collGrupopacientesPartial = $v;
+    }
+
+    /**
+     * Initializes the collGrupopacientes collection.
+     *
+     * By default this just sets the collGrupopacientes collection to an empty array (like clearcollGrupopacientes());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initGrupopacientes($overrideExisting = true)
+    {
+        if (null !== $this->collGrupopacientes && !$overrideExisting) {
+            return;
+        }
+        $this->collGrupopacientes = new PropelObjectCollection();
+        $this->collGrupopacientes->setModel('Grupopaciente');
+    }
+
+    /**
+     * Gets an array of Grupopaciente objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Paciente is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Grupopaciente[] List of Grupopaciente objects
+     * @throws PropelException
+     */
+    public function getGrupopacientes($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collGrupopacientesPartial && !$this->isNew();
+        if (null === $this->collGrupopacientes || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collGrupopacientes) {
+                // return empty collection
+                $this->initGrupopacientes();
+            } else {
+                $collGrupopacientes = GrupopacienteQuery::create(null, $criteria)
+                    ->filterByPaciente($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collGrupopacientesPartial && count($collGrupopacientes)) {
+                      $this->initGrupopacientes(false);
+
+                      foreach ($collGrupopacientes as $obj) {
+                        if (false == $this->collGrupopacientes->contains($obj)) {
+                          $this->collGrupopacientes->append($obj);
+                        }
+                      }
+
+                      $this->collGrupopacientesPartial = true;
+                    }
+
+                    $collGrupopacientes->getInternalIterator()->rewind();
+
+                    return $collGrupopacientes;
+                }
+
+                if ($partial && $this->collGrupopacientes) {
+                    foreach ($this->collGrupopacientes as $obj) {
+                        if ($obj->isNew()) {
+                            $collGrupopacientes[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collGrupopacientes = $collGrupopacientes;
+                $this->collGrupopacientesPartial = false;
+            }
+        }
+
+        return $this->collGrupopacientes;
+    }
+
+    /**
+     * Sets a collection of Grupopaciente objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $grupopacientes A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function setGrupopacientes(PropelCollection $grupopacientes, PropelPDO $con = null)
+    {
+        $grupopacientesToDelete = $this->getGrupopacientes(new Criteria(), $con)->diff($grupopacientes);
+
+
+        $this->grupopacientesScheduledForDeletion = $grupopacientesToDelete;
+
+        foreach ($grupopacientesToDelete as $grupopacienteRemoved) {
+            $grupopacienteRemoved->setPaciente(null);
+        }
+
+        $this->collGrupopacientes = null;
+        foreach ($grupopacientes as $grupopaciente) {
+            $this->addGrupopaciente($grupopaciente);
+        }
+
+        $this->collGrupopacientes = $grupopacientes;
+        $this->collGrupopacientesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Grupopaciente objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Grupopaciente objects.
+     * @throws PropelException
+     */
+    public function countGrupopacientes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collGrupopacientesPartial && !$this->isNew();
+        if (null === $this->collGrupopacientes || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collGrupopacientes) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getGrupopacientes());
+            }
+            $query = GrupopacienteQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPaciente($this)
+                ->count($con);
+        }
+
+        return count($this->collGrupopacientes);
+    }
+
+    /**
+     * Method called to associate a Grupopaciente object to this object
+     * through the Grupopaciente foreign key attribute.
+     *
+     * @param    Grupopaciente $l Grupopaciente
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function addGrupopaciente(Grupopaciente $l)
+    {
+        if ($this->collGrupopacientes === null) {
+            $this->initGrupopacientes();
+            $this->collGrupopacientesPartial = true;
+        }
+
+        if (!in_array($l, $this->collGrupopacientes->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddGrupopaciente($l);
+
+            if ($this->grupopacientesScheduledForDeletion and $this->grupopacientesScheduledForDeletion->contains($l)) {
+                $this->grupopacientesScheduledForDeletion->remove($this->grupopacientesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Grupopaciente $grupopaciente The grupopaciente object to add.
+     */
+    protected function doAddGrupopaciente($grupopaciente)
+    {
+        $this->collGrupopacientes[]= $grupopaciente;
+        $grupopaciente->setPaciente($this);
+    }
+
+    /**
+     * @param	Grupopaciente $grupopaciente The grupopaciente object to remove.
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function removeGrupopaciente($grupopaciente)
+    {
+        if ($this->getGrupopacientes()->contains($grupopaciente)) {
+            $this->collGrupopacientes->remove($this->collGrupopacientes->search($grupopaciente));
+            if (null === $this->grupopacientesScheduledForDeletion) {
+                $this->grupopacientesScheduledForDeletion = clone $this->collGrupopacientes;
+                $this->grupopacientesScheduledForDeletion->clear();
+            }
+            $this->grupopacientesScheduledForDeletion[]= clone $grupopaciente;
+            $grupopaciente->setPaciente(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Paciente is new, it will return
+     * an empty collection; or if this Paciente has previously
+     * been saved, it will retrieve related Grupopacientes from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Paciente.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Grupopaciente[] List of Grupopaciente objects
+     */
+    public function getGrupopacientesJoinGrupo($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = GrupopacienteQuery::create(null, $criteria);
+        $query->joinWith('Grupo', $join_behavior);
+
+        return $this->getGrupopacientes($query, $con);
     }
 
     /**
@@ -2154,6 +2455,11 @@ abstract class BasePaciente extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collGrupopacientes) {
+                foreach ($this->collGrupopacientes as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPacienteseguimientos) {
                 foreach ($this->collPacienteseguimientos as $o) {
                     $o->clearAllReferences($deep);
@@ -2168,6 +2474,10 @@ abstract class BasePaciente extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collGrupopacientes instanceof PropelCollection) {
+            $this->collGrupopacientes->clearIterator();
+        }
+        $this->collGrupopacientes = null;
         if ($this->collPacienteseguimientos instanceof PropelCollection) {
             $this->collPacienteseguimientos->clearIterator();
         }

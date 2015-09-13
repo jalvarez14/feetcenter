@@ -24,13 +24,13 @@ abstract class BaseInsumoPeer
     const TM_CLASS = 'InsumoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the idinsumo field */
     const IDINSUMO = 'insumo.idinsumo';
@@ -40,6 +40,9 @@ abstract class BaseInsumoPeer
 
     /** the column name for the insumo_descripcion field */
     const INSUMO_DESCRIPCION = 'insumo.insumo_descripcion';
+
+    /** the column name for the insumo_costo field */
+    const INSUMO_COSTO = 'insumo.insumo_costo';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -60,12 +63,12 @@ abstract class BaseInsumoPeer
      * e.g. InsumoPeer::$fieldNames[InsumoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idinsumo', 'InsumoNombre', 'InsumoDescripcion', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idinsumo', 'insumoNombre', 'insumoDescripcion', ),
-        BasePeer::TYPE_COLNAME => array (InsumoPeer::IDINSUMO, InsumoPeer::INSUMO_NOMBRE, InsumoPeer::INSUMO_DESCRIPCION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDINSUMO', 'INSUMO_NOMBRE', 'INSUMO_DESCRIPCION', ),
-        BasePeer::TYPE_FIELDNAME => array ('idinsumo', 'insumo_nombre', 'insumo_descripcion', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Idinsumo', 'InsumoNombre', 'InsumoDescripcion', 'InsumoCosto', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idinsumo', 'insumoNombre', 'insumoDescripcion', 'insumoCosto', ),
+        BasePeer::TYPE_COLNAME => array (InsumoPeer::IDINSUMO, InsumoPeer::INSUMO_NOMBRE, InsumoPeer::INSUMO_DESCRIPCION, InsumoPeer::INSUMO_COSTO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDINSUMO', 'INSUMO_NOMBRE', 'INSUMO_DESCRIPCION', 'INSUMO_COSTO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idinsumo', 'insumo_nombre', 'insumo_descripcion', 'insumo_costo', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -75,12 +78,12 @@ abstract class BaseInsumoPeer
      * e.g. InsumoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idinsumo' => 0, 'InsumoNombre' => 1, 'InsumoDescripcion' => 2, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idinsumo' => 0, 'insumoNombre' => 1, 'insumoDescripcion' => 2, ),
-        BasePeer::TYPE_COLNAME => array (InsumoPeer::IDINSUMO => 0, InsumoPeer::INSUMO_NOMBRE => 1, InsumoPeer::INSUMO_DESCRIPCION => 2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDINSUMO' => 0, 'INSUMO_NOMBRE' => 1, 'INSUMO_DESCRIPCION' => 2, ),
-        BasePeer::TYPE_FIELDNAME => array ('idinsumo' => 0, 'insumo_nombre' => 1, 'insumo_descripcion' => 2, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Idinsumo' => 0, 'InsumoNombre' => 1, 'InsumoDescripcion' => 2, 'InsumoCosto' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idinsumo' => 0, 'insumoNombre' => 1, 'insumoDescripcion' => 2, 'insumoCosto' => 3, ),
+        BasePeer::TYPE_COLNAME => array (InsumoPeer::IDINSUMO => 0, InsumoPeer::INSUMO_NOMBRE => 1, InsumoPeer::INSUMO_DESCRIPCION => 2, InsumoPeer::INSUMO_COSTO => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDINSUMO' => 0, 'INSUMO_NOMBRE' => 1, 'INSUMO_DESCRIPCION' => 2, 'INSUMO_COSTO' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('idinsumo' => 0, 'insumo_nombre' => 1, 'insumo_descripcion' => 2, 'insumo_costo' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -157,10 +160,12 @@ abstract class BaseInsumoPeer
             $criteria->addSelectColumn(InsumoPeer::IDINSUMO);
             $criteria->addSelectColumn(InsumoPeer::INSUMO_NOMBRE);
             $criteria->addSelectColumn(InsumoPeer::INSUMO_DESCRIPCION);
+            $criteria->addSelectColumn(InsumoPeer::INSUMO_COSTO);
         } else {
             $criteria->addSelectColumn($alias . '.idinsumo');
             $criteria->addSelectColumn($alias . '.insumo_nombre');
             $criteria->addSelectColumn($alias . '.insumo_descripcion');
+            $criteria->addSelectColumn($alias . '.insumo_costo');
         }
     }
 

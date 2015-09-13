@@ -114,33 +114,16 @@ return array(
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
-            'application' => array(
-                'type'    => 'Literal',
+            /*
+            * MODULO COMPRAS
+            */
+            'compras' => array(
+                'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/application',
+                    'route'    => '/compras[/:action][/:id]',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Index',
+                        'controller'    => 'Compras\Controller\Compras',
                         'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
                     ),
                 ),
             ),
@@ -177,6 +160,8 @@ return array(
             'Catalogos\Controller\Producto' => 'Catalogos\Controller\ProductoController',
             'Catalogos\Controller\Servicio' => 'Catalogos\Controller\ServicioController',
             'Catalogos\Controller\Empleado' => 'Catalogos\Controller\EmpleadoController',
+            //Compras
+            'Compras\Controller\Compras' => 'Compras\Controller\ComprasController',
         ),
     ),
     'view_manager' => array(

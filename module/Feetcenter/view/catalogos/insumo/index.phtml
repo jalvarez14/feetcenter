@@ -15,6 +15,7 @@
         <tr>
             <th>Nombre</th>
             <th>Descripción</th>
+            <th>Costo</th>
             <th>Opciones</th>   
         </tr>
     </thead>
@@ -22,7 +23,9 @@
         <?php foreach($collection as $entity) : ?>
             <tr id="<?php echo $entity['idinsumo']?>">
                 <td><?php echo $entity['insumo_nombre']?></td>
+                
                 <td><?php echo $entity['insumo_descripcion']?></td>
+                <td><?php echo $entity['insumo_costo']?></td>
                 <td class="tr_options"><a href="<?php echo '/catalogos/insumo/editar/'.$entity['idinsumo']?>">Editar</a><a class="delete-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Advertencia</h2>" data-content="/catalogos/insumo/eliminar?html=true" >Eliminar</a></td>
             </tr>
         <?php endforeach;?>
@@ -60,6 +63,13 @@ $(function()
             
         }, this));
 
+    });
+    
+    //Damos formato a nuestra taba
+    $('table tr').each(function(){
+       var str =  $(this).find('td').eq(2).text();
+       $(this).find('td').eq(2).text(accounting.formatMoney(str));
+      
     });
 });
 </script>

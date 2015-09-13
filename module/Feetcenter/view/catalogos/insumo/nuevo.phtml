@@ -14,6 +14,12 @@
                 <?php echo $this->formText($form->get('insumo_nombre')); ?>
             </label>
         </div>
+        <div class="unit-50">
+            <label>
+                Costo <span class="req">*</span>
+                <?php echo $this->formText($form->get('insumo_costo')); ?>
+            </label>
+        </div>
     </div>
     <div class="units-row">
         <div class="unit-100">
@@ -27,3 +33,6 @@
         <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
     </div>
 </div>
+<script>
+    $('input[name=insumo_costo]').numeric();
+</script>

@@ -40,6 +40,10 @@
  * @method PacienteQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PacienteQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method PacienteQuery leftJoinGrupopaciente($relationAlias = null) Adds a LEFT JOIN clause to the query using the Grupopaciente relation
+ * @method PacienteQuery rightJoinGrupopaciente($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Grupopaciente relation
+ * @method PacienteQuery innerJoinGrupopaciente($relationAlias = null) Adds a INNER JOIN clause to the query using the Grupopaciente relation
+ *
  * @method PacienteQuery leftJoinPacienteseguimiento($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pacienteseguimiento relation
  * @method PacienteQuery rightJoinPacienteseguimiento($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pacienteseguimiento relation
  * @method PacienteQuery innerJoinPacienteseguimiento($relationAlias = null) Adds a INNER JOIN clause to the query using the Pacienteseguimiento relation
@@ -719,6 +723,80 @@ abstract class BasePacienteQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PacientePeer::IDEMPLEADO, $idempleado, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Grupopaciente object
+     *
+     * @param   Grupopaciente|PropelObjectCollection $grupopaciente  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PacienteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByGrupopaciente($grupopaciente, $comparison = null)
+    {
+        if ($grupopaciente instanceof Grupopaciente) {
+            return $this
+                ->addUsingAlias(PacientePeer::IDPACIENTE, $grupopaciente->getIdpaciente(), $comparison);
+        } elseif ($grupopaciente instanceof PropelObjectCollection) {
+            return $this
+                ->useGrupopacienteQuery()
+                ->filterByPrimaryKeys($grupopaciente->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByGrupopaciente() only accepts arguments of type Grupopaciente or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Grupopaciente relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PacienteQuery The current query, for fluid interface
+     */
+    public function joinGrupopaciente($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Grupopaciente');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Grupopaciente');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Grupopaciente relation Grupopaciente object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   GrupopacienteQuery A secondary query class using the current class as primary query
+     */
+    public function useGrupopacienteQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinGrupopaciente($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Grupopaciente', 'GrupopacienteQuery');
     }
 
     /**

@@ -15,6 +15,7 @@
  * @method ProductoQuery orderByProductoGeneracomision($order = Criteria::ASC) Order by the producto_generacomision column
  * @method ProductoQuery orderByProductoTipocomision($order = Criteria::ASC) Order by the producto_tipocomision column
  * @method ProductoQuery orderByProductoComision($order = Criteria::ASC) Order by the producto_comision column
+ * @method ProductoQuery orderByProductoFotografia($order = Criteria::ASC) Order by the producto_fotografia column
  *
  * @method ProductoQuery groupByIdproducto() Group by the idproducto column
  * @method ProductoQuery groupByProductoNombre() Group by the producto_nombre column
@@ -25,6 +26,7 @@
  * @method ProductoQuery groupByProductoGeneracomision() Group by the producto_generacomision column
  * @method ProductoQuery groupByProductoTipocomision() Group by the producto_tipocomision column
  * @method ProductoQuery groupByProductoComision() Group by the producto_comision column
+ * @method ProductoQuery groupByProductoFotografia() Group by the producto_fotografia column
  *
  * @method ProductoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ProductoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -45,6 +47,7 @@
  * @method Producto findOneByProductoGeneracomision(boolean $producto_generacomision) Return the first Producto filtered by the producto_generacomision column
  * @method Producto findOneByProductoTipocomision(string $producto_tipocomision) Return the first Producto filtered by the producto_tipocomision column
  * @method Producto findOneByProductoComision(string $producto_comision) Return the first Producto filtered by the producto_comision column
+ * @method Producto findOneByProductoFotografia(string $producto_fotografia) Return the first Producto filtered by the producto_fotografia column
  *
  * @method array findByIdproducto(int $idproducto) Return Producto objects filtered by the idproducto column
  * @method array findByProductoNombre(string $producto_nombre) Return Producto objects filtered by the producto_nombre column
@@ -55,6 +58,7 @@
  * @method array findByProductoGeneracomision(boolean $producto_generacomision) Return Producto objects filtered by the producto_generacomision column
  * @method array findByProductoTipocomision(string $producto_tipocomision) Return Producto objects filtered by the producto_tipocomision column
  * @method array findByProductoComision(string $producto_comision) Return Producto objects filtered by the producto_comision column
+ * @method array findByProductoFotografia(string $producto_fotografia) Return Producto objects filtered by the producto_fotografia column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -162,7 +166,7 @@ abstract class BaseProductoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproducto`, `producto_nombre`, `producto_descripcion`, `producto_costo`, `producto_precio`, `producto_generaingreso`, `producto_generacomision`, `producto_tipocomision`, `producto_comision` FROM `producto` WHERE `idproducto` = :p0';
+        $sql = 'SELECT `idproducto`, `producto_nombre`, `producto_descripcion`, `producto_costo`, `producto_precio`, `producto_generaingreso`, `producto_generacomision`, `producto_tipocomision`, `producto_comision`, `producto_fotografia` FROM `producto` WHERE `idproducto` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -532,6 +536,35 @@ abstract class BaseProductoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductoPeer::PRODUCTO_COMISION, $productoComision, $comparison);
+    }
+
+    /**
+     * Filter the query on the producto_fotografia column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProductoFotografia('fooValue');   // WHERE producto_fotografia = 'fooValue'
+     * $query->filterByProductoFotografia('%fooValue%'); // WHERE producto_fotografia LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $productoFotografia The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProductoQuery The current query, for fluid interface
+     */
+    public function filterByProductoFotografia($productoFotografia = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($productoFotografia)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $productoFotografia)) {
+                $productoFotografia = str_replace('*', '%', $productoFotografia);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProductoPeer::PRODUCTO_FOTOGRAFIA, $productoFotografia, $comparison);
     }
 
     /**

@@ -96,6 +96,7 @@ CREATE TABLE `compra`
     `compra_status` enum('pagada','no pagada') NOT NULL,
     `compra_pagaren` DATE NOT NULL,
     `compra_comprobante` TEXT,
+    `compra_folio` VARCHAR(45),
     PRIMARY KEY (`idcompra`),
     INDEX `idoproveedor` (`idproveedor`),
     INDEX `idempleado` (`idempleado`),
@@ -366,6 +367,47 @@ CREATE TABLE `faltante`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- grupo
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `grupo`;
+
+CREATE TABLE `grupo`
+(
+    `idgrupo` INTEGER NOT NULL AUTO_INCREMENT,
+    `grupo_nombre` VARCHAR(255) NOT NULL,
+    `grupo_descripcion` VARCHAR(45),
+    `grupo_creadoen` DATETIME,
+    PRIMARY KEY (`idgrupo`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- grupopaciente
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `grupopaciente`;
+
+CREATE TABLE `grupopaciente`
+(
+    `idgrupopaciente` INTEGER NOT NULL AUTO_INCREMENT,
+    `idgrupo` INTEGER NOT NULL,
+    `idpaciente` INTEGER NOT NULL,
+    PRIMARY KEY (`idgrupopaciente`),
+    INDEX `idgrupo` (`idgrupo`),
+    INDEX `idpaciente` (`idpaciente`),
+    CONSTRAINT `idgrupo_grupopaciente`
+        FOREIGN KEY (`idgrupo`)
+        REFERENCES `grupo` (`idgrupo`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idpaciente_grupopaciente`
+        FOREIGN KEY (`idpaciente`)
+        REFERENCES `paciente` (`idpaciente`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- insumo
 -- ---------------------------------------------------------------------
 
@@ -376,6 +418,7 @@ CREATE TABLE `insumo`
     `idinsumo` INTEGER NOT NULL AUTO_INCREMENT,
     `insumo_nombre` VARCHAR(255) NOT NULL,
     `insumo_descripcion` TEXT,
+    `insumo_costo` DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (`idinsumo`)
 ) ENGINE=InnoDB;
 
@@ -474,6 +517,7 @@ CREATE TABLE `producto`
     `producto_generacomision` TINYINT(1) NOT NULL,
     `producto_tipocomision` enum('cantidad','porcentaje'),
     `producto_comision` DECIMAL(10,2),
+    `producto_fotografia` TEXT,
     PRIMARY KEY (`idproducto`)
 ) ENGINE=InnoDB;
 

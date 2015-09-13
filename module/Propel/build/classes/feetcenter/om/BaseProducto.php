@@ -84,6 +84,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
     protected $producto_comision;
 
     /**
+     * The value for the producto_fotografia field.
+     * @var        string
+     */
+    protected $producto_fotografia;
+
+    /**
      * @var        PropelObjectCollection|Productoclinica[] Collection to store aggregation of Productoclinica objects.
      */
     protected $collProductoclinicas;
@@ -212,6 +218,17 @@ abstract class BaseProducto extends BaseObject implements Persistent
     {
 
         return $this->producto_comision;
+    }
+
+    /**
+     * Get the [producto_fotografia] column value.
+     *
+     * @return string
+     */
+    public function getProductoFotografia()
+    {
+
+        return $this->producto_fotografia;
     }
 
     /**
@@ -420,6 +437,27 @@ abstract class BaseProducto extends BaseObject implements Persistent
     } // setProductoComision()
 
     /**
+     * Set the value of [producto_fotografia] column.
+     *
+     * @param  string $v new value
+     * @return Producto The current object (for fluent API support)
+     */
+    public function setProductoFotografia($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->producto_fotografia !== $v) {
+            $this->producto_fotografia = $v;
+            $this->modifiedColumns[] = ProductoPeer::PRODUCTO_FOTOGRAFIA;
+        }
+
+
+        return $this;
+    } // setProductoFotografia()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -460,6 +498,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->producto_generacomision = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
             $this->producto_tipocomision = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->producto_comision = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->producto_fotografia = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -469,7 +508,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 9; // 9 = ProductoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = ProductoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Producto object", $e);
@@ -727,6 +766,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_COMISION)) {
             $modifiedColumns[':p' . $index++]  = '`producto_comision`';
         }
+        if ($this->isColumnModified(ProductoPeer::PRODUCTO_FOTOGRAFIA)) {
+            $modifiedColumns[':p' . $index++]  = '`producto_fotografia`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `producto` (%s) VALUES (%s)',
@@ -764,6 +806,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
                         break;
                     case '`producto_comision`':
                         $stmt->bindValue($identifier, $this->producto_comision, PDO::PARAM_STR);
+                        break;
+                    case '`producto_fotografia`':
+                        $stmt->bindValue($identifier, $this->producto_fotografia, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -934,6 +979,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
             case 8:
                 return $this->getProductoComision();
                 break;
+            case 9:
+                return $this->getProductoFotografia();
+                break;
             default:
                 return null;
                 break;
@@ -972,6 +1020,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $keys[6] => $this->getProductoGeneracomision(),
             $keys[7] => $this->getProductoTipocomision(),
             $keys[8] => $this->getProductoComision(),
+            $keys[9] => $this->getProductoFotografia(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1043,6 +1092,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
             case 8:
                 $this->setProductoComision($value);
                 break;
+            case 9:
+                $this->setProductoFotografia($value);
+                break;
         } // switch()
     }
 
@@ -1076,6 +1128,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if (array_key_exists($keys[6], $arr)) $this->setProductoGeneracomision($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setProductoTipocomision($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setProductoComision($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setProductoFotografia($arr[$keys[9]]);
     }
 
     /**
@@ -1096,6 +1149,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_GENERACOMISION)) $criteria->add(ProductoPeer::PRODUCTO_GENERACOMISION, $this->producto_generacomision);
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_TIPOCOMISION)) $criteria->add(ProductoPeer::PRODUCTO_TIPOCOMISION, $this->producto_tipocomision);
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_COMISION)) $criteria->add(ProductoPeer::PRODUCTO_COMISION, $this->producto_comision);
+        if ($this->isColumnModified(ProductoPeer::PRODUCTO_FOTOGRAFIA)) $criteria->add(ProductoPeer::PRODUCTO_FOTOGRAFIA, $this->producto_fotografia);
 
         return $criteria;
     }
@@ -1167,6 +1221,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $copyObj->setProductoGeneracomision($this->getProductoGeneracomision());
         $copyObj->setProductoTipocomision($this->getProductoTipocomision());
         $copyObj->setProductoComision($this->getProductoComision());
+        $copyObj->setProductoFotografia($this->getProductoFotografia());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1511,6 +1566,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $this->producto_generacomision = null;
         $this->producto_tipocomision = null;
         $this->producto_comision = null;
+        $this->producto_fotografia = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

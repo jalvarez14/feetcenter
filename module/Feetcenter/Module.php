@@ -33,7 +33,8 @@ class Module
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                     'Catalogos' => __DIR__ . '/src/'  .'Catalogos',
+                    'Catalogos' => __DIR__ . '/src/'  .'Catalogos',
+                    'Compras' => __DIR__ . '/src/'  .'Compras',
                 ),
             ),
         );

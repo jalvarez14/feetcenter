@@ -63,6 +63,7 @@
     <column name="compra_status" phpName="CompraStatus" type="CHAR" sqlType="enum('pagada','no pagada')" required="true"/>
     <column name="compra_pagaren" phpName="CompraPagaren" type="DATE" required="true"/>
     <column name="compra_comprobante" phpName="CompraComprobante" type="LONGVARCHAR" required="false"/>
+    <column name="compra_folio" phpName="CompraFolio" type="VARCHAR" size="45" required="false"/>
     <foreign-key foreignTable="empleado" name="idempleado_compra" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idempleado" foreign="idempleado"/>
     </foreign-key>
@@ -279,10 +280,40 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="grupo" phpName="Grupo" idMethod="native">
+    <column name="idgrupo" phpName="Idgrupo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="grupo_nombre" phpName="GrupoNombre" type="VARCHAR" size="255" required="true"/>
+    <column name="grupo_descripcion" phpName="GrupoDescripcion" type="VARCHAR" size="45" required="false"/>
+    <column name="grupo_creadoen" phpName="GrupoCreadoen" type="TIMESTAMP" required="false"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="grupopaciente" phpName="Grupopaciente" idMethod="native">
+    <column name="idgrupopaciente" phpName="Idgrupopaciente" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idgrupo" phpName="Idgrupo" type="INTEGER" required="true"/>
+    <column name="idpaciente" phpName="Idpaciente" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="grupo" name="idgrupo_grupopaciente" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idgrupo" foreign="idgrupo"/>
+    </foreign-key>
+    <foreign-key foreignTable="paciente" name="idpaciente_grupopaciente" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idpaciente" foreign="idpaciente"/>
+    </foreign-key>
+    <index name="idgrupo">
+      <index-column name="idgrupo"/>
+    </index>
+    <index name="idpaciente">
+      <index-column name="idpaciente"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="insumo" phpName="Insumo" idMethod="native">
     <column name="idinsumo" phpName="Idinsumo" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="insumo_nombre" phpName="InsumoNombre" type="VARCHAR" size="255" required="true"/>
     <column name="insumo_descripcion" phpName="InsumoDescripcion" type="LONGVARCHAR" required="false"/>
+    <column name="insumo_costo" phpName="InsumoCosto" type="DECIMAL" size="10" scale="2" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -357,6 +388,7 @@
     <column name="producto_generacomision" phpName="ProductoGeneracomision" type="BOOLEAN" size="1" required="true"/>
     <column name="producto_tipocomision" phpName="ProductoTipocomision" type="CHAR" sqlType="enum('cantidad','porcentaje')" required="false"/>
     <column name="producto_comision" phpName="ProductoComision" type="DECIMAL" size="10" scale="2" required="false"/>
+    <column name="producto_fotografia" phpName="ProductoFotografia" type="LONGVARCHAR" required="false"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

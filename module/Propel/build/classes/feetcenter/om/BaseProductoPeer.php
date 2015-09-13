@@ -24,13 +24,13 @@ abstract class BaseProductoPeer
     const TM_CLASS = 'ProductoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the idproducto field */
     const IDPRODUCTO = 'producto.idproducto';
@@ -59,6 +59,9 @@ abstract class BaseProductoPeer
     /** the column name for the producto_comision field */
     const PRODUCTO_COMISION = 'producto.producto_comision';
 
+    /** the column name for the producto_fotografia field */
+    const PRODUCTO_FOTOGRAFIA = 'producto.producto_fotografia';
+
     /** The enumerated values for the producto_tipocomision field */
     const PRODUCTO_TIPOCOMISION_CANTIDAD = 'cantidad';
     const PRODUCTO_TIPOCOMISION_PORCENTAJE = 'porcentaje';
@@ -82,12 +85,12 @@ abstract class BaseProductoPeer
      * e.g. ProductoPeer::$fieldNames[ProductoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproducto', 'ProductoNombre', 'ProductoDescripcion', 'ProductoCosto', 'ProductoPrecio', 'ProductoGeneraingreso', 'ProductoGeneracomision', 'ProductoTipocomision', 'ProductoComision', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto', 'productoNombre', 'productoDescripcion', 'productoCosto', 'productoPrecio', 'productoGeneraingreso', 'productoGeneracomision', 'productoTipocomision', 'productoComision', ),
-        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO, ProductoPeer::PRODUCTO_NOMBRE, ProductoPeer::PRODUCTO_DESCRIPCION, ProductoPeer::PRODUCTO_COSTO, ProductoPeer::PRODUCTO_PRECIO, ProductoPeer::PRODUCTO_GENERAINGRESO, ProductoPeer::PRODUCTO_GENERACOMISION, ProductoPeer::PRODUCTO_TIPOCOMISION, ProductoPeer::PRODUCTO_COMISION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO', 'PRODUCTO_NOMBRE', 'PRODUCTO_DESCRIPCION', 'PRODUCTO_COSTO', 'PRODUCTO_PRECIO', 'PRODUCTO_GENERAINGRESO', 'PRODUCTO_GENERACOMISION', 'PRODUCTO_TIPOCOMISION', 'PRODUCTO_COMISION', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproducto', 'producto_nombre', 'producto_descripcion', 'producto_costo', 'producto_precio', 'producto_generaingreso', 'producto_generacomision', 'producto_tipocomision', 'producto_comision', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idproducto', 'ProductoNombre', 'ProductoDescripcion', 'ProductoCosto', 'ProductoPrecio', 'ProductoGeneraingreso', 'ProductoGeneracomision', 'ProductoTipocomision', 'ProductoComision', 'ProductoFotografia', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto', 'productoNombre', 'productoDescripcion', 'productoCosto', 'productoPrecio', 'productoGeneraingreso', 'productoGeneracomision', 'productoTipocomision', 'productoComision', 'productoFotografia', ),
+        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO, ProductoPeer::PRODUCTO_NOMBRE, ProductoPeer::PRODUCTO_DESCRIPCION, ProductoPeer::PRODUCTO_COSTO, ProductoPeer::PRODUCTO_PRECIO, ProductoPeer::PRODUCTO_GENERAINGRESO, ProductoPeer::PRODUCTO_GENERACOMISION, ProductoPeer::PRODUCTO_TIPOCOMISION, ProductoPeer::PRODUCTO_COMISION, ProductoPeer::PRODUCTO_FOTOGRAFIA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO', 'PRODUCTO_NOMBRE', 'PRODUCTO_DESCRIPCION', 'PRODUCTO_COSTO', 'PRODUCTO_PRECIO', 'PRODUCTO_GENERAINGRESO', 'PRODUCTO_GENERACOMISION', 'PRODUCTO_TIPOCOMISION', 'PRODUCTO_COMISION', 'PRODUCTO_FOTOGRAFIA', ),
+        BasePeer::TYPE_FIELDNAME => array ('idproducto', 'producto_nombre', 'producto_descripcion', 'producto_costo', 'producto_precio', 'producto_generaingreso', 'producto_generacomision', 'producto_tipocomision', 'producto_comision', 'producto_fotografia', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -97,12 +100,12 @@ abstract class BaseProductoPeer
      * e.g. ProductoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproducto' => 0, 'ProductoNombre' => 1, 'ProductoDescripcion' => 2, 'ProductoCosto' => 3, 'ProductoPrecio' => 4, 'ProductoGeneraingreso' => 5, 'ProductoGeneracomision' => 6, 'ProductoTipocomision' => 7, 'ProductoComision' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto' => 0, 'productoNombre' => 1, 'productoDescripcion' => 2, 'productoCosto' => 3, 'productoPrecio' => 4, 'productoGeneraingreso' => 5, 'productoGeneracomision' => 6, 'productoTipocomision' => 7, 'productoComision' => 8, ),
-        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO => 0, ProductoPeer::PRODUCTO_NOMBRE => 1, ProductoPeer::PRODUCTO_DESCRIPCION => 2, ProductoPeer::PRODUCTO_COSTO => 3, ProductoPeer::PRODUCTO_PRECIO => 4, ProductoPeer::PRODUCTO_GENERAINGRESO => 5, ProductoPeer::PRODUCTO_GENERACOMISION => 6, ProductoPeer::PRODUCTO_TIPOCOMISION => 7, ProductoPeer::PRODUCTO_COMISION => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO' => 0, 'PRODUCTO_NOMBRE' => 1, 'PRODUCTO_DESCRIPCION' => 2, 'PRODUCTO_COSTO' => 3, 'PRODUCTO_PRECIO' => 4, 'PRODUCTO_GENERAINGRESO' => 5, 'PRODUCTO_GENERACOMISION' => 6, 'PRODUCTO_TIPOCOMISION' => 7, 'PRODUCTO_COMISION' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproducto' => 0, 'producto_nombre' => 1, 'producto_descripcion' => 2, 'producto_costo' => 3, 'producto_precio' => 4, 'producto_generaingreso' => 5, 'producto_generacomision' => 6, 'producto_tipocomision' => 7, 'producto_comision' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idproducto' => 0, 'ProductoNombre' => 1, 'ProductoDescripcion' => 2, 'ProductoCosto' => 3, 'ProductoPrecio' => 4, 'ProductoGeneraingreso' => 5, 'ProductoGeneracomision' => 6, 'ProductoTipocomision' => 7, 'ProductoComision' => 8, 'ProductoFotografia' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto' => 0, 'productoNombre' => 1, 'productoDescripcion' => 2, 'productoCosto' => 3, 'productoPrecio' => 4, 'productoGeneraingreso' => 5, 'productoGeneracomision' => 6, 'productoTipocomision' => 7, 'productoComision' => 8, 'productoFotografia' => 9, ),
+        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO => 0, ProductoPeer::PRODUCTO_NOMBRE => 1, ProductoPeer::PRODUCTO_DESCRIPCION => 2, ProductoPeer::PRODUCTO_COSTO => 3, ProductoPeer::PRODUCTO_PRECIO => 4, ProductoPeer::PRODUCTO_GENERAINGRESO => 5, ProductoPeer::PRODUCTO_GENERACOMISION => 6, ProductoPeer::PRODUCTO_TIPOCOMISION => 7, ProductoPeer::PRODUCTO_COMISION => 8, ProductoPeer::PRODUCTO_FOTOGRAFIA => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO' => 0, 'PRODUCTO_NOMBRE' => 1, 'PRODUCTO_DESCRIPCION' => 2, 'PRODUCTO_COSTO' => 3, 'PRODUCTO_PRECIO' => 4, 'PRODUCTO_GENERAINGRESO' => 5, 'PRODUCTO_GENERACOMISION' => 6, 'PRODUCTO_TIPOCOMISION' => 7, 'PRODUCTO_COMISION' => 8, 'PRODUCTO_FOTOGRAFIA' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('idproducto' => 0, 'producto_nombre' => 1, 'producto_descripcion' => 2, 'producto_costo' => 3, 'producto_precio' => 4, 'producto_generaingreso' => 5, 'producto_generacomision' => 6, 'producto_tipocomision' => 7, 'producto_comision' => 8, 'producto_fotografia' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /** The enumerated values for this table */
@@ -238,6 +241,7 @@ abstract class BaseProductoPeer
             $criteria->addSelectColumn(ProductoPeer::PRODUCTO_GENERACOMISION);
             $criteria->addSelectColumn(ProductoPeer::PRODUCTO_TIPOCOMISION);
             $criteria->addSelectColumn(ProductoPeer::PRODUCTO_COMISION);
+            $criteria->addSelectColumn(ProductoPeer::PRODUCTO_FOTOGRAFIA);
         } else {
             $criteria->addSelectColumn($alias . '.idproducto');
             $criteria->addSelectColumn($alias . '.producto_nombre');
@@ -248,6 +252,7 @@ abstract class BaseProductoPeer
             $criteria->addSelectColumn($alias . '.producto_generacomision');
             $criteria->addSelectColumn($alias . '.producto_tipocomision');
             $criteria->addSelectColumn($alias . '.producto_comision');
+            $criteria->addSelectColumn($alias . '.producto_fotografia');
         }
     }
 

@@ -1,0 +1,204 @@
+<h1>Compra: <?php echo "No.".$compra->getIdcompra()?></h1>
+<div id="compra_container">
+    <form class="forms" enctype="multipart/form-data" novalidate="1" action="/compras/editar/<?php echo $compra->getIdcompra()?>" name="compraForm" method="post">
+        <div class="units-row">
+            <div class="unit-100">
+                <fieldset>
+                    <legend>Información general</legend>
+                    <div class="units-row">
+                        <div class="unit-50">
+                            Proveedor
+                            <select class="width-100" name="idproveedor" style="height: 29px;">
+                                <?php foreach ($proveedores as $proveedor) :?>
+                                    <option value="<?php echo $proveedor['idproveedor']?>"><?php echo $proveedor['proveedor_nombre']?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="units-row">
+                        <div class="unit-25">
+                            <label>
+                                Fecha de compra
+                                <span class="req">*</span>
+                                <input  value="<?php echo $compra->getCompraFecha('d/m/Y')?>" class="width-100" type="text" required="required" name="compra_fecha">
+                            </label>
+                        </div>
+                        <div class="unit-25">
+                            <label>
+                                No. Folio
+                                <span class="req">*</span>
+                                <input value="<?php echo $compra->getCompraFolio()?>" class="width-100" type="text" required="required" name="compra_folio">
+                            </label>
+                        </div>
+                        <div class="unit-25">
+                            <label>
+                                Fecha de pago <span class="req">*</span>
+                                <input value="<?php echo $compra->getCompraPagaren('d/m/Y')?>" class="width-100" type="text" required="required" name="compra_pagaren">
+                            </label>
+                        </div>
+                        <div class="unit-25">
+                            Estatus
+                            <select class="width-100" name="compra_status" style="height: 29px;">
+                                <option value="pagada">Pagada</option>
+                                <option value="no pagada">No pagada</option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="units-row">
+            <div class="unit-100">
+                <fieldset>
+                    <legend>Comprabante de compra</legend>
+                        <label>
+                        Comprobante
+                        <input type="hidden" name="compra_comprobante_submit">
+                        <input class="width-100" type="file" accept="image/*" name="compra_comprobante">
+                    </label> 
+                </fieldset>
+            </div>
+        </div>
+        <div class="units-row" id="details_container">
+            <fieldset>
+                <legend>Detalles de la compra</legend>
+                <div class="unit-100">
+                    <div class="units-row">
+                        <div class="unit-50">
+                            Productos/Insumos
+                            <select  class="width-100" style="height: 29px;">
+                                <optgroup label="Productos">
+                                    <?php foreach ($productos as $producto) :?>
+                                        <option data-type="producto" value="<?php echo $producto['idproducto']?>"><?php echo $producto['producto_nombre']?></option>
+                                    <?php endforeach;?>
+                                </optgroup>
+                                <optgroup label="Insumos">
+                                     <?php foreach ($insumos as $insumo) :?>
+                                        <option data-type="insumo" value="<?php echo $insumo['idinsumo']?>"><?php echo $insumo['insumo_nombre']?></option>
+                                    <?php endforeach;?>
+                                </optgroup>
+                            </select>
+                        </div>  
+                        <div class="unit-10">
+                            <label>
+                                Cantidad <span class="req">*</span>
+                                <input class="width-100" type="text"  name="compradetalle_cantidad">
+                            </label>
+                        </div>
+                        <div class="unit-20">
+                            <label>
+                                Costo unitario <span class="req">*</span>
+                                <input class="width-100" type="text" name="compradetalle_costounitario">
+                            </label>
+                        </div>
+                        <div class="unit-20" style="margin-left: 20px;">
+                            <label>
+                                 <a class="btn btn-blue" data-action="addProducto" style="margin-top: 22px; margin-right: 20px;">Agregar</a>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="units-row">
+            <div class="unit-100">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cantidad</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Costo</th>
+                            <th>Subtotal</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $count = 0;?>
+                        <?php foreach ($compra_detalles as $detalle) :?>
+                            <?php $count+=1;?>
+                            <tr>
+                                <td><?php echo (int)$detalle->getCompradetalleCantidad()?></td>
+                                <?php if(!is_null($detalle->getIdproductoclinica())) :?>
+                                    <td>producto</td>
+                                    <td><?php echo $detalle->getProductoclinica()->getProducto()->getProductoNombre()?></td>
+                                    <input type="hidden" value="<?php echo $detalle->getCompradetalleCostounitario()?>" name="<?php echo "producto[".$count."][costo]"?>">
+                                    <input type="hidden" value="<?php echo $detalle->getCompradetalleSubtotal()?>" name="<?php echo "producto[".$count."][subtotal]"?>">
+                                    <input type="hidden" value="<?php echo $detalle->getCompradetalleCantidad()?>" name="<?php echo "producto[".$count."][cantidad]"?>">
+                                    <input type="hidden" value="<?php echo $detalle->getProductoclinica()->getProducto()->getIdproducto()?>" name="<?php echo "producto[".$count."][id]"?>">
+                                <?php else :?>
+                                    <td>insumo</td>
+                                    <td><?php echo $detalle->getInsumoclinica()->getInsumo()->getInsumoNombre()?></td>
+                                    <input type="hidden" value="<?php echo $detalle->getCompradetalleCostounitario()?>" name="<?php echo "insumo[".$count."][costo]"?>">
+                                    <input type="hidden" value="<?php echo $detalle->getCompradetalleSubtotal()?>" name="<?php echo "insumo[".$count."][subtotal]"?>">
+                                    <input type="hidden" value="<?php echo $detalle->getCompradetalleCantidad()?>" name="<?php echo "insumo[".$count."][cantidad]"?>">
+                                    <input type="hidden" value="<?php echo $detalle->getInsumoclinica()->getInsumo()->getIdinsumo()?>" name="<?php echo "insumo[".$count."][id]"?>">
+                                <?php endif;?>
+                                    <td><?php echo $detalle->getCompradetalleCostounitario()?></td>
+                                    <td  data-type="subtotal"><?php echo $detalle->getCompradetalleSubtotal()?></td>
+                                    <td>
+                                        <a href="javascript:void(0)">Eliminar</a>
+                                    </td>
+                            </tr>
+                        <?php endforeach;?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                        <input name="compra_importe" type="hidden" value="0">
+                            <td colspan="5">Total</td>
+                            <td id="total">$ <?php echo $compra->getCompraImporte()?></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div> 
+        </div>
+        <div class="units-row">
+            <div class="unit-centered unit-40">
+                <button class="btn btn-green" data-action="submit">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/js/compras/compra.js"></script>
+<script>
+    
+    var compra = <?php echo json_encode($compra->toArray(\BasePeer::TYPE_FIELDNAME))?>;
+    
+    //Los selects
+    $('select[name=idproveedor]').val(compra.idproveedor);
+    $('select[name=compra_status]').val(compra.compra_status);
+    
+    //Elcomprobante
+    if(compra.compra_comprobante != null){
+        
+        var compra_comprobante = $('<p><a href="'+compra.compra_comprobante+'" style="text-decoration: none"><img src="/img/icons/img_icon.png">Visualizar comprobante de compra</a><a id="eliminar_comprobante" href="javascript:void(0)" style="text-decoration: none; margin-left:24px">Eliminar comprobante</a></p>');
+        
+        $('input[name=compra_comprobante]').hide();
+        $('input[name=compra_comprobante]').after(compra_comprobante);
+        
+        //Los eventos del comprobante
+        $('#eliminar_comprobante').on('click',function(){
+             $('input[name=compra_comprobante_submit]').val('delete');
+             $('input[name=compra_comprobante]').show();
+             compra_comprobante.remove();
+        });
+        
+        $('input[name=compra_comprobante]').on('change',function(){
+            $('input[name=compra_comprobante_submit]').val('');
+        });
+    }
+    
+    //Damos formato a nuestra taba
+    $('table tr').each(function(){
+       var str =  $(this).find('td').eq(3).text();
+       $(this).find('td').eq(3).text(accounting.formatMoney(str));
+       
+       str =  $(this).find('td').eq(4).text();
+       $(this).find('td').eq(4).text(accounting.formatMoney(str));
+
+    });
+      
+   
+    
+    $('#compra_container').compra();
+</script>

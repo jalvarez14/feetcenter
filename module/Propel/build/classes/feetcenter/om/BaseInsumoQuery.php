@@ -9,10 +9,12 @@
  * @method InsumoQuery orderByIdinsumo($order = Criteria::ASC) Order by the idinsumo column
  * @method InsumoQuery orderByInsumoNombre($order = Criteria::ASC) Order by the insumo_nombre column
  * @method InsumoQuery orderByInsumoDescripcion($order = Criteria::ASC) Order by the insumo_descripcion column
+ * @method InsumoQuery orderByInsumoCosto($order = Criteria::ASC) Order by the insumo_costo column
  *
  * @method InsumoQuery groupByIdinsumo() Group by the idinsumo column
  * @method InsumoQuery groupByInsumoNombre() Group by the insumo_nombre column
  * @method InsumoQuery groupByInsumoDescripcion() Group by the insumo_descripcion column
+ * @method InsumoQuery groupByInsumoCosto() Group by the insumo_costo column
  *
  * @method InsumoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method InsumoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -31,10 +33,12 @@
  *
  * @method Insumo findOneByInsumoNombre(string $insumo_nombre) Return the first Insumo filtered by the insumo_nombre column
  * @method Insumo findOneByInsumoDescripcion(string $insumo_descripcion) Return the first Insumo filtered by the insumo_descripcion column
+ * @method Insumo findOneByInsumoCosto(string $insumo_costo) Return the first Insumo filtered by the insumo_costo column
  *
  * @method array findByIdinsumo(int $idinsumo) Return Insumo objects filtered by the idinsumo column
  * @method array findByInsumoNombre(string $insumo_nombre) Return Insumo objects filtered by the insumo_nombre column
  * @method array findByInsumoDescripcion(string $insumo_descripcion) Return Insumo objects filtered by the insumo_descripcion column
+ * @method array findByInsumoCosto(string $insumo_costo) Return Insumo objects filtered by the insumo_costo column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -142,7 +146,7 @@ abstract class BaseInsumoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idinsumo`, `insumo_nombre`, `insumo_descripcion` FROM `insumo` WHERE `idinsumo` = :p0';
+        $sql = 'SELECT `idinsumo`, `insumo_nombre`, `insumo_descripcion`, `insumo_costo` FROM `insumo` WHERE `idinsumo` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -329,6 +333,48 @@ abstract class BaseInsumoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(InsumoPeer::INSUMO_DESCRIPCION, $insumoDescripcion, $comparison);
+    }
+
+    /**
+     * Filter the query on the insumo_costo column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByInsumoCosto(1234); // WHERE insumo_costo = 1234
+     * $query->filterByInsumoCosto(array(12, 34)); // WHERE insumo_costo IN (12, 34)
+     * $query->filterByInsumoCosto(array('min' => 12)); // WHERE insumo_costo >= 12
+     * $query->filterByInsumoCosto(array('max' => 12)); // WHERE insumo_costo <= 12
+     * </code>
+     *
+     * @param     mixed $insumoCosto The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return InsumoQuery The current query, for fluid interface
+     */
+    public function filterByInsumoCosto($insumoCosto = null, $comparison = null)
+    {
+        if (is_array($insumoCosto)) {
+            $useMinMax = false;
+            if (isset($insumoCosto['min'])) {
+                $this->addUsingAlias(InsumoPeer::INSUMO_COSTO, $insumoCosto['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($insumoCosto['max'])) {
+                $this->addUsingAlias(InsumoPeer::INSUMO_COSTO, $insumoCosto['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(InsumoPeer::INSUMO_COSTO, $insumoCosto, $comparison);
     }
 
     /**

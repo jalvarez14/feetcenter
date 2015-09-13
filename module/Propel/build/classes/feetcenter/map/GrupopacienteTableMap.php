@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'insumo' table.
+ * This class defines the structure of the 'grupopaciente' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.feetcenter.map
  */
-class InsumoTableMap extends TableMap
+class GrupopacienteTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'feetcenter.map.InsumoTableMap';
+    const CLASS_NAME = 'feetcenter.map.GrupopacienteTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,16 +32,15 @@ class InsumoTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('insumo');
-        $this->setPhpName('Insumo');
-        $this->setClassname('Insumo');
+        $this->setName('grupopaciente');
+        $this->setPhpName('Grupopaciente');
+        $this->setClassname('Grupopaciente');
         $this->setPackage('feetcenter');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('idinsumo', 'Idinsumo', 'INTEGER', true, null, null);
-        $this->addColumn('insumo_nombre', 'InsumoNombre', 'VARCHAR', true, 255, null);
-        $this->addColumn('insumo_descripcion', 'InsumoDescripcion', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('insumo_costo', 'InsumoCosto', 'DECIMAL', true, 10, null);
+        $this->addPrimaryKey('idgrupopaciente', 'Idgrupopaciente', 'INTEGER', true, null, null);
+        $this->addForeignKey('idgrupo', 'Idgrupo', 'INTEGER', 'grupo', 'idgrupo', true, null, null);
+        $this->addForeignKey('idpaciente', 'Idpaciente', 'INTEGER', 'paciente', 'idpaciente', true, null, null);
         // validators
     } // initialize()
 
@@ -50,8 +49,8 @@ class InsumoTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Insumoclinica', 'Insumoclinica', RelationMap::ONE_TO_MANY, array('idinsumo' => 'idinsumo', ), 'CASCADE', 'CASCADE', 'Insumoclinicas');
-        $this->addRelation('Servicioinsumo', 'Servicioinsumo', RelationMap::ONE_TO_MANY, array('idinsumo' => 'idinsumo', ), 'CASCADE', 'CASCADE', 'Servicioinsumos');
+        $this->addRelation('Grupo', 'Grupo', RelationMap::MANY_TO_ONE, array('idgrupo' => 'idgrupo', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Paciente', 'Paciente', RelationMap::MANY_TO_ONE, array('idpaciente' => 'idpaciente', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
-} // InsumoTableMap
+} // GrupopacienteTableMap
