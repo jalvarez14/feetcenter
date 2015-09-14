@@ -480,6 +480,12 @@ abstract class BasePacientePeer
         // Invalidate objects in GrupopacientePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         GrupopacientePeer::clearInstancePool();
+        // Invalidate objects in GrupopersonalPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        GrupopersonalPeer::clearInstancePool();
+        // Invalidate objects in GrupopersonalPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        GrupopersonalPeer::clearInstancePool();
         // Invalidate objects in PacienteseguimientoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PacienteseguimientoPeer::clearInstancePool();
@@ -825,6 +831,18 @@ abstract class BasePacientePeer
 
             $criteria->add(GrupopacientePeer::IDPACIENTE, $obj->getIdpaciente());
             $affectedRows += GrupopacientePeer::doDelete($criteria, $con);
+
+            // delete related Grupopersonal objects
+            $criteria = new Criteria(GrupopersonalPeer::DATABASE_NAME);
+
+            $criteria->add(GrupopersonalPeer::IDPACIENTE, $obj->getIdpaciente());
+            $affectedRows += GrupopersonalPeer::doDelete($criteria, $con);
+
+            // delete related Grupopersonal objects
+            $criteria = new Criteria(GrupopersonalPeer::DATABASE_NAME);
+
+            $criteria->add(GrupopersonalPeer::IDPACIENTEAGREGADO, $obj->getIdpaciente());
+            $affectedRows += GrupopersonalPeer::doDelete($criteria, $con);
 
             // delete related Pacienteseguimiento objects
             $criteria = new Criteria(PacienteseguimientoPeer::DATABASE_NAME);

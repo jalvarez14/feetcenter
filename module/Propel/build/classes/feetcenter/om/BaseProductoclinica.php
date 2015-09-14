@@ -66,12 +66,6 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     protected $productoclinica_maximo;
 
     /**
-     * The value for the productoclinica_precio field.
-     * @var        string
-     */
-    protected $productoclinica_precio;
-
-    /**
      * The value for the productoclinica_reorden field.
      * @var        string
      */
@@ -207,17 +201,6 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     {
 
         return $this->productoclinica_maximo;
-    }
-
-    /**
-     * Get the [productoclinica_precio] column value.
-     *
-     * @return string
-     */
-    public function getProductoclinicaPrecio()
-    {
-
-        return $this->productoclinica_precio;
     }
 
     /**
@@ -366,27 +349,6 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
     } // setProductoclinicaMaximo()
 
     /**
-     * Set the value of [productoclinica_precio] column.
-     *
-     * @param  string $v new value
-     * @return Productoclinica The current object (for fluent API support)
-     */
-    public function setProductoclinicaPrecio($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->productoclinica_precio !== $v) {
-            $this->productoclinica_precio = $v;
-            $this->modifiedColumns[] = ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO;
-        }
-
-
-        return $this;
-    } // setProductoclinicaPrecio()
-
-    /**
      * Set the value of [productoclinica_reorden] column.
      *
      * @param  string $v new value
@@ -445,8 +407,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
             $this->productoclinica_existencia = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->productoclinica_minimo = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->productoclinica_maximo = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->productoclinica_precio = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->productoclinica_reorden = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->productoclinica_reorden = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -456,7 +417,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 8; // 8 = ProductoclinicaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = ProductoclinicaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Productoclinica object", $e);
@@ -770,9 +731,6 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO)) {
             $modifiedColumns[':p' . $index++]  = '`productoclinica_maximo`';
         }
-        if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO)) {
-            $modifiedColumns[':p' . $index++]  = '`productoclinica_precio`';
-        }
         if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN)) {
             $modifiedColumns[':p' . $index++]  = '`productoclinica_reorden`';
         }
@@ -804,9 +762,6 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
                         break;
                     case '`productoclinica_maximo`':
                         $stmt->bindValue($identifier, $this->productoclinica_maximo, PDO::PARAM_STR);
-                        break;
-                    case '`productoclinica_precio`':
-                        $stmt->bindValue($identifier, $this->productoclinica_precio, PDO::PARAM_STR);
                         break;
                     case '`productoclinica_reorden`':
                         $stmt->bindValue($identifier, $this->productoclinica_reorden, PDO::PARAM_STR);
@@ -1006,9 +961,6 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
                 return $this->getProductoclinicaMaximo();
                 break;
             case 6:
-                return $this->getProductoclinicaPrecio();
-                break;
-            case 7:
                 return $this->getProductoclinicaReorden();
                 break;
             default:
@@ -1046,8 +998,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
             $keys[3] => $this->getProductoclinicaExistencia(),
             $keys[4] => $this->getProductoclinicaMinimo(),
             $keys[5] => $this->getProductoclinicaMaximo(),
-            $keys[6] => $this->getProductoclinicaPrecio(),
-            $keys[7] => $this->getProductoclinicaReorden(),
+            $keys[6] => $this->getProductoclinicaReorden(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1123,9 +1074,6 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
                 $this->setProductoclinicaMaximo($value);
                 break;
             case 6:
-                $this->setProductoclinicaPrecio($value);
-                break;
-            case 7:
                 $this->setProductoclinicaReorden($value);
                 break;
         } // switch()
@@ -1158,8 +1106,7 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setProductoclinicaExistencia($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setProductoclinicaMinimo($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setProductoclinicaMaximo($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setProductoclinicaPrecio($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setProductoclinicaReorden($arr[$keys[7]]);
+        if (array_key_exists($keys[6], $arr)) $this->setProductoclinicaReorden($arr[$keys[6]]);
     }
 
     /**
@@ -1177,7 +1124,6 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_EXISTENCIA)) $criteria->add(ProductoclinicaPeer::PRODUCTOCLINICA_EXISTENCIA, $this->productoclinica_existencia);
         if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_MINIMO)) $criteria->add(ProductoclinicaPeer::PRODUCTOCLINICA_MINIMO, $this->productoclinica_minimo);
         if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO)) $criteria->add(ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO, $this->productoclinica_maximo);
-        if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO)) $criteria->add(ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO, $this->productoclinica_precio);
         if ($this->isColumnModified(ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN)) $criteria->add(ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN, $this->productoclinica_reorden);
 
         return $criteria;
@@ -1247,7 +1193,6 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
         $copyObj->setProductoclinicaExistencia($this->getProductoclinicaExistencia());
         $copyObj->setProductoclinicaMinimo($this->getProductoclinicaMinimo());
         $copyObj->setProductoclinicaMaximo($this->getProductoclinicaMaximo());
-        $copyObj->setProductoclinicaPrecio($this->getProductoclinicaPrecio());
         $copyObj->setProductoclinicaReorden($this->getProductoclinicaReorden());
 
         if ($deepCopy && !$this->startCopy) {
@@ -2287,7 +2232,6 @@ abstract class BaseProductoclinica extends BaseObject implements Persistent
         $this->productoclinica_existencia = null;
         $this->productoclinica_minimo = null;
         $this->productoclinica_maximo = null;
-        $this->productoclinica_precio = null;
         $this->productoclinica_reorden = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

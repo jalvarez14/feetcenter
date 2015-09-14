@@ -120,6 +120,18 @@ abstract class BasePaciente extends BaseObject implements Persistent
     protected $collGrupopacientesPartial;
 
     /**
+     * @var        PropelObjectCollection|Grupopersonal[] Collection to store aggregation of Grupopersonal objects.
+     */
+    protected $collGrupopersonalsRelatedByIdpaciente;
+    protected $collGrupopersonalsRelatedByIdpacientePartial;
+
+    /**
+     * @var        PropelObjectCollection|Grupopersonal[] Collection to store aggregation of Grupopersonal objects.
+     */
+    protected $collGrupopersonalsRelatedByIdpacienteagregado;
+    protected $collGrupopersonalsRelatedByIdpacienteagregadoPartial;
+
+    /**
      * @var        PropelObjectCollection|Pacienteseguimiento[] Collection to store aggregation of Pacienteseguimiento objects.
      */
     protected $collPacienteseguimientos;
@@ -156,6 +168,18 @@ abstract class BasePaciente extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $grupopacientesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $grupopersonalsRelatedByIdpacienteScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -767,6 +791,10 @@ abstract class BasePaciente extends BaseObject implements Persistent
 
             $this->collGrupopacientes = null;
 
+            $this->collGrupopersonalsRelatedByIdpaciente = null;
+
+            $this->collGrupopersonalsRelatedByIdpacienteagregado = null;
+
             $this->collPacienteseguimientos = null;
 
             $this->collVisitas = null;
@@ -906,6 +934,40 @@ abstract class BasePaciente extends BaseObject implements Persistent
 
             if ($this->collGrupopacientes !== null) {
                 foreach ($this->collGrupopacientes as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->grupopersonalsRelatedByIdpacienteScheduledForDeletion !== null) {
+                if (!$this->grupopersonalsRelatedByIdpacienteScheduledForDeletion->isEmpty()) {
+                    GrupopersonalQuery::create()
+                        ->filterByPrimaryKeys($this->grupopersonalsRelatedByIdpacienteScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->grupopersonalsRelatedByIdpacienteScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collGrupopersonalsRelatedByIdpaciente !== null) {
+                foreach ($this->collGrupopersonalsRelatedByIdpaciente as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion !== null) {
+                if (!$this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion->isEmpty()) {
+                    GrupopersonalQuery::create()
+                        ->filterByPrimaryKeys($this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collGrupopersonalsRelatedByIdpacienteagregado !== null) {
+                foreach ($this->collGrupopersonalsRelatedByIdpacienteagregado as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1174,6 +1236,22 @@ abstract class BasePaciente extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collGrupopersonalsRelatedByIdpaciente !== null) {
+                    foreach ($this->collGrupopersonalsRelatedByIdpaciente as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collGrupopersonalsRelatedByIdpacienteagregado !== null) {
+                    foreach ($this->collGrupopersonalsRelatedByIdpacienteagregado as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPacienteseguimientos !== null) {
                     foreach ($this->collPacienteseguimientos as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1319,6 +1397,12 @@ abstract class BasePaciente extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->collGrupopacientes) {
                 $result['Grupopacientes'] = $this->collGrupopacientes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collGrupopersonalsRelatedByIdpaciente) {
+                $result['GrupopersonalsRelatedByIdpaciente'] = $this->collGrupopersonalsRelatedByIdpaciente->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collGrupopersonalsRelatedByIdpacienteagregado) {
+                $result['GrupopersonalsRelatedByIdpacienteagregado'] = $this->collGrupopersonalsRelatedByIdpacienteagregado->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPacienteseguimientos) {
                 $result['Pacienteseguimientos'] = $this->collPacienteseguimientos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1555,6 +1639,18 @@ abstract class BasePaciente extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getGrupopersonalsRelatedByIdpaciente() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addGrupopersonalRelatedByIdpaciente($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getGrupopersonalsRelatedByIdpacienteagregado() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addGrupopersonalRelatedByIdpacienteagregado($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPacienteseguimientos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPacienteseguimiento($relObj->copy($deepCopy));
@@ -1630,6 +1726,12 @@ abstract class BasePaciente extends BaseObject implements Persistent
     {
         if ('Grupopaciente' == $relationName) {
             $this->initGrupopacientes();
+        }
+        if ('GrupopersonalRelatedByIdpaciente' == $relationName) {
+            $this->initGrupopersonalsRelatedByIdpaciente();
+        }
+        if ('GrupopersonalRelatedByIdpacienteagregado' == $relationName) {
+            $this->initGrupopersonalsRelatedByIdpacienteagregado();
         }
         if ('Pacienteseguimiento' == $relationName) {
             $this->initPacienteseguimientos();
@@ -1887,6 +1989,456 @@ abstract class BasePaciente extends BaseObject implements Persistent
         $query->joinWith('Grupo', $join_behavior);
 
         return $this->getGrupopacientes($query, $con);
+    }
+
+    /**
+     * Clears out the collGrupopersonalsRelatedByIdpaciente collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Paciente The current object (for fluent API support)
+     * @see        addGrupopersonalsRelatedByIdpaciente()
+     */
+    public function clearGrupopersonalsRelatedByIdpaciente()
+    {
+        $this->collGrupopersonalsRelatedByIdpaciente = null; // important to set this to null since that means it is uninitialized
+        $this->collGrupopersonalsRelatedByIdpacientePartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collGrupopersonalsRelatedByIdpaciente collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialGrupopersonalsRelatedByIdpaciente($v = true)
+    {
+        $this->collGrupopersonalsRelatedByIdpacientePartial = $v;
+    }
+
+    /**
+     * Initializes the collGrupopersonalsRelatedByIdpaciente collection.
+     *
+     * By default this just sets the collGrupopersonalsRelatedByIdpaciente collection to an empty array (like clearcollGrupopersonalsRelatedByIdpaciente());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initGrupopersonalsRelatedByIdpaciente($overrideExisting = true)
+    {
+        if (null !== $this->collGrupopersonalsRelatedByIdpaciente && !$overrideExisting) {
+            return;
+        }
+        $this->collGrupopersonalsRelatedByIdpaciente = new PropelObjectCollection();
+        $this->collGrupopersonalsRelatedByIdpaciente->setModel('Grupopersonal');
+    }
+
+    /**
+     * Gets an array of Grupopersonal objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Paciente is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Grupopersonal[] List of Grupopersonal objects
+     * @throws PropelException
+     */
+    public function getGrupopersonalsRelatedByIdpaciente($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collGrupopersonalsRelatedByIdpacientePartial && !$this->isNew();
+        if (null === $this->collGrupopersonalsRelatedByIdpaciente || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collGrupopersonalsRelatedByIdpaciente) {
+                // return empty collection
+                $this->initGrupopersonalsRelatedByIdpaciente();
+            } else {
+                $collGrupopersonalsRelatedByIdpaciente = GrupopersonalQuery::create(null, $criteria)
+                    ->filterByPacienteRelatedByIdpaciente($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collGrupopersonalsRelatedByIdpacientePartial && count($collGrupopersonalsRelatedByIdpaciente)) {
+                      $this->initGrupopersonalsRelatedByIdpaciente(false);
+
+                      foreach ($collGrupopersonalsRelatedByIdpaciente as $obj) {
+                        if (false == $this->collGrupopersonalsRelatedByIdpaciente->contains($obj)) {
+                          $this->collGrupopersonalsRelatedByIdpaciente->append($obj);
+                        }
+                      }
+
+                      $this->collGrupopersonalsRelatedByIdpacientePartial = true;
+                    }
+
+                    $collGrupopersonalsRelatedByIdpaciente->getInternalIterator()->rewind();
+
+                    return $collGrupopersonalsRelatedByIdpaciente;
+                }
+
+                if ($partial && $this->collGrupopersonalsRelatedByIdpaciente) {
+                    foreach ($this->collGrupopersonalsRelatedByIdpaciente as $obj) {
+                        if ($obj->isNew()) {
+                            $collGrupopersonalsRelatedByIdpaciente[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collGrupopersonalsRelatedByIdpaciente = $collGrupopersonalsRelatedByIdpaciente;
+                $this->collGrupopersonalsRelatedByIdpacientePartial = false;
+            }
+        }
+
+        return $this->collGrupopersonalsRelatedByIdpaciente;
+    }
+
+    /**
+     * Sets a collection of GrupopersonalRelatedByIdpaciente objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $grupopersonalsRelatedByIdpaciente A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function setGrupopersonalsRelatedByIdpaciente(PropelCollection $grupopersonalsRelatedByIdpaciente, PropelPDO $con = null)
+    {
+        $grupopersonalsRelatedByIdpacienteToDelete = $this->getGrupopersonalsRelatedByIdpaciente(new Criteria(), $con)->diff($grupopersonalsRelatedByIdpaciente);
+
+
+        $this->grupopersonalsRelatedByIdpacienteScheduledForDeletion = $grupopersonalsRelatedByIdpacienteToDelete;
+
+        foreach ($grupopersonalsRelatedByIdpacienteToDelete as $grupopersonalRelatedByIdpacienteRemoved) {
+            $grupopersonalRelatedByIdpacienteRemoved->setPacienteRelatedByIdpaciente(null);
+        }
+
+        $this->collGrupopersonalsRelatedByIdpaciente = null;
+        foreach ($grupopersonalsRelatedByIdpaciente as $grupopersonalRelatedByIdpaciente) {
+            $this->addGrupopersonalRelatedByIdpaciente($grupopersonalRelatedByIdpaciente);
+        }
+
+        $this->collGrupopersonalsRelatedByIdpaciente = $grupopersonalsRelatedByIdpaciente;
+        $this->collGrupopersonalsRelatedByIdpacientePartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Grupopersonal objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Grupopersonal objects.
+     * @throws PropelException
+     */
+    public function countGrupopersonalsRelatedByIdpaciente(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collGrupopersonalsRelatedByIdpacientePartial && !$this->isNew();
+        if (null === $this->collGrupopersonalsRelatedByIdpaciente || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collGrupopersonalsRelatedByIdpaciente) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getGrupopersonalsRelatedByIdpaciente());
+            }
+            $query = GrupopersonalQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPacienteRelatedByIdpaciente($this)
+                ->count($con);
+        }
+
+        return count($this->collGrupopersonalsRelatedByIdpaciente);
+    }
+
+    /**
+     * Method called to associate a Grupopersonal object to this object
+     * through the Grupopersonal foreign key attribute.
+     *
+     * @param    Grupopersonal $l Grupopersonal
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function addGrupopersonalRelatedByIdpaciente(Grupopersonal $l)
+    {
+        if ($this->collGrupopersonalsRelatedByIdpaciente === null) {
+            $this->initGrupopersonalsRelatedByIdpaciente();
+            $this->collGrupopersonalsRelatedByIdpacientePartial = true;
+        }
+
+        if (!in_array($l, $this->collGrupopersonalsRelatedByIdpaciente->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddGrupopersonalRelatedByIdpaciente($l);
+
+            if ($this->grupopersonalsRelatedByIdpacienteScheduledForDeletion and $this->grupopersonalsRelatedByIdpacienteScheduledForDeletion->contains($l)) {
+                $this->grupopersonalsRelatedByIdpacienteScheduledForDeletion->remove($this->grupopersonalsRelatedByIdpacienteScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	GrupopersonalRelatedByIdpaciente $grupopersonalRelatedByIdpaciente The grupopersonalRelatedByIdpaciente object to add.
+     */
+    protected function doAddGrupopersonalRelatedByIdpaciente($grupopersonalRelatedByIdpaciente)
+    {
+        $this->collGrupopersonalsRelatedByIdpaciente[]= $grupopersonalRelatedByIdpaciente;
+        $grupopersonalRelatedByIdpaciente->setPacienteRelatedByIdpaciente($this);
+    }
+
+    /**
+     * @param	GrupopersonalRelatedByIdpaciente $grupopersonalRelatedByIdpaciente The grupopersonalRelatedByIdpaciente object to remove.
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function removeGrupopersonalRelatedByIdpaciente($grupopersonalRelatedByIdpaciente)
+    {
+        if ($this->getGrupopersonalsRelatedByIdpaciente()->contains($grupopersonalRelatedByIdpaciente)) {
+            $this->collGrupopersonalsRelatedByIdpaciente->remove($this->collGrupopersonalsRelatedByIdpaciente->search($grupopersonalRelatedByIdpaciente));
+            if (null === $this->grupopersonalsRelatedByIdpacienteScheduledForDeletion) {
+                $this->grupopersonalsRelatedByIdpacienteScheduledForDeletion = clone $this->collGrupopersonalsRelatedByIdpaciente;
+                $this->grupopersonalsRelatedByIdpacienteScheduledForDeletion->clear();
+            }
+            $this->grupopersonalsRelatedByIdpacienteScheduledForDeletion[]= clone $grupopersonalRelatedByIdpaciente;
+            $grupopersonalRelatedByIdpaciente->setPacienteRelatedByIdpaciente(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collGrupopersonalsRelatedByIdpacienteagregado collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Paciente The current object (for fluent API support)
+     * @see        addGrupopersonalsRelatedByIdpacienteagregado()
+     */
+    public function clearGrupopersonalsRelatedByIdpacienteagregado()
+    {
+        $this->collGrupopersonalsRelatedByIdpacienteagregado = null; // important to set this to null since that means it is uninitialized
+        $this->collGrupopersonalsRelatedByIdpacienteagregadoPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collGrupopersonalsRelatedByIdpacienteagregado collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialGrupopersonalsRelatedByIdpacienteagregado($v = true)
+    {
+        $this->collGrupopersonalsRelatedByIdpacienteagregadoPartial = $v;
+    }
+
+    /**
+     * Initializes the collGrupopersonalsRelatedByIdpacienteagregado collection.
+     *
+     * By default this just sets the collGrupopersonalsRelatedByIdpacienteagregado collection to an empty array (like clearcollGrupopersonalsRelatedByIdpacienteagregado());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initGrupopersonalsRelatedByIdpacienteagregado($overrideExisting = true)
+    {
+        if (null !== $this->collGrupopersonalsRelatedByIdpacienteagregado && !$overrideExisting) {
+            return;
+        }
+        $this->collGrupopersonalsRelatedByIdpacienteagregado = new PropelObjectCollection();
+        $this->collGrupopersonalsRelatedByIdpacienteagregado->setModel('Grupopersonal');
+    }
+
+    /**
+     * Gets an array of Grupopersonal objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Paciente is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Grupopersonal[] List of Grupopersonal objects
+     * @throws PropelException
+     */
+    public function getGrupopersonalsRelatedByIdpacienteagregado($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collGrupopersonalsRelatedByIdpacienteagregadoPartial && !$this->isNew();
+        if (null === $this->collGrupopersonalsRelatedByIdpacienteagregado || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collGrupopersonalsRelatedByIdpacienteagregado) {
+                // return empty collection
+                $this->initGrupopersonalsRelatedByIdpacienteagregado();
+            } else {
+                $collGrupopersonalsRelatedByIdpacienteagregado = GrupopersonalQuery::create(null, $criteria)
+                    ->filterByPacienteRelatedByIdpacienteagregado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collGrupopersonalsRelatedByIdpacienteagregadoPartial && count($collGrupopersonalsRelatedByIdpacienteagregado)) {
+                      $this->initGrupopersonalsRelatedByIdpacienteagregado(false);
+
+                      foreach ($collGrupopersonalsRelatedByIdpacienteagregado as $obj) {
+                        if (false == $this->collGrupopersonalsRelatedByIdpacienteagregado->contains($obj)) {
+                          $this->collGrupopersonalsRelatedByIdpacienteagregado->append($obj);
+                        }
+                      }
+
+                      $this->collGrupopersonalsRelatedByIdpacienteagregadoPartial = true;
+                    }
+
+                    $collGrupopersonalsRelatedByIdpacienteagregado->getInternalIterator()->rewind();
+
+                    return $collGrupopersonalsRelatedByIdpacienteagregado;
+                }
+
+                if ($partial && $this->collGrupopersonalsRelatedByIdpacienteagregado) {
+                    foreach ($this->collGrupopersonalsRelatedByIdpacienteagregado as $obj) {
+                        if ($obj->isNew()) {
+                            $collGrupopersonalsRelatedByIdpacienteagregado[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collGrupopersonalsRelatedByIdpacienteagregado = $collGrupopersonalsRelatedByIdpacienteagregado;
+                $this->collGrupopersonalsRelatedByIdpacienteagregadoPartial = false;
+            }
+        }
+
+        return $this->collGrupopersonalsRelatedByIdpacienteagregado;
+    }
+
+    /**
+     * Sets a collection of GrupopersonalRelatedByIdpacienteagregado objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $grupopersonalsRelatedByIdpacienteagregado A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function setGrupopersonalsRelatedByIdpacienteagregado(PropelCollection $grupopersonalsRelatedByIdpacienteagregado, PropelPDO $con = null)
+    {
+        $grupopersonalsRelatedByIdpacienteagregadoToDelete = $this->getGrupopersonalsRelatedByIdpacienteagregado(new Criteria(), $con)->diff($grupopersonalsRelatedByIdpacienteagregado);
+
+
+        $this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion = $grupopersonalsRelatedByIdpacienteagregadoToDelete;
+
+        foreach ($grupopersonalsRelatedByIdpacienteagregadoToDelete as $grupopersonalRelatedByIdpacienteagregadoRemoved) {
+            $grupopersonalRelatedByIdpacienteagregadoRemoved->setPacienteRelatedByIdpacienteagregado(null);
+        }
+
+        $this->collGrupopersonalsRelatedByIdpacienteagregado = null;
+        foreach ($grupopersonalsRelatedByIdpacienteagregado as $grupopersonalRelatedByIdpacienteagregado) {
+            $this->addGrupopersonalRelatedByIdpacienteagregado($grupopersonalRelatedByIdpacienteagregado);
+        }
+
+        $this->collGrupopersonalsRelatedByIdpacienteagregado = $grupopersonalsRelatedByIdpacienteagregado;
+        $this->collGrupopersonalsRelatedByIdpacienteagregadoPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Grupopersonal objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Grupopersonal objects.
+     * @throws PropelException
+     */
+    public function countGrupopersonalsRelatedByIdpacienteagregado(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collGrupopersonalsRelatedByIdpacienteagregadoPartial && !$this->isNew();
+        if (null === $this->collGrupopersonalsRelatedByIdpacienteagregado || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collGrupopersonalsRelatedByIdpacienteagregado) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getGrupopersonalsRelatedByIdpacienteagregado());
+            }
+            $query = GrupopersonalQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPacienteRelatedByIdpacienteagregado($this)
+                ->count($con);
+        }
+
+        return count($this->collGrupopersonalsRelatedByIdpacienteagregado);
+    }
+
+    /**
+     * Method called to associate a Grupopersonal object to this object
+     * through the Grupopersonal foreign key attribute.
+     *
+     * @param    Grupopersonal $l Grupopersonal
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function addGrupopersonalRelatedByIdpacienteagregado(Grupopersonal $l)
+    {
+        if ($this->collGrupopersonalsRelatedByIdpacienteagregado === null) {
+            $this->initGrupopersonalsRelatedByIdpacienteagregado();
+            $this->collGrupopersonalsRelatedByIdpacienteagregadoPartial = true;
+        }
+
+        if (!in_array($l, $this->collGrupopersonalsRelatedByIdpacienteagregado->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddGrupopersonalRelatedByIdpacienteagregado($l);
+
+            if ($this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion and $this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion->contains($l)) {
+                $this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion->remove($this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	GrupopersonalRelatedByIdpacienteagregado $grupopersonalRelatedByIdpacienteagregado The grupopersonalRelatedByIdpacienteagregado object to add.
+     */
+    protected function doAddGrupopersonalRelatedByIdpacienteagregado($grupopersonalRelatedByIdpacienteagregado)
+    {
+        $this->collGrupopersonalsRelatedByIdpacienteagregado[]= $grupopersonalRelatedByIdpacienteagregado;
+        $grupopersonalRelatedByIdpacienteagregado->setPacienteRelatedByIdpacienteagregado($this);
+    }
+
+    /**
+     * @param	GrupopersonalRelatedByIdpacienteagregado $grupopersonalRelatedByIdpacienteagregado The grupopersonalRelatedByIdpacienteagregado object to remove.
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function removeGrupopersonalRelatedByIdpacienteagregado($grupopersonalRelatedByIdpacienteagregado)
+    {
+        if ($this->getGrupopersonalsRelatedByIdpacienteagregado()->contains($grupopersonalRelatedByIdpacienteagregado)) {
+            $this->collGrupopersonalsRelatedByIdpacienteagregado->remove($this->collGrupopersonalsRelatedByIdpacienteagregado->search($grupopersonalRelatedByIdpacienteagregado));
+            if (null === $this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion) {
+                $this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion = clone $this->collGrupopersonalsRelatedByIdpacienteagregado;
+                $this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion->clear();
+            }
+            $this->grupopersonalsRelatedByIdpacienteagregadoScheduledForDeletion[]= clone $grupopersonalRelatedByIdpacienteagregado;
+            $grupopersonalRelatedByIdpacienteagregado->setPacienteRelatedByIdpacienteagregado(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -2460,6 +3012,16 @@ abstract class BasePaciente extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collGrupopersonalsRelatedByIdpaciente) {
+                foreach ($this->collGrupopersonalsRelatedByIdpaciente as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collGrupopersonalsRelatedByIdpacienteagregado) {
+                foreach ($this->collGrupopersonalsRelatedByIdpacienteagregado as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPacienteseguimientos) {
                 foreach ($this->collPacienteseguimientos as $o) {
                     $o->clearAllReferences($deep);
@@ -2478,6 +3040,14 @@ abstract class BasePaciente extends BaseObject implements Persistent
             $this->collGrupopacientes->clearIterator();
         }
         $this->collGrupopacientes = null;
+        if ($this->collGrupopersonalsRelatedByIdpaciente instanceof PropelCollection) {
+            $this->collGrupopersonalsRelatedByIdpaciente->clearIterator();
+        }
+        $this->collGrupopersonalsRelatedByIdpaciente = null;
+        if ($this->collGrupopersonalsRelatedByIdpacienteagregado instanceof PropelCollection) {
+            $this->collGrupopersonalsRelatedByIdpacienteagregado->clearIterator();
+        }
+        $this->collGrupopersonalsRelatedByIdpacienteagregado = null;
         if ($this->collPacienteseguimientos instanceof PropelCollection) {
             $this->collPacienteseguimientos->clearIterator();
         }

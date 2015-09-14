@@ -48,6 +48,16 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
     protected $idempleado;
 
     /**
+     * @var        Clinica
+     */
+    protected $aClinica;
+
+    /**
+     * @var        Empleado
+     */
+    protected $aEmpleado;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -138,6 +148,10 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
             $this->modifiedColumns[] = EncargadoclinicaPeer::IDCLINICA;
         }
 
+        if ($this->aClinica !== null && $this->aClinica->getIdclinica() !== $v) {
+            $this->aClinica = null;
+        }
+
 
         return $this;
     } // setIdclinica()
@@ -157,6 +171,10 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
         if ($this->idempleado !== $v) {
             $this->idempleado = $v;
             $this->modifiedColumns[] = EncargadoclinicaPeer::IDEMPLEADO;
+        }
+
+        if ($this->aEmpleado !== null && $this->aEmpleado->getIdempleado() !== $v) {
+            $this->aEmpleado = null;
         }
 
 
@@ -230,6 +248,12 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aClinica !== null && $this->idclinica !== $this->aClinica->getIdclinica()) {
+            $this->aClinica = null;
+        }
+        if ($this->aEmpleado !== null && $this->idempleado !== $this->aEmpleado->getIdempleado()) {
+            $this->aEmpleado = null;
+        }
     } // ensureConsistency
 
     /**
@@ -269,6 +293,8 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aClinica = null;
+            $this->aEmpleado = null;
         } // if (deep)
     }
 
@@ -381,6 +407,25 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aClinica !== null) {
+                if ($this->aClinica->isModified() || $this->aClinica->isNew()) {
+                    $affectedRows += $this->aClinica->save($con);
+                }
+                $this->setClinica($this->aClinica);
+            }
+
+            if ($this->aEmpleado !== null) {
+                if ($this->aEmpleado->isModified() || $this->aEmpleado->isNew()) {
+                    $affectedRows += $this->aEmpleado->save($con);
+                }
+                $this->setEmpleado($this->aEmpleado);
+            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -542,6 +587,24 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
             $failureMap = array();
 
 
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aClinica !== null) {
+                if (!$this->aClinica->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aClinica->getValidationFailures());
+                }
+            }
+
+            if ($this->aEmpleado !== null) {
+                if (!$this->aEmpleado->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aEmpleado->getValidationFailures());
+                }
+            }
+
+
             if (($retval = EncargadoclinicaPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
@@ -608,10 +671,11 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['Encargadoclinica'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -628,6 +692,14 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aClinica) {
+                $result['Clinica'] = $this->aClinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aEmpleado) {
+                $result['Empleado'] = $this->aEmpleado->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -776,6 +848,18 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
     {
         $copyObj->setIdclinica($this->getIdclinica());
         $copyObj->setIdempleado($this->getIdempleado());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdencargadoclinica(NULL); // this is a auto-increment column, so set to default value
@@ -823,6 +907,110 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a Clinica object.
+     *
+     * @param                  Clinica $v
+     * @return Encargadoclinica The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setClinica(Clinica $v = null)
+    {
+        if ($v === null) {
+            $this->setIdclinica(NULL);
+        } else {
+            $this->setIdclinica($v->getIdclinica());
+        }
+
+        $this->aClinica = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Clinica object, it will not be re-added.
+        if ($v !== null) {
+            $v->addEncargadoclinica($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Clinica object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Clinica The associated Clinica object.
+     * @throws PropelException
+     */
+    public function getClinica(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aClinica === null && ($this->idclinica !== null) && $doQuery) {
+            $this->aClinica = ClinicaQuery::create()->findPk($this->idclinica, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aClinica->addEncargadoclinicas($this);
+             */
+        }
+
+        return $this->aClinica;
+    }
+
+    /**
+     * Declares an association between this object and a Empleado object.
+     *
+     * @param                  Empleado $v
+     * @return Encargadoclinica The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setEmpleado(Empleado $v = null)
+    {
+        if ($v === null) {
+            $this->setIdempleado(NULL);
+        } else {
+            $this->setIdempleado($v->getIdempleado());
+        }
+
+        $this->aEmpleado = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Empleado object, it will not be re-added.
+        if ($v !== null) {
+            $v->addEncargadoclinica($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Empleado object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Empleado The associated Empleado object.
+     * @throws PropelException
+     */
+    public function getEmpleado(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aEmpleado === null && ($this->idempleado !== null) && $doQuery) {
+            $this->aEmpleado = EmpleadoQuery::create()->findPk($this->idempleado, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aEmpleado->addEncargadoclinicas($this);
+             */
+        }
+
+        return $this->aEmpleado;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -852,10 +1040,18 @@ abstract class BaseEncargadoclinica extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aClinica instanceof Persistent) {
+              $this->aClinica->clearAllReferences($deep);
+            }
+            if ($this->aEmpleado instanceof Persistent) {
+              $this->aEmpleado->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aClinica = null;
+        $this->aEmpleado = null;
     }
 
     /**

@@ -38,13 +38,14 @@ class ClinicaController extends AbstractActionController
         
         //Obtenemos todos los empleados que si tienen asignado una clinica tanto para encargado como para empleado
         $empleado_clinica = \ClinicaempleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
-       
+        
         $empladosconclinica = array();
         foreach ($empleado_clinica as $value){
             array_push($empladosconclinica, $value['idempleado']);
         }
         
         $empleado_collection = \EmpleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+
         $empleados = array();
         foreach ($empleado_collection as $empleado_entity){
              if(!in_array($empleado_entity['idempleado'], $empladosconclinica)){
@@ -123,6 +124,7 @@ class ClinicaController extends AbstractActionController
 
             }
         }
+        
         return new ViewModel(array(
             'form' => $form,
             'empleados' => $empleados,

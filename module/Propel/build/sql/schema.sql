@@ -96,7 +96,6 @@ CREATE TABLE `compra`
     `compra_status` enum('pagada','no pagada') NOT NULL,
     `compra_pagaren` DATE NOT NULL,
     `compra_comprobante` TEXT,
-    `compra_folio` VARCHAR(45),
     PRIMARY KEY (`idcompra`),
     INDEX `idoproveedor` (`idproveedor`),
     INDEX `idempleado` (`idempleado`),
@@ -204,7 +203,6 @@ DROP TABLE IF EXISTS `empleado`;
 CREATE TABLE `empleado`
 (
     `idempleado` INTEGER NOT NULL AUTO_INCREMENT,
-    `idrol` INTEGER NOT NULL,
     `empleado_registradoen` DATETIME NOT NULL,
     `empleado_nombre` VARCHAR(255) NOT NULL,
     `empleado_nss` VARCHAR(45),
@@ -222,12 +220,37 @@ CREATE TABLE `empleado`
     `empleado_comprobanteidentificacion` TEXT,
     `empleado_sueldo` DECIMAL(10,2),
     `empleado_diadescanso` enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo') NOT NULL,
-    `empleado_username` VARCHAR(45),
-    `empleado_password` VARCHAR(45),
     `empleado_foto` TEXT,
-    PRIMARY KEY (`idempleado`),
-    INDEX `idrol_empleado_idx` (`idrol`),
-    CONSTRAINT `idrol_empleado`
+    `empleado_tipocomisionproducto` enum('porcentaje','cantidad'),
+    `empleado_cantidadcomisionproducto` DECIMAL(10,2),
+    `empleado_tipocomisionservicio` enum('porcentaje','cantidad'),
+    `empleado_cantidadcomisionservicio` DECIMAL(10,2),
+    PRIMARY KEY (`idempleado`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- empleadoacceso
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `empleadoacceso`;
+
+CREATE TABLE `empleadoacceso`
+(
+    `idempleadoacceso` INTEGER NOT NULL AUTO_INCREMENT,
+    `idempleado` INTEGER NOT NULL,
+    `idrol` INTEGER NOT NULL,
+    `empleadoacceso_username` VARCHAR(45) NOT NULL,
+    `empleadoacceso_password` VARCHAR(45) NOT NULL,
+    `empleadoacceso_ensesion` TINYINT(1) DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`idempleadoacceso`),
+    INDEX `idempleado` (`idempleado`),
+    INDEX `idrol` (`idrol`),
+    CONSTRAINT `idempleado_empleadoacceso`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idrol_empleadoacceso`
         FOREIGN KEY (`idrol`)
         REFERENCES `rol` (`idrol`)
         ON UPDATE CASCADE
@@ -285,6 +308,35 @@ CREATE TABLE `empleadohorario`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- empleadoreceso
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `empleadoreceso`;
+
+CREATE TABLE `empleadoreceso`
+(
+    `idempleadoreceso` INTEGER NOT NULL AUTO_INCREMENT,
+    `idempleado` INTEGER NOT NULL,
+    `idclinica` INTEGER NOT NULL,
+    `empleadoreceso_fecha` DATE NOT NULL,
+    `empleadoreceso_inicio` DATETIME NOT NULL,
+    `empleadoreceso_fin` DATETIME,
+    PRIMARY KEY (`idempleadoreceso`),
+    INDEX `idclinica_empleadoreceso` (`idclinica`),
+    INDEX `idempleado_empleadoreceso` (`idempleado`),
+    CONSTRAINT `idclinica_empleadoreceso`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idempleado_empleadoreceso`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- empleadoreporte
 -- ---------------------------------------------------------------------
 
@@ -331,7 +383,19 @@ CREATE TABLE `encargadoclinica`
     `idencargadoclinica` INTEGER NOT NULL AUTO_INCREMENT,
     `idclinica` INTEGER NOT NULL,
     `idempleado` INTEGER NOT NULL,
-    PRIMARY KEY (`idencargadoclinica`)
+    PRIMARY KEY (`idencargadoclinica`),
+    INDEX `idclinica` (`idclinica`),
+    INDEX `idempleado` (`idempleado`),
+    CONSTRAINT `idclinica_encargadoclinica`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idempleado_encargadoclinica`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -402,6 +466,32 @@ CREATE TABLE `grupopaciente`
         ON DELETE CASCADE,
     CONSTRAINT `idpaciente_grupopaciente`
         FOREIGN KEY (`idpaciente`)
+        REFERENCES `paciente` (`idpaciente`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- grupopersonal
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `grupopersonal`;
+
+CREATE TABLE `grupopersonal`
+(
+    `idgrupopersonal` INTEGER NOT NULL AUTO_INCREMENT,
+    `idpaciente` INTEGER NOT NULL,
+    `idpacienteagregado` INTEGER NOT NULL,
+    PRIMARY KEY (`idgrupopersonal`),
+    INDEX `idpaciente` (`idpaciente`),
+    INDEX `idpacienteagregado` (`idpacienteagregado`),
+    CONSTRAINT `idpaciente_grupopersonal`
+        FOREIGN KEY (`idpaciente`)
+        REFERENCES `paciente` (`idpaciente`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idpacienteagregado_grupopersonal`
+        FOREIGN KEY (`idpacienteagregado`)
         REFERENCES `paciente` (`idpaciente`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
@@ -535,7 +625,6 @@ CREATE TABLE `productoclinica`
     `productoclinica_existencia` DECIMAL(10,2) NOT NULL,
     `productoclinica_minimo` DECIMAL(10,2) NOT NULL,
     `productoclinica_maximo` DECIMAL(10,2) NOT NULL,
-    `productoclinica_precio` DECIMAL(10,2) NOT NULL,
     `productoclinica_reorden` DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (`idproductoclinica`),
     INDEX `idproducto` (`idproducto`),

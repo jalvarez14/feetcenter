@@ -4,6 +4,7 @@
         $form->setAttribute('action', '/catalogos/producto/editar/'.$id);
         $form->setAttribute('novalidate', true);
         $form->setAttribute('class', 'forms');
+        $form->setAttribute('enctype', 'multipart/form-data');
         $form->prepare();
         echo $this->form()->openTag($form); 
     ?>
@@ -89,6 +90,21 @@
         </div>
     </div>
     <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Fotografia</legend>
+                <div class="units-row">
+                    <div class="unit-centered unit-30">
+                        <img style="width: 250px; height: 210px; cursor: pointer; padding-left: 35px; margin-bottom: 6px;" align="middle" id="producto_foto" src="/img/productos/default.jpg">
+                        <input type="file" name="producto_foto" style="display: none" accept="image/*">
+                        <input type="hidden" name="producto_foto_submit">
+                        <p id="eliminar_imagen" style="text-align: center; display: none"><a style="text-decoration: none" href="javascript:void(0)">Eliminar Imagen</a></p>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
         <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
     </div>
 </div>
@@ -96,7 +112,7 @@
 <script>
     var producto = <?php echo json_encode($entity)?>;
 
-    $('#producto_container').producto();
+    $('#producto_container').producto(producto);
     
     if(producto.producto_generacomision){
         $('input[name=producto_generacomision][value=1]').prop('checked',true);

@@ -33,50 +33,41 @@ class EmpleadoController extends AbstractActionController
         $request = $this->getRequest();
         
         //Los roles
-        $query = \RolQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
-        $roles = array();
-        foreach ($query as $rol){
-            $idrol = $rol['idrol'];
-            $roles[$idrol] = $rol['rol_nombre'];
-        }
+        $roles = \RolQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
         
         $form = new \Catalogos\Form\EmpleadoForm($roles);
         
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-
+            
             foreach ($post_data as $k => $v){
                 if(empty($v)){
                     unset($post_data[$k]);
                 }
             }
-            
-            
-            //Le ponemos los datos a nuestro formulario
-            unset($post_data['empleado_fechanacimiento']);
+;
             $form->setData($post_data);
             
             //Validamos nuestro formulario
             if ($form->isValid()) {
-                
+               
                 $entity = new \Empleado();
                 
                 //La fecha de creacion del empleado
                 $entity->setEmpleadoRegistradoen(new \DateTime());
                
                 //Recorremos nuestro formulario y seteamos los valores a nuestro objeto Lugar
-                    foreach ($form->getData() as $key => $value){
-                        if($key == 'empleado_password'){
-                            $entity->setByName($key, md5($value), \BasePeer::TYPE_FIELDNAME);
-                        }else{
-                            $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
-                        }
-                         
+                foreach($post_data as $key => $value){
+                    if(\EmpleadoPeer::getTableMap()->hasColumn($key) && $key!='empleado_fechanacimiento'){
+                        $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
+                }
                 
-                //Fecha de nacimiento
-                $entity->setEmpleadoFechanacimiento($post_data['empleado_fechanacimiento_submit']);
+                //La fecha de nacimiento
+                if(isset($post_data['empleado_fechanacimiento'])){
+                    $entity->setEmpleadoFechanacimiento($post_data['empleado_fechanacimiento_submit']);
+                }
                 
                 $entity->save();
                 
@@ -118,9 +109,22 @@ class EmpleadoController extends AbstractActionController
                         } 
                         $entity->setEmpleadoFoto($archivador);
                 }
-                                
                 //Guardamos en nuestra base de datos
                 $entity->save();
+                
+                //Guardamos los datos de acceso
+                foreach($post_data['accesos'] as $acceso){
+                    if(!empty($acceso['username']) && !empty($acceso['password'])){
+                        $empleado_acceso = new \Empleadoacceso();
+                        $empleado_acceso->setIdempleado($entity->getIdempleado())
+                                        ->setIdrol($acceso['idrol'])
+                                        ->setEmpleadoaccesoUsername($acceso['username'])
+                                        ->setEmpleadoaccesoPassword(md5($acceso['password']))
+                                        ->setEmpleadoaccesoEnsesion(0)
+                                        ->save();
+                    }
+                }
+                  
                 
                 //Agregamos un mensaje
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
@@ -132,6 +136,7 @@ class EmpleadoController extends AbstractActionController
         }
         return new ViewModel(array(
             'form' => $form,
+            'roles' => $roles,
         ));
 
     }

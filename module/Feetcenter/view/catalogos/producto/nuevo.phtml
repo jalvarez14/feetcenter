@@ -4,6 +4,7 @@
         $form->setAttribute('action', '/catalogos/producto/nuevo');
         $form->setAttribute('novalidate', true);
         $form->setAttribute('class', 'forms');
+        $form->setAttribute('enctype', 'multipart/form-data');
         $form->prepare();
         echo $this->form()->openTag($form); 
     ?>
@@ -83,6 +84,20 @@
                                 <?php echo $this->formText($form->get('producto_comision')); ?>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Fotografia</legend>
+                <div class="units-row">
+                    <div class="unit-centered unit-30">
+                        <img style="width: 250px; height: 210px; cursor: pointer; padding-left: 35px; margin-bottom: 6px;" align="middle" id="producto_foto" src="/img/productos/default.jpg">
+                        <input type="file" name="producto_foto" style="display: none" accept="image/*">
+                        <p id="eliminar_imagen" style="text-align: center; display: none"><a style="text-decoration: none" href="javascript:void(0)">Eliminar Imagen</a></p>
                     </div>
                 </div>
             </fieldset>

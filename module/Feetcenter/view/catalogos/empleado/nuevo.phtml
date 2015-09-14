@@ -16,8 +16,8 @@
         </div>
         <div class="unit-50">
             <label>
-                Rol
-                <?php echo $this->formSelect($form->get('idrol')); ?>
+                Dia de descanso
+                <?php echo $this->formSelect($form->get('empleado_diadescanso')); ?>
             </label>
         </div>
     </div>
@@ -106,12 +106,7 @@
         </div>
     </div>
     <div class="units-row">
-        <div class="unit-50">
-            <label>
-                Dia de descanso
-                <?php echo $this->formSelect($form->get('empleado_diadescanso')); ?>
-            </label>
-        </div>
+        
     </div>
     <div class="units-row">
         <div class="unit-100">
@@ -134,17 +129,72 @@
     <div class="units-row">
         <div class="unit-100">
             <fieldset>
-                <legend>Datos de acceso al sistema</legend>
+                <legend>Comisiones</legend>
                 <div class="units-row">
-                    <div class="unit-50">
-                        <label>Nombre de usuario</b</label>
-                        <?php echo $this->formText($form->get('empleado_username')); ?>
+                    <div class="unit-20">
+                        <label><b>Pago por comisión</b></label>
+                        <ul class="forms-inline-list">
+                            <li>
+                                <input  type="radio" name="empleado_pagoporcomision" value="1">
+                                <label for="radio-1">Si</label>
+                            </li>
+                            <li>
+                                <input checked type="radio" name="empleado_pagoporcomision" value="0">
+                                <label>No</label>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="unit-50">
-                        <label>Contraseña</b</label>
-                        <?php echo $this->formPassword($form->get('empleado_password')); ?>
+                    <div class="unit-10">
+                        <label style="height: 26px;"></label>
+                        <label><b>Producto</b></label>
+                        <label><b>Servicio</b></label>
+                    </div>
+                    <div class="unit-35">
+                        <label><b>Tipo de comisión</b></label>
+                        <select class="width-100" name="empleado_tipocomisionproducto" disabled="disabled" style="padding-right: 4px;">
+                            <option value="cantidad">Cantidad fija</option>
+                            <option value="porcentaje">Porcentaje</option>
+                        </select>
+                        <select class="width-100" style="padding-right: 4px; margin-top: 10px;" disabled="disabled" name="empleado_tipocomisionservicio">
+                            <option value="cantidad">Cantidad fija</option>
+                            <option value="porcentaje">Porcentaje</option>
+                        </select>
+                    </div>
+                    <div class="unit-35">
+                        <label><b>Cantidad de comisión</b></label>
+                        <input class="width-100" type="text" value="" disabled="disabled" name="empleado_cantidadcomisionproducto">
+                        <input class="width-100" type="text" name="empleado_cantidadcomisionservicio" disabled="disabled" value="" style="margin-top: 10px;">
                     </div>
                 </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Datos de acceso al sistema</legend>
+                <div class="units-row" id="acceso_row">
+                    <div class="unit-30">
+                        <label>Rol</b</label>
+                        <select class="width-100" name="accesos[0][idrol]">
+                            <?php foreach($roles as $rol) :?>
+                                <option value="<?php echo $rol['idrol']?>"><?php echo $rol['rol_nombre']?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                    <div class="unit-30">
+                        <label>Nombre de usuario</b</label>
+                        <input class="width-100" type="text"  name="accesos[0][username]">
+                    </div>
+                    <div class="unit-30">
+                        <label>Contraseña</b</label>
+                        <input class="width-100" type="password"  name="accesos[0][password]">
+                    </div>
+                    <div class="unit-10">
+                        <a class="btn btn-blue" data-action="addAcceso" style="margin-top: 24px;">Agregar</a>
+                    </div>
+                </div>
+                
             </fieldset>
         </div>
     </div>

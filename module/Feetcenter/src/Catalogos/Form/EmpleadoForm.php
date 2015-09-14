@@ -11,19 +11,7 @@ class EmpleadoForm extends Form
         // we want to ignore the name passed
         parent::__construct('EmpleadoForm');
         $this->setAttribute('method', 'post');
-        
-        $this->add(array(
-             'type' => 'Select',
-             'name' => 'idrol',
-             'options' => array(
-                'value_options' => $roles,
-             ),
-            'attributes' => array(
-                'class' => 'width-100',
-      
-            ),
-        ));
-        
+
         $this->add(array(
             'name' => 'empleado_nombre',
             'type' => 'Text',

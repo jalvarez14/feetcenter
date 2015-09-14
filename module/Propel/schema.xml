@@ -63,7 +63,6 @@
     <column name="compra_status" phpName="CompraStatus" type="CHAR" sqlType="enum('pagada','no pagada')" required="true"/>
     <column name="compra_pagaren" phpName="CompraPagaren" type="DATE" required="true"/>
     <column name="compra_comprobante" phpName="CompraComprobante" type="LONGVARCHAR" required="false"/>
-    <column name="compra_folio" phpName="CompraFolio" type="VARCHAR" size="45" required="false"/>
     <foreign-key foreignTable="empleado" name="idempleado_compra" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idempleado" foreign="idempleado"/>
     </foreign-key>
@@ -147,7 +146,6 @@
   </table>
   <table name="empleado" phpName="Empleado" idMethod="native">
     <column name="idempleado" phpName="Idempleado" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="idrol" phpName="Idrol" type="INTEGER" required="true"/>
     <column name="empleado_registradoen" phpName="EmpleadoRegistradoen" type="TIMESTAMP" required="true"/>
     <column name="empleado_nombre" phpName="EmpleadoNombre" type="VARCHAR" size="255" required="true"/>
     <column name="empleado_nss" phpName="EmpleadoNss" type="VARCHAR" size="45" required="false"/>
@@ -165,13 +163,32 @@
     <column name="empleado_comprobanteidentificacion" phpName="EmpleadoComprobanteidentificacion" type="LONGVARCHAR" required="false"/>
     <column name="empleado_sueldo" phpName="EmpleadoSueldo" type="DECIMAL" size="10" scale="2" required="false"/>
     <column name="empleado_diadescanso" phpName="EmpleadoDiadescanso" type="CHAR" sqlType="enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo')" required="true"/>
-    <column name="empleado_username" phpName="EmpleadoUsername" type="VARCHAR" size="45" required="false"/>
-    <column name="empleado_password" phpName="EmpleadoPassword" type="VARCHAR" size="45" required="false"/>
     <column name="empleado_foto" phpName="EmpleadoFoto" type="LONGVARCHAR" required="false"/>
-    <foreign-key foreignTable="rol" name="idrol_empleado" onDelete="CASCADE" onUpdate="CASCADE">
+    <column name="empleado_tipocomisionproducto" phpName="EmpleadoTipocomisionproducto" type="CHAR" sqlType="enum('porcentaje','cantidad')" required="false"/>
+    <column name="empleado_cantidadcomisionproducto" phpName="EmpleadoCantidadcomisionproducto" type="DECIMAL" size="10" scale="2" required="false"/>
+    <column name="empleado_tipocomisionservicio" phpName="EmpleadoTipocomisionservicio" type="CHAR" sqlType="enum('porcentaje','cantidad')" required="false"/>
+    <column name="empleado_cantidadcomisionservicio" phpName="EmpleadoCantidadcomisionservicio" type="DECIMAL" size="10" scale="2" required="false"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="empleadoacceso" phpName="Empleadoacceso" idMethod="native">
+    <column name="idempleadoacceso" phpName="Idempleadoacceso" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
+    <column name="idrol" phpName="Idrol" type="INTEGER" required="true"/>
+    <column name="empleadoacceso_username" phpName="EmpleadoaccesoUsername" type="VARCHAR" size="45" required="true"/>
+    <column name="empleadoacceso_password" phpName="EmpleadoaccesoPassword" type="VARCHAR" size="45" required="true"/>
+    <column name="empleadoacceso_ensesion" phpName="EmpleadoaccesoEnsesion" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <foreign-key foreignTable="empleado" name="idempleado_empleadoacceso" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleado" foreign="idempleado"/>
+    </foreign-key>
+    <foreign-key foreignTable="rol" name="idrol_empleadoacceso" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idrol" foreign="idrol"/>
     </foreign-key>
-    <index name="idrol_empleado_idx">
+    <index name="idempleado">
+      <index-column name="idempleado"/>
+    </index>
+    <index name="idrol">
       <index-column name="idrol"/>
     </index>
     <vendor type="mysql">
@@ -216,6 +233,29 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="empleadoreceso" phpName="Empleadoreceso" idMethod="native">
+    <column name="idempleadoreceso" phpName="Idempleadoreceso" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
+    <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
+    <column name="empleadoreceso_fecha" phpName="EmpleadorecesoFecha" type="DATE" required="true"/>
+    <column name="empleadoreceso_inicio" phpName="EmpleadorecesoInicio" type="TIMESTAMP" required="true"/>
+    <column name="empleadoreceso_fin" phpName="EmpleadorecesoFin" type="TIMESTAMP" required="false"/>
+    <foreign-key foreignTable="clinica" name="idclinica_empleadoreceso" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <foreign-key foreignTable="empleado" name="idempleado_empleadoreceso" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleado" foreign="idempleado"/>
+    </foreign-key>
+    <index name="idclinica_empleadoreceso">
+      <index-column name="idclinica"/>
+    </index>
+    <index name="idempleado_empleadoreceso">
+      <index-column name="idempleado"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="empleadoreporte" phpName="Empleadoreporte" idMethod="native">
     <column name="idempleadoreporte" phpName="Idempleadoreporte" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
@@ -250,6 +290,18 @@
     <column name="idencargadoclinica" phpName="Idencargadoclinica" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
     <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="clinica" name="idclinica_encargadoclinica" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <foreign-key foreignTable="empleado" name="idempleado_encargadoclinica" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleado" foreign="idempleado"/>
+    </foreign-key>
+    <index name="idclinica">
+      <index-column name="idclinica"/>
+    </index>
+    <index name="idempleado">
+      <index-column name="idempleado"/>
+    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -304,6 +356,26 @@
     </index>
     <index name="idpaciente">
       <index-column name="idpaciente"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="grupopersonal" phpName="Grupopersonal" idMethod="native">
+    <column name="idgrupopersonal" phpName="Idgrupopersonal" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idpaciente" phpName="Idpaciente" type="INTEGER" required="true"/>
+    <column name="idpacienteagregado" phpName="Idpacienteagregado" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="paciente" name="idpaciente_grupopersonal" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idpaciente" foreign="idpaciente"/>
+    </foreign-key>
+    <foreign-key foreignTable="paciente" name="idpacienteagregado_grupopersonal" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idpacienteagregado" foreign="idpaciente"/>
+    </foreign-key>
+    <index name="idpaciente">
+      <index-column name="idpaciente"/>
+    </index>
+    <index name="idpacienteagregado">
+      <index-column name="idpacienteagregado"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
@@ -400,7 +472,6 @@
     <column name="productoclinica_existencia" phpName="ProductoclinicaExistencia" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="productoclinica_minimo" phpName="ProductoclinicaMinimo" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="productoclinica_maximo" phpName="ProductoclinicaMaximo" type="DECIMAL" size="10" scale="2" required="true"/>
-    <column name="productoclinica_precio" phpName="ProductoclinicaPrecio" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="productoclinica_reorden" phpName="ProductoclinicaReorden" type="DECIMAL" size="10" scale="2" required="true"/>
     <foreign-key foreignTable="clinica" name="idclinica_productoclinica" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>

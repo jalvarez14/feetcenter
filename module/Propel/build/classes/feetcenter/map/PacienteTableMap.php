@@ -65,6 +65,8 @@ class PacienteTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Grupopaciente', 'Grupopaciente', RelationMap::ONE_TO_MANY, array('idpaciente' => 'idpaciente', ), 'CASCADE', 'CASCADE', 'Grupopacientes');
+        $this->addRelation('GrupopersonalRelatedByIdpaciente', 'Grupopersonal', RelationMap::ONE_TO_MANY, array('idpaciente' => 'idpaciente', ), 'CASCADE', 'CASCADE', 'GrupopersonalsRelatedByIdpaciente');
+        $this->addRelation('GrupopersonalRelatedByIdpacienteagregado', 'Grupopersonal', RelationMap::ONE_TO_MANY, array('idpaciente' => 'idpacienteagregado', ), 'CASCADE', 'CASCADE', 'GrupopersonalsRelatedByIdpacienteagregado');
         $this->addRelation('Pacienteseguimiento', 'Pacienteseguimiento', RelationMap::ONE_TO_MANY, array('idpaciente' => 'idpaciente', ), 'CASCADE', 'CASCADE', 'Pacienteseguimientos');
         $this->addRelation('Visita', 'Visita', RelationMap::ONE_TO_MANY, array('idpaciente' => 'idpaciente', ), 'CASCADE', 'CASCADE', 'Visitas');
     } // buildRelations()

@@ -384,9 +384,15 @@ abstract class BaseClinicaPeer
         // Invalidate objects in EgresoclinicaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         EgresoclinicaPeer::clearInstancePool();
+        // Invalidate objects in EmpleadorecesoPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        EmpleadorecesoPeer::clearInstancePool();
         // Invalidate objects in EmpleadoreportePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         EmpleadoreportePeer::clearInstancePool();
+        // Invalidate objects in EncargadoclinicaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        EncargadoclinicaPeer::clearInstancePool();
         // Invalidate objects in InsumoclinicaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         InsumoclinicaPeer::clearInstancePool();
@@ -754,11 +760,23 @@ abstract class BaseClinicaPeer
             $criteria->add(EgresoclinicaPeer::IDCLINICA, $obj->getIdclinica());
             $affectedRows += EgresoclinicaPeer::doDelete($criteria, $con);
 
+            // delete related Empleadoreceso objects
+            $criteria = new Criteria(EmpleadorecesoPeer::DATABASE_NAME);
+
+            $criteria->add(EmpleadorecesoPeer::IDCLINICA, $obj->getIdclinica());
+            $affectedRows += EmpleadorecesoPeer::doDelete($criteria, $con);
+
             // delete related Empleadoreporte objects
             $criteria = new Criteria(EmpleadoreportePeer::DATABASE_NAME);
 
             $criteria->add(EmpleadoreportePeer::IDCLINICA, $obj->getIdclinica());
             $affectedRows += EmpleadoreportePeer::doDelete($criteria, $con);
+
+            // delete related Encargadoclinica objects
+            $criteria = new Criteria(EncargadoclinicaPeer::DATABASE_NAME);
+
+            $criteria->add(EncargadoclinicaPeer::IDCLINICA, $obj->getIdclinica());
+            $affectedRows += EncargadoclinicaPeer::doDelete($criteria, $con);
 
             // delete related Insumoclinica objects
             $criteria = new Criteria(InsumoclinicaPeer::DATABASE_NAME);

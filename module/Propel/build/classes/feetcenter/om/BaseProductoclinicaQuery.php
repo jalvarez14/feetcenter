@@ -12,7 +12,6 @@
  * @method ProductoclinicaQuery orderByProductoclinicaExistencia($order = Criteria::ASC) Order by the productoclinica_existencia column
  * @method ProductoclinicaQuery orderByProductoclinicaMinimo($order = Criteria::ASC) Order by the productoclinica_minimo column
  * @method ProductoclinicaQuery orderByProductoclinicaMaximo($order = Criteria::ASC) Order by the productoclinica_maximo column
- * @method ProductoclinicaQuery orderByProductoclinicaPrecio($order = Criteria::ASC) Order by the productoclinica_precio column
  * @method ProductoclinicaQuery orderByProductoclinicaReorden($order = Criteria::ASC) Order by the productoclinica_reorden column
  *
  * @method ProductoclinicaQuery groupByIdproductoclinica() Group by the idproductoclinica column
@@ -21,7 +20,6 @@
  * @method ProductoclinicaQuery groupByProductoclinicaExistencia() Group by the productoclinica_existencia column
  * @method ProductoclinicaQuery groupByProductoclinicaMinimo() Group by the productoclinica_minimo column
  * @method ProductoclinicaQuery groupByProductoclinicaMaximo() Group by the productoclinica_maximo column
- * @method ProductoclinicaQuery groupByProductoclinicaPrecio() Group by the productoclinica_precio column
  * @method ProductoclinicaQuery groupByProductoclinicaReorden() Group by the productoclinica_reorden column
  *
  * @method ProductoclinicaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -56,7 +54,6 @@
  * @method Productoclinica findOneByProductoclinicaExistencia(string $productoclinica_existencia) Return the first Productoclinica filtered by the productoclinica_existencia column
  * @method Productoclinica findOneByProductoclinicaMinimo(string $productoclinica_minimo) Return the first Productoclinica filtered by the productoclinica_minimo column
  * @method Productoclinica findOneByProductoclinicaMaximo(string $productoclinica_maximo) Return the first Productoclinica filtered by the productoclinica_maximo column
- * @method Productoclinica findOneByProductoclinicaPrecio(string $productoclinica_precio) Return the first Productoclinica filtered by the productoclinica_precio column
  * @method Productoclinica findOneByProductoclinicaReorden(string $productoclinica_reorden) Return the first Productoclinica filtered by the productoclinica_reorden column
  *
  * @method array findByIdproductoclinica(int $idproductoclinica) Return Productoclinica objects filtered by the idproductoclinica column
@@ -65,7 +62,6 @@
  * @method array findByProductoclinicaExistencia(string $productoclinica_existencia) Return Productoclinica objects filtered by the productoclinica_existencia column
  * @method array findByProductoclinicaMinimo(string $productoclinica_minimo) Return Productoclinica objects filtered by the productoclinica_minimo column
  * @method array findByProductoclinicaMaximo(string $productoclinica_maximo) Return Productoclinica objects filtered by the productoclinica_maximo column
- * @method array findByProductoclinicaPrecio(string $productoclinica_precio) Return Productoclinica objects filtered by the productoclinica_precio column
  * @method array findByProductoclinicaReorden(string $productoclinica_reorden) Return Productoclinica objects filtered by the productoclinica_reorden column
  *
  * @package    propel.generator.feetcenter.om
@@ -174,7 +170,7 @@ abstract class BaseProductoclinicaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproductoclinica`, `idproducto`, `idclinica`, `productoclinica_existencia`, `productoclinica_minimo`, `productoclinica_maximo`, `productoclinica_precio`, `productoclinica_reorden` FROM `productoclinica` WHERE `idproductoclinica` = :p0';
+        $sql = 'SELECT `idproductoclinica`, `idproducto`, `idclinica`, `productoclinica_existencia`, `productoclinica_minimo`, `productoclinica_maximo`, `productoclinica_reorden` FROM `productoclinica` WHERE `idproductoclinica` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -517,48 +513,6 @@ abstract class BaseProductoclinicaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO, $productoclinicaMaximo, $comparison);
-    }
-
-    /**
-     * Filter the query on the productoclinica_precio column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByProductoclinicaPrecio(1234); // WHERE productoclinica_precio = 1234
-     * $query->filterByProductoclinicaPrecio(array(12, 34)); // WHERE productoclinica_precio IN (12, 34)
-     * $query->filterByProductoclinicaPrecio(array('min' => 12)); // WHERE productoclinica_precio >= 12
-     * $query->filterByProductoclinicaPrecio(array('max' => 12)); // WHERE productoclinica_precio <= 12
-     * </code>
-     *
-     * @param     mixed $productoclinicaPrecio The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ProductoclinicaQuery The current query, for fluid interface
-     */
-    public function filterByProductoclinicaPrecio($productoclinicaPrecio = null, $comparison = null)
-    {
-        if (is_array($productoclinicaPrecio)) {
-            $useMinMax = false;
-            if (isset($productoclinicaPrecio['min'])) {
-                $this->addUsingAlias(ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO, $productoclinicaPrecio['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($productoclinicaPrecio['max'])) {
-                $this->addUsingAlias(ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO, $productoclinicaPrecio['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO, $productoclinicaPrecio, $comparison);
     }
 
     /**

@@ -25,7 +25,7 @@
         <?php foreach($collection as $entity) : ?>
             <?php $fecha_registro = new DateTime($entity['empleado_registradoen'])?>
             <tr id="<?php echo $entity['idempleado']?>">
-                <td><?php echo $fecha_registro->format('d-m-Y')?></td>
+                <td><?php echo $fecha_registro->format('d/m/Y')?></td>
                 <td><?php echo $entity['empleado_nombre']?></td>
                 <td><?php echo $entity['empleado_celular']?></td>
                 <td><?php echo $entity['empleado_nss']?></td>

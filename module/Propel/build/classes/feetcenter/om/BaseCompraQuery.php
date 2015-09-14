@@ -15,7 +15,6 @@
  * @method CompraQuery orderByCompraStatus($order = Criteria::ASC) Order by the compra_status column
  * @method CompraQuery orderByCompraPagaren($order = Criteria::ASC) Order by the compra_pagaren column
  * @method CompraQuery orderByCompraComprobante($order = Criteria::ASC) Order by the compra_comprobante column
- * @method CompraQuery orderByCompraFolio($order = Criteria::ASC) Order by the compra_folio column
  *
  * @method CompraQuery groupByIdcompra() Group by the idcompra column
  * @method CompraQuery groupByIdempleado() Group by the idempleado column
@@ -26,7 +25,6 @@
  * @method CompraQuery groupByCompraStatus() Group by the compra_status column
  * @method CompraQuery groupByCompraPagaren() Group by the compra_pagaren column
  * @method CompraQuery groupByCompraComprobante() Group by the compra_comprobante column
- * @method CompraQuery groupByCompraFolio() Group by the compra_folio column
  *
  * @method CompraQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method CompraQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -55,7 +53,6 @@
  * @method Compra findOneByCompraStatus(string $compra_status) Return the first Compra filtered by the compra_status column
  * @method Compra findOneByCompraPagaren(string $compra_pagaren) Return the first Compra filtered by the compra_pagaren column
  * @method Compra findOneByCompraComprobante(string $compra_comprobante) Return the first Compra filtered by the compra_comprobante column
- * @method Compra findOneByCompraFolio(string $compra_folio) Return the first Compra filtered by the compra_folio column
  *
  * @method array findByIdcompra(int $idcompra) Return Compra objects filtered by the idcompra column
  * @method array findByIdempleado(int $idempleado) Return Compra objects filtered by the idempleado column
@@ -66,7 +63,6 @@
  * @method array findByCompraStatus(string $compra_status) Return Compra objects filtered by the compra_status column
  * @method array findByCompraPagaren(string $compra_pagaren) Return Compra objects filtered by the compra_pagaren column
  * @method array findByCompraComprobante(string $compra_comprobante) Return Compra objects filtered by the compra_comprobante column
- * @method array findByCompraFolio(string $compra_folio) Return Compra objects filtered by the compra_folio column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -174,7 +170,7 @@ abstract class BaseCompraQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idcompra`, `idempleado`, `idproveedor`, `compra_creadaen`, `compra_fecha`, `compra_importe`, `compra_status`, `compra_pagaren`, `compra_comprobante`, `compra_folio` FROM `compra` WHERE `idcompra` = :p0';
+        $sql = 'SELECT `idcompra`, `idempleado`, `idproveedor`, `compra_creadaen`, `compra_fecha`, `compra_importe`, `compra_status`, `compra_pagaren`, `compra_comprobante` FROM `compra` WHERE `idcompra` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -620,35 +616,6 @@ abstract class BaseCompraQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CompraPeer::COMPRA_COMPROBANTE, $compraComprobante, $comparison);
-    }
-
-    /**
-     * Filter the query on the compra_folio column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCompraFolio('fooValue');   // WHERE compra_folio = 'fooValue'
-     * $query->filterByCompraFolio('%fooValue%'); // WHERE compra_folio LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $compraFolio The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return CompraQuery The current query, for fluid interface
-     */
-    public function filterByCompraFolio($compraFolio = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($compraFolio)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $compraFolio)) {
-                $compraFolio = str_replace('*', '%', $compraFolio);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(CompraPeer::COMPRA_FOLIO, $compraFolio, $comparison);
     }
 
     /**

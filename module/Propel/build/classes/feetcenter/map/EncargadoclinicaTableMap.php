@@ -39,8 +39,8 @@ class EncargadoclinicaTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idencargadoclinica', 'Idencargadoclinica', 'INTEGER', true, null, null);
-        $this->addColumn('idclinica', 'Idclinica', 'INTEGER', true, null, null);
-        $this->addColumn('idempleado', 'Idempleado', 'INTEGER', true, null, null);
+        $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
+        $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', true, null, null);
         // validators
     } // initialize()
 
@@ -49,6 +49,8 @@ class EncargadoclinicaTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Empleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
 } // EncargadoclinicaTableMap

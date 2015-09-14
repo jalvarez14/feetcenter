@@ -18,9 +18,9 @@
  * @method RolQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method RolQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method RolQuery leftJoinEmpleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Empleado relation
- * @method RolQuery rightJoinEmpleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleado relation
- * @method RolQuery innerJoinEmpleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleado relation
+ * @method RolQuery leftJoinEmpleadoacceso($relationAlias = null) Adds a LEFT JOIN clause to the query using the Empleadoacceso relation
+ * @method RolQuery rightJoinEmpleadoacceso($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleadoacceso relation
+ * @method RolQuery innerJoinEmpleadoacceso($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleadoacceso relation
  *
  * @method RolQuery leftJoinRolrecurso($relationAlias = null) Adds a LEFT JOIN clause to the query using the Rolrecurso relation
  * @method RolQuery rightJoinRolrecurso($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Rolrecurso relation
@@ -332,41 +332,41 @@ abstract class BaseRolQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Empleado object
+     * Filter the query by a related Empleadoacceso object
      *
-     * @param   Empleado|PropelObjectCollection $empleado  the related object to use as filter
+     * @param   Empleadoacceso|PropelObjectCollection $empleadoacceso  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 RolQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByEmpleado($empleado, $comparison = null)
+    public function filterByEmpleadoacceso($empleadoacceso, $comparison = null)
     {
-        if ($empleado instanceof Empleado) {
+        if ($empleadoacceso instanceof Empleadoacceso) {
             return $this
-                ->addUsingAlias(RolPeer::IDROL, $empleado->getIdrol(), $comparison);
-        } elseif ($empleado instanceof PropelObjectCollection) {
+                ->addUsingAlias(RolPeer::IDROL, $empleadoacceso->getIdrol(), $comparison);
+        } elseif ($empleadoacceso instanceof PropelObjectCollection) {
             return $this
-                ->useEmpleadoQuery()
-                ->filterByPrimaryKeys($empleado->getPrimaryKeys())
+                ->useEmpleadoaccesoQuery()
+                ->filterByPrimaryKeys($empleadoacceso->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByEmpleado() only accepts arguments of type Empleado or PropelCollection');
+            throw new PropelException('filterByEmpleadoacceso() only accepts arguments of type Empleadoacceso or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Empleado relation
+     * Adds a JOIN clause to the query using the Empleadoacceso relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return RolQuery The current query, for fluid interface
      */
-    public function joinEmpleado($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinEmpleadoacceso($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Empleado');
+        $relationMap = $tableMap->getRelation('Empleadoacceso');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -381,14 +381,14 @@ abstract class BaseRolQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Empleado');
+            $this->addJoinObject($join, 'Empleadoacceso');
         }
 
         return $this;
     }
 
     /**
-     * Use the Empleado relation Empleado object
+     * Use the Empleadoacceso relation Empleadoacceso object
      *
      * @see       useQuery()
      *
@@ -396,13 +396,13 @@ abstract class BaseRolQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   EmpleadoQuery A secondary query class using the current class as primary query
+     * @return   EmpleadoaccesoQuery A secondary query class using the current class as primary query
      */
-    public function useEmpleadoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useEmpleadoaccesoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinEmpleado($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Empleado', 'EmpleadoQuery');
+            ->joinEmpleadoacceso($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Empleadoacceso', 'EmpleadoaccesoQuery');
     }
 
     /**

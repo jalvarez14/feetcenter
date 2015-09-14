@@ -46,13 +46,51 @@
         var $container = $(container);  
         
         var settings;
-        
+        var access_row_flag = false;
         /*
         * Private methods
         */
 
 
-       
+       var addAcceso = function(){
+           
+           if(!access_row_flag){
+            access_row_flag = true;
+            
+            var new_row = $container.find('#acceso_row').clone();
+            new_row.removeAttr('id');
+ 
+            $container.find('#acceso_row a').addClass('btn-disabled');
+            $container.find('#acceso_row a').prop('disabled',true);
+            
+            //Damos formato a nuestra row
+            var button_new = new_row.find('a');
+            button_new.after('<a href="javascript:void(0)" id="removeRowAccess" style="text-decoration:none">Eliminar</a>');
+            button_new.remove();
+            new_row.find('a').parent('div').css('margin-top','28px');
+            
+            $container.find('#acceso_row').after(new_row);
+            
+            //Modificamos los names de nuestros inputs
+            new_row.find('select').attr('name','accesos[1][idrol]');
+            new_row.find('input').eq(0).attr('name','accesos[1][username]');
+            new_row.find('input').eq(1).attr('name','accesos[1][password]');
+            
+            //Limpiamos los inputs
+            new_row.find('input').eq(0).val('');
+            new_row.find('input').eq(1).val('');
+            
+            //El evento para eliminar la row del acceso
+            new_row.find('a').on('click',function(){
+                access_row_flag = false;
+                new_row.remove();
+                $container.find('#acceso_row a').removeClass('btn-disabled');
+            $container.find('#acceso_row a').prop('disabled',false);
+            });
+            
+           }
+           
+       }
        /*
         * Public methods
         */
@@ -151,6 +189,31 @@
                     comprobante_identificacion.remove();
                 });
             }
+            
+            //Evento genera comision
+            $container.find('input[type=radio][name=empleado_pagoporcomision]').on('change',function(){
+                var genera_comision = Boolean(parseInt($(this).val()));
+                if(genera_comision){
+                    $container.find('select[name=empleado_tipocomisionproducto]').prop('disabled',false);
+                    $container.find('input[name=empleado_cantidadcomisionproducto]').prop('disabled',false);
+                    $container.find('input[name=empleado_cantidadcomisionproducto]').prop('required',true);
+                    
+                    $container.find('select[name=empleado_tipocomisionservicio]').prop('disabled',false);
+                    $container.find('input[name=empleado_cantidadcomisionservicio]').prop('disabled',false);
+                    $container.find('input[name=empleado_cantidadcomisionservicio]').prop('required',true);
+                }else{
+                    $container.find('select[name=empleado_tipocomisionproducto]').prop('disabled',true);
+                    $container.find('input[name=empleado_cantidadcomisionproducto]').prop('disabled',true);
+                    $container.find('input[name=empleado_cantidadcomisionproducto]').prop('required',false);
+                    
+                    $container.find('select[name=empleado_tipocomisionservicio]').prop('disabled',true);
+                    $container.find('input[name=empleado_cantidadcomisionservicio]').prop('disabled',true);
+                    $container.find('input[name=empleado_cantidadcomisionservicio]').prop('required',false);
+                }
+            });
+            
+            //Evento datos de acceso
+            $container.find('a[data-action=addAcceso]').on('click',addAcceso);
         
         }
 

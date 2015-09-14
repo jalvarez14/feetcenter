@@ -49,7 +49,7 @@ class RolTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Empleado', 'Empleado', RelationMap::ONE_TO_MANY, array('idrol' => 'idrol', ), 'CASCADE', 'CASCADE', 'Empleados');
+        $this->addRelation('Empleadoacceso', 'Empleadoacceso', RelationMap::ONE_TO_MANY, array('idrol' => 'idrol', ), 'CASCADE', 'CASCADE', 'Empleadoaccesos');
         $this->addRelation('Rolrecurso', 'Rolrecurso', RelationMap::ONE_TO_MANY, array('idrol' => 'idrol', ), 'CASCADE', 'CASCADE', 'Rolrecursos');
     } // buildRelations()
 

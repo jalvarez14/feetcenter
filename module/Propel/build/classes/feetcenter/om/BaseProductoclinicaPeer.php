@@ -24,13 +24,13 @@ abstract class BaseProductoclinicaPeer
     const TM_CLASS = 'ProductoclinicaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the idproductoclinica field */
     const IDPRODUCTOCLINICA = 'productoclinica.idproductoclinica';
@@ -49,9 +49,6 @@ abstract class BaseProductoclinicaPeer
 
     /** the column name for the productoclinica_maximo field */
     const PRODUCTOCLINICA_MAXIMO = 'productoclinica.productoclinica_maximo';
-
-    /** the column name for the productoclinica_precio field */
-    const PRODUCTOCLINICA_PRECIO = 'productoclinica.productoclinica_precio';
 
     /** the column name for the productoclinica_reorden field */
     const PRODUCTOCLINICA_REORDEN = 'productoclinica.productoclinica_reorden';
@@ -75,12 +72,12 @@ abstract class BaseProductoclinicaPeer
      * e.g. ProductoclinicaPeer::$fieldNames[ProductoclinicaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductoclinica', 'Idproducto', 'Idclinica', 'ProductoclinicaExistencia', 'ProductoclinicaMinimo', 'ProductoclinicaMaximo', 'ProductoclinicaPrecio', 'ProductoclinicaReorden', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductoclinica', 'idproducto', 'idclinica', 'productoclinicaExistencia', 'productoclinicaMinimo', 'productoclinicaMaximo', 'productoclinicaPrecio', 'productoclinicaReorden', ),
-        BasePeer::TYPE_COLNAME => array (ProductoclinicaPeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTO, ProductoclinicaPeer::IDCLINICA, ProductoclinicaPeer::PRODUCTOCLINICA_EXISTENCIA, ProductoclinicaPeer::PRODUCTOCLINICA_MINIMO, ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO, ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO, ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCLINICA', 'IDPRODUCTO', 'IDCLINICA', 'PRODUCTOCLINICA_EXISTENCIA', 'PRODUCTOCLINICA_MINIMO', 'PRODUCTOCLINICA_MAXIMO', 'PRODUCTOCLINICA_PRECIO', 'PRODUCTOCLINICA_REORDEN', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductoclinica', 'idproducto', 'idclinica', 'productoclinica_existencia', 'productoclinica_minimo', 'productoclinica_maximo', 'productoclinica_precio', 'productoclinica_reorden', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Idproductoclinica', 'Idproducto', 'Idclinica', 'ProductoclinicaExistencia', 'ProductoclinicaMinimo', 'ProductoclinicaMaximo', 'ProductoclinicaReorden', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductoclinica', 'idproducto', 'idclinica', 'productoclinicaExistencia', 'productoclinicaMinimo', 'productoclinicaMaximo', 'productoclinicaReorden', ),
+        BasePeer::TYPE_COLNAME => array (ProductoclinicaPeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTO, ProductoclinicaPeer::IDCLINICA, ProductoclinicaPeer::PRODUCTOCLINICA_EXISTENCIA, ProductoclinicaPeer::PRODUCTOCLINICA_MINIMO, ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO, ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCLINICA', 'IDPRODUCTO', 'IDCLINICA', 'PRODUCTOCLINICA_EXISTENCIA', 'PRODUCTOCLINICA_MINIMO', 'PRODUCTOCLINICA_MAXIMO', 'PRODUCTOCLINICA_REORDEN', ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductoclinica', 'idproducto', 'idclinica', 'productoclinica_existencia', 'productoclinica_minimo', 'productoclinica_maximo', 'productoclinica_reorden', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -90,12 +87,12 @@ abstract class BaseProductoclinicaPeer
      * e.g. ProductoclinicaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductoclinica' => 0, 'Idproducto' => 1, 'Idclinica' => 2, 'ProductoclinicaExistencia' => 3, 'ProductoclinicaMinimo' => 4, 'ProductoclinicaMaximo' => 5, 'ProductoclinicaPrecio' => 6, 'ProductoclinicaReorden' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductoclinica' => 0, 'idproducto' => 1, 'idclinica' => 2, 'productoclinicaExistencia' => 3, 'productoclinicaMinimo' => 4, 'productoclinicaMaximo' => 5, 'productoclinicaPrecio' => 6, 'productoclinicaReorden' => 7, ),
-        BasePeer::TYPE_COLNAME => array (ProductoclinicaPeer::IDPRODUCTOCLINICA => 0, ProductoclinicaPeer::IDPRODUCTO => 1, ProductoclinicaPeer::IDCLINICA => 2, ProductoclinicaPeer::PRODUCTOCLINICA_EXISTENCIA => 3, ProductoclinicaPeer::PRODUCTOCLINICA_MINIMO => 4, ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO => 5, ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO => 6, ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCLINICA' => 0, 'IDPRODUCTO' => 1, 'IDCLINICA' => 2, 'PRODUCTOCLINICA_EXISTENCIA' => 3, 'PRODUCTOCLINICA_MINIMO' => 4, 'PRODUCTOCLINICA_MAXIMO' => 5, 'PRODUCTOCLINICA_PRECIO' => 6, 'PRODUCTOCLINICA_REORDEN' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductoclinica' => 0, 'idproducto' => 1, 'idclinica' => 2, 'productoclinica_existencia' => 3, 'productoclinica_minimo' => 4, 'productoclinica_maximo' => 5, 'productoclinica_precio' => 6, 'productoclinica_reorden' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Idproductoclinica' => 0, 'Idproducto' => 1, 'Idclinica' => 2, 'ProductoclinicaExistencia' => 3, 'ProductoclinicaMinimo' => 4, 'ProductoclinicaMaximo' => 5, 'ProductoclinicaReorden' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductoclinica' => 0, 'idproducto' => 1, 'idclinica' => 2, 'productoclinicaExistencia' => 3, 'productoclinicaMinimo' => 4, 'productoclinicaMaximo' => 5, 'productoclinicaReorden' => 6, ),
+        BasePeer::TYPE_COLNAME => array (ProductoclinicaPeer::IDPRODUCTOCLINICA => 0, ProductoclinicaPeer::IDPRODUCTO => 1, ProductoclinicaPeer::IDCLINICA => 2, ProductoclinicaPeer::PRODUCTOCLINICA_EXISTENCIA => 3, ProductoclinicaPeer::PRODUCTOCLINICA_MINIMO => 4, ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO => 5, ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCLINICA' => 0, 'IDPRODUCTO' => 1, 'IDCLINICA' => 2, 'PRODUCTOCLINICA_EXISTENCIA' => 3, 'PRODUCTOCLINICA_MINIMO' => 4, 'PRODUCTOCLINICA_MAXIMO' => 5, 'PRODUCTOCLINICA_REORDEN' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductoclinica' => 0, 'idproducto' => 1, 'idclinica' => 2, 'productoclinica_existencia' => 3, 'productoclinica_minimo' => 4, 'productoclinica_maximo' => 5, 'productoclinica_reorden' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -175,7 +172,6 @@ abstract class BaseProductoclinicaPeer
             $criteria->addSelectColumn(ProductoclinicaPeer::PRODUCTOCLINICA_EXISTENCIA);
             $criteria->addSelectColumn(ProductoclinicaPeer::PRODUCTOCLINICA_MINIMO);
             $criteria->addSelectColumn(ProductoclinicaPeer::PRODUCTOCLINICA_MAXIMO);
-            $criteria->addSelectColumn(ProductoclinicaPeer::PRODUCTOCLINICA_PRECIO);
             $criteria->addSelectColumn(ProductoclinicaPeer::PRODUCTOCLINICA_REORDEN);
         } else {
             $criteria->addSelectColumn($alias . '.idproductoclinica');
@@ -184,7 +180,6 @@ abstract class BaseProductoclinicaPeer
             $criteria->addSelectColumn($alias . '.productoclinica_existencia');
             $criteria->addSelectColumn($alias . '.productoclinica_minimo');
             $criteria->addSelectColumn($alias . '.productoclinica_maximo');
-            $criteria->addSelectColumn($alias . '.productoclinica_precio');
             $criteria->addSelectColumn($alias . '.productoclinica_reorden');
         }
     }

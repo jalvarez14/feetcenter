@@ -44,7 +44,6 @@ class ProductoclinicaTableMap extends TableMap
         $this->addColumn('productoclinica_existencia', 'ProductoclinicaExistencia', 'DECIMAL', true, 10, null);
         $this->addColumn('productoclinica_minimo', 'ProductoclinicaMinimo', 'DECIMAL', true, 10, null);
         $this->addColumn('productoclinica_maximo', 'ProductoclinicaMaximo', 'DECIMAL', true, 10, null);
-        $this->addColumn('productoclinica_precio', 'ProductoclinicaPrecio', 'DECIMAL', true, 10, null);
         $this->addColumn('productoclinica_reorden', 'ProductoclinicaReorden', 'DECIMAL', true, 10, null);
         // validators
     } // initialize()

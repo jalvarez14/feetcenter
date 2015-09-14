@@ -365,9 +365,9 @@ abstract class BaseRolPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in EmpleadoPeer instance pool,
+        // Invalidate objects in EmpleadoaccesoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        EmpleadoPeer::clearInstancePool();
+        EmpleadoaccesoPeer::clearInstancePool();
         // Invalidate objects in RolrecursoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         RolrecursoPeer::clearInstancePool();
@@ -705,11 +705,11 @@ abstract class BaseRolPeer
         foreach ($objects as $obj) {
 
 
-            // delete related Empleado objects
-            $criteria = new Criteria(EmpleadoPeer::DATABASE_NAME);
+            // delete related Empleadoacceso objects
+            $criteria = new Criteria(EmpleadoaccesoPeer::DATABASE_NAME);
 
-            $criteria->add(EmpleadoPeer::IDROL, $obj->getIdrol());
-            $affectedRows += EmpleadoPeer::doDelete($criteria, $con);
+            $criteria->add(EmpleadoaccesoPeer::IDROL, $obj->getIdrol());
+            $affectedRows += EmpleadoaccesoPeer::doDelete($criteria, $con);
 
             // delete related Rolrecurso objects
             $criteria = new Criteria(RolrecursoPeer::DATABASE_NAME);

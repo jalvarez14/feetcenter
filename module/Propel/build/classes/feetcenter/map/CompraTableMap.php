@@ -51,7 +51,6 @@ class CompraTableMap extends TableMap
 ));
         $this->addColumn('compra_pagaren', 'CompraPagaren', 'DATE', true, null, null);
         $this->addColumn('compra_comprobante', 'CompraComprobante', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('compra_folio', 'CompraFolio', 'VARCHAR', false, 45, null);
         // validators
     } // initialize()
 

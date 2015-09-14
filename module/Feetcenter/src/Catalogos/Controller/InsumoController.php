@@ -59,6 +59,16 @@ class InsumoController extends AbstractActionController
                 //Guardamos en nuestra base de datos
                 $entity->save();
                 
+                //Tambien lo guardamos en la clinica matriz
+                $insumo_clinica = new \Insumoclinica();
+                $insumo_clinica->setIdinsumo($entity->getIdinsumo())
+                                 ->setIdclinica(1) //Corresponde a la clinica matriz
+                                 ->setInsumoclinicaExistencia(0)
+                                 ->setInsumoclinicaMinimo(0)
+                                 ->setInsumoclinicaMaximo(0)
+                                 ->setInsumoclinicaReorden(0)
+                                 ->save();
+                
                 //Agregamos un mensaje
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 

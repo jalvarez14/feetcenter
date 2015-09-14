@@ -48,10 +48,10 @@ abstract class BaseRol extends BaseObject implements Persistent
     protected $rol_descripcion;
 
     /**
-     * @var        PropelObjectCollection|Empleado[] Collection to store aggregation of Empleado objects.
+     * @var        PropelObjectCollection|Empleadoacceso[] Collection to store aggregation of Empleadoacceso objects.
      */
-    protected $collEmpleados;
-    protected $collEmpleadosPartial;
+    protected $collEmpleadoaccesos;
+    protected $collEmpleadoaccesosPartial;
 
     /**
      * @var        PropelObjectCollection|Rolrecurso[] Collection to store aggregation of Rolrecurso objects.
@@ -83,7 +83,7 @@ abstract class BaseRol extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $empleadosScheduledForDeletion = null;
+    protected $empleadoaccesosScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -293,7 +293,7 @@ abstract class BaseRol extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collEmpleados = null;
+            $this->collEmpleadoaccesos = null;
 
             $this->collRolrecursos = null;
 
@@ -421,17 +421,17 @@ abstract class BaseRol extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->empleadosScheduledForDeletion !== null) {
-                if (!$this->empleadosScheduledForDeletion->isEmpty()) {
-                    EmpleadoQuery::create()
-                        ->filterByPrimaryKeys($this->empleadosScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->empleadoaccesosScheduledForDeletion !== null) {
+                if (!$this->empleadoaccesosScheduledForDeletion->isEmpty()) {
+                    EmpleadoaccesoQuery::create()
+                        ->filterByPrimaryKeys($this->empleadoaccesosScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->empleadosScheduledForDeletion = null;
+                    $this->empleadoaccesosScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collEmpleados !== null) {
-                foreach ($this->collEmpleados as $referrerFK) {
+            if ($this->collEmpleadoaccesos !== null) {
+                foreach ($this->collEmpleadoaccesos as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -609,8 +609,8 @@ abstract class BaseRol extends BaseObject implements Persistent
             }
 
 
-                if ($this->collEmpleados !== null) {
-                    foreach ($this->collEmpleados as $referrerFK) {
+                if ($this->collEmpleadoaccesos !== null) {
+                    foreach ($this->collEmpleadoaccesos as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -708,8 +708,8 @@ abstract class BaseRol extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collEmpleados) {
-                $result['Empleados'] = $this->collEmpleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collEmpleadoaccesos) {
+                $result['Empleadoaccesos'] = $this->collEmpleadoaccesos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collRolrecursos) {
                 $result['Rolrecursos'] = $this->collRolrecursos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -871,9 +871,9 @@ abstract class BaseRol extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getEmpleados() as $relObj) {
+            foreach ($this->getEmpleadoaccesos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addEmpleado($relObj->copy($deepCopy));
+                    $copyObj->addEmpleadoacceso($relObj->copy($deepCopy));
                 }
             }
 
@@ -944,8 +944,8 @@ abstract class BaseRol extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('Empleado' == $relationName) {
-            $this->initEmpleados();
+        if ('Empleadoacceso' == $relationName) {
+            $this->initEmpleadoaccesos();
         }
         if ('Rolrecurso' == $relationName) {
             $this->initRolrecursos();
@@ -953,36 +953,36 @@ abstract class BaseRol extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collEmpleados collection
+     * Clears out the collEmpleadoaccesos collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return Rol The current object (for fluent API support)
-     * @see        addEmpleados()
+     * @see        addEmpleadoaccesos()
      */
-    public function clearEmpleados()
+    public function clearEmpleadoaccesos()
     {
-        $this->collEmpleados = null; // important to set this to null since that means it is uninitialized
-        $this->collEmpleadosPartial = null;
+        $this->collEmpleadoaccesos = null; // important to set this to null since that means it is uninitialized
+        $this->collEmpleadoaccesosPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collEmpleados collection loaded partially
+     * reset is the collEmpleadoaccesos collection loaded partially
      *
      * @return void
      */
-    public function resetPartialEmpleados($v = true)
+    public function resetPartialEmpleadoaccesos($v = true)
     {
-        $this->collEmpleadosPartial = $v;
+        $this->collEmpleadoaccesosPartial = $v;
     }
 
     /**
-     * Initializes the collEmpleados collection.
+     * Initializes the collEmpleadoaccesos collection.
      *
-     * By default this just sets the collEmpleados collection to an empty array (like clearcollEmpleados());
+     * By default this just sets the collEmpleadoaccesos collection to an empty array (like clearcollEmpleadoaccesos());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -991,17 +991,17 @@ abstract class BaseRol extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initEmpleados($overrideExisting = true)
+    public function initEmpleadoaccesos($overrideExisting = true)
     {
-        if (null !== $this->collEmpleados && !$overrideExisting) {
+        if (null !== $this->collEmpleadoaccesos && !$overrideExisting) {
             return;
         }
-        $this->collEmpleados = new PropelObjectCollection();
-        $this->collEmpleados->setModel('Empleado');
+        $this->collEmpleadoaccesos = new PropelObjectCollection();
+        $this->collEmpleadoaccesos->setModel('Empleadoacceso');
     }
 
     /**
-     * Gets an array of Empleado objects which contain a foreign key that references this object.
+     * Gets an array of Empleadoacceso objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1011,107 +1011,107 @@ abstract class BaseRol extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Empleado[] List of Empleado objects
+     * @return PropelObjectCollection|Empleadoacceso[] List of Empleadoacceso objects
      * @throws PropelException
      */
-    public function getEmpleados($criteria = null, PropelPDO $con = null)
+    public function getEmpleadoaccesos($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collEmpleadosPartial && !$this->isNew();
-        if (null === $this->collEmpleados || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collEmpleados) {
+        $partial = $this->collEmpleadoaccesosPartial && !$this->isNew();
+        if (null === $this->collEmpleadoaccesos || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collEmpleadoaccesos) {
                 // return empty collection
-                $this->initEmpleados();
+                $this->initEmpleadoaccesos();
             } else {
-                $collEmpleados = EmpleadoQuery::create(null, $criteria)
+                $collEmpleadoaccesos = EmpleadoaccesoQuery::create(null, $criteria)
                     ->filterByRol($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collEmpleadosPartial && count($collEmpleados)) {
-                      $this->initEmpleados(false);
+                    if (false !== $this->collEmpleadoaccesosPartial && count($collEmpleadoaccesos)) {
+                      $this->initEmpleadoaccesos(false);
 
-                      foreach ($collEmpleados as $obj) {
-                        if (false == $this->collEmpleados->contains($obj)) {
-                          $this->collEmpleados->append($obj);
+                      foreach ($collEmpleadoaccesos as $obj) {
+                        if (false == $this->collEmpleadoaccesos->contains($obj)) {
+                          $this->collEmpleadoaccesos->append($obj);
                         }
                       }
 
-                      $this->collEmpleadosPartial = true;
+                      $this->collEmpleadoaccesosPartial = true;
                     }
 
-                    $collEmpleados->getInternalIterator()->rewind();
+                    $collEmpleadoaccesos->getInternalIterator()->rewind();
 
-                    return $collEmpleados;
+                    return $collEmpleadoaccesos;
                 }
 
-                if ($partial && $this->collEmpleados) {
-                    foreach ($this->collEmpleados as $obj) {
+                if ($partial && $this->collEmpleadoaccesos) {
+                    foreach ($this->collEmpleadoaccesos as $obj) {
                         if ($obj->isNew()) {
-                            $collEmpleados[] = $obj;
+                            $collEmpleadoaccesos[] = $obj;
                         }
                     }
                 }
 
-                $this->collEmpleados = $collEmpleados;
-                $this->collEmpleadosPartial = false;
+                $this->collEmpleadoaccesos = $collEmpleadoaccesos;
+                $this->collEmpleadoaccesosPartial = false;
             }
         }
 
-        return $this->collEmpleados;
+        return $this->collEmpleadoaccesos;
     }
 
     /**
-     * Sets a collection of Empleado objects related by a one-to-many relationship
+     * Sets a collection of Empleadoacceso objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $empleados A Propel collection.
+     * @param PropelCollection $empleadoaccesos A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return Rol The current object (for fluent API support)
      */
-    public function setEmpleados(PropelCollection $empleados, PropelPDO $con = null)
+    public function setEmpleadoaccesos(PropelCollection $empleadoaccesos, PropelPDO $con = null)
     {
-        $empleadosToDelete = $this->getEmpleados(new Criteria(), $con)->diff($empleados);
+        $empleadoaccesosToDelete = $this->getEmpleadoaccesos(new Criteria(), $con)->diff($empleadoaccesos);
 
 
-        $this->empleadosScheduledForDeletion = $empleadosToDelete;
+        $this->empleadoaccesosScheduledForDeletion = $empleadoaccesosToDelete;
 
-        foreach ($empleadosToDelete as $empleadoRemoved) {
-            $empleadoRemoved->setRol(null);
+        foreach ($empleadoaccesosToDelete as $empleadoaccesoRemoved) {
+            $empleadoaccesoRemoved->setRol(null);
         }
 
-        $this->collEmpleados = null;
-        foreach ($empleados as $empleado) {
-            $this->addEmpleado($empleado);
+        $this->collEmpleadoaccesos = null;
+        foreach ($empleadoaccesos as $empleadoacceso) {
+            $this->addEmpleadoacceso($empleadoacceso);
         }
 
-        $this->collEmpleados = $empleados;
-        $this->collEmpleadosPartial = false;
+        $this->collEmpleadoaccesos = $empleadoaccesos;
+        $this->collEmpleadoaccesosPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related Empleado objects.
+     * Returns the number of related Empleadoacceso objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related Empleado objects.
+     * @return int             Count of related Empleadoacceso objects.
      * @throws PropelException
      */
-    public function countEmpleados(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countEmpleadoaccesos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collEmpleadosPartial && !$this->isNew();
-        if (null === $this->collEmpleados || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collEmpleados) {
+        $partial = $this->collEmpleadoaccesosPartial && !$this->isNew();
+        if (null === $this->collEmpleadoaccesos || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collEmpleadoaccesos) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getEmpleados());
+                return count($this->getEmpleadoaccesos());
             }
-            $query = EmpleadoQuery::create(null, $criteria);
+            $query = EmpleadoaccesoQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -1121,28 +1121,28 @@ abstract class BaseRol extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collEmpleados);
+        return count($this->collEmpleadoaccesos);
     }
 
     /**
-     * Method called to associate a Empleado object to this object
-     * through the Empleado foreign key attribute.
+     * Method called to associate a Empleadoacceso object to this object
+     * through the Empleadoacceso foreign key attribute.
      *
-     * @param    Empleado $l Empleado
+     * @param    Empleadoacceso $l Empleadoacceso
      * @return Rol The current object (for fluent API support)
      */
-    public function addEmpleado(Empleado $l)
+    public function addEmpleadoacceso(Empleadoacceso $l)
     {
-        if ($this->collEmpleados === null) {
-            $this->initEmpleados();
-            $this->collEmpleadosPartial = true;
+        if ($this->collEmpleadoaccesos === null) {
+            $this->initEmpleadoaccesos();
+            $this->collEmpleadoaccesosPartial = true;
         }
 
-        if (!in_array($l, $this->collEmpleados->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddEmpleado($l);
+        if (!in_array($l, $this->collEmpleadoaccesos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddEmpleadoacceso($l);
 
-            if ($this->empleadosScheduledForDeletion and $this->empleadosScheduledForDeletion->contains($l)) {
-                $this->empleadosScheduledForDeletion->remove($this->empleadosScheduledForDeletion->search($l));
+            if ($this->empleadoaccesosScheduledForDeletion and $this->empleadoaccesosScheduledForDeletion->contains($l)) {
+                $this->empleadoaccesosScheduledForDeletion->remove($this->empleadoaccesosScheduledForDeletion->search($l));
             }
         }
 
@@ -1150,31 +1150,56 @@ abstract class BaseRol extends BaseObject implements Persistent
     }
 
     /**
-     * @param	Empleado $empleado The empleado object to add.
+     * @param	Empleadoacceso $empleadoacceso The empleadoacceso object to add.
      */
-    protected function doAddEmpleado($empleado)
+    protected function doAddEmpleadoacceso($empleadoacceso)
     {
-        $this->collEmpleados[]= $empleado;
-        $empleado->setRol($this);
+        $this->collEmpleadoaccesos[]= $empleadoacceso;
+        $empleadoacceso->setRol($this);
     }
 
     /**
-     * @param	Empleado $empleado The empleado object to remove.
+     * @param	Empleadoacceso $empleadoacceso The empleadoacceso object to remove.
      * @return Rol The current object (for fluent API support)
      */
-    public function removeEmpleado($empleado)
+    public function removeEmpleadoacceso($empleadoacceso)
     {
-        if ($this->getEmpleados()->contains($empleado)) {
-            $this->collEmpleados->remove($this->collEmpleados->search($empleado));
-            if (null === $this->empleadosScheduledForDeletion) {
-                $this->empleadosScheduledForDeletion = clone $this->collEmpleados;
-                $this->empleadosScheduledForDeletion->clear();
+        if ($this->getEmpleadoaccesos()->contains($empleadoacceso)) {
+            $this->collEmpleadoaccesos->remove($this->collEmpleadoaccesos->search($empleadoacceso));
+            if (null === $this->empleadoaccesosScheduledForDeletion) {
+                $this->empleadoaccesosScheduledForDeletion = clone $this->collEmpleadoaccesos;
+                $this->empleadoaccesosScheduledForDeletion->clear();
             }
-            $this->empleadosScheduledForDeletion[]= clone $empleado;
-            $empleado->setRol(null);
+            $this->empleadoaccesosScheduledForDeletion[]= clone $empleadoacceso;
+            $empleadoacceso->setRol(null);
         }
 
         return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Rol is new, it will return
+     * an empty collection; or if this Rol has previously
+     * been saved, it will retrieve related Empleadoaccesos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Rol.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Empleadoacceso[] List of Empleadoacceso objects
+     */
+    public function getEmpleadoaccesosJoinEmpleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = EmpleadoaccesoQuery::create(null, $criteria);
+        $query->joinWith('Empleado', $join_behavior);
+
+        return $this->getEmpleadoaccesos($query, $con);
     }
 
     /**
@@ -1457,8 +1482,8 @@ abstract class BaseRol extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collEmpleados) {
-                foreach ($this->collEmpleados as $o) {
+            if ($this->collEmpleadoaccesos) {
+                foreach ($this->collEmpleadoaccesos as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -1471,10 +1496,10 @@ abstract class BaseRol extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collEmpleados instanceof PropelCollection) {
-            $this->collEmpleados->clearIterator();
+        if ($this->collEmpleadoaccesos instanceof PropelCollection) {
+            $this->collEmpleadoaccesos->clearIterator();
         }
-        $this->collEmpleados = null;
+        $this->collEmpleadoaccesos = null;
         if ($this->collRolrecursos instanceof PropelCollection) {
             $this->collRolrecursos->clearIterator();
         }

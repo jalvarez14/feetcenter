@@ -77,6 +77,48 @@
                 }
             });
             
+            //la foto 
+            $container.find('img#producto_foto').on('click',function(){
+                $container.find('input[name=producto_foto]').trigger('click');
+            });
+            
+            $container.find('input[name=producto_foto]').on('change',function(){
+                var $input = $(this);
+                var photo =  $container.find('img#producto_foto');
+                var inputFiles = this.files;
+                
+                $container.find('input[name=producto_foto_submit]').val('');
+                
+                if(inputFiles == undefined || inputFiles.length == 0) return;
+                
+                var inputFile = inputFiles[0];
+                var reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    
+                    $container.find('img#producto_foto').attr("src", event.target.result);
+                };
+                
+                if($container.find('input[name=producto_foto]').val() != ''){
+                    $container.find('p#eliminar_imagen').show();
+                }
+                
+                reader.readAsDataURL(inputFile);
+
+            });
+            
+            $container.find('p#eliminar_imagen').on('click',function(){
+                $container.find('img#producto_foto').attr("src", '/img/productos/default.jpg');
+                $container.find('input[name=producto_foto]').val('');
+                $container.find('input[name=producto_foto_submit]').val('delete');
+                $container.find('p#eliminar_imagen').hide();
+            });
+            
+            if(settings.producto_fotografia != null){
+                $container.find('img#producto_foto').attr("src", settings.producto_fotografia);
+                $container.find('p#eliminar_imagen').show();
+            }
+            
         }
 
         /*

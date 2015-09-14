@@ -65,7 +65,37 @@ class ProductoController extends AbstractActionController
                 
                 //Guard amos en nuestra base de datos
                 $entity->save();
-                    
+                
+                //Los archivos
+                if(isset($_FILES['producto_foto']) && !empty($_FILES['producto_foto']['name'])){
+                        
+                        $upload_folder ='/img/productos/';
+                        $tipo_archivo = $_FILES['producto_foto']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = $tipo_archivo[1];  
+                        $nombre_archivo = 'producto_foto_'.$entity->getIdproducto().'.'.$tipo_archivo;
+                        $tmp_archivo = $_FILES['producto_foto']['tmp_name'];
+                        $archivador = $upload_folder.$nombre_archivo;
+                        if(!move_uploaded_file($tmp_archivo, $_SERVER["DOCUMENT_ROOT"].$archivador)) {
+                            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => false, 'msg' => 'Ocurrio un error al subir el archivo. No pudo guardarse.', 'status' => 'error')));
+                        } 
+                        $entity->setProductoFotografia($archivador);
+                        $entity->save();
+                }
+                
+                //Guard amos en nuestra base de datos
+                
+                
+                
+                //Tambien lo guardamos en la clinica matriz
+                $producto_clinica = new \Productoclinica();
+                $producto_clinica->setIdproducto($entity->getIdproducto())
+                                 ->setIdclinica(1) //Corresponde a la clinica matriz
+                                 ->setProductoclinicaExistencia(0)
+                                 ->setProductoclinicaMinimo(0)
+                                 ->setProductoclinicaMaximo(0)
+                                 ->setProductoclinicaPrecio(0)
+                                 ->setProductoclinicaReorden(0)
+                                 ->save();
+                
                 //Agregamos un mensaje
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 
@@ -169,15 +199,37 @@ class ProductoController extends AbstractActionController
                         $entity->setProductoGeneracomision(NULL);
                     }
                     
+                    if(isset($_FILES['producto_foto']) && !empty($_FILES['producto_foto']['name'])){
+                            $upload_folder ='/img/productos/';
+                            $tipo_archivo = $_FILES['producto_foto']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = $tipo_archivo[1];  
+                            $nombre_archivo = 'producto_foto_'.$entity->getIdproducto().'.'.$tipo_archivo;
+                            $tmp_archivo = $_FILES['producto_foto']['tmp_name'];
+                            $archivador = $upload_folder.$nombre_archivo;
+                            if(!move_uploaded_file($tmp_archivo, $_SERVER["DOCUMENT_ROOT"].$archivador)) {
+                                return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => false, 'msg' => 'Ocurrio un error al subir el archivo. No pudo guardarse.', 'status' => 'error')));
+                            } 
+                            $entity->setProductoFotografia($archivador);
+                    }else{
+                        //Si fue eliminado
+                        if(isset($post_data['producto_foto_submit']) && isset($post_data['producto_foto_submit']) == 'delete'){
+                            if(!is_null($entity->getProductoFotografia())){
+                                unlink($_SERVER['DOCUMENT_ROOT'].$entity->getProductoFotografia());
+                            }
+                            $entity->setProductoFotografia(NULL);
+                        }
+                        
+                    }
+                    
                     //Guardamos en nuestra base de datos
                     $entity->save();
+                    
 
                     //Agregamos un mensaje
                     $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
 
                     //Redireccionamos a nuestro list
                     return $this->redirect()->toRoute('catalogos/producto');
-
+                    
                 }else{
                     
                 }  
