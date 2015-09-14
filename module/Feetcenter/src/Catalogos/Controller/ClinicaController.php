@@ -79,6 +79,45 @@ class ClinicaController extends AbstractActionController
                 //Guardamos en nuestra base de datos
                 $entity->save();
                 
+                //Asociamos nuestros productos,insumos y servicios a la nueva clinica
+                //Productos
+                $productos = \ProductoQuery::create()->find();
+                foreach ($productos as $producto){
+                    $producto_clinica = new \Productoclinica();
+                    $producto_clinica->setIdproducto($producto->getIdproducto())
+                                     ->setIdclinica($entity->getIdclinica())
+                                     ->setProductoclinicaExistencia(0)
+                                     ->setProductoclinicaMinimo(0)
+                                     ->setProductoclinicaMaximo(0)
+                                     ->setProductoclinicaReorden(0)
+                                     ->save();
+                }
+                
+                //Insumos
+                $insumos = \InsumoQuery::create()->find();
+                foreach ($insumos as $inusmo){
+                    $insumo_clinica = new \Insumoclinica();
+                    $insumo_clinica->setIdinsumo($inusmo->getIdinsumo())
+                                     ->setIdclinica($entity->getIdclinica())
+                                     ->setInsumoclinicaExistencia(0)
+                                     ->setInsumoclinicaMinimo(0)
+                                     ->setInsumoclinicaMaximo(0)
+                                     ->setInsumoclinicaReorden(0)
+                                     ->save();
+                }
+                
+                //Servicios
+                $servicios = \ServicioQuery::create()->find();
+                $servicio = new \Servicio();
+                foreach ($servicios as $servicio){
+                    $servicio_clinica = new \Servicioclinica();
+                    $servicio_clinica->setIdservicio($servicio->getIdservicio())
+                                     ->setIdclinica($entity->getIdclinica())
+                                     ->setServicioclinicaPrecio(0)
+                                     ->save();
+                }
+                
+                
                 //Deespues de guardar nuestra clinica guardamos nuestros encargados y empleados
                 if(isset($post_data['clinica_encargado']) && !empty($post_data['clinica_encargado'])){
                     //Por cada encargado, los vamos a registrar tanto en encargado como en empleado, pero son su rol correspondiente
@@ -93,10 +132,6 @@ class ClinicaController extends AbstractActionController
                         $encargado_empleado->setIdclinica($entity->getIdclinica());
                         $encargado_empleado->setIdempleado($encargado);
                         $encargado_empleado->save();
-                        //Modificamos los permisos del usuario en caso
-                        $empleado = \EmpleadoQuery::create()->findPk($encargado);
-                        $empleado->setIdrol(2); // 2 Corresponde al id del rol de encargado
-                        $empleado->save();
                     }
                 }
                 
@@ -109,10 +144,6 @@ class ClinicaController extends AbstractActionController
                         $empleado_clinica->setIdclinica($entity->getIdclinica());
                         $empleado_clinica->setIdempleado($empleado);
                         $empleado_clinica->save();
-                        //Modificamos los permisos del usuario en caso
-                        $empleado = \EmpleadoQuery::create()->findPk($empleado);
-                        $empleado->setIdrol(3); // 2 Corresponde al id del rol de pedicurista
-                        $empleado->save();
                     }
                 }
 

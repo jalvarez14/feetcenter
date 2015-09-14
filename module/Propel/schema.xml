@@ -63,6 +63,7 @@
     <column name="compra_status" phpName="CompraStatus" type="CHAR" sqlType="enum('pagada','no pagada')" required="true"/>
     <column name="compra_pagaren" phpName="CompraPagaren" type="DATE" required="true"/>
     <column name="compra_comprobante" phpName="CompraComprobante" type="LONGVARCHAR" required="false"/>
+    <column name="compra_folio" phpName="CompraFolio" type="VARCHAR" size="45" required="false"/>
     <foreign-key foreignTable="empleado" name="idempleado_compra" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idempleado" foreign="idempleado"/>
     </foreign-key>

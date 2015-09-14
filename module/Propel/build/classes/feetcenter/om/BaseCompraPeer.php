@@ -24,13 +24,13 @@ abstract class BaseCompraPeer
     const TM_CLASS = 'CompraTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the idcompra field */
     const IDCOMPRA = 'compra.idcompra';
@@ -59,6 +59,9 @@ abstract class BaseCompraPeer
     /** the column name for the compra_comprobante field */
     const COMPRA_COMPROBANTE = 'compra.compra_comprobante';
 
+    /** the column name for the compra_folio field */
+    const COMPRA_FOLIO = 'compra.compra_folio';
+
     /** The enumerated values for the compra_status field */
     const COMPRA_STATUS_PAGADA = 'pagada';
     const COMPRA_STATUS_NO_PAGADA = 'no pagada';
@@ -82,12 +85,12 @@ abstract class BaseCompraPeer
      * e.g. CompraPeer::$fieldNames[CompraPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idcompra', 'Idempleado', 'Idproveedor', 'CompraCreadaen', 'CompraFecha', 'CompraImporte', 'CompraStatus', 'CompraPagaren', 'CompraComprobante', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idcompra', 'idempleado', 'idproveedor', 'compraCreadaen', 'compraFecha', 'compraImporte', 'compraStatus', 'compraPagaren', 'compraComprobante', ),
-        BasePeer::TYPE_COLNAME => array (CompraPeer::IDCOMPRA, CompraPeer::IDEMPLEADO, CompraPeer::IDPROVEEDOR, CompraPeer::COMPRA_CREADAEN, CompraPeer::COMPRA_FECHA, CompraPeer::COMPRA_IMPORTE, CompraPeer::COMPRA_STATUS, CompraPeer::COMPRA_PAGAREN, CompraPeer::COMPRA_COMPROBANTE, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCOMPRA', 'IDEMPLEADO', 'IDPROVEEDOR', 'COMPRA_CREADAEN', 'COMPRA_FECHA', 'COMPRA_IMPORTE', 'COMPRA_STATUS', 'COMPRA_PAGAREN', 'COMPRA_COMPROBANTE', ),
-        BasePeer::TYPE_FIELDNAME => array ('idcompra', 'idempleado', 'idproveedor', 'compra_creadaen', 'compra_fecha', 'compra_importe', 'compra_status', 'compra_pagaren', 'compra_comprobante', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idcompra', 'Idempleado', 'Idproveedor', 'CompraCreadaen', 'CompraFecha', 'CompraImporte', 'CompraStatus', 'CompraPagaren', 'CompraComprobante', 'CompraFolio', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcompra', 'idempleado', 'idproveedor', 'compraCreadaen', 'compraFecha', 'compraImporte', 'compraStatus', 'compraPagaren', 'compraComprobante', 'compraFolio', ),
+        BasePeer::TYPE_COLNAME => array (CompraPeer::IDCOMPRA, CompraPeer::IDEMPLEADO, CompraPeer::IDPROVEEDOR, CompraPeer::COMPRA_CREADAEN, CompraPeer::COMPRA_FECHA, CompraPeer::COMPRA_IMPORTE, CompraPeer::COMPRA_STATUS, CompraPeer::COMPRA_PAGAREN, CompraPeer::COMPRA_COMPROBANTE, CompraPeer::COMPRA_FOLIO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCOMPRA', 'IDEMPLEADO', 'IDPROVEEDOR', 'COMPRA_CREADAEN', 'COMPRA_FECHA', 'COMPRA_IMPORTE', 'COMPRA_STATUS', 'COMPRA_PAGAREN', 'COMPRA_COMPROBANTE', 'COMPRA_FOLIO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idcompra', 'idempleado', 'idproveedor', 'compra_creadaen', 'compra_fecha', 'compra_importe', 'compra_status', 'compra_pagaren', 'compra_comprobante', 'compra_folio', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -97,12 +100,12 @@ abstract class BaseCompraPeer
      * e.g. CompraPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idcompra' => 0, 'Idempleado' => 1, 'Idproveedor' => 2, 'CompraCreadaen' => 3, 'CompraFecha' => 4, 'CompraImporte' => 5, 'CompraStatus' => 6, 'CompraPagaren' => 7, 'CompraComprobante' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idcompra' => 0, 'idempleado' => 1, 'idproveedor' => 2, 'compraCreadaen' => 3, 'compraFecha' => 4, 'compraImporte' => 5, 'compraStatus' => 6, 'compraPagaren' => 7, 'compraComprobante' => 8, ),
-        BasePeer::TYPE_COLNAME => array (CompraPeer::IDCOMPRA => 0, CompraPeer::IDEMPLEADO => 1, CompraPeer::IDPROVEEDOR => 2, CompraPeer::COMPRA_CREADAEN => 3, CompraPeer::COMPRA_FECHA => 4, CompraPeer::COMPRA_IMPORTE => 5, CompraPeer::COMPRA_STATUS => 6, CompraPeer::COMPRA_PAGAREN => 7, CompraPeer::COMPRA_COMPROBANTE => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCOMPRA' => 0, 'IDEMPLEADO' => 1, 'IDPROVEEDOR' => 2, 'COMPRA_CREADAEN' => 3, 'COMPRA_FECHA' => 4, 'COMPRA_IMPORTE' => 5, 'COMPRA_STATUS' => 6, 'COMPRA_PAGAREN' => 7, 'COMPRA_COMPROBANTE' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('idcompra' => 0, 'idempleado' => 1, 'idproveedor' => 2, 'compra_creadaen' => 3, 'compra_fecha' => 4, 'compra_importe' => 5, 'compra_status' => 6, 'compra_pagaren' => 7, 'compra_comprobante' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idcompra' => 0, 'Idempleado' => 1, 'Idproveedor' => 2, 'CompraCreadaen' => 3, 'CompraFecha' => 4, 'CompraImporte' => 5, 'CompraStatus' => 6, 'CompraPagaren' => 7, 'CompraComprobante' => 8, 'CompraFolio' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcompra' => 0, 'idempleado' => 1, 'idproveedor' => 2, 'compraCreadaen' => 3, 'compraFecha' => 4, 'compraImporte' => 5, 'compraStatus' => 6, 'compraPagaren' => 7, 'compraComprobante' => 8, 'compraFolio' => 9, ),
+        BasePeer::TYPE_COLNAME => array (CompraPeer::IDCOMPRA => 0, CompraPeer::IDEMPLEADO => 1, CompraPeer::IDPROVEEDOR => 2, CompraPeer::COMPRA_CREADAEN => 3, CompraPeer::COMPRA_FECHA => 4, CompraPeer::COMPRA_IMPORTE => 5, CompraPeer::COMPRA_STATUS => 6, CompraPeer::COMPRA_PAGAREN => 7, CompraPeer::COMPRA_COMPROBANTE => 8, CompraPeer::COMPRA_FOLIO => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCOMPRA' => 0, 'IDEMPLEADO' => 1, 'IDPROVEEDOR' => 2, 'COMPRA_CREADAEN' => 3, 'COMPRA_FECHA' => 4, 'COMPRA_IMPORTE' => 5, 'COMPRA_STATUS' => 6, 'COMPRA_PAGAREN' => 7, 'COMPRA_COMPROBANTE' => 8, 'COMPRA_FOLIO' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('idcompra' => 0, 'idempleado' => 1, 'idproveedor' => 2, 'compra_creadaen' => 3, 'compra_fecha' => 4, 'compra_importe' => 5, 'compra_status' => 6, 'compra_pagaren' => 7, 'compra_comprobante' => 8, 'compra_folio' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /** The enumerated values for this table */
@@ -238,6 +241,7 @@ abstract class BaseCompraPeer
             $criteria->addSelectColumn(CompraPeer::COMPRA_STATUS);
             $criteria->addSelectColumn(CompraPeer::COMPRA_PAGAREN);
             $criteria->addSelectColumn(CompraPeer::COMPRA_COMPROBANTE);
+            $criteria->addSelectColumn(CompraPeer::COMPRA_FOLIO);
         } else {
             $criteria->addSelectColumn($alias . '.idcompra');
             $criteria->addSelectColumn($alias . '.idempleado');
@@ -248,6 +252,7 @@ abstract class BaseCompraPeer
             $criteria->addSelectColumn($alias . '.compra_status');
             $criteria->addSelectColumn($alias . '.compra_pagaren');
             $criteria->addSelectColumn($alias . '.compra_comprobante');
+            $criteria->addSelectColumn($alias . '.compra_folio');
         }
     }
 

@@ -92,7 +92,6 @@ class ProductoController extends AbstractActionController
                                  ->setProductoclinicaExistencia(0)
                                  ->setProductoclinicaMinimo(0)
                                  ->setProductoclinicaMaximo(0)
-                                 ->setProductoclinicaPrecio(0)
                                  ->setProductoclinicaReorden(0)
                                  ->save();
                 

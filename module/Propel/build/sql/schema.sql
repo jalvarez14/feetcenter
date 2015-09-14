@@ -96,6 +96,7 @@ CREATE TABLE `compra`
     `compra_status` enum('pagada','no pagada') NOT NULL,
     `compra_pagaren` DATE NOT NULL,
     `compra_comprobante` TEXT,
+    `compra_folio` VARCHAR(45),
     PRIMARY KEY (`idcompra`),
     INDEX `idoproveedor` (`idproveedor`),
     INDEX `idempleado` (`idempleado`),

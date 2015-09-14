@@ -82,6 +82,15 @@ class ServicioController extends AbstractActionController
                     }
                 }
                 
+                //Lo registramos en la sucursal matriz
+                $servicio_clinica = new \Servicioclinica();
+                $servicio_clinica->setIdservicio($entity->getIdservicio())
+                                 ->setIdclinica(1) //Corresponde a la clinica matriz
+                                 ->setServicioclinicaPrecio(0)
+                                 ->save();
+                
+                
+                
                 //Agregamos un mensaje
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 
@@ -89,7 +98,7 @@ class ServicioController extends AbstractActionController
                 return $this->redirect()->toRoute('catalogos/servicio');
 
             }
-             echo '<pre>';var_dump($form->getMessages());echo'<pre>';exit();
+            
         }
         
         return new ViewModel(array(

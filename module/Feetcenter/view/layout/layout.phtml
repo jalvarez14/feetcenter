@@ -14,7 +14,7 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('css/style.css'))
-                        //->prependStylesheet($this->basePath('css/plugin/lolliclock.css'))
+                        ->prependStylesheet($this->basePath('css/plugin/datatable/jquery.dataTables.css'))
                         ->prependStylesheet($this->basePath('css/plugin/default.date.css'))
                         ->prependStylesheet($this->basePath('css/plugin/default.css'))
                         ->prependStylesheet($this->basePath('css/kube.css')) ?>
@@ -22,7 +22,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
-            
+            ->prependFile($this->basePath('js/plugin/datatable/jquery.dataTables.js'))
             ->prependFile($this->basePath('js/plugin/picker.date.js'))
             ->prependFile($this->basePath('js/plugin/picker.js'))
             ->prependFile($this->basePath('js/plugin/lolliclock.js'))
