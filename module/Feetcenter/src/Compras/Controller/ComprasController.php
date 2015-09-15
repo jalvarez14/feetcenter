@@ -72,6 +72,7 @@ class ComprasController extends AbstractActionController
             $entity->setCompraFecha($post_data['compra_fecha_submit']);
             $entity->setCompraPagaren($post_data['compra_pagaren_submit']);
             
+            
             $entity->save();
             
             //El comprobante
@@ -88,7 +89,7 @@ class ComprasController extends AbstractActionController
                 $entity->setCompraComprobante($archivador);
                 $entity->save();
             }
-            
+           
             //Ahora los detalles
             
             //Los productos
@@ -117,18 +118,22 @@ class ComprasController extends AbstractActionController
 
                 }
             }
+            
             //Los insumos
             if(isset($post_data['insumo'])){
                 foreach($post_data['insumo'] as $insumo){
+                     
                     $insumoclinica_entity = \InsumoclinicaQuery::create()->filterByIdclinica(1)->filterByIdinsumo($insumo['id'])->findOne();
                     $insumo_entity = \InsumoQuery::create()->findPk($insumo['id']);
+                    
                     //la compra detalle
                     $compra_detalle = new \Compradetalle();
                     $compra_detalle->setIdcompra($entity->getIdcompra());
-                    $compra_detalle->setIdinsumoclinica($insumoclinica_entity->getIdInsumo());
+                    $compra_detalle->setIdinsumoclinica($insumoclinica_entity->getIdinsumoclinica());
                     $compra_detalle->setCompradetalleCantidad($insumo['cantidad']);
                     $compra_detalle->setCompradetalleCostounitario($insumo['costo']);
                     $compra_detalle->setCompradetalleSubtotal($insumo['subtotal']);
+                     
                     $compra_detalle->save();
                     
                     //Modificamos el costo del producto
@@ -313,7 +318,7 @@ class ComprasController extends AbstractActionController
                     //la compra detalle
                     $compra_detalle = new \Compradetalle();
                     $compra_detalle->setIdcompra($entity->getIdcompra());
-                    $compra_detalle->setIdinsumoclinica($insumoclinica_entity->getIdInsumo());
+                    $compra_detalle->setIdinsumoclinica($insumoclinica_entity->getIdinsumoclinica());
                     $compra_detalle->setCompradetalleCantidad($insumo['cantidad']);
                     $compra_detalle->setCompradetalleCostounitario($insumo['costo']);
                     $compra_detalle->setCompradetalleSubtotal($insumo['subtotal']);
