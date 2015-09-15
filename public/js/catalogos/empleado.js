@@ -37,7 +37,8 @@
         */ 
        
        var defaults = {
-           
+            access_row_flag:false,
+            empleado: new Object(),
        };
        
        /* 
@@ -46,7 +47,6 @@
         var $container = $(container);  
         
         var settings;
-        var access_row_flag = false;
         /*
         * Private methods
         */
@@ -54,8 +54,8 @@
 
        var addAcceso = function(){
            
-           if(!access_row_flag){
-            access_row_flag = true;
+           if(!settings.access_row_flag){
+            settings.access_row_flag = true;
             
             var new_row = $container.find('#acceso_row').clone();
             new_row.removeAttr('id');
@@ -82,10 +82,10 @@
             
             //El evento para eliminar la row del acceso
             new_row.find('a').on('click',function(){
-                access_row_flag = false;
+                settings.access_row_flag = false;
                 new_row.remove();
                 $container.find('#acceso_row a').removeClass('btn-disabled');
-            $container.find('#acceso_row a').prop('disabled',false);
+                $container.find('#acceso_row a').prop('disabled',false);
             });
             
            }
@@ -98,7 +98,7 @@
         plugin.init = function(){
             
             settings = plugin.settings = $.extend({}, defaults, options);
-            
+
             //Inicializamos los campos de fecha
             $container.find('input[name=empleado_fechanacimiento]').pickadate({
                 monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
@@ -157,16 +157,16 @@
             $container.find('input[name=empleado_sueldo]').numeric();
             
             
-            if(settings.empleado_foto != null){
-                $container.find('img#empleado_foto').attr("src", settings.empleado_foto);
+            if(settings.empleado.empleado_foto != null){
+                $container.find('img#empleado_foto').attr("src", settings.empleado.empleado_foto);
                 $container.find('p#eliminar_imagen').show();
             }
             $container.find('input[name=empleado_comprobantedomiclio]').on('change',function(){
                 $container.find('input[name=empleado_comprobantedomiclio_submit]').val('');
             });
-            if(settings.empleado_comprobantedomiclio != null){
+            if(settings.empleado.empleado_comprobantedomiclio != null){
                 $container.find('input[name=empleado_comprobantedomiclio]').hide();
-                var comprobante_domicilio = $('<p><a style="text-decoration: none" href="'+settings.empleado_comprobantedomiclio+'"><img src="/img/icons/img_icon.png"> Visualizar Comprobante de domicilio</a><a id="eliminar_comprobante_domicilio" style="text-decoration: none; margin-left:24px" href="javascript:void(0)">Eliminar comprobante</a></p>');
+                var comprobante_domicilio = $('<p><a style="text-decoration: none" href="'+settings.empleado.empleado_comprobantedomiclio+'"><img src="/img/icons/img_icon.png"> Visualizar Comprobante de domicilio</a><a id="eliminar_comprobante_domicilio" style="text-decoration: none; margin-left:24px" href="javascript:void(0)">Eliminar comprobante</a></p>');
                 $container.find('input[name=empleado_comprobantedomiclio]').after(comprobante_domicilio);
                 //El evento eliminar comprobante
                 $container.find('a#eliminar_comprobante_domicilio').on('click',function(){
@@ -178,9 +178,9 @@
             $container.find('input[name=empleado_comprobanteidentificacion_submit]').on('change',function(){
                 $container.find('input[name=empleado_comprobanteidentificacion_submit]').val('');
             });
-            if(settings.empleado_comprobanteidentificacion != null){
+            if(settings.empleado.empleado_comprobanteidentificacion != null){
                 $container.find('input[name=empleado_comprobanteidentificacion]').hide();
-                var comprobante_identificacion = $('<p><a style="text-decoration: none" href="'+settings.empleado_comprobanteidentificacion+'"><img src="/img/icons/img_icon.png"> Visualizar Comprobante de identificación</a><a id="eliminar_comprobante_identificacion" style="text-decoration: none; margin-left:24px" href="javascript:void(0)">Eliminar comprobante</a></p>');
+                var comprobante_identificacion = $('<p><a style="text-decoration: none" href="'+settings.empleado.empleado_comprobanteidentificacion+'"><img src="/img/icons/img_icon.png"> Visualizar Comprobante de identificación</a><a id="eliminar_comprobante_identificacion" style="text-decoration: none; margin-left:24px" href="javascript:void(0)">Eliminar comprobante</a></p>');
                 $container.find('input[name=empleado_comprobanteidentificacion]').after(comprobante_identificacion);
                 //El evento eliminar comprobante
                 $container.find('a#eliminar_comprobante_identificacion').on('click',function(){
@@ -214,6 +214,13 @@
             
             //Evento datos de acceso
             $container.find('a[data-action=addAcceso]').on('click',addAcceso);
+            
+            $container.find('#removeRowAccess').one('click',function(){
+                settings.access_row_flag = false;
+                $container.find('#removeRowAccess').closest('div.units-row').remove();
+                $container.find('#acceso_row a').removeClass('btn-disabled');
+                $container.find('#removeRowAccess').prop('disabled',false);
+            });
         
         }
 

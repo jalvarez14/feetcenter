@@ -1,3 +1,4 @@
+
 <div id="clinica_container">
     <h1>Nueva clínica</h1>
     <?php 
@@ -45,8 +46,8 @@
                         Encargado (a)
                         <select name="clinica_encargado" class="width-100">
                             <option value="">Selecione un empleado...</option>
-                            <?php foreach ($empleados as $empleado) : ?>
-                                <option value="<?php echo $empleado['idempleado']?>"><?php echo $empleado['empleado_nombre'] ?></option>
+                            <?php foreach ($encargados as $encargado) : ?>
+                                <option value="<?php echo $encargado['idempleado']?>"><?php echo $encargado['empleado_nombre'] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

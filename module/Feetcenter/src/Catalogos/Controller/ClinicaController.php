@@ -34,25 +34,35 @@ class ClinicaController extends AbstractActionController
         
         $form = new \Catalogos\Form\ClinicaForm();
         
-        //Los empleados
-        
-        //Obtenemos todos los empleados que si tienen asignado una clinica tanto para encargado como para empleado
-        $empleado_clinica = \ClinicaempleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
-        
-        $empladosconclinica = array();
-        foreach ($empleado_clinica as $value){
-            array_push($empladosconclinica, $value['idempleado']);
+        //Los empleados(Encargados)
+        $encargadosCollection = \EmpleadoaccesoQuery::create()->filterByIdrol(2)->joinEmpleado()->withColumn('empleado_nombre')->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+        $encargados_conclinica = \EncargadoclinicaQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+        $encargados_conclinica_array = array();
+        foreach ($encargados_conclinica as $value){
+            array_push($encargados_conclinica_array, $value['idempleado']);
         }
-        
-        $empleado_collection = \EmpleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
-
-        $empleados = array();
-        foreach ($empleado_collection as $empleado_entity){
-             if(!in_array($empleado_entity['idempleado'], $empladosconclinica)){
-                 array_push($empleados, $empleado_entity);
+        $encargados = array();
+        foreach ($encargadosCollection as $encargado){
+             if(!in_array($encargado['idempleado'], $encargados_conclinica_array)){
+                 array_push($encargados, $encargado);
              }  
         }
         
+        //Los empleados(Pedicuristas)
+        $empleadosCollection = \EmpleadoaccesoQuery::create()->filterByIdrol(3)->joinEmpleado()->withColumn('empleado_nombre')->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+        $empleados_conclinica = \ClinicaempleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+        $empleados_conclinica_array = array();
+        foreach ($empleados_conclinica as $value){
+            array_push($empleados_conclinica_array, $value['idempleado']);
+        }
+       
+        $empleados = array();
+        foreach ($empleadosCollection as $empleado){
+             if(!in_array($encargado['idempleado'], $empleados_conclinica_array)){
+                 array_push($empleados, $empleado);
+             }  
+        }
+
         if ($request->isPost()){
             
             $post_data = $request->getPost();
@@ -157,6 +167,7 @@ class ClinicaController extends AbstractActionController
         }
         
         return new ViewModel(array(
+            'encargados' => $encargados,
             'form' => $form,
             'empleados' => $empleados,
         ));

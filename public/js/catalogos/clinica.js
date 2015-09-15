@@ -95,7 +95,7 @@
                     $container.find('select[name=clinica_empleado] option:selected').hide();
                     $container.find('select[name=clinica_empleado]').val('');
                     //Tambien ocultamos del select de empleados, por que ya esta sobre entendido que al ser administrador tambien es empleado
-                    $container.find('select[name=clinica_encargado] option[value="'+idempleado+'"]').hide();
+                    //$container.find('select[name=clinica_encargado] option[value="'+idempleado+'"]').hide();
                     
                     //$('#table_empleado tbody').append(tr);
                     
@@ -129,7 +129,7 @@
                     $container.find('select[name=clinica_encargado] option:selected').hide();
                     $container.find('select[name=clinica_encargado]').val('');
                     //Tambien ocultamos del select de empleados, por que ya esta sobre entendido que al ser administrador tambien es empleado
-                    $container.find('select[name=clinica_empleado] option[value="'+idempleado+'"]').hide();
+                    //$container.find('select[name=clinica_empleado] option[value="'+idempleado+'"]').hide();
                     
                     //$('#table_empleado tbody').append(tr);
                     
