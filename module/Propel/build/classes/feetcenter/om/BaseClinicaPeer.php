@@ -399,6 +399,9 @@ abstract class BaseClinicaPeer
         // Invalidate objects in ProductoclinicaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductoclinicaPeer::clearInstancePool();
+        // Invalidate objects in ServicioclinicaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ServicioclinicaPeer::clearInstancePool();
         // Invalidate objects in TransferenciaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransferenciaPeer::clearInstancePool();
@@ -789,6 +792,12 @@ abstract class BaseClinicaPeer
 
             $criteria->add(ProductoclinicaPeer::IDCLINICA, $obj->getIdclinica());
             $affectedRows += ProductoclinicaPeer::doDelete($criteria, $con);
+
+            // delete related Servicioclinica objects
+            $criteria = new Criteria(ServicioclinicaPeer::DATABASE_NAME);
+
+            $criteria->add(ServicioclinicaPeer::IDCLINICA, $obj->getIdclinica());
+            $affectedRows += ServicioclinicaPeer::doDelete($criteria, $con);
 
             // delete related Transferencia objects
             $criteria = new Criteria(TransferenciaPeer::DATABASE_NAME);

@@ -559,6 +559,18 @@
     <column name="idservicio" phpName="Idservicio" type="INTEGER" required="true"/>
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
     <column name="servicioclinica_precio" phpName="ServicioclinicaPrecio" type="DECIMAL" size="10" scale="2" required="true"/>
+    <foreign-key foreignTable="clinica" name="idclinica_servicioclinica" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <foreign-key foreignTable="servicio" name="idservicio_servicioclinica" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idservicio" foreign="idservicio"/>
+    </foreign-key>
+    <index name="idservicio">
+      <index-column name="idservicio"/>
+    </index>
+    <index name="idclinica">
+      <index-column name="idclinica"/>
+    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

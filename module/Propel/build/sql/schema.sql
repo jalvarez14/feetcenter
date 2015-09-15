@@ -748,7 +748,19 @@ CREATE TABLE `servicioclinica`
     `idservicio` INTEGER NOT NULL,
     `idclinica` INTEGER NOT NULL,
     `servicioclinica_precio` DECIMAL(10,2) NOT NULL,
-    PRIMARY KEY (`idservicioclinica`)
+    PRIMARY KEY (`idservicioclinica`),
+    INDEX `idservicio` (`idservicio`),
+    INDEX `idclinica` (`idclinica`),
+    CONSTRAINT `idclinica_servicioclinica`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idservicio_servicioclinica`
+        FOREIGN KEY (`idservicio`)
+        REFERENCES `servicio` (`idservicio`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
