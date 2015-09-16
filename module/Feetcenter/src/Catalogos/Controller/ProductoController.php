@@ -85,16 +85,19 @@ class ProductoController extends AbstractActionController
                 
                 
                 
-                //Tambien lo guardamos en la clinica matriz
-                $producto_clinica = new \Productoclinica();
-                $producto_clinica->setIdproducto($entity->getIdproducto())
-                                 ->setIdclinica(1) //Corresponde a la clinica matriz
+                //Tambien lo guardamos todas las clinicas
+                $clinicas = \ClinicaQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+                foreach ($clinicas as $clinica){
+                    $producto_clinica = new \Productoclinica();
+                    $producto_clinica->setIdproducto($entity->getIdproducto())
+                                 ->setIdclinica($clinica['idclinica']) //Corresponde a la clinica matriz
                                  ->setProductoclinicaExistencia(0)
                                  ->setProductoclinicaMinimo(0)
                                  ->setProductoclinicaMaximo(0)
                                  ->setProductoclinicaReorden(0)
                                  ->save();
-                
+                }
+
                 //Agregamos un mensaje
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 

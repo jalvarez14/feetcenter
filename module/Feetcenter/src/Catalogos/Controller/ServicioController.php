@@ -83,11 +83,14 @@ class ServicioController extends AbstractActionController
                 }
                 
                 //Lo registramos en la sucursal matriz
-                $servicio_clinica = new \Servicioclinica();
-                $servicio_clinica->setIdservicio($entity->getIdservicio())
-                                 ->setIdclinica(1) //Corresponde a la clinica matriz
-                                 ->setServicioclinicaPrecio(0)
-                                 ->save();
+                $clinicas = \ClinicaQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+                 foreach ($clinicas as $clinica){
+                    $servicio_clinica = new \Servicioclinica();
+                    $servicio_clinica->setIdservicio($entity->getIdservicio())
+                                     ->setIdclinica($clinica['idclinica']) //Corresponde a la clinica matriz
+                                     ->setServicioclinicaPrecio(0)
+                                     ->save();
+                 }
                 
                 
                 

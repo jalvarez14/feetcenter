@@ -62,6 +62,8 @@ class ClinicaController extends AbstractActionController
                  array_push($empleados, $empleado);
              }  
         }
+        
+ 
 
         if ($request->isPost()){
             
@@ -242,7 +244,7 @@ class ClinicaController extends AbstractActionController
             foreach ($empleado_clinica as $value){
                 array_push($empladosconclinica, $value['idempleado']);
             }
-
+            
             $empleado_collection = \EmpleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
             $empleados = array();
             foreach ($empleado_collection as $empleado_entity){

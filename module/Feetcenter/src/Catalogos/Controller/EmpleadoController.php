@@ -40,7 +40,7 @@ class EmpleadoController extends AbstractActionController
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-            
+         
             foreach ($post_data as $k => $v){
                 if(empty($v)){
                     unset($post_data[$k]);
@@ -114,6 +114,7 @@ class EmpleadoController extends AbstractActionController
                 
                 //Guardamos los datos de acceso
                 foreach($post_data['accesos'] as $acceso){
+                      
                     if(!empty($acceso['username']) && !empty($acceso['password'])){
                         $empleado_acceso = new \Empleadoacceso();
                         $empleado_acceso->setIdempleado($entity->getIdempleado())

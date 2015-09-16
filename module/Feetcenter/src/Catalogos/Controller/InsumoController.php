@@ -60,14 +60,18 @@ class InsumoController extends AbstractActionController
                 $entity->save();
                 
                 //Tambien lo guardamos en la clinica matriz
-                $insumo_clinica = new \Insumoclinica();
-                $insumo_clinica->setIdinsumo($entity->getIdinsumo())
-                                 ->setIdclinica(1) //Corresponde a la clinica matriz
+                 $clinicas = \ClinicaQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+                 foreach ($clinicas as $clinica){
+                     $insumo_clinica = new \Insumoclinica();
+                    $insumo_clinica->setIdinsumo($entity->getIdinsumo())
+                                 ->setIdclinica($clinica['idclinica']) //Corresponde a la clinica matriz
                                  ->setInsumoclinicaExistencia(0)
                                  ->setInsumoclinicaMinimo(0)
                                  ->setInsumoclinicaMaximo(0)
                                  ->setInsumoclinicaReorden(0)
                                  ->save();
+                 }
+                
                 
                 //Agregamos un mensaje
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
