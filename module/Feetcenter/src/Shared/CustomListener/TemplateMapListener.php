@@ -37,8 +37,9 @@ class TemplateMapListener implements ListenerAggregateInterface
     {
 
     	$controller_params = $e->getRouteMatch()->getParams();
+        
         $controller_of_route = $controller_params['controller'];  
-    	
+        
         $section = new classReflection($controller_of_route.'Controller');
         
         $section = $section ->getFileName();      

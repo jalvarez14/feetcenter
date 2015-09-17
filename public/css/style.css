@@ -138,3 +138,6 @@ table tr a {
     padding: 20px;
 }
 
+table.dataTable tbody tr.warning{
+    background: #fff4cc;
+}

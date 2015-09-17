@@ -13,6 +13,7 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('css/style.css'))
+                         ->prependStylesheet($this->basePath('css/plugin/multiple.css'))
                         ->prependStylesheet($this->basePath('css/plugin/datatable/jquery.dataTables.css'))
                         ->prependStylesheet($this->basePath('css/plugin/default.date.css'))
                         ->prependStylesheet($this->basePath('css/plugin/default.css'))
@@ -21,6 +22,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+            ->prependFile($this->basePath('/js/plugin/multiple.js'))
             ->prependFile($this->basePath('js/plugin/datatable/jquery.dataTables.js'))
             ->prependFile($this->basePath('js/plugin/picker.date.js'))
             ->prependFile($this->basePath('js/plugin/picker.js'))
@@ -76,8 +78,8 @@
             <li><a href="#">Nueva transferencia</a></li>
             <li><a href="#">Definir existencias</a></li>
             <li><a href="#">Definir precio y reorden</a></li>
-            <li><a href="#">Productos</a></li>
-            <li><a href="#">Insumos</a></li>
+            <li><a href="/inventario/producto">Productos</a></li>
+            <li><a href="/inventario/insumo">Insumos</a></li>
         </ul>
         <ul id="dropdown-egresos" class="dropdown">
             <li><a href="#">Egresos</a></li>

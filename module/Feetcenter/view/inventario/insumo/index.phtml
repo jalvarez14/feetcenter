@@ -1,0 +1,37 @@
+<div id="inventario_insumo_container">
+    <h1>Existencia de insumos</h1>
+    <div class="units-row">
+        <div class="unit-30">
+            Clinica
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <option value="<?php echo $clinica['idclinica']?>"><?php echo $clinica['clinica_nombre'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Clinica</th>
+                <th>Insumo</th>
+                <th>Existencias</th>
+                <th>Reorden</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($insumos as $insumo) : ?>
+                <tr>
+                    <td><?php echo $insumo['clinica_nombre']?></td>
+                    <td><?php echo $insumo['insumo_nombre']?></td>
+                    <td><?php echo (int)$insumo['insumoclinica_existencia']?></td>
+                    <td><?php echo (int)$insumo['insumoclinica_reorden']?></td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+</div>
+<script src="/js/inventario/inventarioInsumo.js"></script>
+<script>
+    $('#inventario_insumo_container').inventarioInsumo();
+</script>

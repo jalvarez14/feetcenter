@@ -49,6 +49,7 @@ class Module
                     'Compras' => __DIR__ . '/src/'  .'Compras',
                     'Login' => __DIR__ . '/src/'  .'Login',
                     'Shared' => __DIR__ . '/src/'  .'Shared',
+                    'Inventario' => __DIR__ . '/src/'  .'Inventario',
                 ),
             ),
         );

@@ -140,6 +140,38 @@ return array(
                     ),
                 ),
             ),
+            /*
+             * MODULO INVENTARIOS
+             */
+            'inventario' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/inventario',
+                ),
+                'may_terminate' => false,
+                'child_routes' => array(
+                    'insumo' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/insumo[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Inventario\Controller\Insumo',
+                                'action'        => 'index',
+                            ),
+                        ),
+                    ),
+                    'producto' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/producto[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Inventario\Controller\Producto',
+                                'action'        => 'index',
+                            ),
+                        ),
+                    ),
+                )
+            ),
             
         ),
     ),
@@ -178,6 +210,9 @@ return array(
             'Compras\Controller\Compras' => 'Compras\Controller\ComprasController',
             //Login
             'Login\Controller\Login' => 'Login\Controller\LoginController',
+            //Inventario
+            ' Inventario\Controller\Insumo' => 'Inventario\Controller\InsumoController',
+            'Inventario\Controller\Producto' => 'Inventario\Controller\ProductoController',
         ),
     ),
     'view_manager' => array(
