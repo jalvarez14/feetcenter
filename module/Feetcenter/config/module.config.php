@@ -127,6 +127,20 @@ return array(
                     ),
                 ),
             ),
+            /*
+            *MODULO Login
+            */
+            'login' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/login[/:action][/:id]',
+                    'defaults' => array(
+                        'controller'    => 'Login\Controller\Login',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            
         ),
     ),
     'service_manager' => array(
@@ -162,6 +176,8 @@ return array(
             'Catalogos\Controller\Empleado' => 'Catalogos\Controller\EmpleadoController',
             //Compras
             'Compras\Controller\Compras' => 'Compras\Controller\ComprasController',
+            //Login
+            'Login\Controller\Login' => 'Login\Controller\LoginController',
         ),
     ),
     'view_manager' => array(

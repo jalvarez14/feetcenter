@@ -43,7 +43,7 @@ class ComprasController extends AbstractActionController
         if ($request->isPost()){
             
             //Testing (Aqui llamaremos a nuestra sesion)
-            $idempelado = 1;
+            $idempelado = \Shared\Session\AouthSession::getIdempleado();
             
             $post_data = $request->getPost();
              

@@ -1,0 +1,34 @@
+<?php echo $this->doctype(); ?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('FeetCenter '. $this->translate('Administrador'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                        ->prependStylesheet($this->basePath('css/style.css'))
+                        ->prependStylesheet($this->basePath('css/kube.css')) ?>
+    
+        <!-- Scripts -->
+        <?php echo $this->headScript() 
+            ->prependFile($this->basePath('js/form.js'))
+            ->prependFile($this->basePath('js/kube.min.js'))
+            ->prependFile($this->basePath('js/jquery.min.js'));
+        ?>
+
+    </head>
+    <body>
+        <div class="units-row">
+            <div class="unit-centered unit-90">
+                <?php echo $this->content; ?>
+            </div>
+        </div>
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>

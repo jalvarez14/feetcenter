@@ -1,5 +1,4 @@
 <?php echo $this->doctype(); ?>
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -53,13 +52,13 @@
             </nav>
             <nav class="navbar navbar-right">
                 <ul>
-                    <li style="float: right" id="profile_container" ><img width="35" height="35" src="/img/profile/1_daniel castanedo_profile.jpg" class="circle"><a href="#" data-tools="dropdown" data-target="#dropdown-profile" style="display: inline; margin-left: 12px; margin-right: 12px;">Daniel Castanedo</a></li>
+                    <li style="float: right" id="profile_container" ><img width="35" height="35" src="<?php echo Shared\Session\AouthSession::getEmpleadoFoto()?>" class="circle"><a href="#" data-tools="dropdown" data-target="#dropdown-profile" style="display: inline; margin-left: 12px; margin-right: 12px;"><?php echo Shared\Session\AouthSession::getEmpleadoNombre()?></a></li>
                 </ul>
             </nav>
         </header>
         <!--Dropdown-->
         <ul id="dropdown-profile" class="dropdown">
-            <li><a href="#">Cerrar sesión</a></li>
+            <li><a href="/login/out">Cerrar sesión</a></li>
         </ul>
         <ul id="dropdown-pacientes" class="dropdown">
             <li><a href="#">Nuevo paciente</a></li>

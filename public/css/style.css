@@ -127,3 +127,14 @@ table tr a {
     height: 31px;
 }
 
+/*LOGIN*/
+#login_container{
+    margin-top: 30%;
+    border: solid 3px #BDBDBD;
+    border-radius : 25px;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    -khtml-border-radius: 25px;
+    padding: 20px;
+}
+

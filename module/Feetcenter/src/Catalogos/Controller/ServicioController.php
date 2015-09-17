@@ -39,7 +39,7 @@ class ServicioController extends AbstractActionController
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-            
+
             foreach ($post_data as $k => $v){
                 if(empty($v) && $v!="0" && $v!="1"){
                     unset($post_data[$k]);

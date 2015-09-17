@@ -58,7 +58,7 @@ class ClinicaController extends AbstractActionController
        
         $empleados = array();
         foreach ($empleadosCollection as $empleado){
-             if(!in_array($encargado['idempleado'], $empleados_conclinica_array)){
+             if(!in_array($empleado['idempleado'], $empleados_conclinica_array)){
                  array_push($empleados, $empleado);
              }  
         }
@@ -68,7 +68,6 @@ class ClinicaController extends AbstractActionController
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-            
             
             foreach ($post_data as $k => $v){
                 if(empty($v)){
@@ -133,7 +132,20 @@ class ClinicaController extends AbstractActionController
                 //Deespues de guardar nuestra clinica guardamos nuestros encargados y empleados
                 if(isset($post_data['clinica_encargado']) && !empty($post_data['clinica_encargado'])){
                     //Por cada encargado, los vamos a registrar tanto en encargado como en empleado, pero son su rol correspondiente
-                    foreach ($post_data['clinica_encargado'] as $encargado){
+                    if(is_array($post_data['clinica_encargado'])){
+                        foreach ($post_data['clinica_encargado'] as $encargado){
+                            //Lo agregamos como encargado
+                            $encargado_clinica = new \Encargadoclinica();
+                            $encargado_clinica->setIdclinica($entity->getIdclinica());
+                            $encargado_clinica->setIdempleado($encargado);
+                            $encargado_clinica->save();
+                            //Lo agregamos como empleado
+                            $encargado_empleado = new \Clinicaempleado();
+                            $encargado_empleado->setIdclinica($entity->getIdclinica());
+                            $encargado_empleado->setIdempleado($encargado);
+                            $encargado_empleado->save();
+                        }
+                    }else{
                         //Lo agregamos como encargado
                         $encargado_clinica = new \Encargadoclinica();
                         $encargado_clinica->setIdclinica($entity->getIdclinica());
@@ -149,8 +161,15 @@ class ClinicaController extends AbstractActionController
                 
                 if(isset($post_data['clinica_empleado']) && !empty($post_data['clinica_empleado'])){
                     //Por cada encargado, los vamos a registrar tanto en encargado como en empleado, pero son su rol correspondiente
-                    foreach ($post_data['clinica_empleado'] as $empleado){
-                        
+                    if(is_array($post_data['clinica_empleado'])){
+                        foreach ($post_data['clinica_empleado'] as $empleado){
+                            //Lo agregamos como empleado
+                            $empleado_clinica = new \Clinicaempleado();
+                            $empleado_clinica->setIdclinica($entity->getIdclinica());
+                            $empleado_clinica->setIdempleado($empleado);
+                            $empleado_clinica->save();
+                        }
+                    }else{
                         //Lo agregamos como empleado
                         $empleado_clinica = new \Clinicaempleado();
                         $empleado_clinica->setIdclinica($entity->getIdclinica());
@@ -236,25 +255,38 @@ class ClinicaController extends AbstractActionController
             //Instanciamos nuestro formulario
             $form = new \Catalogos\Form\ClinicaForm();
             
-            //Los empleados
-        
-            //Obtenemos todos los empleados que si tienen asignado una clinica tanto para encargado como para empleado
-            $empleado_clinica = \ClinicaempleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
-            $empladosconclinica = array();
-            foreach ($empleado_clinica as $value){
-                array_push($empladosconclinica, $value['idempleado']);
+            //Los empleados(Encargados)
+            $encargadosCollection = \EmpleadoaccesoQuery::create()->filterByIdrol(2)->joinEmpleado()->withColumn('empleado_nombre')->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME); 
+            $encargados_conclinica = \EncargadoclinicaQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+            $encargados_conclinica_array = array();
+            foreach ($encargados_conclinica as $value){
+                array_push($encargados_conclinica_array, $value['idempleado']);
+            }
+            $encargados = array();
+            foreach ($encargadosCollection as $encargado){
+                 if(!in_array($encargado['idempleado'], $encargados_conclinica_array)){
+                     array_push($encargados, $encargado);
+                 }  
             }
             
-            $empleado_collection = \EmpleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+            //Los empleados(Pedicuristas)
+            $empleadosCollection = \EmpleadoaccesoQuery::create()->filterByIdrol(3)->joinEmpleado()->withColumn('empleado_nombre')->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+            $empleados_conclinica = \ClinicaempleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+            $empleados_conclinica_array = array();
+            foreach ($empleados_conclinica as $value){
+                array_push($empleados_conclinica_array, $value['idempleado']);
+            }
+            
             $empleados = array();
-            foreach ($empleado_collection as $empleado_entity){
-                 if(!in_array($empleado_entity['idempleado'], $empladosconclinica)){
-                     array_push($empleados, $empleado_entity);
+            foreach ($empleadosCollection as $empleado){
+                 if(!in_array($empleado['idempleado'], $empleados_conclinica_array)){
+                     array_push($empleados, $empleado);
                  }  
             }
             
             //Los encargados asignados
             $clinica_encargados = \EncargadoclinicaQuery::create()->filterByIdclinica($entity->getIdclinica())->find();
+  
             $clinica_encargados_array = array();
             $clinica_encargados_ids_array = array();
             foreach ($clinica_encargados as $clinica_encargado){
@@ -263,6 +295,8 @@ class ClinicaController extends AbstractActionController
                 $clinica_encargados_ids_array[] = $empleado['idempleado'];
                 $clinica_encargados_array[] = $empleado;
             }
+            
+            
             //Los empleados
             $clinica_empleados = $entity->getClinicaempleados();
             $clinica_empleados_array = array();
@@ -272,14 +306,14 @@ class ClinicaController extends AbstractActionController
                      $clinica_empleados_array[] = $empleado;
                 } 
             }
-
+                        
             //Le ponemos los datos de nuestro lugar a nuestro formulario
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
             
             if ($request->isPost()) { //Si hicieron POST
                 
                 $post_data = $request->getPost();
-                
+               
                 //Le ponemos los datos a nuestro formulario
                 $form->setData($post_data);
                 
@@ -298,9 +332,22 @@ class ClinicaController extends AbstractActionController
                     $clinica_encargados = \EncargadoclinicaQuery::create()->filterByIdclinica($entity->getIdclinica())->find();
                     $clinica_encargados->delete();
                     
-                    if (isset($post_data['clinica_encargado']) && !empty($post_data['clinica_encargado'])) {
+                    if(isset($post_data['clinica_encargado']) && !empty($post_data['clinica_encargado'])){
                         //Por cada encargado, los vamos a registrar tanto en encargado como en empleado, pero son su rol correspondiente
-                        foreach ($post_data['clinica_encargado'] as $encargado) {
+                        if(is_array($post_data['clinica_encargado'])){
+                            foreach ($post_data['clinica_encargado'] as $encargado){
+                                //Lo agregamos como encargado
+                                $encargado_clinica = new \Encargadoclinica();
+                                $encargado_clinica->setIdclinica($entity->getIdclinica());
+                                $encargado_clinica->setIdempleado($encargado);
+                                $encargado_clinica->save();
+                                //Lo agregamos como empleado
+                                $encargado_empleado = new \Clinicaempleado();
+                                $encargado_empleado->setIdclinica($entity->getIdclinica());
+                                $encargado_empleado->setIdempleado($encargado);
+                                $encargado_empleado->save();
+                            }
+                        }else{
                             //Lo agregamos como encargado
                             $encargado_clinica = new \Encargadoclinica();
                             $encargado_clinica->setIdclinica($entity->getIdclinica());
@@ -311,10 +358,6 @@ class ClinicaController extends AbstractActionController
                             $encargado_empleado->setIdclinica($entity->getIdclinica());
                             $encargado_empleado->setIdempleado($encargado);
                             $encargado_empleado->save();
-                            //Modificamos los permisos del usuario en caso
-                            $empleado = \EmpleadoQuery::create()->findPk($encargado);
-                            $empleado->setIdrol(2); // 2 Corresponde al id del rol de encargado
-                            $empleado->save();
                         }
                     }
                     
@@ -323,17 +366,20 @@ class ClinicaController extends AbstractActionController
                     
                     if(isset($post_data['clinica_empleado']) && !empty($post_data['clinica_empleado'])){
                         //Por cada encargado, los vamos a registrar tanto en encargado como en empleado, pero son su rol correspondiente
-                        foreach ($post_data['clinica_empleado'] as $empleado){
-
+                        if(is_array($post_data['clinica_empleado'])){
+                            foreach ($post_data['clinica_empleado'] as $empleado){
+                                //Lo agregamos como empleado
+                                $empleado_clinica = new \Clinicaempleado();
+                                $empleado_clinica->setIdclinica($entity->getIdclinica());
+                                $empleado_clinica->setIdempleado($empleado);
+                                $empleado_clinica->save();
+                            }
+                        }else{
                             //Lo agregamos como empleado
                             $empleado_clinica = new \Clinicaempleado();
                             $empleado_clinica->setIdclinica($entity->getIdclinica());
                             $empleado_clinica->setIdempleado($empleado);
                             $empleado_clinica->save();
-                            //Modificamos los permisos del usuario en caso
-                            $empleado = \EmpleadoQuery::create()->findPk($empleado);
-                            $empleado->setIdrol(3); // 2 Corresponde al id del rol de pedicurista
-                            $empleado->save();
                         }
                     }
 
@@ -348,10 +394,12 @@ class ClinicaController extends AbstractActionController
                 }  
             }
             
+            
             return new ViewModel(array(
                 'id'  => $id,
                 'form' => $form,
                 'empleados' => $empleados,
+                'encargados' => $encargados,
                 'clinica_empleados' => $clinica_empleados_array,
                 'clinica_encargados' => $clinica_encargados_array,
             ));

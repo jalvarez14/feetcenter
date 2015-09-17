@@ -12,13 +12,25 @@ namespace Feetcenter;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+use Shared\CustomListener\TemplateMapListener;
+use Shared\CustomListener\AuthListener;
+
 class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
         $eventManager        = $e->getApplication()->getEventManager();
+        
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        
+        $themeListener   = new TemplateMapListener();
+        $themeListener->attach($eventManager);
+        
+        $authListener = new AuthListener();
+        $authListener->attach($eventManager);
+        
+        
     }
 
     public function getConfig()
@@ -35,6 +47,8 @@ class Module
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                     'Catalogos' => __DIR__ . '/src/'  .'Catalogos',
                     'Compras' => __DIR__ . '/src/'  .'Compras',
+                    'Login' => __DIR__ . '/src/'  .'Login',
+                    'Shared' => __DIR__ . '/src/'  .'Shared',
                 ),
             ),
         );
