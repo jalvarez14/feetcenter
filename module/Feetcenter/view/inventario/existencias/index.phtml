@@ -1,0 +1,25 @@
+<div id="definir_existencias_container">
+    <h1>Definir existencias</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Articulo</th>
+                <th>Existencias</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($collection as $entity) : ?>
+                <tr>
+                    <td><?php echo $entity['tipo']?></td>
+                    <td><?php echo $entity['nombre']?></td>
+                    <td><?php echo (int)$entity['existencias']?></td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+</div>
+<script src="/js/inventario/existencias.js"></script>
+<script>
+    $('#definir_existencias_container').existencias();
+</script>

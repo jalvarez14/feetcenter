@@ -104,7 +104,7 @@
                 onUncheckAll:filterByClinica,
             });
             
-            $container.find("select[name=idclinica]").multipleSelect("setSelects", [1]);
+            $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.idclinica]);
 
             //Paginamos el resultado inicial
             $.ajax({

@@ -16,9 +16,8 @@ class ProveedorController extends AbstractActionController
 {
     public function indexAction()
     {
-        $collection = \ProveedorQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+        $collection = \ProveedorQuery::create()->filterByIdproveedor(1,\Criteria::NOT_EQUAL)->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
 
-        
         return new ViewModel(array(
             'collection'   => $collection,
             'successMessages' => $this->flashMessenger()->getSuccessMessages(),

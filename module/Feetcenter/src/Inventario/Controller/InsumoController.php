@@ -18,12 +18,21 @@ class InsumoController extends AbstractActionController
     {
          
         //Clinicas
-        $clinicas = \ClinicaQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        $session = new \Shared\Session\AouthSession();
+       
+        if($session->getIdrol() == 1){ //Es administrador
+            $clinicas = \ClinicaQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            $idclinica = 1;
+        }else{
+            $clinicas = \ClinicaQuery::create()->filterByIdclinica($session->getIdClinica())->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            $idclinica = $session->getIdClinica();
+        }
         
         //En caso de ser administrador
         $insumos = \InsumoclinicaQuery::create()->filterByIdclinica(1)->joinInsumo()->joinClinica()->withColumn('clinica_nombre')->withColumn('insumo_nombre')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
 
         return new ViewModel(array(
+            'idclinica' => $idclinica,
             'clinicas' => $clinicas,
             'insumos' => $insumos,
         ));

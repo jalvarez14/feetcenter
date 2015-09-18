@@ -50,43 +50,59 @@ class LoginController extends AbstractActionController
             $post_data = $request->getPost();
             
             $post_data['empleadoacceso_password'] = md5($post_data['empleadoacceso_password']);
-             
+            
             //Verificamos si los datos de acceso son correctos
             if(\EmpleadoaccesoQuery::create()->filterByEmpleadoaccesoUsername($post_data['empleadoacceso_username'])->filterByEmpleadoaccesoPassword($post_data['empleadoacceso_password'])->exists()){
 
                 $empleado_acceso = \EmpleadoaccesoQuery::create()->filterByEmpleadoaccesoUsername($post_data['empleadoacceso_username'])->filterByEmpleadoaccesoPassword($post_data['empleadoacceso_password'])->findOne();
                
-                //Verificamos que el usuario no este logueado actualmente
-                if(!$empleado_acceso->getEmpleadoaccesoEnsesion()){
-                    //Creamos nuestra session
-                    $session->Create(array(
-                        'idempleadoacceso' => $empleado_acceso->getIdempleadoacceso(),
-                        'idempleado' => $empleado_acceso->getIdempleado(),
-                        'idrol' => $empleado_acceso->getIdrol(),
-                        'empleadoacceso_username' => $empleado_acceso->getEmpleadoaccesoUsername(),
-                        'empleado_nombre' => $empleado_acceso->getEmpleado()->getEmpleadoNombre(),
-                        'empleado_foto' => $empleado_acceso->getEmpleado()->getEmpleadoFoto(),
+                //Verificamos que ese usario ya este asiganod alguna clinica
+                if(\ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->exists() || $empleado_acceso->getIdrol()==1){
+                    $clinica_empleado = \ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->findOne();
+                   
+                    if($empleado_acceso->getIdrol() == 1){
+                        $idclinica = NULL;
+                    }else{
+                        $idclinica = $clinica_empleado->getIdclinica();
+                    }
+                    
 
-                    ));               
-                    
-                    $empleado_acceso->setEmpleadoaccesoEnsesion(1);
-                    $empleado_acceso->save();
-                    
-                    return $this->redirect()->toRoute('home');
+                    //Verificamos que el usuario no este logueado actualmente
+                    if(!$empleado_acceso->getEmpleadoaccesoEnsesion()){
+                        //Creamos nuestra session
+                        $session->Create(array(
+                            'idempleadoacceso' => $empleado_acceso->getIdempleadoacceso(),
+                            'idempleado' => $empleado_acceso->getIdempleado(),
+                            'idclinica' => $idclinica,
+                            'idrol' => $empleado_acceso->getIdrol(),
+                            'empleadoacceso_username' => $empleado_acceso->getEmpleadoaccesoUsername(),
+                            'empleado_nombre' => $empleado_acceso->getEmpleado()->getEmpleadoNombre(),
+                            'empleado_foto' => $empleado_acceso->getEmpleado()->getEmpleadoFoto(),
+
+                        ));               
+                        
+                        $empleado_acceso->setEmpleadoaccesoEnsesion(1);
+                        $empleado_acceso->save();
+                        
+                        
+
+                        return $this->redirect()->toRoute('home');
+                    }else{
+                        
+                        $this->flashMessenger()->addErrorMessage('El usuario ya ha iniciado sesión en otro dispositivo');
+                        return $this->redirect()->toRoute('login');
+                    }
+
                 }else{
-                    $this->flashMessenger()->addErrorMessage('El usuario ya ha iniciado sesión en otro dispositivo');
+                    $this->flashMessenger()->addErrorMessage('No es posible iniciar sesion con este usuario ya que no ha sido asignado a ninguna clinica');
                     return $this->redirect()->toRoute('login');
                 }
-                
-                
-                
                 
             }else{
                 $this->flashMessenger()->addErrorMessage('Nombre de usuario y/o contraseña incorrecta');
                 return $this->redirect()->toRoute('login');
             }
-            
-            
+
         }
 
     }

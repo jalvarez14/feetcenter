@@ -170,6 +170,16 @@ return array(
                             ),
                         ),
                     ),
+                    'existencias' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/existencias[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Inventario\Controller\Existencias',
+                                'action'        => 'index',
+                            ),
+                        ),
+                    ),
                 )
             ),
             
@@ -213,6 +223,7 @@ return array(
             //Inventario
             ' Inventario\Controller\Insumo' => 'Inventario\Controller\InsumoController',
             'Inventario\Controller\Producto' => 'Inventario\Controller\ProductoController',
+            'Inventario\Controller\Existencias' => 'Inventario\Controller\ExistenciasController',
         ),
     ),
     'view_manager' => array(

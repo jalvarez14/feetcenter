@@ -33,5 +33,7 @@
 </div>
 <script src="/js/inventario/inventarioInsumo.js"></script>
 <script>
-    $('#inventario_insumo_container').inventarioInsumo();
+    $('#inventario_insumo_container').inventarioInsumo({
+        idclinica:<?php echo $idclinica?>,
+    });
 </script>
