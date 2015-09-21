@@ -1,5 +1,5 @@
-<div id="definir_existencias_container">
-    <h1>Definir existencias</h1>
+<div id="transferencias_control_container">
+    <h1>Transferencias</h1>
     <?php if(count($successMessages)) :?>
     <div class="units-row">
         <?php foreach ($successMessages as $message) :?>
@@ -14,19 +14,31 @@
     <table>
         <thead>
             <tr>
-                <th>Tipo</th>
-                <th>Articulo</th>
-                <th>Existencias</th>
-                <th>Opciones</th>
+                <th>Fecha</th>
+                <th>Fecha Movimiento</th>
+                <th>Remitente</th>
+                <th>Receptor</th>
+                <th>Estatus<th>
+                <th>Comprobante<th>
+                <th>Recibio<th>
+                <th>Opciones<th>
             </tr>
         </thead>
         <tbody>
+            <?php $entity = new Transferencia()?>
             <?php foreach($collection as $entity) : ?>
-            <tr data-type="<?php echo $entity['tipo']?>" id="<?php echo $entity['id']?>">
-                    <td><?php echo $entity['tipo']?></td>
-                    <td><?php echo $entity['nombre']?></td>
-                    <td><?php echo (int)$entity['existencias']?></td>
-                    <td><a class="add-existencia" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Agregar existencia</h2>" data-content="/inventario/existencias/nuevo?html=true?type=<?php echo $entity['tipo']?>?id=<?php echo $entity['id']?>">agregar</a></td>
+            <tr id="<?php echo $entity->getIdtransferencia()?>">
+                <td><?php echo $entity->getTransferenciaCreadaen('d/m/Y')?></td>
+                <td><?php echo $entity->getTransferenciaFechamovimiento('d/m/Y')?></td>
+                <td><?php echo $entity->getClinicaRelatedByIdclinicaremitente()->getClinicaNombre()?></td>
+                <td><?php echo $entity->getClinicaRelatedByIdclinicadestinataria()->getClinicaNombre()?></td>
+                <td><?php echo $entity->getTransferenciaEstatus()?></td>
+                <td><?php echo $entity->getTransferenciaComprobante()?></td>
+                <td><?php echo $entity->getEmpleadoRelatedByIdempleadoreceptor()?></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="tr_options"><a href="javascript:void(0)">Ver</a><a href="javascript:void(0)"> Cambiar status</a></td>
                 </tr>
             <?php endforeach;?>
         </tbody>

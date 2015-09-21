@@ -16,7 +16,7 @@ class ComprasController extends AbstractActionController
 {
     public function indexAction()
     {
-        $collection = \CompraQuery::create()->find();
+        $collection = \CompraQuery::create()->filterByIdproveedor(1,  \Criteria::NOT_EQUAL)->find();
 
         
         return new ViewModel(array(

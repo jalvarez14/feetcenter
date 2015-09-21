@@ -1,0 +1,39 @@
+<div id="reorden_container">
+    <h1>Definir precios y reorden</h1>
+    <?php if(count($successMessages)) :?>
+    <div class="units-row">
+        <?php foreach ($successMessages as $message) :?>
+            <div class="unit-100">    
+                <div class="tools-alert tools-alert-green">
+                    <?php echo $message?>
+                </div> 
+            </div>
+        <?php endforeach;?>
+    </div>
+<?php endif;?>
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($collection as $entity) : ?>
+            <tr data-type="<?php echo $entity['tipo']?>" id="<?php echo $entity['id']?>">
+                    <td><?php echo $entity['tipo']?></td>
+                    <td><?php echo $entity['nombre']?></td>
+                    <td><?php echo $entity['descripcion']?></td>
+                    <td><a class="add-reorden" href="javascript:void(0)" data-tools="modal" data-width="800" data-title="<h2>Definir reorden</h2>" data-content="/inventario/reorden/nuevo?html=true&type=<?php echo $entity['tipo']?>&id=<?php echo $entity['id']?>">Definir reorden</a></td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+</div>
+<script src="/js/inventario/reorden.js"></script>
+<script>
+    $('#reorden_container').reorden();
+    $('tbody tr[data-type=servicio]').find('a').text('Definir precio');
+</script>

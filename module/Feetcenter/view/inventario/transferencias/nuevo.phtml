@@ -1,0 +1,87 @@
+<h1>Nueva transferencia</h1>
+<div id="transferencia_container">
+    <form class="forms" enctype="multipart/form-data" novalidate="1" action="/inventario/transferencias/nuevo" name="compraForm" method="post">
+        <div class="units-row">
+            <div class="unit-100">
+                <fieldset>
+                    <legend>Información general</legend>
+                    <div class="units-row">
+                        <div class="unit-50"> 
+                            Clinica origen <span class="req">*</span>
+                            <select required class="width-100" name="idclinicaremitente" style="height: 29px;">
+                                <option value="">Seleccione la clinica origen...</option>
+                                <?php foreach ($clinicasremitentes as $clinicaremitente) :?>
+                                    <option value="<?php echo $clinicaremitente['idclinica']?>"><?php echo $clinicaremitente['clinica_nombre']?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                        <div class="unit-50"> 
+                            Clinica destino <span class="req">*</span>
+                            <select required class="width-100" name="idclinicadestinataria" style="height: 29px;">
+                                <option value="">Seleccione la clinica destino...</option>
+                                <?php foreach ($clinicasdestino as $clinicadestino) :?>
+                                    <option value="<?php echo $clinicadestino['idclinica']?>"><?php echo $clinicadestino['clinica_nombre']?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="units-row" id="details_container">
+            <fieldset>
+                <legend>Detalles de la transferencia</legend>
+                <div class="unit-100">
+                    <div class="units-row">
+                        <div class="unit-70">
+                            Productos/Insumos <span class="req">*</span>
+                            <select  class="width-100" style="height: 29px;" name="articulo">
+                                <option value="">Seleccione el producto/insumo a transferir...</option>
+                                <optgroup label="Productos">
+                                </optgroup>
+                                <optgroup label="Insumos">
+                                </optgroup>
+                            </select>
+                        </div>  
+                        <div class="unit-10">
+                            <label>
+                                Cantidad <span class="req">*</span>
+                                <input class="width-100" type="text"  name="compradetalle_cantidad">
+                            </label>
+                        </div>
+                        <div class="unit-20" style="margin-left: 20px;">
+                            <label>
+                                 <a class="btn btn-blue" data-action="addProducto" style="margin-top: 22px; margin-right: 20px;">Agregar</a>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="units-row">
+            <div class="unit-100">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cantidad</th>
+                            <th>Tipo</th>
+                            <th>Articulo</th>   
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div> 
+        </div>
+        <div class="units-row">
+            <div class="unit-centered unit-40">
+                <button class="btn btn-green" data-action="submit">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/js/inventario/transferencias.js"></script>
+<script>
+    $('#transferencia_container').transferencias();
+</script>

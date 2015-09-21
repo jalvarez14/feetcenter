@@ -113,6 +113,20 @@ table tr a {
     padding-top: 10px;
 }
 
+.modal_header_action{
+    background: #1A52A5;
+    color: white;
+    padding-top: 10px;
+}
+
+.modal_header_action h2{
+    background: #1A52A5;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+}
+
+
 .modal_header_warning h2{
     background: #DE2C3B;
     color: white;

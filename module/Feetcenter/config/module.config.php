@@ -180,6 +180,26 @@ return array(
                             ),
                         ),
                     ),
+                    'reorden' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/reorden[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Inventario\Controller\Reorden',
+                                'action'        => 'index',
+                            ),
+                        ),
+                    ),
+                    'transferencias' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/transferencias[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Inventario\Controller\Transferencias',
+                                'action'        => 'index',
+                            ),
+                        ),
+                    ),
                 )
             ),
             
@@ -224,6 +244,8 @@ return array(
             ' Inventario\Controller\Insumo' => 'Inventario\Controller\InsumoController',
             'Inventario\Controller\Producto' => 'Inventario\Controller\ProductoController',
             'Inventario\Controller\Existencias' => 'Inventario\Controller\ExistenciasController',
+            'Inventario\Controller\Reorden' => 'Inventario\Controller\ReordenController',
+            'Inventario\Controller\Transferencias' => 'Inventario\Controller\TransferenciasController',
         ),
     ),
     'view_manager' => array(

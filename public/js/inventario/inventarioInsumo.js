@@ -75,8 +75,8 @@
                             parseInt(this.insumoclinica_existencia),
                             parseInt(this.insumoclinica_reorden),
                             ]).draw().node();
-                            
-                            if(this.insumoclinica_existencia<=this.insumoclinica_reorden){
+                                
+                            if(parseInt(this.insumoclinica_existencia)<=parseInt(this.insumoclinica_reorden)){
                                 $(rowNode).addClass('warning');
                             }
                         });

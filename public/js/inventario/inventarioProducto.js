@@ -76,7 +76,7 @@
                             parseInt(this.productoclinica_reorden),
                             ]).draw().node();
                             
-                            if(this.productoclinica_existencia<=this.productoclinica_reorden){
+                            if(parseInt(this.productoclinica_existencia)<=parseInt(this.productoclinica_reorden)){
                                 $(rowNode).addClass('warning');
                             }
                         });

@@ -1,0 +1,46 @@
+<form method="post" action="/inventario/reorden">
+    <input name="type" type="hidden" value="<?php echo $type?>">
+    <input name="id" type="hidden" value="<?php echo $id?>">
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <?php foreach ($clinicas as $clinica) :?>
+                <th><?php echo $clinica['clinica_nombre']?></th>
+                <?php endforeach;?>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if($servicio) :?>
+                <tr>
+                    <td>Precio</td>
+                    <?php foreach ($reorden_array as $reordenKey => $reordeValue) :?>
+                    <td><input required class="width-100" type="text" name="<?php echo "reorden[".$reordenKey."][precio]"?>" value="<?php echo (int)$reordeValue['precio']?>"></td>
+                    <?php endforeach;?>
+                </tr>
+            <?php else :?>
+            <tr>
+                <td>Mínimo</td>
+                <?php foreach ($reorden_array as $reordenKey => $reordeValue) :?>
+                <td><input required class="width-100" type="text" name="<?php echo "reorden[".$reordenKey."][min]"?>" value="<?php echo (int)$reordeValue['min']?>"></td>
+                <?php endforeach;?>
+            </tr>
+            <tr>
+                <td>Máximo</td>
+                <?php foreach ($reorden_array as $reordenKey => $reordeValue) :?>
+                <td><input required class="width-100" type="text" name="<?php echo "reorden[".$reordenKey."][max]"?>" value="<?php echo (int)$reordeValue['max']?>"></td>
+                <?php endforeach;?>
+            </tr>
+            <tr>
+                <td>Reorden</td>
+                <?php foreach ($reorden_array as $reordenKey => $reordeValue) :?>
+                <td><input required class="width-100" type="text" name="<?php echo "reorden[".$reordenKey."][reorden]"?>" value="<?php echo (int)$reordeValue['reorden']?>"></td>
+                <?php endforeach;?>
+            </tr>
+            <?php endif;?>
+        </tbody>
+    </table>
+</form>
+<script>
+    $('input[type=text]').numeric();
+</script>
