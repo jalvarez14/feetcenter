@@ -18,10 +18,11 @@
                 <th>Fecha Movimiento</th>
                 <th>Remitente</th>
                 <th>Receptor</th>
-                <th>Estatus<th>
-                <th>Comprobante<th>
-                <th>Recibio<th>
-                <th>Opciones<th>
+                <th>Estatus</th>
+                <th>Comprobante</th>
+                <th>Recibio</th>
+                <th>Nota</th>
+                <th>Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -32,72 +33,21 @@
                 <td><?php echo $entity->getTransferenciaFechamovimiento('d/m/Y')?></td>
                 <td><?php echo $entity->getClinicaRelatedByIdclinicaremitente()->getClinicaNombre()?></td>
                 <td><?php echo $entity->getClinicaRelatedByIdclinicadestinataria()->getClinicaNombre()?></td>
-                <td><?php echo $entity->getTransferenciaEstatus()?></td>
-                <td><?php echo $entity->getTransferenciaComprobante()?></td>
-                <td><?php echo $entity->getEmpleadoRelatedByIdempleadoreceptor()?></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="tr_options"><a href="javascript:void(0)">Ver</a><a href="javascript:void(0)"> Cambiar status</a></td>
+                <td class="transferencia_estatus"><?php echo $entity->getTransferenciaEstatus()?></td>
+                <td class="transferencia_comprobante"><?php echo $entity->getTransferenciaComprobante()?></td>
+                <?php if($entity->getTransferenciaEstatus() != 'enviada') :?>
+                    <td><?php echo $entity->getEmpleadoRelatedByIdempleadoreceptor()->getEmpleadoNombre()?></td>
+                    <?php else: ?>
+                    <td></td>
+                <?php endif;?>
+                <td class="transferencia_nota"><?php echo $entity->getTransferenciaNota()?></td>
+                <td class="tr_options"><a class="ver_detalles" data-content="/inventario/transferencias/verdetalle?html=true&id=<?php echo $entity->getIdtransferencia()?>" data-tools="modal" data-width="700" data-title="<h2>Transferencia #<?php  echo $entity->getIdtransferencia()?></h2>"  href="javascript:void(0)">Ver detalles</a><a class="change_status" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Cambiar estatus</h2>" data-content="/inventario/transferencias/cambiarstatus?html=true&id=<?php echo $entity->getIdtransferencia()?>" > Cambiar status</a></td>
                 </tr>
             <?php endforeach;?>
         </tbody>
     </table>
 </div>
-<script src="/js/inventario/existencias.js"></script>
+<script src="/js/inventario/transferenciasControl.js"></script>
 <script>
-    $('#definir_existencias_container').existencias();
-    
-    $('.add-existencia').on('loading.tools.modal', function(modal)
-    {
-        var $modalHeader = this.$modalHeader;
-        $modalHeader.addClass('modal_header_action');
-        
-        var id = this.$element.closest('tr').attr('id');
-        var type = this.$element.closest('tr').attr('data-type');
-        
-        var $modal = this ;
-        
-        this.createCancelButton('Cancelar');
-
-        var buttonAction = this.createActionButton('Guardar');
-        buttonAction.attr('data-action','submit');
-        
-        buttonAction.on('click', $.proxy(function()
-        {
-            
-            var empty = false;
-            $('input[name=cantidad]').removeClass('input-error');
-            
-            //Verificamos que no este vacio
-            if($('input[name=cantidad]').val() == ""){
-                empty=true;
-                $('input[name=cantidad]').addClass('input-error');
-            }
-            
-            if(!empty){
-                
-                var cantidad = $('input[name=cantidad]').val();
-                
-                //Hacemos la peticion ajax
-                $.ajax({
-                    url:'/inventario/existencias/nuevo',
-                    dataType: 'json',
-                    method:'POST',
-                    data:{id:id,type:type,cantidad:cantidad},
-                    success: function(data){
-                        if(data.response){
-                            $modal.close();
-                            window.location.replace('/inventario/existencias');
-                        }
-                    }
-                });
-            }
-            
-            
-
-            
-        }, this));
-
-    });
+    $('#transferencias_control_container').transferenciasControl();
 </script>

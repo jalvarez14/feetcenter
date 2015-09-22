@@ -64,6 +64,9 @@
                 success: function(data){
                     //Limpiamos la tabla
                     $table = $container.find('table').DataTable();
+                    $table.on( 'draw', function () {
+                        $('[data-tools="modal"]').modal();
+                    });
                     $table.clear();
                     
                     if(data.result.length > 0){

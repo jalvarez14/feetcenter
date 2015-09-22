@@ -1,0 +1,48 @@
+
+<div class="units-row">
+    <div class="unit-100">
+        <fieldset>
+            <legend>Información general</legend>
+            <div class="units-row">
+                <div class="unit-50"> 
+                    <b>Clinica origen</b>
+                    <p><?php echo $transferencia->getClinicaRelatedByIdclinicaremitente()->getClinicaNombre()?></p>
+                </div>
+                <div class="unit-50"> 
+                    <b>Clinica destino</b>
+                    <p><?php echo $transferencia->getClinicaRelatedByIdclinicadestinataria()->getClinicaNombre()?></p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<div class="units-row" id="details_container">
+    <fieldset>
+        <legend>Detalles de la transferencia</legend>
+        <div class="unit-100">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cantidad</th>
+                        <th>Tipo</th>
+                        <th>Articulo</th>   
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($transferencia->getTransferenciadetalles() as $detalle) :?>
+                    <tr>
+                        <td><?php echo (int)$detalle->getTransferenciadetalleCantidad()?></td>
+                        <?php if(!is_null($detalle->getIdproductoclinica())) :?>
+                            <td>producto</td>
+                            <td><?php echo $detalle->getProductoclinica()->getProducto()->getProductoNombre()?></td>
+                        <?php else :?>
+                            <td>insumo</td>
+                            <td><?php echo $detalle->getInsumoclinica()->getInsumo()->getInsumoNombre()?></td>
+                        <?php endif;?>
+                    </tr>
+                    <?php endforeach;?>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+</div>

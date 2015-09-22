@@ -65,7 +65,9 @@
                     //Limpiamos la tabla
                     $table = $container.find('table').DataTable();
                     $table.clear();
-                    
+                    $table.on( 'draw', function () {
+                        $('[data-tools="modal"]').modal();
+                    });          
                     if(data.result.length > 0){
                         //Agregamos los nuevos registros
                         $.each(data.result,function(){

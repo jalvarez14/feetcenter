@@ -65,8 +65,11 @@
                 url: '/json/lang_es_datatable.json',
                 dataType: 'json',
                 success: function(data){
-                    $container.find('table').DataTable({
+                    var table = $container.find('table').DataTable({
                         language:data,
+                    });
+                    table.on( 'draw', function () {
+                        $('[data-tools="modal"]').modal();
                     });
                 }
             });
