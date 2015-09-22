@@ -1,0 +1,46 @@
+<h1>Lista de precios</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>            
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($collection as $entity) : ?>
+            <tr id="<?php echo $entity['idproducto']?>">
+                <td><?php echo $entity['producto_nombre']?></td>
+                <td><?php echo $entity['producto_descripcion']?></td>
+                <td><?php echo $entity['producto_precio']?></td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>
+<script>
+$(function()
+{
+    
+    $.ajax({
+        url: '/json/lang_es_datatable.json',
+        dataType: 'json',
+        success: function(data){
+            var table = $('table').DataTable({
+                language:data,
+            });
+            table.on( 'draw', function () {
+                $('[data-tools="modal"]').modal();
+            });
+        }
+    });
+    
+    
+    //Damos formato a nuestra taba
+    $('table tr').each(function(){
+       var str =  $(this).find('td').eq(2).text();
+       $(this).find('td').eq(2).text(accounting.formatMoney(str));      
+    });
+    
+  
+});
+</script>

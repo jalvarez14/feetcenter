@@ -173,7 +173,7 @@ class ClinicaController extends AbstractActionController
                         //Lo agregamos como empleado
                         $empleado_clinica = new \Clinicaempleado();
                         $empleado_clinica->setIdclinica($entity->getIdclinica());
-                        $empleado_clinica->setIdempleado($empleado);
+                        $empleado_clinica->setIdempleado($post_data['clinica_empleado']);
                         $empleado_clinica->save();
                     }
                 }
@@ -378,7 +378,7 @@ class ClinicaController extends AbstractActionController
                             //Lo agregamos como empleado
                             $empleado_clinica = new \Clinicaempleado();
                             $empleado_clinica->setIdclinica($entity->getIdclinica());
-                            $empleado_clinica->setIdempleado($empleado);
+                            $empleado_clinica->setIdempleado($post_data['clinica_empleado'])    ;
                             $empleado_clinica->save();
                         }
                     }

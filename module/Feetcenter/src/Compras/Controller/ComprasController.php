@@ -32,7 +32,7 @@ class ComprasController extends AbstractActionController
         $request = $this->getRequest();
         
         //Catalogo de proveedores
-        $proveedores = \ProveedorQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        $proveedores = \ProveedorQuery::create()->filterByIdproveedor(1,\Criteria::NOT_EQUAL)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
         
         //Catalogo de productos
         $productos = \ProductoQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);

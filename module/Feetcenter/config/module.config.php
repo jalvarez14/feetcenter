@@ -200,6 +200,16 @@ return array(
                             ),
                         ),
                     ),
+                    'precios' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/precios[/:action]',
+                            'defaults' => array(
+                                'controller'    => 'Inventario\Controller\Precios',
+                                'action'        => 'index',
+                            ),
+                        ),
+                    ),
                 )
             ),
             
@@ -246,6 +256,7 @@ return array(
             'Inventario\Controller\Existencias' => 'Inventario\Controller\ExistenciasController',
             'Inventario\Controller\Reorden' => 'Inventario\Controller\ReordenController',
             'Inventario\Controller\Transferencias' => 'Inventario\Controller\TransferenciasController',
+            'Inventario\Controller\Precios' => 'Inventario\Controller\PreciosController',
         ),
     ),
     'view_manager' => array(

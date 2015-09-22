@@ -1,3 +1,4 @@
+<?php $sesion = new Shared\Session\AouthSession();?>
 <form method="post" action="/inventario/reorden">
     <input name="type" type="hidden" value="<?php echo $type?>">
     <input name="id" type="hidden" value="<?php echo $id?>">
@@ -15,7 +16,11 @@
                 <tr>
                     <td>Precio</td>
                     <?php foreach ($reorden_array as $reordenKey => $reordeValue) :?>
-                    <td><input required class="width-100" type="text" name="<?php echo "reorden[".$reordenKey."][precio]"?>" value="<?php echo (int)$reordeValue['precio']?>"></td>
+                    <?php if($sesion->getIdrol() == 1) :?>
+                        <td><input required class="width-100" type="text" name="<?php echo "reorden[".$reordenKey."][precio]"?>" value="<?php echo (int)$reordeValue['precio']?>"></td>
+                        <?php else :?>
+                         <td><?php echo (int)$reordeValue['precio']?></td>
+                    <?php endif;?>
                     <?php endforeach;?>
                 </tr>
             <?php else :?>

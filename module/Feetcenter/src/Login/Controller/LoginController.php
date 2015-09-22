@@ -75,6 +75,7 @@ class LoginController extends AbstractActionController
                             'idempleado' => $empleado_acceso->getIdempleado(),
                             'idclinica' => $idclinica,
                             'idrol' => $empleado_acceso->getIdrol(),
+                            'rol' => $empleado_acceso->getRol()->getRolNombre(),
                             'empleadoacceso_username' => $empleado_acceso->getEmpleadoaccesoUsername(),
                             'empleado_nombre' => $empleado_acceso->getEmpleado()->getEmpleadoNombre(),
                             'empleado_foto' => $empleado_acceso->getEmpleado()->getEmpleadoFoto(),

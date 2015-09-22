@@ -19,6 +19,14 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        $sesion = new \Shared\Session\AouthSession();
+        if($sesion->isActive()){
+            //Iniciamos la lista de control de acceso
+            $this->initAcl($e);
+            $e->getApplication()->getEventManager()->attach('route', array($this, 'checkAcl'));
+        }
+        
+        
         $eventManager        = $e->getApplication()->getEventManager();
         
         $moduleRouteListener = new ModuleRouteListener();
@@ -31,6 +39,56 @@ class Module
         $authListener->attach($eventManager);
         
         
+    }
+    
+    public function initAcl(MvcEvent $e){
+        $acl = new \Zend\Permissions\Acl\Acl();
+        $roles=require_once __DIR__ . '/config/module.acl.roles.php';
+        foreach($roles as $role => $resources){
+            $role = new \Zend\Permissions\Acl\Role\GenericRole($role);
+            $acl->addRole($role);
+            //Recorremos los recursos o rutas permitidas
+            foreach($resources["allow"] as $resource){
+                //Si el recurso no existe lo añadimos
+                if(!$acl->hasResource($resource)){
+                     $acl->addResource(new \Zend\Permissions\Acl\Resource\GenericResource($resource));
+                }
+                //Permitimos a ese rol ese recurso
+                 $acl->allow($role, $resource);
+            }
+            foreach ($resources["deny"] as $resource) {
+                //Si el recurso no existe lo añadimos
+                if(!$acl->hasResource($resource)){
+                    $acl->addResource(new \Zend\Permissions\Acl\Resource\GenericResource($resource));
+                }
+                //Denegamos a ese rol ese recurso
+                $acl->deny($role, $resource);
+	                    
+            }
+            
+        }
+        $e->getViewModel()->acl=$acl;
+
+    }
+    
+    public function checkAcl(MvcEvent $e){
+        
+        //Instanciamos nuestra sesion
+        $sesion = new \Shared\Session\AouthSession();
+        
+        //guardamos el nombre de la ruta o recurso a permitir o denegar
+        $route=$e->getRouteMatch()->getMatchedRouteName();      
+        $rol = $sesion->getRolNombre();
+        
+        if(!$e->getViewModel()->acl->isAllowed($rol, $route)) {
+            $response = $e->getResponse();
+            $response->getHeaders()->addHeaderLine('Location', $e->getRequest()->getBaseUrl() . '/404');
+            $response->setStatusCode(404); 
+            
+            
+        }
+        
+                
     }
 
     public function getConfig()

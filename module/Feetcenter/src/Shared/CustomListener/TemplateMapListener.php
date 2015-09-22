@@ -47,18 +47,44 @@ class TemplateMapListener implements ListenerAggregateInterface
         $section = explode("/",$section[1]);
         
         $template_map=$e->getApplication()->getServiceManager()->get('viewtemplatemapresolver');
-        
-        
+
         if($section[0] == 'Login'){
             $template_map->merge(
                 array(
                     'layout/layout'      => __DIR__.'/../../../view/layout/layout_login.phtml',                        
                 ));
         }else{
-            $template_map->merge(
-                array(
-                    'layout/layout'      => __DIR__.'/../../../view/layout/layout.phtml',                                 
-                ));
+            
+            $sesion = new \Shared\Session\AouthSession();
+            
+            switch ($sesion->getRolNombre()){
+                case 'Administrador':{
+                    $template_map->merge(
+                        array(
+                        'layout/layout'      => __DIR__.'/../../../view/layout/layout.phtml',                                 
+                    ));
+                    
+                    break;
+                }
+                case 'Encargado':{
+                    $template_map->merge(
+                        array(
+                        'layout/layout'      => __DIR__.'/../../../view/layout/layout_encargado.phtml',                                 
+                    ));
+                    
+                    break;
+                }
+                case 'Pedicurista':{
+                    $template_map->merge(
+                        array(
+                        'layout/layout'      => __DIR__.'/../../../view/layout/layout_pedicurista.phtml',                                 
+                    ));
+                    
+                    break;
+                }
+            }
+            
+            
         }    
 
     }

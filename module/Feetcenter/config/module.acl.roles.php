@@ -1,0 +1,86 @@
+<?php
+return array(
+    'Administrador' => array(
+        "allow"=>array(
+            'home',
+            //Catalogos
+            'catalogos/clinica',
+            'catalogos/insumo',
+            'catalogos/proveedor',
+            'catalogos/canal',
+            'catalogos/rol',
+            'catalogos/producto',
+            'catalogos/servicio',
+            'catalogos/empleado',
+            //Compras
+            'compras',
+            //Login
+            'login',
+            //Inventarios
+            'inventario/insumo',
+            'inventario/producto',
+            'inventario/existencias',
+            'inventario/reorden',
+            'inventario/transferencias',
+            'inventario/precios',
+        ),
+        "deny"=>array(
+             
+        ),
+    ),
+    'Encargado' => array(
+        "allow"=>array(
+            'home',
+            //Login
+            'login',
+            //Inventarios
+            'inventario/insumo',
+            'inventario/producto',
+            'inventario/existencias',
+            'inventario/reorden',
+            'inventario/transferencias',
+            'inventario/precios'
+        ),
+        "deny"=>array(
+            //Catalogos
+            'catalogos/clinica',
+            'catalogos/insumo',
+            'catalogos/proveedor',
+            'catalogos/canal',
+            'catalogos/rol',
+            'catalogos/producto',
+            'catalogos/servicio',
+            'catalogos/empleado',
+            //Compras
+            'compras',
+        ),
+    ),
+    'Pedicurista' => array(
+        "allow"=>array(
+            'home',
+            //Login
+            'login',
+        ),
+        "deny"=>array(
+            //Catalogos
+            'catalogos/clinica',
+            'catalogos/insumo',
+            'catalogos/proveedor',
+            'catalogos/canal',
+            'catalogos/rol',
+            'catalogos/producto',
+            'catalogos/servicio',
+            'catalogos/empleado',
+            //Compras
+            'compras',
+            //Inventarios
+            'inventario/insumo',
+            'inventario/producto',
+            'inventario/existencias',
+            'inventario/reorden',
+            'inventario/transferencias',
+            'inventario/precios',
+        ),
+    ),
+);
+   
