@@ -13,6 +13,7 @@
  * @method EgresoclinicaQuery orderByEgresoclinicaFechaegreso($order = Criteria::ASC) Order by the egresoclinica_fechaegreso column
  * @method EgresoclinicaQuery orderByEgresoclinicaTipo($order = Criteria::ASC) Order by the egresoclinica_tipo column
  * @method EgresoclinicaQuery orderByEgresoclinicaCantidad($order = Criteria::ASC) Order by the egresoclinica_cantidad column
+ * @method EgresoclinicaQuery orderByEgresoclinicaIva($order = Criteria::ASC) Order by the egresoclinica_iva column
  * @method EgresoclinicaQuery orderByEgresoclinicaComprobante($order = Criteria::ASC) Order by the egresoclinica_comprobante column
  * @method EgresoclinicaQuery orderByEgresoclinicaNota($order = Criteria::ASC) Order by the egresoclinica_nota column
  *
@@ -23,6 +24,7 @@
  * @method EgresoclinicaQuery groupByEgresoclinicaFechaegreso() Group by the egresoclinica_fechaegreso column
  * @method EgresoclinicaQuery groupByEgresoclinicaTipo() Group by the egresoclinica_tipo column
  * @method EgresoclinicaQuery groupByEgresoclinicaCantidad() Group by the egresoclinica_cantidad column
+ * @method EgresoclinicaQuery groupByEgresoclinicaIva() Group by the egresoclinica_iva column
  * @method EgresoclinicaQuery groupByEgresoclinicaComprobante() Group by the egresoclinica_comprobante column
  * @method EgresoclinicaQuery groupByEgresoclinicaNota() Group by the egresoclinica_nota column
  *
@@ -47,6 +49,7 @@
  * @method Egresoclinica findOneByEgresoclinicaFechaegreso(string $egresoclinica_fechaegreso) Return the first Egresoclinica filtered by the egresoclinica_fechaegreso column
  * @method Egresoclinica findOneByEgresoclinicaTipo(string $egresoclinica_tipo) Return the first Egresoclinica filtered by the egresoclinica_tipo column
  * @method Egresoclinica findOneByEgresoclinicaCantidad(string $egresoclinica_cantidad) Return the first Egresoclinica filtered by the egresoclinica_cantidad column
+ * @method Egresoclinica findOneByEgresoclinicaIva(string $egresoclinica_iva) Return the first Egresoclinica filtered by the egresoclinica_iva column
  * @method Egresoclinica findOneByEgresoclinicaComprobante(string $egresoclinica_comprobante) Return the first Egresoclinica filtered by the egresoclinica_comprobante column
  * @method Egresoclinica findOneByEgresoclinicaNota(string $egresoclinica_nota) Return the first Egresoclinica filtered by the egresoclinica_nota column
  *
@@ -57,6 +60,7 @@
  * @method array findByEgresoclinicaFechaegreso(string $egresoclinica_fechaegreso) Return Egresoclinica objects filtered by the egresoclinica_fechaegreso column
  * @method array findByEgresoclinicaTipo(string $egresoclinica_tipo) Return Egresoclinica objects filtered by the egresoclinica_tipo column
  * @method array findByEgresoclinicaCantidad(string $egresoclinica_cantidad) Return Egresoclinica objects filtered by the egresoclinica_cantidad column
+ * @method array findByEgresoclinicaIva(string $egresoclinica_iva) Return Egresoclinica objects filtered by the egresoclinica_iva column
  * @method array findByEgresoclinicaComprobante(string $egresoclinica_comprobante) Return Egresoclinica objects filtered by the egresoclinica_comprobante column
  * @method array findByEgresoclinicaNota(string $egresoclinica_nota) Return Egresoclinica objects filtered by the egresoclinica_nota column
  *
@@ -166,7 +170,7 @@ abstract class BaseEgresoclinicaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idegresoclinica`, `idclinica`, `idempleado`, `egresoclinica_fecha`, `egresoclinica_fechaegreso`, `egresoclinica_tipo`, `egresoclinica_cantidad`, `egresoclinica_comprobante`, `egresoclinica_nota` FROM `egresoclinica` WHERE `idegresoclinica` = :p0';
+        $sql = 'SELECT `idegresoclinica`, `idclinica`, `idempleado`, `egresoclinica_fecha`, `egresoclinica_fechaegreso`, `egresoclinica_tipo`, `egresoclinica_cantidad`, `egresoclinica_iva`, `egresoclinica_comprobante`, `egresoclinica_nota` FROM `egresoclinica` WHERE `idegresoclinica` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -540,6 +544,48 @@ abstract class BaseEgresoclinicaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD, $egresoclinicaCantidad, $comparison);
+    }
+
+    /**
+     * Filter the query on the egresoclinica_iva column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEgresoclinicaIva(1234); // WHERE egresoclinica_iva = 1234
+     * $query->filterByEgresoclinicaIva(array(12, 34)); // WHERE egresoclinica_iva IN (12, 34)
+     * $query->filterByEgresoclinicaIva(array('min' => 12)); // WHERE egresoclinica_iva >= 12
+     * $query->filterByEgresoclinicaIva(array('max' => 12)); // WHERE egresoclinica_iva <= 12
+     * </code>
+     *
+     * @param     mixed $egresoclinicaIva The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EgresoclinicaQuery The current query, for fluid interface
+     */
+    public function filterByEgresoclinicaIva($egresoclinicaIva = null, $comparison = null)
+    {
+        if (is_array($egresoclinicaIva)) {
+            $useMinMax = false;
+            if (isset($egresoclinicaIva['min'])) {
+                $this->addUsingAlias(EgresoclinicaPeer::EGRESOCLINICA_IVA, $egresoclinicaIva['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($egresoclinicaIva['max'])) {
+                $this->addUsingAlias(EgresoclinicaPeer::EGRESOCLINICA_IVA, $egresoclinicaIva['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EgresoclinicaPeer::EGRESOCLINICA_IVA, $egresoclinicaIva, $comparison);
     }
 
     /**

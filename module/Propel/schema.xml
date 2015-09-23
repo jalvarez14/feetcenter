@@ -127,6 +127,7 @@
     <column name="egresoclinica_fechaegreso" phpName="EgresoclinicaFechaegreso" type="DATE" required="true"/>
     <column name="egresoclinica_tipo" phpName="EgresoclinicaTipo" type="CHAR" sqlType="enum('recoleccion','otro')" required="true"/>
     <column name="egresoclinica_cantidad" phpName="EgresoclinicaCantidad" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="egresoclinica_iva" phpName="EgresoclinicaIva" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="egresoclinica_comprobante" phpName="EgresoclinicaComprobante" type="LONGVARCHAR" required="false"/>
     <column name="egresoclinica_nota" phpName="EgresoclinicaNota" type="LONGVARCHAR" required="false"/>
     <foreign-key foreignTable="clinica" name="idclinica_egresoclinica" onDelete="CASCADE" onUpdate="CASCADE">

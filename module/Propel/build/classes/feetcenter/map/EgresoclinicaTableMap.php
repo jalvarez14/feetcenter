@@ -49,6 +49,7 @@ class EgresoclinicaTableMap extends TableMap
   1 => 'otro',
 ));
         $this->addColumn('egresoclinica_cantidad', 'EgresoclinicaCantidad', 'DECIMAL', true, 10, null);
+        $this->addColumn('egresoclinica_iva', 'EgresoclinicaIva', 'DECIMAL', true, 10, null);
         $this->addColumn('egresoclinica_comprobante', 'EgresoclinicaComprobante', 'LONGVARCHAR', false, null, null);
         $this->addColumn('egresoclinica_nota', 'EgresoclinicaNota', 'LONGVARCHAR', false, null, null);
         // validators

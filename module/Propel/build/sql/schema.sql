@@ -178,6 +178,7 @@ CREATE TABLE `egresoclinica`
     `egresoclinica_fechaegreso` DATE NOT NULL,
     `egresoclinica_tipo` enum('recoleccion','otro') NOT NULL,
     `egresoclinica_cantidad` DECIMAL(10,2) NOT NULL,
+    `egresoclinica_iva` DECIMAL(10,2) NOT NULL,
     `egresoclinica_comprobante` TEXT,
     `egresoclinica_nota` TEXT,
     PRIMARY KEY (`idegresoclinica`),

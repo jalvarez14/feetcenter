@@ -24,13 +24,13 @@ abstract class BaseEgresoclinicaPeer
     const TM_CLASS = 'EgresoclinicaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the idegresoclinica field */
     const IDEGRESOCLINICA = 'egresoclinica.idegresoclinica';
@@ -52,6 +52,9 @@ abstract class BaseEgresoclinicaPeer
 
     /** the column name for the egresoclinica_cantidad field */
     const EGRESOCLINICA_CANTIDAD = 'egresoclinica.egresoclinica_cantidad';
+
+    /** the column name for the egresoclinica_iva field */
+    const EGRESOCLINICA_IVA = 'egresoclinica.egresoclinica_iva';
 
     /** the column name for the egresoclinica_comprobante field */
     const EGRESOCLINICA_COMPROBANTE = 'egresoclinica.egresoclinica_comprobante';
@@ -82,12 +85,12 @@ abstract class BaseEgresoclinicaPeer
      * e.g. EgresoclinicaPeer::$fieldNames[EgresoclinicaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idegresoclinica', 'Idclinica', 'Idempleado', 'EgresoclinicaFecha', 'EgresoclinicaFechaegreso', 'EgresoclinicaTipo', 'EgresoclinicaCantidad', 'EgresoclinicaComprobante', 'EgresoclinicaNota', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idegresoclinica', 'idclinica', 'idempleado', 'egresoclinicaFecha', 'egresoclinicaFechaegreso', 'egresoclinicaTipo', 'egresoclinicaCantidad', 'egresoclinicaComprobante', 'egresoclinicaNota', ),
-        BasePeer::TYPE_COLNAME => array (EgresoclinicaPeer::IDEGRESOCLINICA, EgresoclinicaPeer::IDCLINICA, EgresoclinicaPeer::IDEMPLEADO, EgresoclinicaPeer::EGRESOCLINICA_FECHA, EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO, EgresoclinicaPeer::EGRESOCLINICA_TIPO, EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD, EgresoclinicaPeer::EGRESOCLINICA_COMPROBANTE, EgresoclinicaPeer::EGRESOCLINICA_NOTA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEGRESOCLINICA', 'IDCLINICA', 'IDEMPLEADO', 'EGRESOCLINICA_FECHA', 'EGRESOCLINICA_FECHAEGRESO', 'EGRESOCLINICA_TIPO', 'EGRESOCLINICA_CANTIDAD', 'EGRESOCLINICA_COMPROBANTE', 'EGRESOCLINICA_NOTA', ),
-        BasePeer::TYPE_FIELDNAME => array ('idegresoclinica', 'idclinica', 'idempleado', 'egresoclinica_fecha', 'egresoclinica_fechaegreso', 'egresoclinica_tipo', 'egresoclinica_cantidad', 'egresoclinica_comprobante', 'egresoclinica_nota', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idegresoclinica', 'Idclinica', 'Idempleado', 'EgresoclinicaFecha', 'EgresoclinicaFechaegreso', 'EgresoclinicaTipo', 'EgresoclinicaCantidad', 'EgresoclinicaIva', 'EgresoclinicaComprobante', 'EgresoclinicaNota', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idegresoclinica', 'idclinica', 'idempleado', 'egresoclinicaFecha', 'egresoclinicaFechaegreso', 'egresoclinicaTipo', 'egresoclinicaCantidad', 'egresoclinicaIva', 'egresoclinicaComprobante', 'egresoclinicaNota', ),
+        BasePeer::TYPE_COLNAME => array (EgresoclinicaPeer::IDEGRESOCLINICA, EgresoclinicaPeer::IDCLINICA, EgresoclinicaPeer::IDEMPLEADO, EgresoclinicaPeer::EGRESOCLINICA_FECHA, EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO, EgresoclinicaPeer::EGRESOCLINICA_TIPO, EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD, EgresoclinicaPeer::EGRESOCLINICA_IVA, EgresoclinicaPeer::EGRESOCLINICA_COMPROBANTE, EgresoclinicaPeer::EGRESOCLINICA_NOTA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEGRESOCLINICA', 'IDCLINICA', 'IDEMPLEADO', 'EGRESOCLINICA_FECHA', 'EGRESOCLINICA_FECHAEGRESO', 'EGRESOCLINICA_TIPO', 'EGRESOCLINICA_CANTIDAD', 'EGRESOCLINICA_IVA', 'EGRESOCLINICA_COMPROBANTE', 'EGRESOCLINICA_NOTA', ),
+        BasePeer::TYPE_FIELDNAME => array ('idegresoclinica', 'idclinica', 'idempleado', 'egresoclinica_fecha', 'egresoclinica_fechaegreso', 'egresoclinica_tipo', 'egresoclinica_cantidad', 'egresoclinica_iva', 'egresoclinica_comprobante', 'egresoclinica_nota', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -97,12 +100,12 @@ abstract class BaseEgresoclinicaPeer
      * e.g. EgresoclinicaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idegresoclinica' => 0, 'Idclinica' => 1, 'Idempleado' => 2, 'EgresoclinicaFecha' => 3, 'EgresoclinicaFechaegreso' => 4, 'EgresoclinicaTipo' => 5, 'EgresoclinicaCantidad' => 6, 'EgresoclinicaComprobante' => 7, 'EgresoclinicaNota' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idegresoclinica' => 0, 'idclinica' => 1, 'idempleado' => 2, 'egresoclinicaFecha' => 3, 'egresoclinicaFechaegreso' => 4, 'egresoclinicaTipo' => 5, 'egresoclinicaCantidad' => 6, 'egresoclinicaComprobante' => 7, 'egresoclinicaNota' => 8, ),
-        BasePeer::TYPE_COLNAME => array (EgresoclinicaPeer::IDEGRESOCLINICA => 0, EgresoclinicaPeer::IDCLINICA => 1, EgresoclinicaPeer::IDEMPLEADO => 2, EgresoclinicaPeer::EGRESOCLINICA_FECHA => 3, EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO => 4, EgresoclinicaPeer::EGRESOCLINICA_TIPO => 5, EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD => 6, EgresoclinicaPeer::EGRESOCLINICA_COMPROBANTE => 7, EgresoclinicaPeer::EGRESOCLINICA_NOTA => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEGRESOCLINICA' => 0, 'IDCLINICA' => 1, 'IDEMPLEADO' => 2, 'EGRESOCLINICA_FECHA' => 3, 'EGRESOCLINICA_FECHAEGRESO' => 4, 'EGRESOCLINICA_TIPO' => 5, 'EGRESOCLINICA_CANTIDAD' => 6, 'EGRESOCLINICA_COMPROBANTE' => 7, 'EGRESOCLINICA_NOTA' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('idegresoclinica' => 0, 'idclinica' => 1, 'idempleado' => 2, 'egresoclinica_fecha' => 3, 'egresoclinica_fechaegreso' => 4, 'egresoclinica_tipo' => 5, 'egresoclinica_cantidad' => 6, 'egresoclinica_comprobante' => 7, 'egresoclinica_nota' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idegresoclinica' => 0, 'Idclinica' => 1, 'Idempleado' => 2, 'EgresoclinicaFecha' => 3, 'EgresoclinicaFechaegreso' => 4, 'EgresoclinicaTipo' => 5, 'EgresoclinicaCantidad' => 6, 'EgresoclinicaIva' => 7, 'EgresoclinicaComprobante' => 8, 'EgresoclinicaNota' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idegresoclinica' => 0, 'idclinica' => 1, 'idempleado' => 2, 'egresoclinicaFecha' => 3, 'egresoclinicaFechaegreso' => 4, 'egresoclinicaTipo' => 5, 'egresoclinicaCantidad' => 6, 'egresoclinicaIva' => 7, 'egresoclinicaComprobante' => 8, 'egresoclinicaNota' => 9, ),
+        BasePeer::TYPE_COLNAME => array (EgresoclinicaPeer::IDEGRESOCLINICA => 0, EgresoclinicaPeer::IDCLINICA => 1, EgresoclinicaPeer::IDEMPLEADO => 2, EgresoclinicaPeer::EGRESOCLINICA_FECHA => 3, EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO => 4, EgresoclinicaPeer::EGRESOCLINICA_TIPO => 5, EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD => 6, EgresoclinicaPeer::EGRESOCLINICA_IVA => 7, EgresoclinicaPeer::EGRESOCLINICA_COMPROBANTE => 8, EgresoclinicaPeer::EGRESOCLINICA_NOTA => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEGRESOCLINICA' => 0, 'IDCLINICA' => 1, 'IDEMPLEADO' => 2, 'EGRESOCLINICA_FECHA' => 3, 'EGRESOCLINICA_FECHAEGRESO' => 4, 'EGRESOCLINICA_TIPO' => 5, 'EGRESOCLINICA_CANTIDAD' => 6, 'EGRESOCLINICA_IVA' => 7, 'EGRESOCLINICA_COMPROBANTE' => 8, 'EGRESOCLINICA_NOTA' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('idegresoclinica' => 0, 'idclinica' => 1, 'idempleado' => 2, 'egresoclinica_fecha' => 3, 'egresoclinica_fechaegreso' => 4, 'egresoclinica_tipo' => 5, 'egresoclinica_cantidad' => 6, 'egresoclinica_iva' => 7, 'egresoclinica_comprobante' => 8, 'egresoclinica_nota' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /** The enumerated values for this table */
@@ -236,6 +239,7 @@ abstract class BaseEgresoclinicaPeer
             $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO);
             $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_TIPO);
             $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD);
+            $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_IVA);
             $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_COMPROBANTE);
             $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_NOTA);
         } else {
@@ -246,6 +250,7 @@ abstract class BaseEgresoclinicaPeer
             $criteria->addSelectColumn($alias . '.egresoclinica_fechaegreso');
             $criteria->addSelectColumn($alias . '.egresoclinica_tipo');
             $criteria->addSelectColumn($alias . '.egresoclinica_cantidad');
+            $criteria->addSelectColumn($alias . '.egresoclinica_iva');
             $criteria->addSelectColumn($alias . '.egresoclinica_comprobante');
             $criteria->addSelectColumn($alias . '.egresoclinica_nota');
         }
