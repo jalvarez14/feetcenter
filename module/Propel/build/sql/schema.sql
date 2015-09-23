@@ -149,6 +149,20 @@ CREATE TABLE `compradetalle`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- concepto
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `concepto`;
+
+CREATE TABLE `concepto`
+(
+    `idconcepto` INTEGER NOT NULL AUTO_INCREMENT,
+    `concepto_nombre` VARCHAR(45) NOT NULL,
+    `concepto_descripcion` VARCHAR(255),
+    PRIMARY KEY (`idconcepto`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- configuracion
 -- ---------------------------------------------------------------------
 
@@ -173,10 +187,10 @@ CREATE TABLE `egresoclinica`
 (
     `idegresoclinica` INTEGER NOT NULL AUTO_INCREMENT,
     `idclinica` INTEGER NOT NULL,
+    `idconcepto` INTEGER NOT NULL,
     `idempleado` INTEGER NOT NULL,
     `egresoclinica_fecha` DATETIME NOT NULL,
     `egresoclinica_fechaegreso` DATE NOT NULL,
-    `egresoclinica_tipo` enum('recoleccion','otro') NOT NULL,
     `egresoclinica_cantidad` DECIMAL(10,2) NOT NULL,
     `egresoclinica_iva` DECIMAL(10,2) NOT NULL,
     `egresoclinica_comprobante` TEXT,
@@ -184,11 +198,15 @@ CREATE TABLE `egresoclinica`
     PRIMARY KEY (`idegresoclinica`),
     INDEX `idclinica` (`idclinica`),
     INDEX `idempleado` (`idempleado`),
+    INDEX `idconcepto` (`idconcepto`),
     CONSTRAINT `idclinica_egresoclinica`
         FOREIGN KEY (`idclinica`)
         REFERENCES `clinica` (`idclinica`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
+    CONSTRAINT `idconcepto_egresoclinica`
+        FOREIGN KEY (`idconcepto`)
+        REFERENCES `concepto` (`idconcepto`),
     CONSTRAINT `idempleado_egresoclinica`
         FOREIGN KEY (`idempleado`)
         REFERENCES `empleado` (`idempleado`)

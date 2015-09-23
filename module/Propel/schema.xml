@@ -110,6 +110,14 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="concepto" phpName="Concepto" idMethod="native">
+    <column name="idconcepto" phpName="Idconcepto" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="concepto_nombre" phpName="ConceptoNombre" type="VARCHAR" size="45" required="true"/>
+    <column name="concepto_descripcion" phpName="ConceptoDescripcion" type="VARCHAR" size="255" required="false"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="configuracion" phpName="Configuracion" idMethod="native">
     <column name="idconfiguracion" phpName="Idconfiguracion" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="configuracion_nombre" phpName="ConfiguracionNombre" type="VARCHAR" size="45" required="false"/>
@@ -122,16 +130,19 @@
   <table name="egresoclinica" phpName="Egresoclinica" idMethod="native">
     <column name="idegresoclinica" phpName="Idegresoclinica" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
+    <column name="idconcepto" phpName="Idconcepto" type="INTEGER" required="true"/>
     <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
     <column name="egresoclinica_fecha" phpName="EgresoclinicaFecha" type="TIMESTAMP" required="true"/>
     <column name="egresoclinica_fechaegreso" phpName="EgresoclinicaFechaegreso" type="DATE" required="true"/>
-    <column name="egresoclinica_tipo" phpName="EgresoclinicaTipo" type="CHAR" sqlType="enum('recoleccion','otro')" required="true"/>
     <column name="egresoclinica_cantidad" phpName="EgresoclinicaCantidad" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="egresoclinica_iva" phpName="EgresoclinicaIva" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="egresoclinica_comprobante" phpName="EgresoclinicaComprobante" type="LONGVARCHAR" required="false"/>
     <column name="egresoclinica_nota" phpName="EgresoclinicaNota" type="LONGVARCHAR" required="false"/>
     <foreign-key foreignTable="clinica" name="idclinica_egresoclinica" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <foreign-key foreignTable="concepto" name="idconcepto_egresoclinica" onDelete="RESTRICT" onUpdate="RESTRICT">
+      <reference local="idconcepto" foreign="idconcepto"/>
     </foreign-key>
     <foreign-key foreignTable="empleado" name="idempleado_egresoclinica" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idempleado" foreign="idempleado"/>
@@ -141,6 +152,9 @@
     </index>
     <index name="idempleado">
       <index-column name="idempleado"/>
+    </index>
+    <index name="idconcepto">
+      <index-column name="idconcepto"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>

@@ -108,6 +108,7 @@ class Module
                     'Login' => __DIR__ . '/src/'  .'Login',
                     'Shared' => __DIR__ . '/src/'  .'Shared',
                     'Inventario' => __DIR__ . '/src/'  .'Inventario',
+                    'Egresos' => __DIR__ . '/src/'  .'Egresos',
                 ),
             ),
         );

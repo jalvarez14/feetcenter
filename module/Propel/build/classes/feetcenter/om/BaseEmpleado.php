@@ -3578,6 +3578,31 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         return $this->getEgresoclinicas($query, $con);
     }
 
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related Egresoclinicas from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Egresoclinica[] List of Egresoclinica objects
+     */
+    public function getEgresoclinicasJoinConcepto($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = EgresoclinicaQuery::create(null, $criteria);
+        $query->joinWith('Concepto', $join_behavior);
+
+        return $this->getEgresoclinicas($query, $con);
+    }
+
     /**
      * Clears out the collEmpleadoaccesos collection
      *

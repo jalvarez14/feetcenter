@@ -8,10 +8,10 @@
  *
  * @method EgresoclinicaQuery orderByIdegresoclinica($order = Criteria::ASC) Order by the idegresoclinica column
  * @method EgresoclinicaQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
+ * @method EgresoclinicaQuery orderByIdconcepto($order = Criteria::ASC) Order by the idconcepto column
  * @method EgresoclinicaQuery orderByIdempleado($order = Criteria::ASC) Order by the idempleado column
  * @method EgresoclinicaQuery orderByEgresoclinicaFecha($order = Criteria::ASC) Order by the egresoclinica_fecha column
  * @method EgresoclinicaQuery orderByEgresoclinicaFechaegreso($order = Criteria::ASC) Order by the egresoclinica_fechaegreso column
- * @method EgresoclinicaQuery orderByEgresoclinicaTipo($order = Criteria::ASC) Order by the egresoclinica_tipo column
  * @method EgresoclinicaQuery orderByEgresoclinicaCantidad($order = Criteria::ASC) Order by the egresoclinica_cantidad column
  * @method EgresoclinicaQuery orderByEgresoclinicaIva($order = Criteria::ASC) Order by the egresoclinica_iva column
  * @method EgresoclinicaQuery orderByEgresoclinicaComprobante($order = Criteria::ASC) Order by the egresoclinica_comprobante column
@@ -19,10 +19,10 @@
  *
  * @method EgresoclinicaQuery groupByIdegresoclinica() Group by the idegresoclinica column
  * @method EgresoclinicaQuery groupByIdclinica() Group by the idclinica column
+ * @method EgresoclinicaQuery groupByIdconcepto() Group by the idconcepto column
  * @method EgresoclinicaQuery groupByIdempleado() Group by the idempleado column
  * @method EgresoclinicaQuery groupByEgresoclinicaFecha() Group by the egresoclinica_fecha column
  * @method EgresoclinicaQuery groupByEgresoclinicaFechaegreso() Group by the egresoclinica_fechaegreso column
- * @method EgresoclinicaQuery groupByEgresoclinicaTipo() Group by the egresoclinica_tipo column
  * @method EgresoclinicaQuery groupByEgresoclinicaCantidad() Group by the egresoclinica_cantidad column
  * @method EgresoclinicaQuery groupByEgresoclinicaIva() Group by the egresoclinica_iva column
  * @method EgresoclinicaQuery groupByEgresoclinicaComprobante() Group by the egresoclinica_comprobante column
@@ -36,6 +36,10 @@
  * @method EgresoclinicaQuery rightJoinClinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Clinica relation
  * @method EgresoclinicaQuery innerJoinClinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Clinica relation
  *
+ * @method EgresoclinicaQuery leftJoinConcepto($relationAlias = null) Adds a LEFT JOIN clause to the query using the Concepto relation
+ * @method EgresoclinicaQuery rightJoinConcepto($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Concepto relation
+ * @method EgresoclinicaQuery innerJoinConcepto($relationAlias = null) Adds a INNER JOIN clause to the query using the Concepto relation
+ *
  * @method EgresoclinicaQuery leftJoinEmpleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Empleado relation
  * @method EgresoclinicaQuery rightJoinEmpleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleado relation
  * @method EgresoclinicaQuery innerJoinEmpleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleado relation
@@ -44,10 +48,10 @@
  * @method Egresoclinica findOneOrCreate(PropelPDO $con = null) Return the first Egresoclinica matching the query, or a new Egresoclinica object populated from the query conditions when no match is found
  *
  * @method Egresoclinica findOneByIdclinica(int $idclinica) Return the first Egresoclinica filtered by the idclinica column
+ * @method Egresoclinica findOneByIdconcepto(int $idconcepto) Return the first Egresoclinica filtered by the idconcepto column
  * @method Egresoclinica findOneByIdempleado(int $idempleado) Return the first Egresoclinica filtered by the idempleado column
  * @method Egresoclinica findOneByEgresoclinicaFecha(string $egresoclinica_fecha) Return the first Egresoclinica filtered by the egresoclinica_fecha column
  * @method Egresoclinica findOneByEgresoclinicaFechaegreso(string $egresoclinica_fechaegreso) Return the first Egresoclinica filtered by the egresoclinica_fechaegreso column
- * @method Egresoclinica findOneByEgresoclinicaTipo(string $egresoclinica_tipo) Return the first Egresoclinica filtered by the egresoclinica_tipo column
  * @method Egresoclinica findOneByEgresoclinicaCantidad(string $egresoclinica_cantidad) Return the first Egresoclinica filtered by the egresoclinica_cantidad column
  * @method Egresoclinica findOneByEgresoclinicaIva(string $egresoclinica_iva) Return the first Egresoclinica filtered by the egresoclinica_iva column
  * @method Egresoclinica findOneByEgresoclinicaComprobante(string $egresoclinica_comprobante) Return the first Egresoclinica filtered by the egresoclinica_comprobante column
@@ -55,10 +59,10 @@
  *
  * @method array findByIdegresoclinica(int $idegresoclinica) Return Egresoclinica objects filtered by the idegresoclinica column
  * @method array findByIdclinica(int $idclinica) Return Egresoclinica objects filtered by the idclinica column
+ * @method array findByIdconcepto(int $idconcepto) Return Egresoclinica objects filtered by the idconcepto column
  * @method array findByIdempleado(int $idempleado) Return Egresoclinica objects filtered by the idempleado column
  * @method array findByEgresoclinicaFecha(string $egresoclinica_fecha) Return Egresoclinica objects filtered by the egresoclinica_fecha column
  * @method array findByEgresoclinicaFechaegreso(string $egresoclinica_fechaegreso) Return Egresoclinica objects filtered by the egresoclinica_fechaegreso column
- * @method array findByEgresoclinicaTipo(string $egresoclinica_tipo) Return Egresoclinica objects filtered by the egresoclinica_tipo column
  * @method array findByEgresoclinicaCantidad(string $egresoclinica_cantidad) Return Egresoclinica objects filtered by the egresoclinica_cantidad column
  * @method array findByEgresoclinicaIva(string $egresoclinica_iva) Return Egresoclinica objects filtered by the egresoclinica_iva column
  * @method array findByEgresoclinicaComprobante(string $egresoclinica_comprobante) Return Egresoclinica objects filtered by the egresoclinica_comprobante column
@@ -170,7 +174,7 @@ abstract class BaseEgresoclinicaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idegresoclinica`, `idclinica`, `idempleado`, `egresoclinica_fecha`, `egresoclinica_fechaegreso`, `egresoclinica_tipo`, `egresoclinica_cantidad`, `egresoclinica_iva`, `egresoclinica_comprobante`, `egresoclinica_nota` FROM `egresoclinica` WHERE `idegresoclinica` = :p0';
+        $sql = 'SELECT `idegresoclinica`, `idclinica`, `idconcepto`, `idempleado`, `egresoclinica_fecha`, `egresoclinica_fechaegreso`, `egresoclinica_cantidad`, `egresoclinica_iva`, `egresoclinica_comprobante`, `egresoclinica_nota` FROM `egresoclinica` WHERE `idegresoclinica` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -346,6 +350,50 @@ abstract class BaseEgresoclinicaQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the idconcepto column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdconcepto(1234); // WHERE idconcepto = 1234
+     * $query->filterByIdconcepto(array(12, 34)); // WHERE idconcepto IN (12, 34)
+     * $query->filterByIdconcepto(array('min' => 12)); // WHERE idconcepto >= 12
+     * $query->filterByIdconcepto(array('max' => 12)); // WHERE idconcepto <= 12
+     * </code>
+     *
+     * @see       filterByConcepto()
+     *
+     * @param     mixed $idconcepto The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EgresoclinicaQuery The current query, for fluid interface
+     */
+    public function filterByIdconcepto($idconcepto = null, $comparison = null)
+    {
+        if (is_array($idconcepto)) {
+            $useMinMax = false;
+            if (isset($idconcepto['min'])) {
+                $this->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $idconcepto['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idconcepto['max'])) {
+                $this->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $idconcepto['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $idconcepto, $comparison);
+    }
+
+    /**
      * Filter the query on the idempleado column
      *
      * Example usage:
@@ -473,35 +521,6 @@ abstract class BaseEgresoclinicaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO, $egresoclinicaFechaegreso, $comparison);
-    }
-
-    /**
-     * Filter the query on the egresoclinica_tipo column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByEgresoclinicaTipo('fooValue');   // WHERE egresoclinica_tipo = 'fooValue'
-     * $query->filterByEgresoclinicaTipo('%fooValue%'); // WHERE egresoclinica_tipo LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $egresoclinicaTipo The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return EgresoclinicaQuery The current query, for fluid interface
-     */
-    public function filterByEgresoclinicaTipo($egresoclinicaTipo = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($egresoclinicaTipo)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $egresoclinicaTipo)) {
-                $egresoclinicaTipo = str_replace('*', '%', $egresoclinicaTipo);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(EgresoclinicaPeer::EGRESOCLINICA_TIPO, $egresoclinicaTipo, $comparison);
     }
 
     /**
@@ -720,6 +739,82 @@ abstract class BaseEgresoclinicaQuery extends ModelCriteria
         return $this
             ->joinClinica($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Clinica', 'ClinicaQuery');
+    }
+
+    /**
+     * Filter the query by a related Concepto object
+     *
+     * @param   Concepto|PropelObjectCollection $concepto The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EgresoclinicaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByConcepto($concepto, $comparison = null)
+    {
+        if ($concepto instanceof Concepto) {
+            return $this
+                ->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $concepto->getIdconcepto(), $comparison);
+        } elseif ($concepto instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $concepto->toKeyValue('PrimaryKey', 'Idconcepto'), $comparison);
+        } else {
+            throw new PropelException('filterByConcepto() only accepts arguments of type Concepto or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Concepto relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EgresoclinicaQuery The current query, for fluid interface
+     */
+    public function joinConcepto($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Concepto');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Concepto');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Concepto relation Concepto object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ConceptoQuery A secondary query class using the current class as primary query
+     */
+    public function useConceptoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinConcepto($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Concepto', 'ConceptoQuery');
     }
 
     /**

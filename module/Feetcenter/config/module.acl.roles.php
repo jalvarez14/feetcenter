@@ -12,6 +12,7 @@ return array(
             'catalogos/producto',
             'catalogos/servicio',
             'catalogos/empleado',
+            'catalogos/concepto',
             //Compras
             'compras',
             //Login
@@ -23,6 +24,8 @@ return array(
             'inventario/reorden',
             'inventario/transferencias',
             'inventario/precios',
+            //Egresos
+            'egresos',
         ),
         "deny"=>array(
              
@@ -39,7 +42,9 @@ return array(
             'inventario/existencias',
             'inventario/reorden',
             'inventario/transferencias',
-            'inventario/precios'
+            'inventario/precios',
+            //Egresos
+            'egresos',
         ),
         "deny"=>array(
             //Catalogos
@@ -51,6 +56,7 @@ return array(
             'catalogos/producto',
             'catalogos/servicio',
             'catalogos/empleado',
+            'catalogos/concepto',
             //Compras
             'compras',
         ),
@@ -71,6 +77,7 @@ return array(
             'catalogos/producto',
             'catalogos/servicio',
             'catalogos/empleado',
+            'catalogos/concepto',
             //Compras
             'compras',
             //Inventarios
@@ -80,6 +87,8 @@ return array(
             'inventario/reorden',
             'inventario/transferencias',
             'inventario/precios',
+            //Egresos
+            'egresos',
         ),
     ),
 );

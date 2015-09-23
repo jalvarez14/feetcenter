@@ -38,6 +38,17 @@ return array(
                         ),
                         
                     ),
+                    'concepto' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/concepto[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Concepto',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
                     'insumo' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -210,9 +221,21 @@ return array(
                             ),
                         ),
                     ),
-                )
+                ),
             ),
-            
+            /*
+             * MODULO EGRESOS
+             */
+            'egresos' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/egresos[/:action]',
+                    'defaults' => array(
+                        'controller' => 'Egresos\Controller\Egresos',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -238,6 +261,7 @@ return array(
         'invokables' => array(
             'Feetcenter\Controller\Index' => 'Feetcenter\Controller\IndexController',
             //Catalogos
+            'Catalogos\Controller\Concepto' => 'Catalogos\Controller\ConceptoController',
             'Catalogos\Controller\Clinica' => 'Catalogos\Controller\ClinicaController',
             'Catalogos\Controller\Insumo' => 'Catalogos\Controller\InsumoController',
             'Catalogos\Controller\Proveedor' => 'Catalogos\Controller\ProveedorController',
@@ -257,6 +281,8 @@ return array(
             'Inventario\Controller\Reorden' => 'Inventario\Controller\ReordenController',
             'Inventario\Controller\Transferencias' => 'Inventario\Controller\TransferenciasController',
             'Inventario\Controller\Precios' => 'Inventario\Controller\PreciosController',
+            //Egresos
+            'Egresos\Controller\Egresos' => 'Egresos\Controller\EgresosController',
         ),
     ),
     'view_manager' => array(

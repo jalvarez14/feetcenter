@@ -38,6 +38,9 @@ abstract class BaseEgresoclinicaPeer
     /** the column name for the idclinica field */
     const IDCLINICA = 'egresoclinica.idclinica';
 
+    /** the column name for the idconcepto field */
+    const IDCONCEPTO = 'egresoclinica.idconcepto';
+
     /** the column name for the idempleado field */
     const IDEMPLEADO = 'egresoclinica.idempleado';
 
@@ -46,9 +49,6 @@ abstract class BaseEgresoclinicaPeer
 
     /** the column name for the egresoclinica_fechaegreso field */
     const EGRESOCLINICA_FECHAEGRESO = 'egresoclinica.egresoclinica_fechaegreso';
-
-    /** the column name for the egresoclinica_tipo field */
-    const EGRESOCLINICA_TIPO = 'egresoclinica.egresoclinica_tipo';
 
     /** the column name for the egresoclinica_cantidad field */
     const EGRESOCLINICA_CANTIDAD = 'egresoclinica.egresoclinica_cantidad';
@@ -61,10 +61,6 @@ abstract class BaseEgresoclinicaPeer
 
     /** the column name for the egresoclinica_nota field */
     const EGRESOCLINICA_NOTA = 'egresoclinica.egresoclinica_nota';
-
-    /** The enumerated values for the egresoclinica_tipo field */
-    const EGRESOCLINICA_TIPO_RECOLECCION = 'recoleccion';
-    const EGRESOCLINICA_TIPO_OTRO = 'otro';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -85,11 +81,11 @@ abstract class BaseEgresoclinicaPeer
      * e.g. EgresoclinicaPeer::$fieldNames[EgresoclinicaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idegresoclinica', 'Idclinica', 'Idempleado', 'EgresoclinicaFecha', 'EgresoclinicaFechaegreso', 'EgresoclinicaTipo', 'EgresoclinicaCantidad', 'EgresoclinicaIva', 'EgresoclinicaComprobante', 'EgresoclinicaNota', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idegresoclinica', 'idclinica', 'idempleado', 'egresoclinicaFecha', 'egresoclinicaFechaegreso', 'egresoclinicaTipo', 'egresoclinicaCantidad', 'egresoclinicaIva', 'egresoclinicaComprobante', 'egresoclinicaNota', ),
-        BasePeer::TYPE_COLNAME => array (EgresoclinicaPeer::IDEGRESOCLINICA, EgresoclinicaPeer::IDCLINICA, EgresoclinicaPeer::IDEMPLEADO, EgresoclinicaPeer::EGRESOCLINICA_FECHA, EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO, EgresoclinicaPeer::EGRESOCLINICA_TIPO, EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD, EgresoclinicaPeer::EGRESOCLINICA_IVA, EgresoclinicaPeer::EGRESOCLINICA_COMPROBANTE, EgresoclinicaPeer::EGRESOCLINICA_NOTA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEGRESOCLINICA', 'IDCLINICA', 'IDEMPLEADO', 'EGRESOCLINICA_FECHA', 'EGRESOCLINICA_FECHAEGRESO', 'EGRESOCLINICA_TIPO', 'EGRESOCLINICA_CANTIDAD', 'EGRESOCLINICA_IVA', 'EGRESOCLINICA_COMPROBANTE', 'EGRESOCLINICA_NOTA', ),
-        BasePeer::TYPE_FIELDNAME => array ('idegresoclinica', 'idclinica', 'idempleado', 'egresoclinica_fecha', 'egresoclinica_fechaegreso', 'egresoclinica_tipo', 'egresoclinica_cantidad', 'egresoclinica_iva', 'egresoclinica_comprobante', 'egresoclinica_nota', ),
+        BasePeer::TYPE_PHPNAME => array ('Idegresoclinica', 'Idclinica', 'Idconcepto', 'Idempleado', 'EgresoclinicaFecha', 'EgresoclinicaFechaegreso', 'EgresoclinicaCantidad', 'EgresoclinicaIva', 'EgresoclinicaComprobante', 'EgresoclinicaNota', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idegresoclinica', 'idclinica', 'idconcepto', 'idempleado', 'egresoclinicaFecha', 'egresoclinicaFechaegreso', 'egresoclinicaCantidad', 'egresoclinicaIva', 'egresoclinicaComprobante', 'egresoclinicaNota', ),
+        BasePeer::TYPE_COLNAME => array (EgresoclinicaPeer::IDEGRESOCLINICA, EgresoclinicaPeer::IDCLINICA, EgresoclinicaPeer::IDCONCEPTO, EgresoclinicaPeer::IDEMPLEADO, EgresoclinicaPeer::EGRESOCLINICA_FECHA, EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO, EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD, EgresoclinicaPeer::EGRESOCLINICA_IVA, EgresoclinicaPeer::EGRESOCLINICA_COMPROBANTE, EgresoclinicaPeer::EGRESOCLINICA_NOTA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEGRESOCLINICA', 'IDCLINICA', 'IDCONCEPTO', 'IDEMPLEADO', 'EGRESOCLINICA_FECHA', 'EGRESOCLINICA_FECHAEGRESO', 'EGRESOCLINICA_CANTIDAD', 'EGRESOCLINICA_IVA', 'EGRESOCLINICA_COMPROBANTE', 'EGRESOCLINICA_NOTA', ),
+        BasePeer::TYPE_FIELDNAME => array ('idegresoclinica', 'idclinica', 'idconcepto', 'idempleado', 'egresoclinica_fecha', 'egresoclinica_fechaegreso', 'egresoclinica_cantidad', 'egresoclinica_iva', 'egresoclinica_comprobante', 'egresoclinica_nota', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
@@ -100,20 +96,12 @@ abstract class BaseEgresoclinicaPeer
      * e.g. EgresoclinicaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idegresoclinica' => 0, 'Idclinica' => 1, 'Idempleado' => 2, 'EgresoclinicaFecha' => 3, 'EgresoclinicaFechaegreso' => 4, 'EgresoclinicaTipo' => 5, 'EgresoclinicaCantidad' => 6, 'EgresoclinicaIva' => 7, 'EgresoclinicaComprobante' => 8, 'EgresoclinicaNota' => 9, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idegresoclinica' => 0, 'idclinica' => 1, 'idempleado' => 2, 'egresoclinicaFecha' => 3, 'egresoclinicaFechaegreso' => 4, 'egresoclinicaTipo' => 5, 'egresoclinicaCantidad' => 6, 'egresoclinicaIva' => 7, 'egresoclinicaComprobante' => 8, 'egresoclinicaNota' => 9, ),
-        BasePeer::TYPE_COLNAME => array (EgresoclinicaPeer::IDEGRESOCLINICA => 0, EgresoclinicaPeer::IDCLINICA => 1, EgresoclinicaPeer::IDEMPLEADO => 2, EgresoclinicaPeer::EGRESOCLINICA_FECHA => 3, EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO => 4, EgresoclinicaPeer::EGRESOCLINICA_TIPO => 5, EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD => 6, EgresoclinicaPeer::EGRESOCLINICA_IVA => 7, EgresoclinicaPeer::EGRESOCLINICA_COMPROBANTE => 8, EgresoclinicaPeer::EGRESOCLINICA_NOTA => 9, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEGRESOCLINICA' => 0, 'IDCLINICA' => 1, 'IDEMPLEADO' => 2, 'EGRESOCLINICA_FECHA' => 3, 'EGRESOCLINICA_FECHAEGRESO' => 4, 'EGRESOCLINICA_TIPO' => 5, 'EGRESOCLINICA_CANTIDAD' => 6, 'EGRESOCLINICA_IVA' => 7, 'EGRESOCLINICA_COMPROBANTE' => 8, 'EGRESOCLINICA_NOTA' => 9, ),
-        BasePeer::TYPE_FIELDNAME => array ('idegresoclinica' => 0, 'idclinica' => 1, 'idempleado' => 2, 'egresoclinica_fecha' => 3, 'egresoclinica_fechaegreso' => 4, 'egresoclinica_tipo' => 5, 'egresoclinica_cantidad' => 6, 'egresoclinica_iva' => 7, 'egresoclinica_comprobante' => 8, 'egresoclinica_nota' => 9, ),
+        BasePeer::TYPE_PHPNAME => array ('Idegresoclinica' => 0, 'Idclinica' => 1, 'Idconcepto' => 2, 'Idempleado' => 3, 'EgresoclinicaFecha' => 4, 'EgresoclinicaFechaegreso' => 5, 'EgresoclinicaCantidad' => 6, 'EgresoclinicaIva' => 7, 'EgresoclinicaComprobante' => 8, 'EgresoclinicaNota' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idegresoclinica' => 0, 'idclinica' => 1, 'idconcepto' => 2, 'idempleado' => 3, 'egresoclinicaFecha' => 4, 'egresoclinicaFechaegreso' => 5, 'egresoclinicaCantidad' => 6, 'egresoclinicaIva' => 7, 'egresoclinicaComprobante' => 8, 'egresoclinicaNota' => 9, ),
+        BasePeer::TYPE_COLNAME => array (EgresoclinicaPeer::IDEGRESOCLINICA => 0, EgresoclinicaPeer::IDCLINICA => 1, EgresoclinicaPeer::IDCONCEPTO => 2, EgresoclinicaPeer::IDEMPLEADO => 3, EgresoclinicaPeer::EGRESOCLINICA_FECHA => 4, EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO => 5, EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD => 6, EgresoclinicaPeer::EGRESOCLINICA_IVA => 7, EgresoclinicaPeer::EGRESOCLINICA_COMPROBANTE => 8, EgresoclinicaPeer::EGRESOCLINICA_NOTA => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEGRESOCLINICA' => 0, 'IDCLINICA' => 1, 'IDCONCEPTO' => 2, 'IDEMPLEADO' => 3, 'EGRESOCLINICA_FECHA' => 4, 'EGRESOCLINICA_FECHAEGRESO' => 5, 'EGRESOCLINICA_CANTIDAD' => 6, 'EGRESOCLINICA_IVA' => 7, 'EGRESOCLINICA_COMPROBANTE' => 8, 'EGRESOCLINICA_NOTA' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('idegresoclinica' => 0, 'idclinica' => 1, 'idconcepto' => 2, 'idempleado' => 3, 'egresoclinica_fecha' => 4, 'egresoclinica_fechaegreso' => 5, 'egresoclinica_cantidad' => 6, 'egresoclinica_iva' => 7, 'egresoclinica_comprobante' => 8, 'egresoclinica_nota' => 9, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
-    );
-
-    /** The enumerated values for this table */
-    protected static $enumValueSets = array(
-        EgresoclinicaPeer::EGRESOCLINICA_TIPO => array(
-            EgresoclinicaPeer::EGRESOCLINICA_TIPO_RECOLECCION,
-            EgresoclinicaPeer::EGRESOCLINICA_TIPO_OTRO,
-        ),
     );
 
     /**
@@ -156,51 +144,6 @@ abstract class BaseEgresoclinicaPeer
     }
 
     /**
-     * Gets the list of values for all ENUM columns
-     * @return array
-     */
-    public static function getValueSets()
-    {
-      return EgresoclinicaPeer::$enumValueSets;
-    }
-
-    /**
-     * Gets the list of values for an ENUM column
-     *
-     * @param string $colname The ENUM column name.
-     *
-     * @return array list of possible values for the column
-     */
-    public static function getValueSet($colname)
-    {
-        $valueSets = EgresoclinicaPeer::getValueSets();
-
-        if (!isset($valueSets[$colname])) {
-            throw new PropelException(sprintf('Column "%s" has no ValueSet.', $colname));
-        }
-
-        return $valueSets[$colname];
-    }
-
-    /**
-     * Gets the SQL value for the ENUM column value
-     *
-     * @param string $colname ENUM column name.
-     * @param string $enumVal ENUM value.
-     *
-     * @return int SQL value
-     */
-    public static function getSqlValueForEnum($colname, $enumVal)
-    {
-        $values = EgresoclinicaPeer::getValueSet($colname);
-        if (!in_array($enumVal, $values)) {
-            throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $colname));
-        }
-
-        return array_search($enumVal, $values);
-    }
-
-    /**
      * Convenience method which changes table.column to alias.column.
      *
      * Using this method you can maintain SQL abstraction while using column aliases.
@@ -234,10 +177,10 @@ abstract class BaseEgresoclinicaPeer
         if (null === $alias) {
             $criteria->addSelectColumn(EgresoclinicaPeer::IDEGRESOCLINICA);
             $criteria->addSelectColumn(EgresoclinicaPeer::IDCLINICA);
+            $criteria->addSelectColumn(EgresoclinicaPeer::IDCONCEPTO);
             $criteria->addSelectColumn(EgresoclinicaPeer::IDEMPLEADO);
             $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_FECHA);
             $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO);
-            $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_TIPO);
             $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD);
             $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_IVA);
             $criteria->addSelectColumn(EgresoclinicaPeer::EGRESOCLINICA_COMPROBANTE);
@@ -245,10 +188,10 @@ abstract class BaseEgresoclinicaPeer
         } else {
             $criteria->addSelectColumn($alias . '.idegresoclinica');
             $criteria->addSelectColumn($alias . '.idclinica');
+            $criteria->addSelectColumn($alias . '.idconcepto');
             $criteria->addSelectColumn($alias . '.idempleado');
             $criteria->addSelectColumn($alias . '.egresoclinica_fecha');
             $criteria->addSelectColumn($alias . '.egresoclinica_fechaegreso');
-            $criteria->addSelectColumn($alias . '.egresoclinica_tipo');
             $criteria->addSelectColumn($alias . '.egresoclinica_cantidad');
             $criteria->addSelectColumn($alias . '.egresoclinica_iva');
             $criteria->addSelectColumn($alias . '.egresoclinica_comprobante');
@@ -606,6 +549,57 @@ abstract class BaseEgresoclinicaPeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related Concepto table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinConcepto(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(EgresoclinicaPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            EgresoclinicaPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(EgresoclinicaPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(EgresoclinicaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(EgresoclinicaPeer::IDCONCEPTO, ConceptoPeer::IDCONCEPTO, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining the related Empleado table
      *
      * @param      Criteria $criteria
@@ -724,6 +718,73 @@ abstract class BaseEgresoclinicaPeer
 
 
     /**
+     * Selects a collection of Egresoclinica objects pre-filled with their Concepto objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Egresoclinica objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinConcepto(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EgresoclinicaPeer::DATABASE_NAME);
+        }
+
+        EgresoclinicaPeer::addSelectColumns($criteria);
+        $startcol = EgresoclinicaPeer::NUM_HYDRATE_COLUMNS;
+        ConceptoPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(EgresoclinicaPeer::IDCONCEPTO, ConceptoPeer::IDCONCEPTO, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EgresoclinicaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EgresoclinicaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = EgresoclinicaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EgresoclinicaPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = ConceptoPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = ConceptoPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = ConceptoPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    ConceptoPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Egresoclinica) to $obj2 (Concepto)
+                $obj2->addEgresoclinica($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
      * Selects a collection of Egresoclinica objects pre-filled with their Empleado objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -828,6 +889,8 @@ abstract class BaseEgresoclinicaPeer
 
         $criteria->addJoin(EgresoclinicaPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
+        $criteria->addJoin(EgresoclinicaPeer::IDCONCEPTO, ConceptoPeer::IDCONCEPTO, $join_behavior);
+
         $criteria->addJoin(EgresoclinicaPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -867,10 +930,15 @@ abstract class BaseEgresoclinicaPeer
         ClinicaPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
 
+        ConceptoPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ConceptoPeer::NUM_HYDRATE_COLUMNS;
+
         EmpleadoPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+        $startcol5 = $startcol4 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(EgresoclinicaPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(EgresoclinicaPeer::IDCONCEPTO, ConceptoPeer::IDCONCEPTO, $join_behavior);
 
         $criteria->addJoin(EgresoclinicaPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
@@ -909,22 +977,40 @@ abstract class BaseEgresoclinicaPeer
                 $obj2->addEgresoclinica($obj1);
             } // if joined row not null
 
-            // Add objects for joined Empleado rows
+            // Add objects for joined Concepto rows
 
-            $key3 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            $key3 = ConceptoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
             if ($key3 !== null) {
-                $obj3 = EmpleadoPeer::getInstanceFromPool($key3);
+                $obj3 = ConceptoPeer::getInstanceFromPool($key3);
                 if (!$obj3) {
 
-                    $cls = EmpleadoPeer::getOMClass();
+                    $cls = ConceptoPeer::getOMClass();
 
                     $obj3 = new $cls();
                     $obj3->hydrate($row, $startcol3);
-                    EmpleadoPeer::addInstanceToPool($obj3, $key3);
+                    ConceptoPeer::addInstanceToPool($obj3, $key3);
                 } // if obj3 loaded
 
-                // Add the $obj1 (Egresoclinica) to the collection in $obj3 (Empleado)
+                // Add the $obj1 (Egresoclinica) to the collection in $obj3 (Concepto)
                 $obj3->addEgresoclinica($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Empleado rows
+
+            $key4 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+            if ($key4 !== null) {
+                $obj4 = EmpleadoPeer::getInstanceFromPool($key4);
+                if (!$obj4) {
+
+                    $cls = EmpleadoPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    EmpleadoPeer::addInstanceToPool($obj4, $key4);
+                } // if obj4 loaded
+
+                // Add the $obj1 (Egresoclinica) to the collection in $obj4 (Empleado)
+                $obj4->addEgresoclinica($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -970,6 +1056,61 @@ abstract class BaseEgresoclinicaPeer
         if ($con === null) {
             $con = Propel::getConnection(EgresoclinicaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
+
+        $criteria->addJoin(EgresoclinicaPeer::IDCONCEPTO, ConceptoPeer::IDCONCEPTO, $join_behavior);
+
+        $criteria->addJoin(EgresoclinicaPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Concepto table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptConcepto(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(EgresoclinicaPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            EgresoclinicaPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(EgresoclinicaPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(EgresoclinicaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(EgresoclinicaPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
         $criteria->addJoin(EgresoclinicaPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
@@ -1024,6 +1165,8 @@ abstract class BaseEgresoclinicaPeer
 
         $criteria->addJoin(EgresoclinicaPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
+        $criteria->addJoin(EgresoclinicaPeer::IDCONCEPTO, ConceptoPeer::IDCONCEPTO, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1061,8 +1204,13 @@ abstract class BaseEgresoclinicaPeer
         EgresoclinicaPeer::addSelectColumns($criteria);
         $startcol2 = EgresoclinicaPeer::NUM_HYDRATE_COLUMNS;
 
+        ConceptoPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ConceptoPeer::NUM_HYDRATE_COLUMNS;
+
         EmpleadoPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EgresoclinicaPeer::IDCONCEPTO, ConceptoPeer::IDCONCEPTO, $join_behavior);
 
         $criteria->addJoin(EgresoclinicaPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
@@ -1084,22 +1232,139 @@ abstract class BaseEgresoclinicaPeer
                 EgresoclinicaPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined Empleado rows
+                // Add objects for joined Concepto rows
 
-                $key2 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                $key2 = ConceptoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
                 if ($key2 !== null) {
-                    $obj2 = EmpleadoPeer::getInstanceFromPool($key2);
+                    $obj2 = ConceptoPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
 
-                        $cls = EmpleadoPeer::getOMClass();
+                        $cls = ConceptoPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    EmpleadoPeer::addInstanceToPool($obj2, $key2);
+                    ConceptoPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (Egresoclinica) to the collection in $obj2 (Empleado)
+                // Add the $obj1 (Egresoclinica) to the collection in $obj2 (Concepto)
                 $obj2->addEgresoclinica($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Empleado rows
+
+                $key3 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = EmpleadoPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = EmpleadoPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    EmpleadoPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Egresoclinica) to the collection in $obj3 (Empleado)
+                $obj3->addEgresoclinica($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Egresoclinica objects pre-filled with all related objects except Concepto.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Egresoclinica objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptConcepto(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EgresoclinicaPeer::DATABASE_NAME);
+        }
+
+        EgresoclinicaPeer::addSelectColumns($criteria);
+        $startcol2 = EgresoclinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        ClinicaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EgresoclinicaPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(EgresoclinicaPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EgresoclinicaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EgresoclinicaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = EgresoclinicaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EgresoclinicaPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Clinica rows
+
+                $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Egresoclinica) to the collection in $obj2 (Clinica)
+                $obj2->addEgresoclinica($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Empleado rows
+
+                $key3 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = EmpleadoPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = EmpleadoPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    EmpleadoPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Egresoclinica) to the collection in $obj3 (Empleado)
+                $obj3->addEgresoclinica($obj1);
 
             } // if joined row is not null
 
@@ -1138,7 +1403,12 @@ abstract class BaseEgresoclinicaPeer
         ClinicaPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
 
+        ConceptoPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ConceptoPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(EgresoclinicaPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(EgresoclinicaPeer::IDCONCEPTO, ConceptoPeer::IDCONCEPTO, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1174,6 +1444,25 @@ abstract class BaseEgresoclinicaPeer
 
                 // Add the $obj1 (Egresoclinica) to the collection in $obj2 (Clinica)
                 $obj2->addEgresoclinica($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Concepto rows
+
+                $key3 = ConceptoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ConceptoPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ConceptoPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ConceptoPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Egresoclinica) to the collection in $obj3 (Concepto)
+                $obj3->addEgresoclinica($obj1);
 
             } // if joined row is not null
 

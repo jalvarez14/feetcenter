@@ -40,14 +40,10 @@ class EgresoclinicaTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idegresoclinica', 'Idegresoclinica', 'INTEGER', true, null, null);
         $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
+        $this->addForeignKey('idconcepto', 'Idconcepto', 'INTEGER', 'concepto', 'idconcepto', true, null, null);
         $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', true, null, null);
         $this->addColumn('egresoclinica_fecha', 'EgresoclinicaFecha', 'TIMESTAMP', true, null, null);
         $this->addColumn('egresoclinica_fechaegreso', 'EgresoclinicaFechaegreso', 'DATE', true, null, null);
-        $this->addColumn('egresoclinica_tipo', 'EgresoclinicaTipo', 'CHAR', true, null, null);
-        $this->getColumn('egresoclinica_tipo', false)->setValueSet(array (
-  0 => 'recoleccion',
-  1 => 'otro',
-));
         $this->addColumn('egresoclinica_cantidad', 'EgresoclinicaCantidad', 'DECIMAL', true, 10, null);
         $this->addColumn('egresoclinica_iva', 'EgresoclinicaIva', 'DECIMAL', true, 10, null);
         $this->addColumn('egresoclinica_comprobante', 'EgresoclinicaComprobante', 'LONGVARCHAR', false, null, null);
@@ -61,6 +57,7 @@ class EgresoclinicaTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Concepto', 'Concepto', RelationMap::MANY_TO_ONE, array('idconcepto' => 'idconcepto', ), null, null);
         $this->addRelation('Empleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
