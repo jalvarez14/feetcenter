@@ -1,0 +1,44 @@
+<h1>Egresos<a style="float: right; text-decoration: none"href="/egresos/nuevo">Nuevo</a></h1>
+<?php if(count($successMessages)) :?>
+    <div class="units-row">
+        <?php foreach ($successMessages as $message) :?>
+            <div class="unit-100">    
+                <div class="tools-alert tools-alert-green">
+                    <?php echo $message?>
+                </div> 
+            </div>
+        <?php endforeach;?>
+    </div>
+<?php endif;?>
+<table>
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Fecha mov.</th>
+            <th>Clinica</th>
+            <th>Empleado</th>
+            <th>Gasto</th>
+            <th>IVA</th>
+            <th>Nota</th>
+            <th>Comprobante</th>  
+        </tr>
+    </thead>
+    <tbody>
+        <?php $entity = new Egresoclinica();?>
+        <?php foreach($collection as $entity) : ?>
+            <tr id="<?php echo $entity->getIdegresoclinica()?>">
+                <td><?php echo $entity->getEgresoclinicaFecha('d/m/Y')?></td>
+                <td><?php echo $entity->getEgresoclinicaFechaegreso('d/m/Y')?></td>
+                <td><?php echo $entity->getClinica()->getClinicaNombre()?></td>
+                <td><?php echo $entity->getEmpleado()->getEmpleadoNombre()?></td>
+                <td><?php echo $entity->getEgresoclinicaCantidad()?></td>
+                <td><?php echo $entity->getEgresoclinicaIva()?></td>
+                <td><?php echo $entity->getEgresoclinicaNota()?></td>
+                <td><?php echo $entity->getEgresoclinicaComprobante()?></td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>
+<script>
+
+</script>

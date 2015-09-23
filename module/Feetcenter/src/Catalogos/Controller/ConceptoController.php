@@ -16,7 +16,7 @@ class ConceptoController extends AbstractActionController
 {
     public function indexAction()
     {
-        $collection = \CanalcomunicacionQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+        $collection = \ConceptoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
 
         
         return new ViewModel(array(
@@ -32,12 +32,12 @@ class ConceptoController extends AbstractActionController
         
         $request = $this->getRequest();
         
-        $form = new \Catalogos\Form\CanalForm();
+        $form = new \Catalogos\Form\ConceptoForm();
         
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-                     
+               
             foreach ($post_data as $k => $v){
                 if(empty($v)){
                     unset($post_data[$k]);
@@ -50,7 +50,7 @@ class ConceptoController extends AbstractActionController
             //Validamos nuestro formulario
             if ($form->isValid()) {
                 
-                $entity = new \Canalcomunicacion();
+                $entity = new \Concepto();
 
                 foreach ($form->getData() as $key => $value) {
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
@@ -63,7 +63,7 @@ class ConceptoController extends AbstractActionController
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 
                 //Redireccionamos a nuestro list
-                return $this->redirect()->toRoute('catalogos/canal');
+                return $this->redirect()->toRoute('catalogos/concepto');
 
             }
         }
@@ -82,17 +82,17 @@ class ConceptoController extends AbstractActionController
             $id = $this->params()->fromRoute('id');
             
             //Verificamos que el Id lugar que se quiere modificar exista
-            if(!\CanalcomunicacionQuery::create()->filterByIdcanalcomunicacion($id)->exists()){
+            if(!\ConceptoQuery::create()->filterByIdconcepto($id)->exists()){
                 $id =0;
             }
             
             //Si es incorrecto redireccionavos al action nuevo
             if (!$id) {
-                return $this->redirect()->toRoute('catalogos/canal');
+                return $this->redirect()->toRoute('catalogos/concepto');
             }
             
             //Instanciamos nuestro lugar
-            $entity = \CanalcomunicacionQuery::create()->findPk($id);
+            $entity = \ConceptoQuery::create()->findPk($id);
             
             $entity->delete();
             
@@ -119,19 +119,19 @@ class ConceptoController extends AbstractActionController
         //Cachamos el valor desde nuestro params
         $id = (int) $this->params()->fromRoute('id');
         //Verificamos que el Id lugar que se quiere modificar exista
-        if(!\CanalcomunicacionQuery::create()->filterByIdcanalcomunicacion($id)->exists()){
+        if(!\ConceptoQuery::create()->filterByIdconcepto($id)->exists()){
             $id =0;
         }
         //Si es incorrecto redireccionavos al action nuevo
         if (!$id) {
-            return $this->redirect()->toRoute('catalogos/canal');
+            return $this->redirect()->toRoute('catalogos/concepto');
         }
 
             //Instanciamos nuestro lugar
-            $entity = \CanalcomunicacionQuery::create()->findPk($id);
+            $entity = \ConceptoQuery::create()->findPk($id);
             
             //Instanciamos nuestro formulario
-            $form = new \Catalogos\Form\CanalForm();
+            $form = new \Catalogos\Form\ConceptoForm();
 
             //Le ponemos los datos de nuestro lugar a nuestro formulario
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
@@ -158,7 +158,7 @@ class ConceptoController extends AbstractActionController
                     $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
 
                     //Redireccionamos a nuestro list
-                    return $this->redirect()->toRoute('catalogos/canal');
+                    return $this->redirect()->toRoute('catalogos/concepto');
 
                 }else{
                     

@@ -128,7 +128,7 @@ class ClinicaController extends AbstractActionController
                                      ->save();
                 }
                 
-                
+               
                 //Deespues de guardar nuestra clinica guardamos nuestros encargados y empleados
                 if(isset($post_data['clinica_encargado']) && !empty($post_data['clinica_encargado'])){
                     //Por cada encargado, los vamos a registrar tanto en encargado como en empleado, pero son su rol correspondiente
@@ -146,15 +146,16 @@ class ClinicaController extends AbstractActionController
                             $encargado_empleado->save();
                         }
                     }else{
+                        
                         //Lo agregamos como encargado
                         $encargado_clinica = new \Encargadoclinica();
                         $encargado_clinica->setIdclinica($entity->getIdclinica());
-                        $encargado_clinica->setIdempleado($encargado);
+                        $encargado_clinica->setIdempleado($post_data['clinica_encargado']);
                         $encargado_clinica->save();
                         //Lo agregamos como empleado
                         $encargado_empleado = new \Clinicaempleado();
                         $encargado_empleado->setIdclinica($entity->getIdclinica());
-                        $encargado_empleado->setIdempleado($encargado);
+                        $encargado_empleado->setIdempleado($post_data['clinica_encargado']);      
                         $encargado_empleado->save();
                     }
                 }

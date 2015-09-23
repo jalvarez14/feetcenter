@@ -6,7 +6,7 @@ use Zend\Form\Form;
 
 class EgresoForm extends Form
 {
-    public function __construct($clinicas)
+    public function __construct($clinicas,$conceptos)
     {
         // we want to ignore the name passed
         parent::__construct('egresoForm');
@@ -35,12 +35,9 @@ class EgresoForm extends Form
         
         $this->add(array(
              'type' => 'Select',
-             'name' => 'egresoclinica_tipo',
+             'name' => 'idconcepto',
              'options' => array(
-                'value_options' => array(
-                    'recoleccion' => 'Recoleccion',
-                    'otro' => 'Otro',
-                ),
+                'value_options' => $conceptos,
              ),
             'attributes' => array(
                 'class' => 'width-100',
@@ -71,7 +68,7 @@ class EgresoForm extends Form
             'type' => 'File',
             'attributes' => array(
                 'class' => 'width-100',
-                'required' => true,
+                'accept'=>"image/*",
             ),
         ));
         

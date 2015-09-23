@@ -25,7 +25,7 @@
         <div class="unit-50">
             <label>
                 Tipo <span class="req">*</span>
-                <?php echo $this->formSelect($form->get('egresoclinica_tipo')); ?>
+                <?php echo $this->formSelect($form->get('idconcepto')); ?>
             </label>
         </div>
         <div class="unit-50">
@@ -70,3 +70,25 @@
         <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
     </div>
 </div>
+<script>
+
+    $('input[name=egresoclinica_cantidad],input[name=egresoclinica_iva]').numeric();
+    
+    $('input[name=egresoclinica_fechaegreso]').pickadate({
+        monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+        monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+        weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+        weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+        today: 'hoy',
+        clear: 'borrar',
+        close: 'cerrar',
+        firstDay: 1,
+        format: 'd !de mmmm !de yyyy',
+        formatSubmit: 'yyyy/mm/dd',
+        selectYears: true,
+        selectMonths: true,
+        selectYears: 25,
+    });
+            
+
+</script>
