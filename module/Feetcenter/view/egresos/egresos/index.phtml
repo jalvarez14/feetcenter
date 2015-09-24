@@ -1,44 +1,74 @@
-<h1>Egresos<a style="float: right; text-decoration: none"href="/egresos/nuevo">Nuevo</a></h1>
-<?php if(count($successMessages)) :?>
+<div id="egresos_container">
+    <h1>Egresos<a style="float: right; text-decoration: none"href="/egresos/nuevo">Nuevo</a></h1>
+    <?php if(count($successMessages)) :?>
+        <div class="units-row">
+            <?php foreach ($successMessages as $message) :?>
+                <div class="unit-100">    
+                    <div class="tools-alert tools-alert-green">
+                        <?php echo $message?>
+                    </div> 
+                </div>
+            <?php endforeach;?>
+        </div>
+    <?php endif;?>
     <div class="units-row">
-        <?php foreach ($successMessages as $message) :?>
-            <div class="unit-100">    
-                <div class="tools-alert tools-alert-green">
-                    <?php echo $message?>
-                </div> 
-            </div>
-        <?php endforeach;?>
+        <div class="unit-100">
+            <fieldset>
+                <legend>Filtros</legend>
+                <div class="units-row">
+                    <div class="unit-30">
+                        <label>Clinica</label>
+                        <select class="width-100" name="clinica_filter">
+                            <?php foreach ($clinicas as $key => $value) :?>
+                            <option value="<?php echo $key?>"><?php echo $value?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                    <div class="unit-30">
+                        <label>Concepto</label>
+                        <select class="width-100" name="concepto_filter">
+                            <?php foreach ($conceptos as $key => $value) :?>
+                            <option value="<?php echo $key?>"><?php echo $value?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
     </div>
-<?php endif;?>
-<table>
-    <thead>
-        <tr>
-            <th>Fecha</th>
-            <th>Fecha mov.</th>
-            <th>Clinica</th>
-            <th>Empleado</th>
-            <th>Gasto</th>
-            <th>IVA</th>
-            <th>Nota</th>
-            <th>Comprobante</th>  
-        </tr>
-    </thead>
-    <tbody>
-        <?php $entity = new Egresoclinica();?>
-        <?php foreach($collection as $entity) : ?>
-            <tr id="<?php echo $entity->getIdegresoclinica()?>">
-                <td><?php echo $entity->getEgresoclinicaFecha('d/m/Y')?></td>
-                <td><?php echo $entity->getEgresoclinicaFechaegreso('d/m/Y')?></td>
-                <td><?php echo $entity->getClinica()->getClinicaNombre()?></td>
-                <td><?php echo $entity->getEmpleado()->getEmpleadoNombre()?></td>
-                <td><?php echo $entity->getEgresoclinicaCantidad()?></td>
-                <td><?php echo $entity->getEgresoclinicaIva()?></td>
-                <td><?php echo $entity->getEgresoclinicaNota()?></td>
-                <td><?php echo $entity->getEgresoclinicaComprobante()?></td>
+    <table>
+        <thead>
+            <tr>                
+                <th>Fecha</th>
+                <th>Clinica</th>
+                <th>Empleado</th>
+                <th>Concepto</th>
+                <th>Gasto</th>
+                <th>IVA</th>
+                <th>Nota</th>
+                <th>Comprobante</th>
+                <th>Opciones</th>   
             </tr>
-        <?php endforeach;?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php $entity = new Egresoclinica();?>
+            <?php foreach($collection as $entity) : ?>
+                <tr id="<?php echo $entity->getIdegresoclinica()?>">
+                    <td><?php echo $entity->getEgresoclinicaFechaegreso('d/m/Y')?></td>
+                    <td><?php echo $entity->getClinica()->getClinicaNombre()?></td>
+                    <td><?php echo $entity->getEmpleado()->getEmpleadoNombre()?></td>
+                    <td><?php echo $entity->getConcepto()->getConceptoNombre()?></td>
+                    <td><?php echo $entity->getEgresoclinicaCantidad()?></td>
+                    <td><?php echo $entity->getEgresoclinicaIva()?></td>
+                    <td><?php echo $entity->getEgresoclinicaNota()?></td>
+                    <td><?php echo $entity->getEgresoclinicaComprobante()?></td>
+                    <td class="tr_options"><a href="<?php echo '/egresos/editar/'.$entity->getIdegresoclinica()?>">Editar</a><a class="delete-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Advertencia</h2>" data-content="/egresos/eliminar?html=true" >Eliminar</a></td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+</div>
+<script src="/js/egresos/egresos.js"></script>
 <script>
-
+    $('#egresos_container').egresos();
 </script>

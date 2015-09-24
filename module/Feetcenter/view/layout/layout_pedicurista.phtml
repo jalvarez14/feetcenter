@@ -13,6 +13,7 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('css/style.css'))
+                         ->prependStylesheet($this->basePath('plugins/fancyBox/source/jquery.fancybox.css'))
                          ->prependStylesheet($this->basePath('css/plugin/multiple.css'))
                         ->prependStylesheet($this->basePath('css/plugin/datatable/jquery.dataTables.css'))
                         ->prependStylesheet($this->basePath('css/plugin/default.date.css'))
@@ -22,6 +23,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+                ->prependFile($this->basePath('plugins/fancyBox/source/jquery.fancybox.js'))
             ->prependFile($this->basePath('/js/plugin/multiple.js'))
             ->prependFile($this->basePath('js/plugin/datatable/jquery.dataTables.js'))
             ->prependFile($this->basePath('js/plugin/picker.date.js'))

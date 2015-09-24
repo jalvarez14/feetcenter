@@ -229,7 +229,7 @@ return array(
             'egresos' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/egresos[/:action]',
+                    'route' => '/egresos[/:action][/:id]',
                     'defaults' => array(
                         'controller' => 'Egresos\Controller\Egresos',
                         'action' => 'index',

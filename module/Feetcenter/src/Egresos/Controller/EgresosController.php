@@ -21,11 +21,34 @@ class EgresosController extends AbstractActionController
         //ADMIN
         if($sesion->getIdrol() == 1){
             $collection = \EgresoclinicaQuery::create()->find();
+            //Filtros
+            $clinicas = \ClinicaQuery::create()->find();
         }elseif($sesion->getIdrol() == 2){//ENCARGADO
             $collection = \EgresoclinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
+            //Filtros
+            $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
+        }
+        
+        //Filtros
+        $conceptos = \ConceptoQuery::create()->find();
+        
+        //Damos el formato para el select
+        $clinicas_array = array();
+        $conceptos_array = array();
+        
+        foreach ($clinicas as $clinica){
+            $idclinica = $clinica->getIdclinica();
+            $clinicas_array[$idclinica] = $clinica->getClinicaNombre();
+        }
+        
+        foreach ($conceptos as $concepto){
+            $idconcepto = $concepto->getIdconcepto();
+            $conceptos_array[$idconcepto] = $concepto->getConceptoNombre();
         }
         
         return new ViewModel(array(
+            'clinicas' => $clinicas_array,
+            'conceptos' => $conceptos_array,    
             'collection'   => $collection,
             'successMessages' => $this->flashMessenger()->getSuccessMessages(),
         ));
@@ -128,5 +151,87 @@ class EgresosController extends AbstractActionController
         ));
         
         
+    }
+    
+    
+    public function eliminarAction(){
+        
+        $request = $this->getRequest();
+        
+        if($request->isPost()){
+             
+            $id = $this->params()->fromRoute('id');
+            
+            //Verificamos que el Id lugar que se quiere modificar exista
+            if(!\EgresoclinicaQuery::create()->filterByIdegresoclinica($id)->exists()){
+                $id =0;
+            }
+            
+            //Si es incorrecto redireccionavos al action nuevo
+            if (!$id) {
+                return $this->redirect()->toRoute('egresos');
+            }
+            
+            //Instanciamos nuestro lugar
+            $entity = \EgresoclinicaQuery::create()->findPk($id);
+            
+            $entity->delete();
+            
+            //Agregamos un mensaje
+            $this->flashMessenger()->addSuccessMessage('Registro eliminado exitosamente!');
+
+            //Redireccionamos a nuestro list
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => true)));
+
+        }
+        
+        if($this->params()->fromQuery('html')){
+            $viewModel = new ViewModel();
+            $viewModel->setTerminal(true);
+            return $viewModel;
+        }
+        
+    }
+    
+    public function vernotaAction(){
+
+        $id = $this->params()->fromQuery('id');
+        $egreso = \EgresoclinicaQuery::create()->findPk($id);
+        $viewModel = new ViewModel();
+        $viewModel->setTerminal(true);
+        $viewModel->setVariable('egreso', $egreso);
+        return $viewModel;
+
+    }
+    
+    public function filterAction(){
+        $request = $this->request;
+        
+        if($request->isPost()){
+            $post_data = $request->getPost();
+            
+            $query = new \EgresoclinicaQuery();
+  
+            if(isset($post_data['clinicas'])){
+                 $query->filterByIdclinica($post_data['clinicas']);
+            }else{
+                $query->filterByIdclinica(array());
+            }
+            
+            if(isset($post_data['conceptos'])){
+                 $query->filterByIdconcepto($post_data['conceptos']);
+            }else{
+                $query->filterByIdconcepto(array());
+            }
+            
+            $result = $query->joinClinica()->joinConcepto()->joinEmpleado()->withColumn('clinica_nombre')->withColumn('empleado_nombre')->withColumn('concepto_nombre')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            //Dams formato a la fecha
+            foreach ($result as $key => $value){
+                $fecha = new \DateTime($value['egresoclinica_fecha']);
+                $result[$key]['egresoclinica_fecha'] = $fecha->format('d/m/Y');
+            }
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => $result)));
+            
+        }
     }
 }
