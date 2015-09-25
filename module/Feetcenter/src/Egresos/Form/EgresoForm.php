@@ -77,7 +77,6 @@ class EgresoForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'width-100',
-                'required' => true,
             ),
         ));
         

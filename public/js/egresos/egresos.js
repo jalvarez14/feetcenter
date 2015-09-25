@@ -19,7 +19,7 @@
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
         }else{
-            return plugin;
+            return plugin; 
         }
         
     };
@@ -53,6 +53,18 @@
        
        var filter = function(){
            
+           $.ajax({
+                url: '/json/lang_es_datatable.json',
+                dataType: 'json',
+                async:false,
+                success: function(data){
+                    var $table = container.find('table').DataTable({
+                        language:data,
+                    });
+
+                }
+            });
+           
            var clinicas_select =   $("select[name=clinica_filter]").multipleSelect('getSelects');
            var conceptos_select =  $("select[name=concepto_filter]").multipleSelect('getSelects');
            
@@ -62,52 +74,8 @@
                 dataType: 'json',
                 method:'POST',
                 data:{clinicas:clinicas_select,conceptos:conceptos_select},
-                success: function(data){
-                     var $table = $container.find('table').DataTable();
-                     $table.clear();
-                     $table.on( 'draw', function () {
-                        $('[data-tools="modal"]').unbind();
-                        $('[data-tools="modal"]').modal();
-                        //deletemodal
-                        $('.delete-modal').on('loading.tools.modal', function(modal){
-                            deleteModal(this);
-                        });
-                        //las notas
-                        $('.ver_nota').on('loading.tools.modal', function(modal){
-                            verNota(this);
-                        }); 
-                        $container.find('table tr').each(function(){
-                        var str =  $(this).find('td').eq(4).text();
-                        $(this).find('td').eq(4).text(accounting.formatMoney(str));
-                        var str =  $(this).find('td').eq(5).text();
-                        $(this).find('td').eq(5).text(accounting.formatMoney(str));
-                    });
-                    //La imagen del comprobante
-                    $container.find('table tr').each(function(){
-                        var str =  $(this).find('td').eq(7).text();
-                        if(str != ""){
-                            $(this).find('td').eq(7).html('<a class="fancybox" href="'+str+'"><img src="/img/icons/img_icon.png"></a>');
-                        }else{
-                             $(this).find('td').eq(7).html("N/D");
-                        }
-                    });
-            
-                    //La imagen de las notas
-                    $container.find('table tr').each(function(){
-                        var str =  $(this).find('td').eq(6).text();
-                        if(str != ""){
-                             var id = $(this).closest('tr').attr('id');
-                            $(this).find('td').eq(6).html('<a class="ver_nota" data-content="/egresos/vernota?id='+id+'" data-tools="modal" data-width="700" data-title="<h2>Egreso #'+id+'" href="javascript:void(0)"><img src="/img/icons/note_icon.png"></a>');
-                        }else{
-                             $(this).find('td').eq(6).html("N/D");
-                        }
-                    });
-            
-                    //las notas
-                    $('.ver_nota').on('loading.tools.modal', function(modal){
-                        verNota(this);
-                    }); 
-                    }); 
+                success: function(data){       
+                    $table.clear();
                     if(data.result.length > 0){
                         //Agregamos los nuevos registros
                         $.each(data.result,function(){
@@ -116,21 +84,39 @@
                             this.clinica_nombre,
                             this.empleado_nombre,
                             this.concepto_nombre,
-                            this.egresoclinica_cantidad,
-                            this.egresoclinica_iva,
+                            accounting.formatMoney(this.egresoclinica_cantidad),
+                            accounting.formatMoney(this.egresoclinica_iva),
                             this.egresoclinica_nota,
                             this.egresoclinica_comprobante,
+                            //Las opciones
                             '<td class="tr_options"><a href="/egresos/editar/'+this.idegresoclinica+'">Editar</a><a class="delete-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Advertencia</h2>" data-content="/egresos/eliminar?html=true" >Eliminar</a></td>'
-   
                         ]).draw().node();
-                            $(rowNode).attr('id',this.idegresoclinica);
+                         $(rowNode).attr('id',this.idegresoclinica);
+                            //Comprobante
+                            if(this.egresoclinica_comprobante != null){
+                                var src =  $(rowNode).find('td').eq(7).text();
+                                $(rowNode).find('td').eq(7).html('<a class="fancybox" href="'+src+'"><img src="/img/icons/img_icon.png"></a>');
+                                 $(".fancybox").unbind();  $(".fancybox").fancybox();
+                            }else{
+                                $(rowNode).find('td').eq(7).html('N/D');
+                            }
+                            //lAS NOTAS 
+                            if(this.egresoclinica_nota != null){
+                                var id = $(rowNode).attr('id');
+                                $(rowNode).find('td').eq(6).html('<a class="ver_nota" data-content="/egresos/vernota?id='+id+'" data-tools="modal" data-width="700" data-title="<h2>Egreso #'+id+'" href="javascript:void(0)"><img src="/img/icons/note_icon.png"></a>');
+
+                            }else{  
+                                 $(rowNode).find('td').eq(6).html('N/D');
+                            }
+                             //Las opciones 
                             $(rowNode).find('td').last().addClass('tr_options');
+
                         });
                     }
                     $table.draw();
-                    
-                    
-            
+                    $table.on( 'draw', function () {
+                        console.log('entro');
+                    });
                     
                 }
             });
@@ -182,75 +168,13 @@
         plugin.init = function(){
             
             settings = plugin.settings = $.extend({}, defaults, options);
-            
-            //Inicialozamos el deletemodal
-            $('.delete-modal').on('loading.tools.modal', function(modal){
-                deleteModal(this);
-            });
-            
-            //FancyBox
-            $(".fancybox").fancybox();
-            
-            //Inicializamos datatable
-            $.ajax({
-                url: '/json/lang_es_datatable.json',
-                dataType: 'json',
-                success: function(data){
-                    var table = $container.find('table').DataTable({
-                        language:data,
-                    });
-                    table.on( 'draw', function () {
-                        $('[data-tools="modal"]').unbind();
-                        $('[data-tools="modal"]').modal();
-                        //deletemodal
-                        $('.delete-modal').on('loading.tools.modal', function(modal){
-                            deleteModal(this);
-                        });
-                        //las notas
-                        $('.ver_nota').on('loading.tools.modal', function(modal){
-                            verNota(this);
-                        }); 
-                    });
-                }
-            });
-            
 
-            
-
-            $container.find('table tr').each(function(){
-                var str =  $(this).find('td').eq(4).text();
-                $(this).find('td').eq(4).text(accounting.formatMoney(str));
-                var str =  $(this).find('td').eq(5).text();
-                $(this).find('td').eq(5).text(accounting.formatMoney(str));
-
-            });
-            
-            //La imagen del comprobante
-            $container.find('table tr').each(function(){
-                var str =  $(this).find('td').eq(7).text();
-                if(str != ""){
-                    $(this).find('td').eq(7).html('<a class="fancybox" href="'+str+'"><img src="/img/icons/img_icon.png"></a>');
-                }else{
-                     $(this).find('td').eq(7).html("N/D");
-                }
-            });
-            
-            //La imagen de las notas
-            $container.find('table tr').each(function(){
-                var str =  $(this).find('td').eq(6).text();
-                if(str != ""){
-                     var id = $(this).closest('tr').attr('id');
-                    $(this).find('td').eq(6).html('<a class="ver_nota" data-content="/egresos/vernota?id='+id+'" data-tools="modal" data-width="700" data-title="<h2>Egreso #'+id+'" href="javascript:void(0)"><img src="/img/icons/note_icon.png"></a>');
-                }else{
-                     $(this).find('td').eq(6).html("N/D");
-                }
-            });
-            
-            //las notas
-            $('.ver_nota').on('loading.tools.modal', function(modal){
-                verNota(this);
-            }); 
-            
+//            //las notas
+//            $('.ver_nota').unbind();        
+//            $('.ver_nota').on('loading.tools.modal', function(modal){
+//                verNota(this);
+//            }); 
+          
             //Inicializamos nuestro multiple select
             $container.find("select[name=clinica_filter]").multipleSelect({
                 allSelected:'Todas las clinicas',
