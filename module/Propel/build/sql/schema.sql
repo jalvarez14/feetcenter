@@ -156,10 +156,24 @@ DROP TABLE IF EXISTS `concepto`;
 
 CREATE TABLE `concepto`
 (
-    `idconcepto` INTEGER NOT NULL AUTO_INCREMENT,
-    `concepto_nombre` VARCHAR(45) NOT NULL,
-    `concepto_descripcion` VARCHAR(255),
+    `idconcepto` INTEGER NOT NULL,
+    `concepto_nombre` VARCHAR(255) NOT NULL,
+    `concepto_descripcion` TEXT NOT NULL,
     PRIMARY KEY (`idconcepto`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- conceptoincidencia
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `conceptoincidencia`;
+
+CREATE TABLE `conceptoincidencia`
+(
+    `idconceptoincidencia` INTEGER NOT NULL,
+    `conceptoincidencia_nombre` VARCHAR(255) NOT NULL,
+    `conceptoincidencia_descripcion` TEXT NOT NULL,
+    PRIMARY KEY (`idconceptoincidencia`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -187,8 +201,8 @@ CREATE TABLE `egresoclinica`
 (
     `idegresoclinica` INTEGER NOT NULL AUTO_INCREMENT,
     `idclinica` INTEGER NOT NULL,
-    `idconcepto` INTEGER NOT NULL,
     `idempleado` INTEGER NOT NULL,
+    `idconcepto` INTEGER NOT NULL,
     `egresoclinica_fecha` DATETIME NOT NULL,
     `egresoclinica_fechaegreso` DATE NOT NULL,
     `egresoclinica_cantidad` DECIMAL(10,2) NOT NULL,
@@ -206,7 +220,9 @@ CREATE TABLE `egresoclinica`
         ON DELETE CASCADE,
     CONSTRAINT `idconcepto_egresoclinica`
         FOREIGN KEY (`idconcepto`)
-        REFERENCES `concepto` (`idconcepto`),
+        REFERENCES `concepto` (`idconcepto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT `idempleado_egresoclinica`
         FOREIGN KEY (`idempleado`)
         REFERENCES `empleado` (`idempleado`)
@@ -239,7 +255,6 @@ CREATE TABLE `empleado`
     `empleado_comprobantedomiclio` TEXT,
     `empleado_comprobanteidentificacion` TEXT,
     `empleado_sueldo` DECIMAL(10,2),
-    `empleado_diadescanso` enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo') NOT NULL,
     `empleado_foto` TEXT,
     `empleado_tipocomisionproducto` enum('porcentaje','cantidad'),
     `empleado_cantidadcomisionproducto` DECIMAL(10,2),
@@ -368,6 +383,7 @@ CREATE TABLE `empleadoreporte`
     `idclinica` INTEGER NOT NULL,
     `idempleado` INTEGER NOT NULL,
     `idempleadoreportado` INTEGER NOT NULL,
+    `idconceptoincidencia` INTEGER NOT NULL,
     `empleadoreporte_fechacreacion` DATETIME NOT NULL,
     `empleadoreporte_comentario` TEXT NOT NULL,
     `empleadoreporte_fechasuceso` DATE NOT NULL,
@@ -375,9 +391,15 @@ CREATE TABLE `empleadoreporte`
     INDEX `idclinica` (`idclinica`),
     INDEX `idempleado` (`idempleado`),
     INDEX `idempleadoreportado` (`idempleadoreportado`),
+    INDEX `idconceptoincidencia` (`idconceptoincidencia`),
     CONSTRAINT `idclinica_empleadoreporte`
         FOREIGN KEY (`idclinica`)
         REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idconceptoincidencia_empleadoreporte`
+        FOREIGN KEY (`idconceptoincidencia`)
+        REFERENCES `conceptoincidencia` (`idconceptoincidencia`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idempleado_empleadoreporte`

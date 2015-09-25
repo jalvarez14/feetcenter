@@ -39,7 +39,6 @@ return array(
             //Inventarios
             'inventario/insumo',
             'inventario/producto',
-            'inventario/existencias',
             'inventario/reorden',
             'inventario/transferencias',
             'inventario/precios',
@@ -47,6 +46,8 @@ return array(
             'egresos',
         ),
         "deny"=>array(
+            //Inventarios
+            'inventario/existencias',
             //Catalogos
             'catalogos/clinica',
             'catalogos/insumo',

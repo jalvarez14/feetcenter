@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'concepto' table.
+ * This class defines the structure of the 'conceptoincidencia' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.feetcenter.map
  */
-class ConceptoTableMap extends TableMap
+class ConceptoincidenciaTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'feetcenter.map.ConceptoTableMap';
+    const CLASS_NAME = 'feetcenter.map.ConceptoincidenciaTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,15 +32,15 @@ class ConceptoTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('concepto');
-        $this->setPhpName('Concepto');
-        $this->setClassname('Concepto');
+        $this->setName('conceptoincidencia');
+        $this->setPhpName('Conceptoincidencia');
+        $this->setClassname('Conceptoincidencia');
         $this->setPackage('feetcenter');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('idconcepto', 'Idconcepto', 'INTEGER', true, null, null);
-        $this->addColumn('concepto_nombre', 'ConceptoNombre', 'VARCHAR', true, 255, null);
-        $this->addColumn('concepto_descripcion', 'ConceptoDescripcion', 'LONGVARCHAR', true, null, null);
+        $this->addPrimaryKey('idconceptoincidencia', 'Idconceptoincidencia', 'INTEGER', true, null, null);
+        $this->addColumn('conceptoincidencia_nombre', 'ConceptoincidenciaNombre', 'VARCHAR', true, 255, null);
+        $this->addColumn('conceptoincidencia_descripcion', 'ConceptoincidenciaDescripcion', 'LONGVARCHAR', true, null, null);
         // validators
     } // initialize()
 
@@ -49,7 +49,7 @@ class ConceptoTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Egresoclinica', 'Egresoclinica', RelationMap::ONE_TO_MANY, array('idconcepto' => 'idconcepto', ), 'CASCADE', 'CASCADE', 'Egresoclinicas');
+        $this->addRelation('Empleadoreporte', 'Empleadoreporte', RelationMap::ONE_TO_MANY, array('idconceptoincidencia' => 'idconceptoincidencia', ), 'CASCADE', 'CASCADE', 'Empleadoreportes');
     } // buildRelations()
 
-} // ConceptoTableMap
+} // ConceptoincidenciaTableMap

@@ -42,16 +42,16 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
     protected $idclinica;
 
     /**
-     * The value for the idconcepto field.
-     * @var        int
-     */
-    protected $idconcepto;
-
-    /**
      * The value for the idempleado field.
      * @var        int
      */
     protected $idempleado;
+
+    /**
+     * The value for the idconcepto field.
+     * @var        int
+     */
+    protected $idconcepto;
 
     /**
      * The value for the egresoclinica_fecha field.
@@ -147,17 +147,6 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [idconcepto] column value.
-     *
-     * @return int
-     */
-    public function getIdconcepto()
-    {
-
-        return $this->idconcepto;
-    }
-
-    /**
      * Get the [idempleado] column value.
      *
      * @return int
@@ -166,6 +155,17 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
     {
 
         return $this->idempleado;
+    }
+
+    /**
+     * Get the [idconcepto] column value.
+     *
+     * @return int
+     */
+    public function getIdconcepto()
+    {
+
+        return $this->idconcepto;
     }
 
     /**
@@ -339,31 +339,6 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
     } // setIdclinica()
 
     /**
-     * Set the value of [idconcepto] column.
-     *
-     * @param  int $v new value
-     * @return Egresoclinica The current object (for fluent API support)
-     */
-    public function setIdconcepto($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->idconcepto !== $v) {
-            $this->idconcepto = $v;
-            $this->modifiedColumns[] = EgresoclinicaPeer::IDCONCEPTO;
-        }
-
-        if ($this->aConcepto !== null && $this->aConcepto->getIdconcepto() !== $v) {
-            $this->aConcepto = null;
-        }
-
-
-        return $this;
-    } // setIdconcepto()
-
-    /**
      * Set the value of [idempleado] column.
      *
      * @param  int $v new value
@@ -387,6 +362,31 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
 
         return $this;
     } // setIdempleado()
+
+    /**
+     * Set the value of [idconcepto] column.
+     *
+     * @param  int $v new value
+     * @return Egresoclinica The current object (for fluent API support)
+     */
+    public function setIdconcepto($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idconcepto !== $v) {
+            $this->idconcepto = $v;
+            $this->modifiedColumns[] = EgresoclinicaPeer::IDCONCEPTO;
+        }
+
+        if ($this->aConcepto !== null && $this->aConcepto->getIdconcepto() !== $v) {
+            $this->aConcepto = null;
+        }
+
+
+        return $this;
+    } // setIdconcepto()
 
     /**
      * Sets the value of [egresoclinica_fecha] column to a normalized version of the date/time value specified.
@@ -552,8 +552,8 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
 
             $this->idegresoclinica = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idclinica = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->idconcepto = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->idempleado = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->idempleado = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->idconcepto = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->egresoclinica_fecha = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->egresoclinica_fechaegreso = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->egresoclinica_cantidad = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
@@ -595,11 +595,11 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
         if ($this->aClinica !== null && $this->idclinica !== $this->aClinica->getIdclinica()) {
             $this->aClinica = null;
         }
-        if ($this->aConcepto !== null && $this->idconcepto !== $this->aConcepto->getIdconcepto()) {
-            $this->aConcepto = null;
-        }
         if ($this->aEmpleado !== null && $this->idempleado !== $this->aEmpleado->getIdempleado()) {
             $this->aEmpleado = null;
+        }
+        if ($this->aConcepto !== null && $this->idconcepto !== $this->aConcepto->getIdconcepto()) {
+            $this->aConcepto = null;
         }
     } // ensureConsistency
 
@@ -825,11 +825,11 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
         if ($this->isColumnModified(EgresoclinicaPeer::IDCLINICA)) {
             $modifiedColumns[':p' . $index++]  = '`idclinica`';
         }
-        if ($this->isColumnModified(EgresoclinicaPeer::IDCONCEPTO)) {
-            $modifiedColumns[':p' . $index++]  = '`idconcepto`';
-        }
         if ($this->isColumnModified(EgresoclinicaPeer::IDEMPLEADO)) {
             $modifiedColumns[':p' . $index++]  = '`idempleado`';
+        }
+        if ($this->isColumnModified(EgresoclinicaPeer::IDCONCEPTO)) {
+            $modifiedColumns[':p' . $index++]  = '`idconcepto`';
         }
         if ($this->isColumnModified(EgresoclinicaPeer::EGRESOCLINICA_FECHA)) {
             $modifiedColumns[':p' . $index++]  = '`egresoclinica_fecha`';
@@ -866,11 +866,11 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
                     case '`idclinica`':
                         $stmt->bindValue($identifier, $this->idclinica, PDO::PARAM_INT);
                         break;
-                    case '`idconcepto`':
-                        $stmt->bindValue($identifier, $this->idconcepto, PDO::PARAM_INT);
-                        break;
                     case '`idempleado`':
                         $stmt->bindValue($identifier, $this->idempleado, PDO::PARAM_INT);
+                        break;
+                    case '`idconcepto`':
+                        $stmt->bindValue($identifier, $this->idconcepto, PDO::PARAM_INT);
                         break;
                     case '`egresoclinica_fecha`':
                         $stmt->bindValue($identifier, $this->egresoclinica_fecha, PDO::PARAM_STR);
@@ -1055,10 +1055,10 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
                 return $this->getIdclinica();
                 break;
             case 2:
-                return $this->getIdconcepto();
+                return $this->getIdempleado();
                 break;
             case 3:
-                return $this->getIdempleado();
+                return $this->getIdconcepto();
                 break;
             case 4:
                 return $this->getEgresoclinicaFecha();
@@ -1109,8 +1109,8 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getIdegresoclinica(),
             $keys[1] => $this->getIdclinica(),
-            $keys[2] => $this->getIdconcepto(),
-            $keys[3] => $this->getIdempleado(),
+            $keys[2] => $this->getIdempleado(),
+            $keys[3] => $this->getIdconcepto(),
             $keys[4] => $this->getEgresoclinicaFecha(),
             $keys[5] => $this->getEgresoclinicaFechaegreso(),
             $keys[6] => $this->getEgresoclinicaCantidad(),
@@ -1174,10 +1174,10 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
                 $this->setIdclinica($value);
                 break;
             case 2:
-                $this->setIdconcepto($value);
+                $this->setIdempleado($value);
                 break;
             case 3:
-                $this->setIdempleado($value);
+                $this->setIdconcepto($value);
                 break;
             case 4:
                 $this->setEgresoclinicaFecha($value);
@@ -1223,8 +1223,8 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setIdegresoclinica($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setIdclinica($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setIdconcepto($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setIdempleado($arr[$keys[3]]);
+        if (array_key_exists($keys[2], $arr)) $this->setIdempleado($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setIdconcepto($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setEgresoclinicaFecha($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setEgresoclinicaFechaegreso($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setEgresoclinicaCantidad($arr[$keys[6]]);
@@ -1244,8 +1244,8 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
 
         if ($this->isColumnModified(EgresoclinicaPeer::IDEGRESOCLINICA)) $criteria->add(EgresoclinicaPeer::IDEGRESOCLINICA, $this->idegresoclinica);
         if ($this->isColumnModified(EgresoclinicaPeer::IDCLINICA)) $criteria->add(EgresoclinicaPeer::IDCLINICA, $this->idclinica);
-        if ($this->isColumnModified(EgresoclinicaPeer::IDCONCEPTO)) $criteria->add(EgresoclinicaPeer::IDCONCEPTO, $this->idconcepto);
         if ($this->isColumnModified(EgresoclinicaPeer::IDEMPLEADO)) $criteria->add(EgresoclinicaPeer::IDEMPLEADO, $this->idempleado);
+        if ($this->isColumnModified(EgresoclinicaPeer::IDCONCEPTO)) $criteria->add(EgresoclinicaPeer::IDCONCEPTO, $this->idconcepto);
         if ($this->isColumnModified(EgresoclinicaPeer::EGRESOCLINICA_FECHA)) $criteria->add(EgresoclinicaPeer::EGRESOCLINICA_FECHA, $this->egresoclinica_fecha);
         if ($this->isColumnModified(EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO)) $criteria->add(EgresoclinicaPeer::EGRESOCLINICA_FECHAEGRESO, $this->egresoclinica_fechaegreso);
         if ($this->isColumnModified(EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD)) $criteria->add(EgresoclinicaPeer::EGRESOCLINICA_CANTIDAD, $this->egresoclinica_cantidad);
@@ -1316,8 +1316,8 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setIdclinica($this->getIdclinica());
-        $copyObj->setIdconcepto($this->getIdconcepto());
         $copyObj->setIdempleado($this->getIdempleado());
+        $copyObj->setIdconcepto($this->getIdconcepto());
         $copyObj->setEgresoclinicaFecha($this->getEgresoclinicaFecha());
         $copyObj->setEgresoclinicaFechaegreso($this->getEgresoclinicaFechaegreso());
         $copyObj->setEgresoclinicaCantidad($this->getEgresoclinicaCantidad());
@@ -1545,8 +1545,8 @@ abstract class BaseEgresoclinica extends BaseObject implements Persistent
     {
         $this->idegresoclinica = null;
         $this->idclinica = null;
-        $this->idconcepto = null;
         $this->idempleado = null;
+        $this->idconcepto = null;
         $this->egresoclinica_fecha = null;
         $this->egresoclinica_fechaegreso = null;
         $this->egresoclinica_cantidad = null;

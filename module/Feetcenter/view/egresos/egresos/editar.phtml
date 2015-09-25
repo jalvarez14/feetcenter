@@ -1,0 +1,113 @@
+<div id="egreso_container">
+    <h1>Egreso: <?php echo '#'.$id?></h1>
+    <?php 
+       $form->setAttribute('action', '/egresos/editar/'.$id);
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Fecha <span class="req">*</span>
+                <?php echo $this->formText($form->get('egresoclinica_fechaegreso')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Clinica <span class="req">*</span>
+                <?php echo $this->formSelect($form->get('idclinica')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Tipo <span class="req">*</span>
+                <?php echo $this->formSelect($form->get('idconcepto')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Cantidad <span class="req">*</span>
+                <?php echo $this->formText($form->get('egresoclinica_cantidad')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                IVA <span class="req">*</span>
+                <?php echo $this->formText($form->get('egresoclinica_iva')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Comprobante</legend>
+                <div class="units-row">
+                    <div class="unit-100">
+                        <label>
+                            Comprobante
+                            <input type="hidden" name="egresoclinica_comprobante_submit" value="">
+                            <?php echo $this->formFile($form->get('egresoclinica_comprobante')); ?>
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Nota
+                <?php echo $this->formTextarea($form->get('egresoclinica_nota')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script>
+
+    $('input[name=egresoclinica_cantidad],input[name=egresoclinica_iva]').numeric();
+    
+    $('input[name=egresoclinica_fechaegreso]').pickadate({
+        monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+        monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+        weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+        weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+        today: 'hoy',
+        clear: 'borrar',
+        close: 'cerrar',
+        firstDay: 1,
+        format: 'd !de mmmm !de yyyy',
+        formatSubmit: 'yyyy/mm/dd',
+        selectYears: true,
+        selectMonths: true,
+        selectYears: 25,
+    });
+    
+    
+    //El comprobante
+    var comprobante = "<?php echo $egreso_comprobante ?>";
+    
+    if(comprobante != ""){
+        $('input[name=egresoclinica_comprobante]').hide();
+        var img_comprobante = $('<p><a class="fancybox" style="text-decoration: none" href="'+comprobante+'"><img src="/img/icons/img_icon.png"> Visualizar Comprobante</a><a id="eliminar_comprobante" style="text-decoration: none; margin-left:24px" href="javascript:void(0)">Eliminar comprobante</a></p>');
+        $(".fancybox").unbind();  $(".fancybox").fancybox();
+        $('input[name=egresoclinica_comprobante]').after(img_comprobante);
+        //El evento eliminar comprobante
+        $('a#eliminar_comprobante').on('click',function(){
+            $('input[name=egresoclinica_comprobante_submit]').val('delete');
+            $('input[name=egresoclinica_comprobante]').show();
+            img_comprobante.remove();
+        });
+    }
+    
+            
+
+</script>

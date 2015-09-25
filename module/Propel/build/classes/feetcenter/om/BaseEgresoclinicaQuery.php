@@ -8,8 +8,8 @@
  *
  * @method EgresoclinicaQuery orderByIdegresoclinica($order = Criteria::ASC) Order by the idegresoclinica column
  * @method EgresoclinicaQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
- * @method EgresoclinicaQuery orderByIdconcepto($order = Criteria::ASC) Order by the idconcepto column
  * @method EgresoclinicaQuery orderByIdempleado($order = Criteria::ASC) Order by the idempleado column
+ * @method EgresoclinicaQuery orderByIdconcepto($order = Criteria::ASC) Order by the idconcepto column
  * @method EgresoclinicaQuery orderByEgresoclinicaFecha($order = Criteria::ASC) Order by the egresoclinica_fecha column
  * @method EgresoclinicaQuery orderByEgresoclinicaFechaegreso($order = Criteria::ASC) Order by the egresoclinica_fechaegreso column
  * @method EgresoclinicaQuery orderByEgresoclinicaCantidad($order = Criteria::ASC) Order by the egresoclinica_cantidad column
@@ -19,8 +19,8 @@
  *
  * @method EgresoclinicaQuery groupByIdegresoclinica() Group by the idegresoclinica column
  * @method EgresoclinicaQuery groupByIdclinica() Group by the idclinica column
- * @method EgresoclinicaQuery groupByIdconcepto() Group by the idconcepto column
  * @method EgresoclinicaQuery groupByIdempleado() Group by the idempleado column
+ * @method EgresoclinicaQuery groupByIdconcepto() Group by the idconcepto column
  * @method EgresoclinicaQuery groupByEgresoclinicaFecha() Group by the egresoclinica_fecha column
  * @method EgresoclinicaQuery groupByEgresoclinicaFechaegreso() Group by the egresoclinica_fechaegreso column
  * @method EgresoclinicaQuery groupByEgresoclinicaCantidad() Group by the egresoclinica_cantidad column
@@ -48,8 +48,8 @@
  * @method Egresoclinica findOneOrCreate(PropelPDO $con = null) Return the first Egresoclinica matching the query, or a new Egresoclinica object populated from the query conditions when no match is found
  *
  * @method Egresoclinica findOneByIdclinica(int $idclinica) Return the first Egresoclinica filtered by the idclinica column
- * @method Egresoclinica findOneByIdconcepto(int $idconcepto) Return the first Egresoclinica filtered by the idconcepto column
  * @method Egresoclinica findOneByIdempleado(int $idempleado) Return the first Egresoclinica filtered by the idempleado column
+ * @method Egresoclinica findOneByIdconcepto(int $idconcepto) Return the first Egresoclinica filtered by the idconcepto column
  * @method Egresoclinica findOneByEgresoclinicaFecha(string $egresoclinica_fecha) Return the first Egresoclinica filtered by the egresoclinica_fecha column
  * @method Egresoclinica findOneByEgresoclinicaFechaegreso(string $egresoclinica_fechaegreso) Return the first Egresoclinica filtered by the egresoclinica_fechaegreso column
  * @method Egresoclinica findOneByEgresoclinicaCantidad(string $egresoclinica_cantidad) Return the first Egresoclinica filtered by the egresoclinica_cantidad column
@@ -59,8 +59,8 @@
  *
  * @method array findByIdegresoclinica(int $idegresoclinica) Return Egresoclinica objects filtered by the idegresoclinica column
  * @method array findByIdclinica(int $idclinica) Return Egresoclinica objects filtered by the idclinica column
- * @method array findByIdconcepto(int $idconcepto) Return Egresoclinica objects filtered by the idconcepto column
  * @method array findByIdempleado(int $idempleado) Return Egresoclinica objects filtered by the idempleado column
+ * @method array findByIdconcepto(int $idconcepto) Return Egresoclinica objects filtered by the idconcepto column
  * @method array findByEgresoclinicaFecha(string $egresoclinica_fecha) Return Egresoclinica objects filtered by the egresoclinica_fecha column
  * @method array findByEgresoclinicaFechaegreso(string $egresoclinica_fechaegreso) Return Egresoclinica objects filtered by the egresoclinica_fechaegreso column
  * @method array findByEgresoclinicaCantidad(string $egresoclinica_cantidad) Return Egresoclinica objects filtered by the egresoclinica_cantidad column
@@ -174,7 +174,7 @@ abstract class BaseEgresoclinicaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idegresoclinica`, `idclinica`, `idconcepto`, `idempleado`, `egresoclinica_fecha`, `egresoclinica_fechaegreso`, `egresoclinica_cantidad`, `egresoclinica_iva`, `egresoclinica_comprobante`, `egresoclinica_nota` FROM `egresoclinica` WHERE `idegresoclinica` = :p0';
+        $sql = 'SELECT `idegresoclinica`, `idclinica`, `idempleado`, `idconcepto`, `egresoclinica_fecha`, `egresoclinica_fechaegreso`, `egresoclinica_cantidad`, `egresoclinica_iva`, `egresoclinica_comprobante`, `egresoclinica_nota` FROM `egresoclinica` WHERE `idegresoclinica` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -350,50 +350,6 @@ abstract class BaseEgresoclinicaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the idconcepto column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByIdconcepto(1234); // WHERE idconcepto = 1234
-     * $query->filterByIdconcepto(array(12, 34)); // WHERE idconcepto IN (12, 34)
-     * $query->filterByIdconcepto(array('min' => 12)); // WHERE idconcepto >= 12
-     * $query->filterByIdconcepto(array('max' => 12)); // WHERE idconcepto <= 12
-     * </code>
-     *
-     * @see       filterByConcepto()
-     *
-     * @param     mixed $idconcepto The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return EgresoclinicaQuery The current query, for fluid interface
-     */
-    public function filterByIdconcepto($idconcepto = null, $comparison = null)
-    {
-        if (is_array($idconcepto)) {
-            $useMinMax = false;
-            if (isset($idconcepto['min'])) {
-                $this->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $idconcepto['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($idconcepto['max'])) {
-                $this->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $idconcepto['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $idconcepto, $comparison);
-    }
-
-    /**
      * Filter the query on the idempleado column
      *
      * Example usage:
@@ -435,6 +391,50 @@ abstract class BaseEgresoclinicaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EgresoclinicaPeer::IDEMPLEADO, $idempleado, $comparison);
+    }
+
+    /**
+     * Filter the query on the idconcepto column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdconcepto(1234); // WHERE idconcepto = 1234
+     * $query->filterByIdconcepto(array(12, 34)); // WHERE idconcepto IN (12, 34)
+     * $query->filterByIdconcepto(array('min' => 12)); // WHERE idconcepto >= 12
+     * $query->filterByIdconcepto(array('max' => 12)); // WHERE idconcepto <= 12
+     * </code>
+     *
+     * @see       filterByConcepto()
+     *
+     * @param     mixed $idconcepto The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EgresoclinicaQuery The current query, for fluid interface
+     */
+    public function filterByIdconcepto($idconcepto = null, $comparison = null)
+    {
+        if (is_array($idconcepto)) {
+            $useMinMax = false;
+            if (isset($idconcepto['min'])) {
+                $this->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $idconcepto['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idconcepto['max'])) {
+                $this->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $idconcepto['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EgresoclinicaPeer::IDCONCEPTO, $idconcepto, $comparison);
     }
 
     /**

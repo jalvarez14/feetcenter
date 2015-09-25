@@ -56,6 +56,129 @@ class EgresosController extends AbstractActionController
         return new ViewModel();
     }
     
+    public function editarAction(){
+        
+        $sesion = new \Shared\Session\AouthSession();
+        $request = $this->request;
+        
+        //Cachamos el valor desde nuestro params
+        $id = (int) $this->params()->fromRoute('id');
+        //Verificamos que el Id lugar que se quiere modificar exista
+        if(!\EgresoclinicaQuery::create()->filterByIdegresoclinica($id)->exists()){
+            $id =0;
+        }
+        //Si es incorrecto redireccionavos al action nuevo
+        if (!$id) {
+            return $this->redirect()->toRoute('egresos');
+        }
+        
+        
+        //Instanciamos nuestra entidad
+        $entity = \EgresoclinicaQuery::create()->findPk($id);
+        
+        if($request->isPost()){
+            $post_data = $request->getPost();
+            
+            foreach ($post_data as $k => $v){
+                if(empty($v)){
+                    unset($post_data[$k]);
+                }
+            }
+            
+            //Recorremos nuestro formulario y seteamos los valores a nuestro objeto Lugar
+            foreach ($post_data as $key => $value) {
+                if (\EgresoclinicaPeer::getTableMap()->hasColumn($key) && $key != 'egresoclinica_fechaegreso') {
+                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                }
+            }
+            
+            //La fecha de nacimiento
+            if(isset($post_data['egresoclinica_fechaegreso_submit'])){
+                $entity->setEgresoclinicaFechaegreso($post_data['egresoclinica_fechaegreso_submit']);
+            }
+            
+            $entity->save();
+            
+            
+            //Los archivos
+            if(isset($_FILES['egresoclinica_comprobante']) && !empty($_FILES['egresoclinica_comprobante']['name'])){
+                    $upload_folder ='/img/egresos/';
+                    $tipo_archivo = $_FILES['egresoclinica_comprobante']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = $tipo_archivo[1];  
+                    $nombre_archivo = 'egresoclinica_comprobante_'.$entity->getIdegresoclinica().'.'.$tipo_archivo;
+                    $tmp_archivo = $_FILES['egresoclinica_comprobante']['tmp_name'];
+                    $archivador = $upload_folder.$nombre_archivo;
+                    if(!move_uploaded_file($tmp_archivo, $_SERVER["DOCUMENT_ROOT"].$archivador)) {
+                        return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => false, 'msg' => 'Ocurrio un error al subir el archivo. No pudo guardarse.', 'status' => 'error')));
+                    } 
+                    $entity->setEgresoclinicaComprobante($archivador);
+                    $entity->save();
+
+            }else{
+
+                //Si fue eliminado
+                if(isset($post_data['egresoclinica_comprobante_submit']) && isset($post_data['egresoclinica_comprobante_submit']) == 'delete'){
+
+                    if(!is_null($entity->getEgresoclinicaComprobante())){
+
+                        unlink($_SERVER['DOCUMENT_ROOT'].$entity->getEgresoclinicaComprobante());
+                    }
+
+                    $entity->setEgresoclinicaComprobante(NULL);
+                }
+
+            }
+            
+            $entity->save();
+            
+            //Agregamos un mensaje
+            $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
+                
+            //Redireccionamos a nuestro list
+            return $this->redirect()->toRoute('egresos');
+
+        }
+        
+        
+        //General
+        $conceptos = \ConceptoQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        
+        //Administtrador
+        if($sesion->getIdrol() == 1){
+            $clinicas = \ClinicaQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        }
+        //Encargado
+        elseif ($sesion->getIdrol() == 2) {
+             $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        }
+        
+        //Damos formato de select
+        $clinica_array = array();
+        foreach ($clinicas as $clinica){
+            $idclinica = $clinica['idclinica'];
+            $clinica_array[$idclinica] = $clinica['clinica_nombre'];
+        }
+        
+        $conceptos_array = array();
+        foreach ($conceptos as $concepto){
+            $idconcepto = $concepto['idconcepto'];
+            $conceptos_array[$idconcepto] = $concepto['concepto_nombre'];
+        }
+        
+        //
+        
+        //Instanciamos nuestro formulario
+        $form = new \Egresos\Form\EgresoForm($clinica_array,$conceptos_array);
+        
+        $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
+        
+        
+        return new ViewModel(array(
+            'egreso_comprobante' => $entity->getEgresoclinicaComprobante(),
+            'id' => $id,
+            'form' => $form,
+        ));
+    }
+    
     public function nuevoAction()
     {
         
@@ -211,7 +334,7 @@ class EgresosController extends AbstractActionController
             $post_data = $request->getPost();
             
             $query = new \EgresoclinicaQuery();
-  
+            
             if(isset($post_data['clinicas'])){
                  $query->filterByIdclinica($post_data['clinicas']);
             }else{
@@ -225,11 +348,14 @@ class EgresosController extends AbstractActionController
             }
             
             $result = $query->joinClinica()->joinConcepto()->joinEmpleado()->withColumn('clinica_nombre')->withColumn('empleado_nombre')->withColumn('concepto_nombre')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+
+            
             //Dams formato a la fecha
             foreach ($result as $key => $value){
-                $fecha = new \DateTime($value['egresoclinica_fecha']);
-                $result[$key]['egresoclinica_fecha'] = $fecha->format('d/m/Y');
+                $fecha = new \DateTime($value['egresoclinica_fechaegreso']);
+                $result[$key]['egresoclinica_fechaegreso'] = $fecha->format('d/m/Y');
             }
+            
             return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => $result)));
             
         }

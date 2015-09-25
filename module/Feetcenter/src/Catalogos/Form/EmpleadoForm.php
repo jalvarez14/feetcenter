@@ -142,24 +142,24 @@ class EmpleadoForm extends Form
             ),
         ));
         
-        $this->add(array(
-             'type' => 'Select',
-             'name' => 'empleado_diadescanso',
-             'options' => array(
-                'value_options' => array(
-                        'lunes' => 'Lunes',
-                        'martes' => 'Martes',
-                        'miercoles' => 'Miercoles',
-                        'jueves' => 'Jueves',
-                        'viernes' => 'Viernes',
-                        'sabado' => 'Sabado',
-                        'domingo' => 'Domingo',
-                ),
-             ),
-            'attributes' => array(
-                'class' => 'width-100',
-            ),
-        ));
+//        $this->add(array(
+//             'type' => 'Select',
+//             'name' => 'empleado_diadescanso',
+//             'options' => array(
+//                'value_options' => array(
+//                        'lunes' => 'Lunes',
+//                        'martes' => 'Martes',
+//                        'miercoles' => 'Miercoles',
+//                        'jueves' => 'Jueves',
+//                        'viernes' => 'Viernes',
+//                        'sabado' => 'Sabado',
+//                        'domingo' => 'Domingo',
+//                ),
+//             ),
+//            'attributes' => array(
+//                'class' => 'width-100',
+//            ),
+//        ));
         
         $this->add(array(
             'name' => 'empleado_username',

@@ -59,16 +59,6 @@ class EmpleadoTableMap extends TableMap
         $this->addColumn('empleado_comprobantedomiclio', 'EmpleadoComprobantedomiclio', 'LONGVARCHAR', false, null, null);
         $this->addColumn('empleado_comprobanteidentificacion', 'EmpleadoComprobanteidentificacion', 'LONGVARCHAR', false, null, null);
         $this->addColumn('empleado_sueldo', 'EmpleadoSueldo', 'DECIMAL', false, 10, null);
-        $this->addColumn('empleado_diadescanso', 'EmpleadoDiadescanso', 'CHAR', true, null, null);
-        $this->getColumn('empleado_diadescanso', false)->setValueSet(array (
-  0 => 'lunes',
-  1 => 'martes',
-  2 => 'miercoles',
-  3 => 'jueves',
-  4 => 'viernes',
-  5 => 'sabado',
-  6 => 'domingo',
-));
         $this->addColumn('empleado_foto', 'EmpleadoFoto', 'LONGVARCHAR', false, null, null);
         $this->addColumn('empleado_tipocomisionproducto', 'EmpleadoTipocomisionproducto', 'CHAR', false, null, null);
         $this->getColumn('empleado_tipocomisionproducto', false)->setValueSet(array (

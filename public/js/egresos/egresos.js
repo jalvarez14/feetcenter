@@ -46,6 +46,7 @@
         var $container = $(container);  
         
         var settings;
+        var $table;
         
         /*
         * Private methods
@@ -53,20 +54,10 @@
        
        var filter = function(){
            
-           $.ajax({
-                url: '/json/lang_es_datatable.json',
-                dataType: 'json',
-                async:false,
-                success: function(data){
-                    var $table = container.find('table').DataTable({
-                        language:data,
-                    });
-
-                }
-            });
-           
            var clinicas_select =   $("select[name=clinica_filter]").multipleSelect('getSelects');
            var conceptos_select =  $("select[name=concepto_filter]").multipleSelect('getSelects');
+           
+           console.log( conceptos_select);
            
            //Hacemos la peticion ajax
             $.ajax({
@@ -104,19 +95,54 @@
                             if(this.egresoclinica_nota != null){
                                 var id = $(rowNode).attr('id');
                                 $(rowNode).find('td').eq(6).html('<a class="ver_nota" data-content="/egresos/vernota?id='+id+'" data-tools="modal" data-width="700" data-title="<h2>Egreso #'+id+'" href="javascript:void(0)"><img src="/img/icons/note_icon.png"></a>');
+                                $(rowNode).find('td').eq(6).find('a').modal();
+                                $(rowNode).find('td').eq(6).find('a').on('loading.tools.modal', function(modal){
+                                    var $modalHeader = this.$modalHeader;
+                                    $modalHeader.remove();
+                                    var $modalBody = this.$modalBody;
+                                    $modalBody.css('background','#F5D65B');
+                                });
 
                             }else{  
                                  $(rowNode).find('td').eq(6).html('N/D');
                             }
                              //Las opciones 
                             $(rowNode).find('td').last().addClass('tr_options');
+                            $(rowNode).find('td').last().find('a.delete-modal').modal();
+                            $(rowNode).find('td').last().find('a.delete-modal').on('loading.tools.modal', function(modal){
+                                var $modalHeader = this.$modalHeader;
+                                $modalHeader.addClass('modal_header_warning');
+                                var id = this.$element.closest('tr').attr('id');
+                                var $modal = this ;
+
+                                this.createCancelButton('Cancelar');
+
+                                var buttonDelete = this.createDeleteButton('Eliminar');
+
+                                buttonDelete.on('click', $.proxy(function()
+                                {
+                                    //Hacemos la peticion ajax
+                                    $.ajax({
+                                        url:'/egresos/eliminar/'+id,
+                                        dataType: 'json',
+                                        method:'POST',
+                                        success: function(data){
+                                            if(data.response){
+                                                $modal.close();
+                                                window.location.replace('egresos');
+                                            }
+                                        }
+                                    });
+
+
+                                }, this));
+                            });
+
 
                         });
                     }
                     $table.draw();
-                    $table.on( 'draw', function () {
-                        console.log('entro');
-                    });
+                    
                     
                 }
             });
@@ -168,12 +194,18 @@
         plugin.init = function(){
             
             settings = plugin.settings = $.extend({}, defaults, options);
+            
+            $.ajax({
+                url: '/json/lang_es_datatable.json',
+                dataType: 'json',
+                async:false,
+                success: function(data){
+                    $table = container.find('table').DataTable({
+                        language:data,
+                    });
 
-//            //las notas
-//            $('.ver_nota').unbind();        
-//            $('.ver_nota').on('loading.tools.modal', function(modal){
-//                verNota(this);
-//            }); 
+                }
+            });
           
             //Inicializamos nuestro multiple select
             $container.find("select[name=clinica_filter]").multipleSelect({
@@ -193,6 +225,8 @@
             });
             
             $container.find("select[name=concepto_filter]").multipleSelect("checkAll");
+            
+            filter();
             
             
             

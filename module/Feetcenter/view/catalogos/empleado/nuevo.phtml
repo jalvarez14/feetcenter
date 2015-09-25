@@ -8,18 +8,13 @@
         echo $this->form()->openTag($form); 
     ?>
     <div class="units-row">
-        <div class="unit-50">
+        <div class="unit-100">
             <label>
                 Nombre <span class="req">*</span>
                 <?php echo $this->formText($form->get('empleado_nombre')); ?>
             </label>
         </div>
-        <div class="unit-50">
-            <label>
-                Dia de descanso
-                <?php echo $this->formSelect($form->get('empleado_diadescanso')); ?>
-            </label>
-        </div>
+        
     </div>
     <div class="units-row">
         <div class="unit-50">

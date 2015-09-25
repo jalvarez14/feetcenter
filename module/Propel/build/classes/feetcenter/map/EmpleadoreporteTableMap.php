@@ -42,6 +42,7 @@ class EmpleadoreporteTableMap extends TableMap
         $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
         $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', true, null, null);
         $this->addForeignKey('idempleadoreportado', 'Idempleadoreportado', 'INTEGER', 'empleado', 'idempleado', true, null, null);
+        $this->addForeignKey('idconceptoincidencia', 'Idconceptoincidencia', 'INTEGER', 'conceptoincidencia', 'idconceptoincidencia', true, null, null);
         $this->addColumn('empleadoreporte_fechacreacion', 'EmpleadoreporteFechacreacion', 'TIMESTAMP', true, null, null);
         $this->addColumn('empleadoreporte_comentario', 'EmpleadoreporteComentario', 'LONGVARCHAR', true, null, null);
         $this->addColumn('empleadoreporte_fechasuceso', 'EmpleadoreporteFechasuceso', 'DATE', true, null, null);
@@ -54,6 +55,7 @@ class EmpleadoreporteTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Conceptoincidencia', 'Conceptoincidencia', RelationMap::MANY_TO_ONE, array('idconceptoincidencia' => 'idconceptoincidencia', ), 'CASCADE', 'CASCADE');
         $this->addRelation('EmpleadoRelatedByIdempleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE');
         $this->addRelation('EmpleadoRelatedByIdempleadoreportado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleadoreportado' => 'idempleado', ), 'CASCADE', 'CASCADE');
     } // buildRelations()

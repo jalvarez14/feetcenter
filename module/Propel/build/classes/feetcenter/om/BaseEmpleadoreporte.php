@@ -54,6 +54,12 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
     protected $idempleadoreportado;
 
     /**
+     * The value for the idconceptoincidencia field.
+     * @var        int
+     */
+    protected $idconceptoincidencia;
+
+    /**
      * The value for the empleadoreporte_fechacreacion field.
      * @var        string
      */
@@ -75,6 +81,11 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
      * @var        Clinica
      */
     protected $aClinica;
+
+    /**
+     * @var        Conceptoincidencia
+     */
+    protected $aConceptoincidencia;
 
     /**
      * @var        Empleado
@@ -148,6 +159,17 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
     {
 
         return $this->idempleadoreportado;
+    }
+
+    /**
+     * Get the [idconceptoincidencia] column value.
+     *
+     * @return int
+     */
+    public function getIdconceptoincidencia()
+    {
+
+        return $this->idconceptoincidencia;
     }
 
     /**
@@ -338,6 +360,31 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
     } // setIdempleadoreportado()
 
     /**
+     * Set the value of [idconceptoincidencia] column.
+     *
+     * @param  int $v new value
+     * @return Empleadoreporte The current object (for fluent API support)
+     */
+    public function setIdconceptoincidencia($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idconceptoincidencia !== $v) {
+            $this->idconceptoincidencia = $v;
+            $this->modifiedColumns[] = EmpleadoreportePeer::IDCONCEPTOINCIDENCIA;
+        }
+
+        if ($this->aConceptoincidencia !== null && $this->aConceptoincidencia->getIdconceptoincidencia() !== $v) {
+            $this->aConceptoincidencia = null;
+        }
+
+
+        return $this;
+    } // setIdconceptoincidencia()
+
+    /**
      * Sets the value of [empleadoreporte_fechacreacion] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -440,9 +487,10 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
             $this->idclinica = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->idempleado = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->idempleadoreportado = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->empleadoreporte_fechacreacion = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->empleadoreporte_comentario = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->empleadoreporte_fechasuceso = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->idconceptoincidencia = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->empleadoreporte_fechacreacion = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->empleadoreporte_comentario = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->empleadoreporte_fechasuceso = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -452,7 +500,7 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = EmpleadoreportePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = EmpleadoreportePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Empleadoreporte object", $e);
@@ -483,6 +531,9 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
         }
         if ($this->aEmpleadoRelatedByIdempleadoreportado !== null && $this->idempleadoreportado !== $this->aEmpleadoRelatedByIdempleadoreportado->getIdempleado()) {
             $this->aEmpleadoRelatedByIdempleadoreportado = null;
+        }
+        if ($this->aConceptoincidencia !== null && $this->idconceptoincidencia !== $this->aConceptoincidencia->getIdconceptoincidencia()) {
+            $this->aConceptoincidencia = null;
         }
     } // ensureConsistency
 
@@ -524,6 +575,7 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aClinica = null;
+            $this->aConceptoincidencia = null;
             $this->aEmpleadoRelatedByIdempleado = null;
             $this->aEmpleadoRelatedByIdempleadoreportado = null;
         } // if (deep)
@@ -651,6 +703,13 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
                 $this->setClinica($this->aClinica);
             }
 
+            if ($this->aConceptoincidencia !== null) {
+                if ($this->aConceptoincidencia->isModified() || $this->aConceptoincidencia->isNew()) {
+                    $affectedRows += $this->aConceptoincidencia->save($con);
+                }
+                $this->setConceptoincidencia($this->aConceptoincidencia);
+            }
+
             if ($this->aEmpleadoRelatedByIdempleado !== null) {
                 if ($this->aEmpleadoRelatedByIdempleado->isModified() || $this->aEmpleadoRelatedByIdempleado->isNew()) {
                     $affectedRows += $this->aEmpleadoRelatedByIdempleado->save($con);
@@ -714,6 +773,9 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadoreportePeer::IDEMPLEADOREPORTADO)) {
             $modifiedColumns[':p' . $index++]  = '`idempleadoreportado`';
         }
+        if ($this->isColumnModified(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA)) {
+            $modifiedColumns[':p' . $index++]  = '`idconceptoincidencia`';
+        }
         if ($this->isColumnModified(EmpleadoreportePeer::EMPLEADOREPORTE_FECHACREACION)) {
             $modifiedColumns[':p' . $index++]  = '`empleadoreporte_fechacreacion`';
         }
@@ -745,6 +807,9 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
                         break;
                     case '`idempleadoreportado`':
                         $stmt->bindValue($identifier, $this->idempleadoreportado, PDO::PARAM_INT);
+                        break;
+                    case '`idconceptoincidencia`':
+                        $stmt->bindValue($identifier, $this->idconceptoincidencia, PDO::PARAM_INT);
                         break;
                     case '`empleadoreporte_fechacreacion`':
                         $stmt->bindValue($identifier, $this->empleadoreporte_fechacreacion, PDO::PARAM_STR);
@@ -860,6 +925,12 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->aConceptoincidencia !== null) {
+                if (!$this->aConceptoincidencia->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aConceptoincidencia->getValidationFailures());
+                }
+            }
+
             if ($this->aEmpleadoRelatedByIdempleado !== null) {
                 if (!$this->aEmpleadoRelatedByIdempleado->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aEmpleadoRelatedByIdempleado->getValidationFailures());
@@ -926,12 +997,15 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
                 return $this->getIdempleadoreportado();
                 break;
             case 4:
-                return $this->getEmpleadoreporteFechacreacion();
+                return $this->getIdconceptoincidencia();
                 break;
             case 5:
-                return $this->getEmpleadoreporteComentario();
+                return $this->getEmpleadoreporteFechacreacion();
                 break;
             case 6:
+                return $this->getEmpleadoreporteComentario();
+                break;
+            case 7:
                 return $this->getEmpleadoreporteFechasuceso();
                 break;
             default:
@@ -967,9 +1041,10 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
             $keys[1] => $this->getIdclinica(),
             $keys[2] => $this->getIdempleado(),
             $keys[3] => $this->getIdempleadoreportado(),
-            $keys[4] => $this->getEmpleadoreporteFechacreacion(),
-            $keys[5] => $this->getEmpleadoreporteComentario(),
-            $keys[6] => $this->getEmpleadoreporteFechasuceso(),
+            $keys[4] => $this->getIdconceptoincidencia(),
+            $keys[5] => $this->getEmpleadoreporteFechacreacion(),
+            $keys[6] => $this->getEmpleadoreporteComentario(),
+            $keys[7] => $this->getEmpleadoreporteFechasuceso(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -979,6 +1054,9 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->aClinica) {
                 $result['Clinica'] = $this->aClinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aConceptoincidencia) {
+                $result['Conceptoincidencia'] = $this->aConceptoincidencia->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aEmpleadoRelatedByIdempleado) {
                 $result['EmpleadoRelatedByIdempleado'] = $this->aEmpleadoRelatedByIdempleado->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1033,12 +1111,15 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
                 $this->setIdempleadoreportado($value);
                 break;
             case 4:
-                $this->setEmpleadoreporteFechacreacion($value);
+                $this->setIdconceptoincidencia($value);
                 break;
             case 5:
-                $this->setEmpleadoreporteComentario($value);
+                $this->setEmpleadoreporteFechacreacion($value);
                 break;
             case 6:
+                $this->setEmpleadoreporteComentario($value);
+                break;
+            case 7:
                 $this->setEmpleadoreporteFechasuceso($value);
                 break;
         } // switch()
@@ -1069,9 +1150,10 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setIdclinica($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setIdempleado($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setIdempleadoreportado($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setEmpleadoreporteFechacreacion($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setEmpleadoreporteComentario($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setEmpleadoreporteFechasuceso($arr[$keys[6]]);
+        if (array_key_exists($keys[4], $arr)) $this->setIdconceptoincidencia($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setEmpleadoreporteFechacreacion($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setEmpleadoreporteComentario($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setEmpleadoreporteFechasuceso($arr[$keys[7]]);
     }
 
     /**
@@ -1087,6 +1169,7 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadoreportePeer::IDCLINICA)) $criteria->add(EmpleadoreportePeer::IDCLINICA, $this->idclinica);
         if ($this->isColumnModified(EmpleadoreportePeer::IDEMPLEADO)) $criteria->add(EmpleadoreportePeer::IDEMPLEADO, $this->idempleado);
         if ($this->isColumnModified(EmpleadoreportePeer::IDEMPLEADOREPORTADO)) $criteria->add(EmpleadoreportePeer::IDEMPLEADOREPORTADO, $this->idempleadoreportado);
+        if ($this->isColumnModified(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA)) $criteria->add(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, $this->idconceptoincidencia);
         if ($this->isColumnModified(EmpleadoreportePeer::EMPLEADOREPORTE_FECHACREACION)) $criteria->add(EmpleadoreportePeer::EMPLEADOREPORTE_FECHACREACION, $this->empleadoreporte_fechacreacion);
         if ($this->isColumnModified(EmpleadoreportePeer::EMPLEADOREPORTE_COMENTARIO)) $criteria->add(EmpleadoreportePeer::EMPLEADOREPORTE_COMENTARIO, $this->empleadoreporte_comentario);
         if ($this->isColumnModified(EmpleadoreportePeer::EMPLEADOREPORTE_FECHASUCESO)) $criteria->add(EmpleadoreportePeer::EMPLEADOREPORTE_FECHASUCESO, $this->empleadoreporte_fechasuceso);
@@ -1156,6 +1239,7 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
         $copyObj->setIdclinica($this->getIdclinica());
         $copyObj->setIdempleado($this->getIdempleado());
         $copyObj->setIdempleadoreportado($this->getIdempleadoreportado());
+        $copyObj->setIdconceptoincidencia($this->getIdconceptoincidencia());
         $copyObj->setEmpleadoreporteFechacreacion($this->getEmpleadoreporteFechacreacion());
         $copyObj->setEmpleadoreporteComentario($this->getEmpleadoreporteComentario());
         $copyObj->setEmpleadoreporteFechasuceso($this->getEmpleadoreporteFechasuceso());
@@ -1267,6 +1351,58 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
         }
 
         return $this->aClinica;
+    }
+
+    /**
+     * Declares an association between this object and a Conceptoincidencia object.
+     *
+     * @param                  Conceptoincidencia $v
+     * @return Empleadoreporte The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setConceptoincidencia(Conceptoincidencia $v = null)
+    {
+        if ($v === null) {
+            $this->setIdconceptoincidencia(NULL);
+        } else {
+            $this->setIdconceptoincidencia($v->getIdconceptoincidencia());
+        }
+
+        $this->aConceptoincidencia = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Conceptoincidencia object, it will not be re-added.
+        if ($v !== null) {
+            $v->addEmpleadoreporte($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Conceptoincidencia object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Conceptoincidencia The associated Conceptoincidencia object.
+     * @throws PropelException
+     */
+    public function getConceptoincidencia(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aConceptoincidencia === null && ($this->idconceptoincidencia !== null) && $doQuery) {
+            $this->aConceptoincidencia = ConceptoincidenciaQuery::create()->findPk($this->idconceptoincidencia, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aConceptoincidencia->addEmpleadoreportes($this);
+             */
+        }
+
+        return $this->aConceptoincidencia;
     }
 
     /**
@@ -1382,6 +1518,7 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
         $this->idclinica = null;
         $this->idempleado = null;
         $this->idempleadoreportado = null;
+        $this->idconceptoincidencia = null;
         $this->empleadoreporte_fechacreacion = null;
         $this->empleadoreporte_comentario = null;
         $this->empleadoreporte_fechasuceso = null;
@@ -1410,6 +1547,9 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
             if ($this->aClinica instanceof Persistent) {
               $this->aClinica->clearAllReferences($deep);
             }
+            if ($this->aConceptoincidencia instanceof Persistent) {
+              $this->aConceptoincidencia->clearAllReferences($deep);
+            }
             if ($this->aEmpleadoRelatedByIdempleado instanceof Persistent) {
               $this->aEmpleadoRelatedByIdempleado->clearAllReferences($deep);
             }
@@ -1421,6 +1561,7 @@ abstract class BaseEmpleadoreporte extends BaseObject implements Persistent
         } // if ($deep)
 
         $this->aClinica = null;
+        $this->aConceptoincidencia = null;
         $this->aEmpleadoRelatedByIdempleado = null;
         $this->aEmpleadoRelatedByIdempleadoreportado = null;
     }

@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'concepto' table.
+ * Base class that represents a row from the 'conceptoincidencia' table.
  *
  *
  *
  * @package    propel.generator.feetcenter.om
  */
-abstract class BaseConcepto extends BaseObject implements Persistent
+abstract class BaseConceptoincidencia extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'ConceptoPeer';
+    const PEER = 'ConceptoincidenciaPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        ConceptoPeer
+     * @var        ConceptoincidenciaPeer
      */
     protected static $peer;
 
@@ -30,28 +30,28 @@ abstract class BaseConcepto extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
-     * The value for the idconcepto field.
+     * The value for the idconceptoincidencia field.
      * @var        int
      */
-    protected $idconcepto;
+    protected $idconceptoincidencia;
 
     /**
-     * The value for the concepto_nombre field.
+     * The value for the conceptoincidencia_nombre field.
      * @var        string
      */
-    protected $concepto_nombre;
+    protected $conceptoincidencia_nombre;
 
     /**
-     * The value for the concepto_descripcion field.
+     * The value for the conceptoincidencia_descripcion field.
      * @var        string
      */
-    protected $concepto_descripcion;
+    protected $conceptoincidencia_descripcion;
 
     /**
-     * @var        PropelObjectCollection|Egresoclinica[] Collection to store aggregation of Egresoclinica objects.
+     * @var        PropelObjectCollection|Empleadoreporte[] Collection to store aggregation of Empleadoreporte objects.
      */
-    protected $collEgresoclinicas;
-    protected $collEgresoclinicasPartial;
+    protected $collEmpleadoreportes;
+    protected $collEmpleadoreportesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -77,103 +77,103 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $egresoclinicasScheduledForDeletion = null;
+    protected $empleadoreportesScheduledForDeletion = null;
 
     /**
-     * Get the [idconcepto] column value.
+     * Get the [idconceptoincidencia] column value.
      *
      * @return int
      */
-    public function getIdconcepto()
+    public function getIdconceptoincidencia()
     {
 
-        return $this->idconcepto;
+        return $this->idconceptoincidencia;
     }
 
     /**
-     * Get the [concepto_nombre] column value.
+     * Get the [conceptoincidencia_nombre] column value.
      *
      * @return string
      */
-    public function getConceptoNombre()
+    public function getConceptoincidenciaNombre()
     {
 
-        return $this->concepto_nombre;
+        return $this->conceptoincidencia_nombre;
     }
 
     /**
-     * Get the [concepto_descripcion] column value.
+     * Get the [conceptoincidencia_descripcion] column value.
      *
      * @return string
      */
-    public function getConceptoDescripcion()
+    public function getConceptoincidenciaDescripcion()
     {
 
-        return $this->concepto_descripcion;
+        return $this->conceptoincidencia_descripcion;
     }
 
     /**
-     * Set the value of [idconcepto] column.
+     * Set the value of [idconceptoincidencia] column.
      *
      * @param  int $v new value
-     * @return Concepto The current object (for fluent API support)
+     * @return Conceptoincidencia The current object (for fluent API support)
      */
-    public function setIdconcepto($v)
+    public function setIdconceptoincidencia($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idconcepto !== $v) {
-            $this->idconcepto = $v;
-            $this->modifiedColumns[] = ConceptoPeer::IDCONCEPTO;
+        if ($this->idconceptoincidencia !== $v) {
+            $this->idconceptoincidencia = $v;
+            $this->modifiedColumns[] = ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA;
         }
 
 
         return $this;
-    } // setIdconcepto()
+    } // setIdconceptoincidencia()
 
     /**
-     * Set the value of [concepto_nombre] column.
+     * Set the value of [conceptoincidencia_nombre] column.
      *
      * @param  string $v new value
-     * @return Concepto The current object (for fluent API support)
+     * @return Conceptoincidencia The current object (for fluent API support)
      */
-    public function setConceptoNombre($v)
+    public function setConceptoincidenciaNombre($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->concepto_nombre !== $v) {
-            $this->concepto_nombre = $v;
-            $this->modifiedColumns[] = ConceptoPeer::CONCEPTO_NOMBRE;
+        if ($this->conceptoincidencia_nombre !== $v) {
+            $this->conceptoincidencia_nombre = $v;
+            $this->modifiedColumns[] = ConceptoincidenciaPeer::CONCEPTOINCIDENCIA_NOMBRE;
         }
 
 
         return $this;
-    } // setConceptoNombre()
+    } // setConceptoincidenciaNombre()
 
     /**
-     * Set the value of [concepto_descripcion] column.
+     * Set the value of [conceptoincidencia_descripcion] column.
      *
      * @param  string $v new value
-     * @return Concepto The current object (for fluent API support)
+     * @return Conceptoincidencia The current object (for fluent API support)
      */
-    public function setConceptoDescripcion($v)
+    public function setConceptoincidenciaDescripcion($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->concepto_descripcion !== $v) {
-            $this->concepto_descripcion = $v;
-            $this->modifiedColumns[] = ConceptoPeer::CONCEPTO_DESCRIPCION;
+        if ($this->conceptoincidencia_descripcion !== $v) {
+            $this->conceptoincidencia_descripcion = $v;
+            $this->modifiedColumns[] = ConceptoincidenciaPeer::CONCEPTOINCIDENCIA_DESCRIPCION;
         }
 
 
         return $this;
-    } // setConceptoDescripcion()
+    } // setConceptoincidenciaDescripcion()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -207,9 +207,9 @@ abstract class BaseConcepto extends BaseObject implements Persistent
     {
         try {
 
-            $this->idconcepto = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->concepto_nombre = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->concepto_descripcion = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->idconceptoincidencia = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->conceptoincidencia_nombre = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->conceptoincidencia_descripcion = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -219,10 +219,10 @@ abstract class BaseConcepto extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 3; // 3 = ConceptoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = ConceptoincidenciaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Concepto object", $e);
+            throw new PropelException("Error populating Conceptoincidencia object", $e);
         }
     }
 
@@ -265,13 +265,13 @@ abstract class BaseConcepto extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ConceptoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ConceptoincidenciaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = ConceptoPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = ConceptoincidenciaPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -281,7 +281,7 @@ abstract class BaseConcepto extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collEgresoclinicas = null;
+            $this->collEmpleadoreportes = null;
 
         } // if (deep)
     }
@@ -303,12 +303,12 @@ abstract class BaseConcepto extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ConceptoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ConceptoincidenciaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ConceptoQuery::create()
+            $deleteQuery = ConceptoincidenciaQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -346,7 +346,7 @@ abstract class BaseConcepto extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ConceptoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ConceptoincidenciaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -366,7 +366,7 @@ abstract class BaseConcepto extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ConceptoPeer::addInstanceToPool($this);
+                ConceptoincidenciaPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -407,17 +407,17 @@ abstract class BaseConcepto extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->egresoclinicasScheduledForDeletion !== null) {
-                if (!$this->egresoclinicasScheduledForDeletion->isEmpty()) {
-                    EgresoclinicaQuery::create()
-                        ->filterByPrimaryKeys($this->egresoclinicasScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->empleadoreportesScheduledForDeletion !== null) {
+                if (!$this->empleadoreportesScheduledForDeletion->isEmpty()) {
+                    EmpleadoreporteQuery::create()
+                        ->filterByPrimaryKeys($this->empleadoreportesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->egresoclinicasScheduledForDeletion = null;
+                    $this->empleadoreportesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collEgresoclinicas !== null) {
-                foreach ($this->collEgresoclinicas as $referrerFK) {
+            if ($this->collEmpleadoreportes !== null) {
+                foreach ($this->collEmpleadoreportes as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -446,18 +446,18 @@ abstract class BaseConcepto extends BaseObject implements Persistent
 
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ConceptoPeer::IDCONCEPTO)) {
-            $modifiedColumns[':p' . $index++]  = '`idconcepto`';
+        if ($this->isColumnModified(ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA)) {
+            $modifiedColumns[':p' . $index++]  = '`idconceptoincidencia`';
         }
-        if ($this->isColumnModified(ConceptoPeer::CONCEPTO_NOMBRE)) {
-            $modifiedColumns[':p' . $index++]  = '`concepto_nombre`';
+        if ($this->isColumnModified(ConceptoincidenciaPeer::CONCEPTOINCIDENCIA_NOMBRE)) {
+            $modifiedColumns[':p' . $index++]  = '`conceptoincidencia_nombre`';
         }
-        if ($this->isColumnModified(ConceptoPeer::CONCEPTO_DESCRIPCION)) {
-            $modifiedColumns[':p' . $index++]  = '`concepto_descripcion`';
+        if ($this->isColumnModified(ConceptoincidenciaPeer::CONCEPTOINCIDENCIA_DESCRIPCION)) {
+            $modifiedColumns[':p' . $index++]  = '`conceptoincidencia_descripcion`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `concepto` (%s) VALUES (%s)',
+            'INSERT INTO `conceptoincidencia` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -466,14 +466,14 @@ abstract class BaseConcepto extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`idconcepto`':
-                        $stmt->bindValue($identifier, $this->idconcepto, PDO::PARAM_INT);
+                    case '`idconceptoincidencia`':
+                        $stmt->bindValue($identifier, $this->idconceptoincidencia, PDO::PARAM_INT);
                         break;
-                    case '`concepto_nombre`':
-                        $stmt->bindValue($identifier, $this->concepto_nombre, PDO::PARAM_STR);
+                    case '`conceptoincidencia_nombre`':
+                        $stmt->bindValue($identifier, $this->conceptoincidencia_nombre, PDO::PARAM_STR);
                         break;
-                    case '`concepto_descripcion`':
-                        $stmt->bindValue($identifier, $this->concepto_descripcion, PDO::PARAM_STR);
+                    case '`conceptoincidencia_descripcion`':
+                        $stmt->bindValue($identifier, $this->conceptoincidencia_descripcion, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -562,13 +562,13 @@ abstract class BaseConcepto extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = ConceptoPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = ConceptoincidenciaPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
 
-                if ($this->collEgresoclinicas !== null) {
-                    foreach ($this->collEgresoclinicas as $referrerFK) {
+                if ($this->collEmpleadoreportes !== null) {
+                    foreach ($this->collEmpleadoreportes as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -594,7 +594,7 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = ConceptoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = ConceptoincidenciaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -611,13 +611,13 @@ abstract class BaseConcepto extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getIdconcepto();
+                return $this->getIdconceptoincidencia();
                 break;
             case 1:
-                return $this->getConceptoNombre();
+                return $this->getConceptoincidenciaNombre();
                 break;
             case 2:
-                return $this->getConceptoDescripcion();
+                return $this->getConceptoincidenciaDescripcion();
                 break;
             default:
                 return null;
@@ -642,15 +642,15 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Concepto'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['Conceptoincidencia'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Concepto'][$this->getPrimaryKey()] = true;
-        $keys = ConceptoPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['Conceptoincidencia'][$this->getPrimaryKey()] = true;
+        $keys = ConceptoincidenciaPeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getIdconcepto(),
-            $keys[1] => $this->getConceptoNombre(),
-            $keys[2] => $this->getConceptoDescripcion(),
+            $keys[0] => $this->getIdconceptoincidencia(),
+            $keys[1] => $this->getConceptoincidenciaNombre(),
+            $keys[2] => $this->getConceptoincidenciaDescripcion(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -658,8 +658,8 @@ abstract class BaseConcepto extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collEgresoclinicas) {
-                $result['Egresoclinicas'] = $this->collEgresoclinicas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collEmpleadoreportes) {
+                $result['Empleadoreportes'] = $this->collEmpleadoreportes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -679,7 +679,7 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = ConceptoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = ConceptoincidenciaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -696,13 +696,13 @@ abstract class BaseConcepto extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setIdconcepto($value);
+                $this->setIdconceptoincidencia($value);
                 break;
             case 1:
-                $this->setConceptoNombre($value);
+                $this->setConceptoincidenciaNombre($value);
                 break;
             case 2:
-                $this->setConceptoDescripcion($value);
+                $this->setConceptoincidenciaDescripcion($value);
                 break;
         } // switch()
     }
@@ -726,11 +726,11 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = ConceptoPeer::getFieldNames($keyType);
+        $keys = ConceptoincidenciaPeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setIdconcepto($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setConceptoNombre($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setConceptoDescripcion($arr[$keys[2]]);
+        if (array_key_exists($keys[0], $arr)) $this->setIdconceptoincidencia($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setConceptoincidenciaNombre($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setConceptoincidenciaDescripcion($arr[$keys[2]]);
     }
 
     /**
@@ -740,11 +740,11 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ConceptoPeer::DATABASE_NAME);
+        $criteria = new Criteria(ConceptoincidenciaPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(ConceptoPeer::IDCONCEPTO)) $criteria->add(ConceptoPeer::IDCONCEPTO, $this->idconcepto);
-        if ($this->isColumnModified(ConceptoPeer::CONCEPTO_NOMBRE)) $criteria->add(ConceptoPeer::CONCEPTO_NOMBRE, $this->concepto_nombre);
-        if ($this->isColumnModified(ConceptoPeer::CONCEPTO_DESCRIPCION)) $criteria->add(ConceptoPeer::CONCEPTO_DESCRIPCION, $this->concepto_descripcion);
+        if ($this->isColumnModified(ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA)) $criteria->add(ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $this->idconceptoincidencia);
+        if ($this->isColumnModified(ConceptoincidenciaPeer::CONCEPTOINCIDENCIA_NOMBRE)) $criteria->add(ConceptoincidenciaPeer::CONCEPTOINCIDENCIA_NOMBRE, $this->conceptoincidencia_nombre);
+        if ($this->isColumnModified(ConceptoincidenciaPeer::CONCEPTOINCIDENCIA_DESCRIPCION)) $criteria->add(ConceptoincidenciaPeer::CONCEPTOINCIDENCIA_DESCRIPCION, $this->conceptoincidencia_descripcion);
 
         return $criteria;
     }
@@ -759,8 +759,8 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(ConceptoPeer::DATABASE_NAME);
-        $criteria->add(ConceptoPeer::IDCONCEPTO, $this->idconcepto);
+        $criteria = new Criteria(ConceptoincidenciaPeer::DATABASE_NAME);
+        $criteria->add(ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $this->idconceptoincidencia);
 
         return $criteria;
     }
@@ -771,18 +771,18 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      */
     public function getPrimaryKey()
     {
-        return $this->getIdconcepto();
+        return $this->getIdconceptoincidencia();
     }
 
     /**
-     * Generic method to set the primary key (idconcepto column).
+     * Generic method to set the primary key (idconceptoincidencia column).
      *
      * @param  int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setIdconcepto($key);
+        $this->setIdconceptoincidencia($key);
     }
 
     /**
@@ -792,7 +792,7 @@ abstract class BaseConcepto extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return null === $this->getIdconcepto();
+        return null === $this->getIdconceptoincidencia();
     }
 
     /**
@@ -801,15 +801,15 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Concepto (or compatible) type.
+     * @param object $copyObj An object of Conceptoincidencia (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setConceptoNombre($this->getConceptoNombre());
-        $copyObj->setConceptoDescripcion($this->getConceptoDescripcion());
+        $copyObj->setConceptoincidenciaNombre($this->getConceptoincidenciaNombre());
+        $copyObj->setConceptoincidenciaDescripcion($this->getConceptoincidenciaDescripcion());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -818,9 +818,9 @@ abstract class BaseConcepto extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getEgresoclinicas() as $relObj) {
+            foreach ($this->getEmpleadoreportes() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addEgresoclinica($relObj->copy($deepCopy));
+                    $copyObj->addEmpleadoreporte($relObj->copy($deepCopy));
                 }
             }
 
@@ -830,7 +830,7 @@ abstract class BaseConcepto extends BaseObject implements Persistent
 
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setIdconcepto(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setIdconceptoincidencia(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -843,7 +843,7 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Concepto Clone of current object.
+     * @return Conceptoincidencia Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -863,12 +863,12 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return ConceptoPeer
+     * @return ConceptoincidenciaPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new ConceptoPeer();
+            self::$peer = new ConceptoincidenciaPeer();
         }
 
         return self::$peer;
@@ -885,42 +885,42 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('Egresoclinica' == $relationName) {
-            $this->initEgresoclinicas();
+        if ('Empleadoreporte' == $relationName) {
+            $this->initEmpleadoreportes();
         }
     }
 
     /**
-     * Clears out the collEgresoclinicas collection
+     * Clears out the collEmpleadoreportes collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return Concepto The current object (for fluent API support)
-     * @see        addEgresoclinicas()
+     * @return Conceptoincidencia The current object (for fluent API support)
+     * @see        addEmpleadoreportes()
      */
-    public function clearEgresoclinicas()
+    public function clearEmpleadoreportes()
     {
-        $this->collEgresoclinicas = null; // important to set this to null since that means it is uninitialized
-        $this->collEgresoclinicasPartial = null;
+        $this->collEmpleadoreportes = null; // important to set this to null since that means it is uninitialized
+        $this->collEmpleadoreportesPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collEgresoclinicas collection loaded partially
+     * reset is the collEmpleadoreportes collection loaded partially
      *
      * @return void
      */
-    public function resetPartialEgresoclinicas($v = true)
+    public function resetPartialEmpleadoreportes($v = true)
     {
-        $this->collEgresoclinicasPartial = $v;
+        $this->collEmpleadoreportesPartial = $v;
     }
 
     /**
-     * Initializes the collEgresoclinicas collection.
+     * Initializes the collEmpleadoreportes collection.
      *
-     * By default this just sets the collEgresoclinicas collection to an empty array (like clearcollEgresoclinicas());
+     * By default this just sets the collEmpleadoreportes collection to an empty array (like clearcollEmpleadoreportes());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -929,158 +929,158 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initEgresoclinicas($overrideExisting = true)
+    public function initEmpleadoreportes($overrideExisting = true)
     {
-        if (null !== $this->collEgresoclinicas && !$overrideExisting) {
+        if (null !== $this->collEmpleadoreportes && !$overrideExisting) {
             return;
         }
-        $this->collEgresoclinicas = new PropelObjectCollection();
-        $this->collEgresoclinicas->setModel('Egresoclinica');
+        $this->collEmpleadoreportes = new PropelObjectCollection();
+        $this->collEmpleadoreportes->setModel('Empleadoreporte');
     }
 
     /**
-     * Gets an array of Egresoclinica objects which contain a foreign key that references this object.
+     * Gets an array of Empleadoreporte objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Concepto is new, it will return
+     * If this Conceptoincidencia is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Egresoclinica[] List of Egresoclinica objects
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
      * @throws PropelException
      */
-    public function getEgresoclinicas($criteria = null, PropelPDO $con = null)
+    public function getEmpleadoreportes($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collEgresoclinicasPartial && !$this->isNew();
-        if (null === $this->collEgresoclinicas || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collEgresoclinicas) {
+        $partial = $this->collEmpleadoreportesPartial && !$this->isNew();
+        if (null === $this->collEmpleadoreportes || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collEmpleadoreportes) {
                 // return empty collection
-                $this->initEgresoclinicas();
+                $this->initEmpleadoreportes();
             } else {
-                $collEgresoclinicas = EgresoclinicaQuery::create(null, $criteria)
-                    ->filterByConcepto($this)
+                $collEmpleadoreportes = EmpleadoreporteQuery::create(null, $criteria)
+                    ->filterByConceptoincidencia($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collEgresoclinicasPartial && count($collEgresoclinicas)) {
-                      $this->initEgresoclinicas(false);
+                    if (false !== $this->collEmpleadoreportesPartial && count($collEmpleadoreportes)) {
+                      $this->initEmpleadoreportes(false);
 
-                      foreach ($collEgresoclinicas as $obj) {
-                        if (false == $this->collEgresoclinicas->contains($obj)) {
-                          $this->collEgresoclinicas->append($obj);
+                      foreach ($collEmpleadoreportes as $obj) {
+                        if (false == $this->collEmpleadoreportes->contains($obj)) {
+                          $this->collEmpleadoreportes->append($obj);
                         }
                       }
 
-                      $this->collEgresoclinicasPartial = true;
+                      $this->collEmpleadoreportesPartial = true;
                     }
 
-                    $collEgresoclinicas->getInternalIterator()->rewind();
+                    $collEmpleadoreportes->getInternalIterator()->rewind();
 
-                    return $collEgresoclinicas;
+                    return $collEmpleadoreportes;
                 }
 
-                if ($partial && $this->collEgresoclinicas) {
-                    foreach ($this->collEgresoclinicas as $obj) {
+                if ($partial && $this->collEmpleadoreportes) {
+                    foreach ($this->collEmpleadoreportes as $obj) {
                         if ($obj->isNew()) {
-                            $collEgresoclinicas[] = $obj;
+                            $collEmpleadoreportes[] = $obj;
                         }
                     }
                 }
 
-                $this->collEgresoclinicas = $collEgresoclinicas;
-                $this->collEgresoclinicasPartial = false;
+                $this->collEmpleadoreportes = $collEmpleadoreportes;
+                $this->collEmpleadoreportesPartial = false;
             }
         }
 
-        return $this->collEgresoclinicas;
+        return $this->collEmpleadoreportes;
     }
 
     /**
-     * Sets a collection of Egresoclinica objects related by a one-to-many relationship
+     * Sets a collection of Empleadoreporte objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $egresoclinicas A Propel collection.
+     * @param PropelCollection $empleadoreportes A Propel collection.
      * @param PropelPDO $con Optional connection object
-     * @return Concepto The current object (for fluent API support)
+     * @return Conceptoincidencia The current object (for fluent API support)
      */
-    public function setEgresoclinicas(PropelCollection $egresoclinicas, PropelPDO $con = null)
+    public function setEmpleadoreportes(PropelCollection $empleadoreportes, PropelPDO $con = null)
     {
-        $egresoclinicasToDelete = $this->getEgresoclinicas(new Criteria(), $con)->diff($egresoclinicas);
+        $empleadoreportesToDelete = $this->getEmpleadoreportes(new Criteria(), $con)->diff($empleadoreportes);
 
 
-        $this->egresoclinicasScheduledForDeletion = $egresoclinicasToDelete;
+        $this->empleadoreportesScheduledForDeletion = $empleadoreportesToDelete;
 
-        foreach ($egresoclinicasToDelete as $egresoclinicaRemoved) {
-            $egresoclinicaRemoved->setConcepto(null);
+        foreach ($empleadoreportesToDelete as $empleadoreporteRemoved) {
+            $empleadoreporteRemoved->setConceptoincidencia(null);
         }
 
-        $this->collEgresoclinicas = null;
-        foreach ($egresoclinicas as $egresoclinica) {
-            $this->addEgresoclinica($egresoclinica);
+        $this->collEmpleadoreportes = null;
+        foreach ($empleadoreportes as $empleadoreporte) {
+            $this->addEmpleadoreporte($empleadoreporte);
         }
 
-        $this->collEgresoclinicas = $egresoclinicas;
-        $this->collEgresoclinicasPartial = false;
+        $this->collEmpleadoreportes = $empleadoreportes;
+        $this->collEmpleadoreportesPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related Egresoclinica objects.
+     * Returns the number of related Empleadoreporte objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related Egresoclinica objects.
+     * @return int             Count of related Empleadoreporte objects.
      * @throws PropelException
      */
-    public function countEgresoclinicas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countEmpleadoreportes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collEgresoclinicasPartial && !$this->isNew();
-        if (null === $this->collEgresoclinicas || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collEgresoclinicas) {
+        $partial = $this->collEmpleadoreportesPartial && !$this->isNew();
+        if (null === $this->collEmpleadoreportes || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collEmpleadoreportes) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getEgresoclinicas());
+                return count($this->getEmpleadoreportes());
             }
-            $query = EgresoclinicaQuery::create(null, $criteria);
+            $query = EmpleadoreporteQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
 
             return $query
-                ->filterByConcepto($this)
+                ->filterByConceptoincidencia($this)
                 ->count($con);
         }
 
-        return count($this->collEgresoclinicas);
+        return count($this->collEmpleadoreportes);
     }
 
     /**
-     * Method called to associate a Egresoclinica object to this object
-     * through the Egresoclinica foreign key attribute.
+     * Method called to associate a Empleadoreporte object to this object
+     * through the Empleadoreporte foreign key attribute.
      *
-     * @param    Egresoclinica $l Egresoclinica
-     * @return Concepto The current object (for fluent API support)
+     * @param    Empleadoreporte $l Empleadoreporte
+     * @return Conceptoincidencia The current object (for fluent API support)
      */
-    public function addEgresoclinica(Egresoclinica $l)
+    public function addEmpleadoreporte(Empleadoreporte $l)
     {
-        if ($this->collEgresoclinicas === null) {
-            $this->initEgresoclinicas();
-            $this->collEgresoclinicasPartial = true;
+        if ($this->collEmpleadoreportes === null) {
+            $this->initEmpleadoreportes();
+            $this->collEmpleadoreportesPartial = true;
         }
 
-        if (!in_array($l, $this->collEgresoclinicas->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddEgresoclinica($l);
+        if (!in_array($l, $this->collEmpleadoreportes->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddEmpleadoreporte($l);
 
-            if ($this->egresoclinicasScheduledForDeletion and $this->egresoclinicasScheduledForDeletion->contains($l)) {
-                $this->egresoclinicasScheduledForDeletion->remove($this->egresoclinicasScheduledForDeletion->search($l));
+            if ($this->empleadoreportesScheduledForDeletion and $this->empleadoreportesScheduledForDeletion->contains($l)) {
+                $this->empleadoreportesScheduledForDeletion->remove($this->empleadoreportesScheduledForDeletion->search($l));
             }
         }
 
@@ -1088,28 +1088,28 @@ abstract class BaseConcepto extends BaseObject implements Persistent
     }
 
     /**
-     * @param	Egresoclinica $egresoclinica The egresoclinica object to add.
+     * @param	Empleadoreporte $empleadoreporte The empleadoreporte object to add.
      */
-    protected function doAddEgresoclinica($egresoclinica)
+    protected function doAddEmpleadoreporte($empleadoreporte)
     {
-        $this->collEgresoclinicas[]= $egresoclinica;
-        $egresoclinica->setConcepto($this);
+        $this->collEmpleadoreportes[]= $empleadoreporte;
+        $empleadoreporte->setConceptoincidencia($this);
     }
 
     /**
-     * @param	Egresoclinica $egresoclinica The egresoclinica object to remove.
-     * @return Concepto The current object (for fluent API support)
+     * @param	Empleadoreporte $empleadoreporte The empleadoreporte object to remove.
+     * @return Conceptoincidencia The current object (for fluent API support)
      */
-    public function removeEgresoclinica($egresoclinica)
+    public function removeEmpleadoreporte($empleadoreporte)
     {
-        if ($this->getEgresoclinicas()->contains($egresoclinica)) {
-            $this->collEgresoclinicas->remove($this->collEgresoclinicas->search($egresoclinica));
-            if (null === $this->egresoclinicasScheduledForDeletion) {
-                $this->egresoclinicasScheduledForDeletion = clone $this->collEgresoclinicas;
-                $this->egresoclinicasScheduledForDeletion->clear();
+        if ($this->getEmpleadoreportes()->contains($empleadoreporte)) {
+            $this->collEmpleadoreportes->remove($this->collEmpleadoreportes->search($empleadoreporte));
+            if (null === $this->empleadoreportesScheduledForDeletion) {
+                $this->empleadoreportesScheduledForDeletion = clone $this->collEmpleadoreportes;
+                $this->empleadoreportesScheduledForDeletion->clear();
             }
-            $this->egresoclinicasScheduledForDeletion[]= clone $egresoclinica;
-            $egresoclinica->setConcepto(null);
+            $this->empleadoreportesScheduledForDeletion[]= clone $empleadoreporte;
+            $empleadoreporte->setConceptoincidencia(null);
         }
 
         return $this;
@@ -1119,50 +1119,75 @@ abstract class BaseConcepto extends BaseObject implements Persistent
     /**
      * If this collection has already been initialized with
      * an identical criteria, it returns the collection.
-     * Otherwise if this Concepto is new, it will return
-     * an empty collection; or if this Concepto has previously
-     * been saved, it will retrieve related Egresoclinicas from storage.
+     * Otherwise if this Conceptoincidencia is new, it will return
+     * an empty collection; or if this Conceptoincidencia has previously
+     * been saved, it will retrieve related Empleadoreportes from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
-     * actually need in Concepto.
+     * actually need in Conceptoincidencia.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Egresoclinica[] List of Egresoclinica objects
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
      */
-    public function getEgresoclinicasJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getEmpleadoreportesJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = EgresoclinicaQuery::create(null, $criteria);
+        $query = EmpleadoreporteQuery::create(null, $criteria);
         $query->joinWith('Clinica', $join_behavior);
 
-        return $this->getEgresoclinicas($query, $con);
+        return $this->getEmpleadoreportes($query, $con);
     }
 
 
     /**
      * If this collection has already been initialized with
      * an identical criteria, it returns the collection.
-     * Otherwise if this Concepto is new, it will return
-     * an empty collection; or if this Concepto has previously
-     * been saved, it will retrieve related Egresoclinicas from storage.
+     * Otherwise if this Conceptoincidencia is new, it will return
+     * an empty collection; or if this Conceptoincidencia has previously
+     * been saved, it will retrieve related Empleadoreportes from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
-     * actually need in Concepto.
+     * actually need in Conceptoincidencia.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Egresoclinica[] List of Egresoclinica objects
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
      */
-    public function getEgresoclinicasJoinEmpleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getEmpleadoreportesJoinEmpleadoRelatedByIdempleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = EgresoclinicaQuery::create(null, $criteria);
-        $query->joinWith('Empleado', $join_behavior);
+        $query = EmpleadoreporteQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleado', $join_behavior);
 
-        return $this->getEgresoclinicas($query, $con);
+        return $this->getEmpleadoreportes($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Conceptoincidencia is new, it will return
+     * an empty collection; or if this Conceptoincidencia has previously
+     * been saved, it will retrieve related Empleadoreportes from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Conceptoincidencia.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     */
+    public function getEmpleadoreportesJoinEmpleadoRelatedByIdempleadoreportado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = EmpleadoreporteQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleadoreportado', $join_behavior);
+
+        return $this->getEmpleadoreportes($query, $con);
     }
 
     /**
@@ -1170,9 +1195,9 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      */
     public function clear()
     {
-        $this->idconcepto = null;
-        $this->concepto_nombre = null;
-        $this->concepto_descripcion = null;
+        $this->idconceptoincidencia = null;
+        $this->conceptoincidencia_nombre = null;
+        $this->conceptoincidencia_descripcion = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1195,8 +1220,8 @@ abstract class BaseConcepto extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collEgresoclinicas) {
-                foreach ($this->collEgresoclinicas as $o) {
+            if ($this->collEmpleadoreportes) {
+                foreach ($this->collEmpleadoreportes as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -1204,10 +1229,10 @@ abstract class BaseConcepto extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collEgresoclinicas instanceof PropelCollection) {
-            $this->collEgresoclinicas->clearIterator();
+        if ($this->collEmpleadoreportes instanceof PropelCollection) {
+            $this->collEmpleadoreportes->clearIterator();
         }
-        $this->collEgresoclinicas = null;
+        $this->collEmpleadoreportes = null;
     }
 
     /**
@@ -1217,7 +1242,7 @@ abstract class BaseConcepto extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ConceptoPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(ConceptoincidenciaPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
