@@ -30,7 +30,7 @@ class EmpleadosController extends AbstractActionController
              $idclinica = $sesion->getIdClinica();
              
              //----
-             
+           
             $tmp['lunes'] = '';
             if(\EmpleadohorarioQuery::create()->filterByIdempleado($sesion->getIdempleado())->filterByEmpleadohorarioDia('lunes')->exists()){
                 $empleado_horario = \EmpleadohorarioQuery::create()->filterByIdempleado($sesion->getIdempleado())->filterByEmpleadohorarioDia('lunes')->findOne();
@@ -108,7 +108,6 @@ class EmpleadosController extends AbstractActionController
                     $tmp['domingo'].=$empleado_horario->getEmpleadohorarioSalida('H:i');
                 } 
             }
-             
              
 
              

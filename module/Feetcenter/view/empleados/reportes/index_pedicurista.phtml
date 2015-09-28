@@ -1,0 +1,59 @@
+<div id="reportes_container">
+    <h1>Mis reportes<a style="float: right; text-decoration: none"href="/empleados/reportes/nuevo">Nuevo</a></h1>
+    <?php if(count($successMessages)) :?>
+        <div class="units-row">
+            <?php foreach ($successMessages as $message) :?>
+                <div class="unit-100">    
+                    <div class="tools-alert tools-alert-green">
+                        <?php echo $message?>
+                    </div> 
+                </div>
+            <?php endforeach;?>
+        </div>
+    <?php endif;?>
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha suceso</th>
+                <th>Clínica suceso</th>
+                <th>Generado por</th>
+                <th>Reporte</th>
+                <th>Comentario</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($collection as $reporte) :?>
+            <tr id="<?php $reporte['idreporte']?>">
+                <td><?php echo $reporte["fecha_suceso"]?></td>
+                <td><?php echo $reporte["clinica_suceso"]?></td>
+                <td><?php echo $reporte["empeleado_reporta"]?></td>
+                <td><?php echo $reporte["reporte"]?></td>
+                <td><a class="ver_nota" href="javascript:void(0)" data-content="/empleados/reportes/vernota?id=<?php echo $reporte['idreporte']?>" data-width="700" data-tools="modal"><img src="/img/icons/note_icon.png"></a></td>
+            </tr>
+            <?php endforeach?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $.ajax({
+        url: '/json/lang_es_datatable.json',
+        dataType: 'json',
+        success: function(data){
+            var table = $('table').DataTable({
+                language:data,
+            });
+            table.on( 'draw', function () {
+                $('[data-tools="modal"]').modal();
+            });
+        }
+    });
+    
+    //La nota
+    $('a.ver_nota').on('loading.tools.modal', function(modal){
+        var $modalHeader = this.$modalHeader;
+        $modalHeader.remove();
+        var $modalBody = this.$modalBody;
+        $modalBody.css('background','#F5D65B');
+    });
+</script>

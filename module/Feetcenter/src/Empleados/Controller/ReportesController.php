@@ -243,6 +243,31 @@ class ReportesController extends AbstractActionController
             $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
             $idclinica = $sesion->getIdClinica();
 
+        }elseif($idrol == 3){
+            
+            $collection = array();
+            $query = \EmpleadoreporteQuery::create()->filterByIdempleadoreportado($sesion->getIdempleado())->find();
+             
+            foreach ($query as $reporte){
+                $idempleado_reportado = $reporte->getIdempleadoreportado();
+                $clinica_actual = \ClinicaempleadoQuery::create()->filterByIdempleado($idempleado_reportado)->findOne();
+                $tmp['idreporte'] = $reporte->getIdempleadoreporte();
+                $tmp['clinica'] = $clinica_actual->getClinica()->getClinicaNombre();
+                $tmp['clinica_suceso'] =$reporte->getClinica()->getClinicaNombre();
+                $tmp['fecha_suceso'] = $reporte->getEmpleadoreporteFechasuceso('d/m/Y');
+                $tmp['empleado'] = $reporte->getEmpleadoRelatedByIdempleadoreportado()->getEmpleadoNombre();
+                $tmp['empeleado_reporta'] = $reporte->getEmpleadoRelatedByIdempleado()->getEmpleadoNombre();
+                $tmp['reporte'] = $reporte->getConceptoincidencia()->getConceptoincidenciaNombre();
+                $tmp['comentario'] = $reporte->getEmpleadoreporteComentario();
+                
+                $collection[] = $tmp;
+                
+            }
+
+            $viewModel = new ViewModel();
+            $viewModel->setVariable('collection', $collection);
+            $viewModel->setTemplate('empleados/reportes/index_pedicurista');
+            return $viewModel;
         }
         
         return new ViewModel(array(
