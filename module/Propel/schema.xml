@@ -246,6 +246,7 @@
     <column name="empleadohorario_entrada" phpName="EmpleadohorarioEntrada" type="TIME" required="true"/>
     <column name="empleadohorario_salida" phpName="EmpleadohorarioSalida" type="TIME" required="true"/>
     <column name="empleadohorario_dia" phpName="EmpleadohorarioDia" type="CHAR" sqlType="enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo')" required="true"/>
+    <column name="empleadohorario_descanso" phpName="EmpleadohorarioDescanso" type="BOOLEAN" size="1" required="true"/>
     <foreign-key foreignTable="empleado" name="idempleado_empleadohorario" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idempleado" foreign="idempleado"/>
     </foreign-key>
@@ -447,6 +448,7 @@
   <table name="paciente" phpName="Paciente" idMethod="native">
     <column name="idpaciente" phpName="Idpaciente" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="false"/>
+    <column name="idempleado" phpName="Idempleado" type="INTEGER" required="false"/>
     <column name="paciente_nombre" phpName="PacienteNombre" type="VARCHAR" size="255" required="true"/>
     <column name="paciente_celular" phpName="PacienteCelular" type="VARCHAR" size="45" required="true"/>
     <column name="paciente_telefono" phpName="PacienteTelefono" type="VARCHAR" size="45" required="false"/>
@@ -458,7 +460,12 @@
     <column name="paciente_estado" phpName="PacienteEstado" type="VARCHAR" size="45" required="false"/>
     <column name="paciente_sexo" phpName="PacienteSexo" type="CHAR" sqlType="enum('Hombre','Mujer')" required="false"/>
     <column name="paciente_fechanacimiento" phpName="PacienteFechanacimiento" type="DATE" required="false"/>
-    <column name="idempleado" phpName="Idempleado" type="VARCHAR" size="45" required="false"/>
+    <foreign-key foreignTable="empleado" name="idempleado_paciente" onDelete="RESTRICT" onUpdate="RESTRICT">
+      <reference local="idempleado" foreign="idempleado"/>
+    </foreign-key>
+    <index name="idempleado">
+      <index-column name="idempleado"/>
+    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -466,15 +473,29 @@
   <table name="pacienteseguimiento" phpName="Pacienteseguimiento" idMethod="native">
     <column name="idpacienteseguimiento" phpName="Idpacienteseguimiento" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idpaciente" phpName="Idpaciente" type="INTEGER" required="true"/>
+    <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
+    <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
     <column name="idcanalcomunicacion" phpName="Idcanalcomunicacion" type="INTEGER" required="true"/>
     <column name="pacienteseguimiento_fechacreacion" phpName="PacienteseguimientoFechacreacion" type="TIMESTAMP" required="true"/>
     <column name="pacienteseguimiento_comentario" phpName="PacienteseguimientoComentario" type="LONGVARCHAR" required="true"/>
     <column name="pacienteseguimiento_fecha" phpName="PacienteseguimientoFecha" type="DATE" required="true"/>
+    <foreign-key foreignTable="clinica" name="idclinica_pacienteseguimiento" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <foreign-key foreignTable="empleado" name="idempleado_pacienteseguimiento" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleado" foreign="idempleado"/>
+    </foreign-key>
     <foreign-key foreignTable="paciente" name="idpaciente_pacienteseguimiento" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idpaciente" foreign="idpaciente"/>
     </foreign-key>
     <index name="idpaciente">
       <index-column name="idpaciente"/>
+    </index>
+    <index name="idempleado">
+      <index-column name="idempleado"/>
+    </index>
+    <index name="idclinica">
+      <index-column name="idclinica"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>

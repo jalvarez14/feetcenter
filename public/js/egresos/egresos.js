@@ -57,8 +57,6 @@
            var clinicas_select =   $("select[name=clinica_filter]").multipleSelect('getSelects');
            var conceptos_select =  $("select[name=concepto_filter]").multipleSelect('getSelects');
            
-           console.log( conceptos_select);
-           
            //Hacemos la peticion ajax
             $.ajax({
                 url:'/egresos/filter',

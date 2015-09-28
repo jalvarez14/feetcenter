@@ -1,0 +1,69 @@
+<div id="clinica_container">
+    <h1>Reporte: <?php echo '#'.$id?></h1>
+    <?php 
+        $form->setAttribute('action', '/empleados/reportes/editar/'.$id);
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-33">
+            <label>
+                Fecha <span class="req">*</span>
+                <?php echo $this->formText($form->get('empleadoreporte_fechasuceso')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Clínica <span class="req">*</span>
+                <?php echo $this->formSelect($form->get('idclinica')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Empleado <span class="req">*</span>
+                <?php echo $this->formSelect($form->get('idempleadoreportado')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Incidencia <span class="req">*</span>
+                <?php echo $this->formSelect($form->get('idconceptoincidencia')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Comentario <span class="req">*</span>
+                <?php echo $this->formTextarea($form->get('empleadoreporte_comentario')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script>
+
+    $('input[name=empleadoreporte_fechasuceso]').pickadate({
+        monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+        monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+        weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+        weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+        today: 'hoy',
+        clear: 'borrar',
+        close: 'cerrar',
+        firstDay: 1,
+        format: 'd !de mmmm !de yyyy',
+        formatSubmit: 'yyyy/mm/dd',
+        selectYears: true,
+        selectMonths: true,
+        selectYears: 25,
+    });
+            
+
+</script>

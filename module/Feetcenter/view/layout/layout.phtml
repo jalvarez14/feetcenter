@@ -13,6 +13,8 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('css/style.css'))
+                        ->prependStylesheet($this->basePath('plugins/bootstrap-timepicker-0.5.1/css/bootstrap-timepicker.css'))
+                        ->prependStylesheet($this->basePath('css/plugin/lolliclock.css'))
                         ->prependStylesheet($this->basePath('plugins/fancyBox/source/jquery.fancybox.css'))
                          ->prependStylesheet($this->basePath('css/plugin/multiple.css'))
                         ->prependStylesheet($this->basePath('css/plugin/datatable/jquery.dataTables.css'))
@@ -23,6 +25,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+            ->prependFile($this->basePath('plugins/bootstrap-timepicker-0.5.1/js/bootstrap-timepicker.js'))
             ->prependFile($this->basePath('plugins/fancyBox/source/jquery.fancybox.js'))
             ->prependFile($this->basePath('js/plugin/multiple.js'))
             ->prependFile($this->basePath('js/plugin/datatable/jquery.dataTables.js'))
@@ -66,9 +69,8 @@
             <li><a href="/login/out">Cerrar sesión</a></li>
         </ul>
         <ul id="dropdown-empleados" class="dropdown">
-            <li><a href="#">Horarios</a></li>
-            <li><a href="#">Descansos</a></li>
-            <li><a href="#">Reportes</a></li>
+            <li><a href="/empleados">Horarios</a></li>
+            <li><a href="/empleados/reportes">Reportes</a></li>
         </ul>
         <ul id="dropdown-pacientes" class="dropdown">
             <li><a href="#">Nuevo paciente</a></li>
@@ -107,7 +109,8 @@
             <li><a href="/catalogos/rol">Roles</a></li>
             <li><a href="/catalogos/proveedor">Proveedores</a></li>
             <li><a href="/catalogos/canal">Canal de comunicación</a></li>
-            <li><a href="/catalogos/concepto">Conceptos</a></li>
+            <li><a href="/catalogos/conceptos">Conceptos de egresos</a></li>
+            <li><a href="/catalogos/incidencia">Conceptos de incidencias</a></li>
         </ul>
         <ul id="dropdown-reportes" class="dropdown">
             <li><a href="#">Clinicas</a></li>

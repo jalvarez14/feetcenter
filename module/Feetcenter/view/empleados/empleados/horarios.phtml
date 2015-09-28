@@ -1,0 +1,100 @@
+<form method="post" action="/empleados/horarios">
+    <input type="hidden" name="idempleado" value="<?php echo $idempleado?>">
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miercoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sabado</th>
+                <th>Domingo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Descanso</td>
+                <td><input name="lunes[descanso]" type="checkbox"></td>
+                <td><input name="martes[descanso]" type="checkbox"></td>
+                <td><input name="miercoles[descanso]" type="checkbox"></td>
+                <td><input name="jueves[descanso]" type="checkbox"></td>
+                <td><input name="viernes[descanso]" type="checkbox"></td>
+                <td><input name="sabado[descanso]" type="checkbox"></td>
+                <td><input name="domingo[descanso]" type="checkbox"></td>
+            </tr>
+            <tr>
+                <td>Entrada</td>
+                <td class="pickertime"><input name="lunes[entrada]" value="<?php echo $horario['lunes']['entrada']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="martes[entrada]" value="<?php echo $horario['martes']['entrada']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="miercoles[entrada]" value="<?php echo $horario['miercoles']['entrada']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="jueves[entrada]" value="<?php echo $horario['jueves']['entrada']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="viernes[entrada]" value="<?php echo $horario['viernes']['entrada']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="sabado[entrada]" value="<?php echo $horario['sabado']['entrada']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="domingo[entrada]" value="<?php echo $horario['domingo']['entrada']?>"class="width-100" type="text"></td>
+            </tr> 
+            <tr>
+                <td>Salida</td>
+                <td class="pickertime"><input name="lunes[salida]" value="<?php echo $horario['lunes']['salida']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="martes[salida]" value="<?php echo $horario['martes']['salida']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="miercoles[salida]" value="<?php echo $horario['miercoles']['salida']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="jueves[salida]" value="<?php echo $horario['jueves']['salida']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="viernes[salida]" value="<?php echo $horario['viernes']['salida']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="sabado[salida]" value="<?php echo $horario['sabado']['salida']?>"class="width-100" type="text"></td>
+                <td class="pickertime"><input name="domingo[salida]" value="<?php echo $horario['domingo']['salida']?>"class="width-100" type="text"></td>
+            </tr> 
+        </tbody>
+    </table>
+</form>
+<script>
+    $('input[type=text]').numeric();
+    
+    
+    $('input[type=text]').timepicker({
+                minuteStep: 1,
+                template: 'modal',
+                appendWidgetTo: 'div.modal section',
+                showSeconds: false,
+                showMeridian: false,
+                defaultTime: false
+        });
+        
+        
+     $('input[type=text]').filter(function(){
+         if($(this).val() == ""){
+              $(this).timepicker('setTime', '12:00');
+         }
+     });
+    
+    var horario = <?php echo json_encode($horario)?>;
+    //Buscamos si tiene un dia de descanso
+    $.each(horario,function(index,element){
+        if(horario[index].descanso){
+            $('input[type=checkbox][name*='+index+']').prop('checked',true);
+            $('input[type=text][name*='+index+']').val('');
+            $('input[type=text][name*='+index+']').prop('disabled',true);
+        }
+    });
+    
+    //El evento checkbox
+    $('input[type=checkbox]').on('click',function(){
+        var checked = $(this).prop('checked');
+        var name = $(this).attr('name');
+            name = name.split('[descanso]');
+            name = name[0];
+        if(checked){
+            $('input[type=text][name*='+name+']').val('');
+            $('input[type=text][name*='+name+']').prop('disabled',true);
+        }else{
+            $('input[type=text][name*='+name+']').prop('disabled',false);
+            $('input[type=text][name*='+name+']').timepicker('setTime', '12:00');
+        }
+
+    });
+    
+      
+    
+    
+    
+</script>

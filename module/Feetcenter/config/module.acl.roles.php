@@ -13,6 +13,7 @@ return array(
             'catalogos/servicio',
             'catalogos/empleado',
             'catalogos/concepto',
+            'catalogos/incidencia',
             //Compras
             'compras',
             //Login
@@ -26,6 +27,14 @@ return array(
             'inventario/precios',
             //Egresos
             'egresos',
+            //Empleados
+            'empleados',
+            'empleados-reportes',
+            'empleados-reportes/nuevo',
+            'empleados-reportes/filter',
+            'empleados-reportes/vernota',
+            'empleados-reportes/editar',
+            'empleados-reportes/eliminar',
         ),
         "deny"=>array(
              
@@ -44,6 +53,14 @@ return array(
             'inventario/precios',
             //Egresos
             'egresos',
+            //Empleados
+            'empleados',
+            'empleados-reportes',
+            'empleados-reportes/nuevo',
+            'empleados-reportes/filter',
+            'empleados-reportes/vernota',
+            'empleados-reportes/editar',
+            'empleados-reportes/eliminar',
         ),
         "deny"=>array(
             //Inventarios
@@ -58,6 +75,7 @@ return array(
             'catalogos/servicio',
             'catalogos/empleado',
             'catalogos/concepto',
+            'catalogos/incidencia',
             //Compras
             'compras',
         ),
@@ -67,6 +85,10 @@ return array(
             'home',
             //Login
             'login',
+            //Empleados
+            'empleados',
+            'empleados-reportes',
+            'empleados-reportes/vernota',
         ),
         "deny"=>array(
             //Catalogos
@@ -88,8 +110,14 @@ return array(
             'inventario/reorden',
             'inventario/transferencias',
             'inventario/precios',
+            'catalogos/incidencia',
             //Egresos
             'egresos',
+            'empleados-reportes/nuevo',
+            'empleados-reportes/filter',
+            'empleados-reportes/editar',
+            'empleados-reportes/eliminar',
+            
         ),
     ),
 );

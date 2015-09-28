@@ -11,12 +11,14 @@
  * @method EmpleadohorarioQuery orderByEmpleadohorarioEntrada($order = Criteria::ASC) Order by the empleadohorario_entrada column
  * @method EmpleadohorarioQuery orderByEmpleadohorarioSalida($order = Criteria::ASC) Order by the empleadohorario_salida column
  * @method EmpleadohorarioQuery orderByEmpleadohorarioDia($order = Criteria::ASC) Order by the empleadohorario_dia column
+ * @method EmpleadohorarioQuery orderByEmpleadohorarioDescanso($order = Criteria::ASC) Order by the empleadohorario_descanso column
  *
  * @method EmpleadohorarioQuery groupByIdempleadohorario() Group by the idempleadohorario column
  * @method EmpleadohorarioQuery groupByIdempleado() Group by the idempleado column
  * @method EmpleadohorarioQuery groupByEmpleadohorarioEntrada() Group by the empleadohorario_entrada column
  * @method EmpleadohorarioQuery groupByEmpleadohorarioSalida() Group by the empleadohorario_salida column
  * @method EmpleadohorarioQuery groupByEmpleadohorarioDia() Group by the empleadohorario_dia column
+ * @method EmpleadohorarioQuery groupByEmpleadohorarioDescanso() Group by the empleadohorario_descanso column
  *
  * @method EmpleadohorarioQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method EmpleadohorarioQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -33,12 +35,14 @@
  * @method Empleadohorario findOneByEmpleadohorarioEntrada(string $empleadohorario_entrada) Return the first Empleadohorario filtered by the empleadohorario_entrada column
  * @method Empleadohorario findOneByEmpleadohorarioSalida(string $empleadohorario_salida) Return the first Empleadohorario filtered by the empleadohorario_salida column
  * @method Empleadohorario findOneByEmpleadohorarioDia(string $empleadohorario_dia) Return the first Empleadohorario filtered by the empleadohorario_dia column
+ * @method Empleadohorario findOneByEmpleadohorarioDescanso(boolean $empleadohorario_descanso) Return the first Empleadohorario filtered by the empleadohorario_descanso column
  *
  * @method array findByIdempleadohorario(int $idempleadohorario) Return Empleadohorario objects filtered by the idempleadohorario column
  * @method array findByIdempleado(int $idempleado) Return Empleadohorario objects filtered by the idempleado column
  * @method array findByEmpleadohorarioEntrada(string $empleadohorario_entrada) Return Empleadohorario objects filtered by the empleadohorario_entrada column
  * @method array findByEmpleadohorarioSalida(string $empleadohorario_salida) Return Empleadohorario objects filtered by the empleadohorario_salida column
  * @method array findByEmpleadohorarioDia(string $empleadohorario_dia) Return Empleadohorario objects filtered by the empleadohorario_dia column
+ * @method array findByEmpleadohorarioDescanso(boolean $empleadohorario_descanso) Return Empleadohorario objects filtered by the empleadohorario_descanso column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -146,7 +150,7 @@ abstract class BaseEmpleadohorarioQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idempleadohorario`, `idempleado`, `empleadohorario_entrada`, `empleadohorario_salida`, `empleadohorario_dia` FROM `empleadohorario` WHERE `idempleadohorario` = :p0';
+        $sql = 'SELECT `idempleadohorario`, `idempleado`, `empleadohorario_entrada`, `empleadohorario_salida`, `empleadohorario_dia`, `empleadohorario_descanso` FROM `empleadohorario` WHERE `idempleadohorario` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -434,6 +438,33 @@ abstract class BaseEmpleadohorarioQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EmpleadohorarioPeer::EMPLEADOHORARIO_DIA, $empleadohorarioDia, $comparison);
+    }
+
+    /**
+     * Filter the query on the empleadohorario_descanso column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmpleadohorarioDescanso(true); // WHERE empleadohorario_descanso = true
+     * $query->filterByEmpleadohorarioDescanso('yes'); // WHERE empleadohorario_descanso = true
+     * </code>
+     *
+     * @param     boolean|string $empleadohorarioDescanso The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EmpleadohorarioQuery The current query, for fluid interface
+     */
+    public function filterByEmpleadohorarioDescanso($empleadohorarioDescanso = null, $comparison = null)
+    {
+        if (is_string($empleadohorarioDescanso)) {
+            $empleadohorarioDescanso = in_array(strtolower($empleadohorarioDescanso), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(EmpleadohorarioPeer::EMPLEADOHORARIO_DESCANSO, $empleadohorarioDescanso, $comparison);
     }
 
     /**

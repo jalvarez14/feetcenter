@@ -40,6 +40,7 @@ class PacienteTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idpaciente', 'Idpaciente', 'INTEGER', true, null, null);
         $this->addColumn('idclinica', 'Idclinica', 'INTEGER', false, null, null);
+        $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', false, null, null);
         $this->addColumn('paciente_nombre', 'PacienteNombre', 'VARCHAR', true, 255, null);
         $this->addColumn('paciente_celular', 'PacienteCelular', 'VARCHAR', true, 45, null);
         $this->addColumn('paciente_telefono', 'PacienteTelefono', 'VARCHAR', false, 45, null);
@@ -55,7 +56,6 @@ class PacienteTableMap extends TableMap
   1 => 'Mujer',
 ));
         $this->addColumn('paciente_fechanacimiento', 'PacienteFechanacimiento', 'DATE', false, null, null);
-        $this->addColumn('idempleado', 'Idempleado', 'VARCHAR', false, 45, null);
         // validators
     } // initialize()
 
@@ -64,6 +64,7 @@ class PacienteTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Empleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), null, null);
         $this->addRelation('Grupopaciente', 'Grupopaciente', RelationMap::ONE_TO_MANY, array('idpaciente' => 'idpaciente', ), 'CASCADE', 'CASCADE', 'Grupopacientes');
         $this->addRelation('GrupopersonalRelatedByIdpaciente', 'Grupopersonal', RelationMap::ONE_TO_MANY, array('idpaciente' => 'idpaciente', ), 'CASCADE', 'CASCADE', 'GrupopersonalsRelatedByIdpaciente');
         $this->addRelation('GrupopersonalRelatedByIdpacienteagregado', 'Grupopersonal', RelationMap::ONE_TO_MANY, array('idpaciente' => 'idpacienteagregado', ), 'CASCADE', 'CASCADE', 'GrupopersonalsRelatedByIdpacienteagregado');

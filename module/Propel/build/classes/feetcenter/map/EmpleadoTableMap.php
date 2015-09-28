@@ -92,6 +92,8 @@ class EmpleadoTableMap extends TableMap
         $this->addRelation('Encargadoclinica', 'Encargadoclinica', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Encargadoclinicas');
         $this->addRelation('FaltanteRelatedByIdempleadodeudor', 'Faltante', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadodeudor', ), 'CASCADE', 'CASCADE', 'FaltantesRelatedByIdempleadodeudor');
         $this->addRelation('FaltanteRelatedByIdempleadogenerador', 'Faltante', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadogenerador', ), 'CASCADE', 'CASCADE', 'FaltantesRelatedByIdempleadogenerador');
+        $this->addRelation('Paciente', 'Paciente', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), null, null, 'Pacientes');
+        $this->addRelation('Pacienteseguimiento', 'Pacienteseguimiento', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Pacienteseguimientos');
         $this->addRelation('TransferenciaRelatedByIdempleado', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdempleado');
         $this->addRelation('TransferenciaRelatedByIdempleadoreceptor', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadoreceptor', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdempleadoreceptor');
         $this->addRelation('VisitaRelatedByIdempleado', 'Visita', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'VisitasRelatedByIdempleado');

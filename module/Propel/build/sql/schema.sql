@@ -333,6 +333,7 @@ CREATE TABLE `empleadohorario`
     `empleadohorario_entrada` TIME NOT NULL,
     `empleadohorario_salida` TIME NOT NULL,
     `empleadohorario_dia` enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo') NOT NULL,
+    `empleadohorario_descanso` TINYINT(1) NOT NULL,
     PRIMARY KEY (`idempleadohorario`),
     INDEX `idempleado` (`idempleado`),
     CONSTRAINT `idempleado_empleadohorario`
@@ -594,6 +595,7 @@ CREATE TABLE `paciente`
 (
     `idpaciente` INTEGER NOT NULL AUTO_INCREMENT,
     `idclinica` INTEGER,
+    `idempleado` INTEGER,
     `paciente_nombre` VARCHAR(255) NOT NULL,
     `paciente_celular` VARCHAR(45) NOT NULL,
     `paciente_telefono` VARCHAR(45),
@@ -605,8 +607,11 @@ CREATE TABLE `paciente`
     `paciente_estado` VARCHAR(45),
     `paciente_sexo` enum('Hombre','Mujer'),
     `paciente_fechanacimiento` DATE,
-    `idempleado` VARCHAR(45),
-    PRIMARY KEY (`idpaciente`)
+    PRIMARY KEY (`idpaciente`),
+    INDEX `idempleado` (`idempleado`),
+    CONSTRAINT `idempleado_paciente`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -619,12 +624,26 @@ CREATE TABLE `pacienteseguimiento`
 (
     `idpacienteseguimiento` INTEGER NOT NULL AUTO_INCREMENT,
     `idpaciente` INTEGER NOT NULL,
+    `idclinica` INTEGER NOT NULL,
+    `idempleado` INTEGER NOT NULL,
     `idcanalcomunicacion` INTEGER NOT NULL,
     `pacienteseguimiento_fechacreacion` DATETIME NOT NULL,
     `pacienteseguimiento_comentario` TEXT NOT NULL,
     `pacienteseguimiento_fecha` DATE NOT NULL,
     PRIMARY KEY (`idpacienteseguimiento`),
     INDEX `idpaciente` (`idpaciente`),
+    INDEX `idempleado` (`idempleado`),
+    INDEX `idclinica` (`idclinica`),
+    CONSTRAINT `idclinica_pacienteseguimiento`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idempleado_pacienteseguimiento`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT `idpaciente_pacienteseguimiento`
         FOREIGN KEY (`idpaciente`)
         REFERENCES `paciente` (`idpaciente`)

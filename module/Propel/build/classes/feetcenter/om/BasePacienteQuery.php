@@ -8,6 +8,7 @@
  *
  * @method PacienteQuery orderByIdpaciente($order = Criteria::ASC) Order by the idpaciente column
  * @method PacienteQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
+ * @method PacienteQuery orderByIdempleado($order = Criteria::ASC) Order by the idempleado column
  * @method PacienteQuery orderByPacienteNombre($order = Criteria::ASC) Order by the paciente_nombre column
  * @method PacienteQuery orderByPacienteCelular($order = Criteria::ASC) Order by the paciente_celular column
  * @method PacienteQuery orderByPacienteTelefono($order = Criteria::ASC) Order by the paciente_telefono column
@@ -19,10 +20,10 @@
  * @method PacienteQuery orderByPacienteEstado($order = Criteria::ASC) Order by the paciente_estado column
  * @method PacienteQuery orderByPacienteSexo($order = Criteria::ASC) Order by the paciente_sexo column
  * @method PacienteQuery orderByPacienteFechanacimiento($order = Criteria::ASC) Order by the paciente_fechanacimiento column
- * @method PacienteQuery orderByIdempleado($order = Criteria::ASC) Order by the idempleado column
  *
  * @method PacienteQuery groupByIdpaciente() Group by the idpaciente column
  * @method PacienteQuery groupByIdclinica() Group by the idclinica column
+ * @method PacienteQuery groupByIdempleado() Group by the idempleado column
  * @method PacienteQuery groupByPacienteNombre() Group by the paciente_nombre column
  * @method PacienteQuery groupByPacienteCelular() Group by the paciente_celular column
  * @method PacienteQuery groupByPacienteTelefono() Group by the paciente_telefono column
@@ -34,11 +35,14 @@
  * @method PacienteQuery groupByPacienteEstado() Group by the paciente_estado column
  * @method PacienteQuery groupByPacienteSexo() Group by the paciente_sexo column
  * @method PacienteQuery groupByPacienteFechanacimiento() Group by the paciente_fechanacimiento column
- * @method PacienteQuery groupByIdempleado() Group by the idempleado column
  *
  * @method PacienteQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PacienteQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PacienteQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method PacienteQuery leftJoinEmpleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Empleado relation
+ * @method PacienteQuery rightJoinEmpleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleado relation
+ * @method PacienteQuery innerJoinEmpleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleado relation
  *
  * @method PacienteQuery leftJoinGrupopaciente($relationAlias = null) Adds a LEFT JOIN clause to the query using the Grupopaciente relation
  * @method PacienteQuery rightJoinGrupopaciente($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Grupopaciente relation
@@ -64,6 +68,7 @@
  * @method Paciente findOneOrCreate(PropelPDO $con = null) Return the first Paciente matching the query, or a new Paciente object populated from the query conditions when no match is found
  *
  * @method Paciente findOneByIdclinica(int $idclinica) Return the first Paciente filtered by the idclinica column
+ * @method Paciente findOneByIdempleado(int $idempleado) Return the first Paciente filtered by the idempleado column
  * @method Paciente findOneByPacienteNombre(string $paciente_nombre) Return the first Paciente filtered by the paciente_nombre column
  * @method Paciente findOneByPacienteCelular(string $paciente_celular) Return the first Paciente filtered by the paciente_celular column
  * @method Paciente findOneByPacienteTelefono(string $paciente_telefono) Return the first Paciente filtered by the paciente_telefono column
@@ -75,10 +80,10 @@
  * @method Paciente findOneByPacienteEstado(string $paciente_estado) Return the first Paciente filtered by the paciente_estado column
  * @method Paciente findOneByPacienteSexo(string $paciente_sexo) Return the first Paciente filtered by the paciente_sexo column
  * @method Paciente findOneByPacienteFechanacimiento(string $paciente_fechanacimiento) Return the first Paciente filtered by the paciente_fechanacimiento column
- * @method Paciente findOneByIdempleado(string $idempleado) Return the first Paciente filtered by the idempleado column
  *
  * @method array findByIdpaciente(int $idpaciente) Return Paciente objects filtered by the idpaciente column
  * @method array findByIdclinica(int $idclinica) Return Paciente objects filtered by the idclinica column
+ * @method array findByIdempleado(int $idempleado) Return Paciente objects filtered by the idempleado column
  * @method array findByPacienteNombre(string $paciente_nombre) Return Paciente objects filtered by the paciente_nombre column
  * @method array findByPacienteCelular(string $paciente_celular) Return Paciente objects filtered by the paciente_celular column
  * @method array findByPacienteTelefono(string $paciente_telefono) Return Paciente objects filtered by the paciente_telefono column
@@ -90,7 +95,6 @@
  * @method array findByPacienteEstado(string $paciente_estado) Return Paciente objects filtered by the paciente_estado column
  * @method array findByPacienteSexo(string $paciente_sexo) Return Paciente objects filtered by the paciente_sexo column
  * @method array findByPacienteFechanacimiento(string $paciente_fechanacimiento) Return Paciente objects filtered by the paciente_fechanacimiento column
- * @method array findByIdempleado(string $idempleado) Return Paciente objects filtered by the idempleado column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -198,7 +202,7 @@ abstract class BasePacienteQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idpaciente`, `idclinica`, `paciente_nombre`, `paciente_celular`, `paciente_telefono`, `paciente_calle`, `paciente_numero`, `paciente_colonia`, `paciente_codigopostal`, `paciente_ciudad`, `paciente_estado`, `paciente_sexo`, `paciente_fechanacimiento`, `idempleado` FROM `paciente` WHERE `idpaciente` = :p0';
+        $sql = 'SELECT `idpaciente`, `idclinica`, `idempleado`, `paciente_nombre`, `paciente_celular`, `paciente_telefono`, `paciente_calle`, `paciente_numero`, `paciente_colonia`, `paciente_codigopostal`, `paciente_ciudad`, `paciente_estado`, `paciente_sexo`, `paciente_fechanacimiento` FROM `paciente` WHERE `idpaciente` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -369,6 +373,50 @@ abstract class BasePacienteQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PacientePeer::IDCLINICA, $idclinica, $comparison);
+    }
+
+    /**
+     * Filter the query on the idempleado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdempleado(1234); // WHERE idempleado = 1234
+     * $query->filterByIdempleado(array(12, 34)); // WHERE idempleado IN (12, 34)
+     * $query->filterByIdempleado(array('min' => 12)); // WHERE idempleado >= 12
+     * $query->filterByIdempleado(array('max' => 12)); // WHERE idempleado <= 12
+     * </code>
+     *
+     * @see       filterByEmpleado()
+     *
+     * @param     mixed $idempleado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PacienteQuery The current query, for fluid interface
+     */
+    public function filterByIdempleado($idempleado = null, $comparison = null)
+    {
+        if (is_array($idempleado)) {
+            $useMinMax = false;
+            if (isset($idempleado['min'])) {
+                $this->addUsingAlias(PacientePeer::IDEMPLEADO, $idempleado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idempleado['max'])) {
+                $this->addUsingAlias(PacientePeer::IDEMPLEADO, $idempleado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PacientePeer::IDEMPLEADO, $idempleado, $comparison);
     }
 
     /**
@@ -705,32 +753,79 @@ abstract class BasePacienteQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the idempleado column
+     * Filter the query by a related Empleado object
      *
-     * Example usage:
-     * <code>
-     * $query->filterByIdempleado('fooValue');   // WHERE idempleado = 'fooValue'
-     * $query->filterByIdempleado('%fooValue%'); // WHERE idempleado LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $idempleado The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param   Empleado|PropelObjectCollection $empleado The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PacienteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByEmpleado($empleado, $comparison = null)
+    {
+        if ($empleado instanceof Empleado) {
+            return $this
+                ->addUsingAlias(PacientePeer::IDEMPLEADO, $empleado->getIdempleado(), $comparison);
+        } elseif ($empleado instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PacientePeer::IDEMPLEADO, $empleado->toKeyValue('PrimaryKey', 'Idempleado'), $comparison);
+        } else {
+            throw new PropelException('filterByEmpleado() only accepts arguments of type Empleado or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Empleado relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PacienteQuery The current query, for fluid interface
      */
-    public function filterByIdempleado($idempleado = null, $comparison = null)
+    public function joinEmpleado($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
-        if (null === $comparison) {
-            if (is_array($idempleado)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $idempleado)) {
-                $idempleado = str_replace('*', '%', $idempleado);
-                $comparison = Criteria::LIKE;
-            }
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Empleado');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
         }
 
-        return $this->addUsingAlias(PacientePeer::IDEMPLEADO, $idempleado, $comparison);
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Empleado');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Empleado relation Empleado object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EmpleadoQuery A secondary query class using the current class as primary query
+     */
+    public function useEmpleadoQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinEmpleado($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Empleado', 'EmpleadoQuery');
     }
 
     /**

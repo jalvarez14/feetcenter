@@ -102,6 +102,12 @@ abstract class BaseClinica extends BaseObject implements Persistent
     protected $collInsumoclinicasPartial;
 
     /**
+     * @var        PropelObjectCollection|Pacienteseguimiento[] Collection to store aggregation of Pacienteseguimiento objects.
+     */
+    protected $collPacienteseguimientos;
+    protected $collPacienteseguimientosPartial;
+
+    /**
      * @var        PropelObjectCollection|Productoclinica[] Collection to store aggregation of Productoclinica objects.
      */
     protected $collProductoclinicas;
@@ -192,6 +198,12 @@ abstract class BaseClinica extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $insumoclinicasScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pacienteseguimientosScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -505,6 +517,8 @@ abstract class BaseClinica extends BaseObject implements Persistent
 
             $this->collInsumoclinicas = null;
 
+            $this->collPacienteseguimientos = null;
+
             $this->collProductoclinicas = null;
 
             $this->collServicioclinicas = null;
@@ -752,6 +766,23 @@ abstract class BaseClinica extends BaseObject implements Persistent
 
             if ($this->collInsumoclinicas !== null) {
                 foreach ($this->collInsumoclinicas as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pacienteseguimientosScheduledForDeletion !== null) {
+                if (!$this->pacienteseguimientosScheduledForDeletion->isEmpty()) {
+                    PacienteseguimientoQuery::create()
+                        ->filterByPrimaryKeys($this->pacienteseguimientosScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pacienteseguimientosScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPacienteseguimientos !== null) {
+                foreach ($this->collPacienteseguimientos as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1065,6 +1096,14 @@ abstract class BaseClinica extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPacienteseguimientos !== null) {
+                    foreach ($this->collPacienteseguimientos as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collProductoclinicas !== null) {
                     foreach ($this->collProductoclinicas as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1216,6 +1255,9 @@ abstract class BaseClinica extends BaseObject implements Persistent
             }
             if (null !== $this->collInsumoclinicas) {
                 $result['Insumoclinicas'] = $this->collInsumoclinicas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPacienteseguimientos) {
+                $result['Pacienteseguimientos'] = $this->collPacienteseguimientos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collProductoclinicas) {
                 $result['Productoclinicas'] = $this->collProductoclinicas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1443,6 +1485,12 @@ abstract class BaseClinica extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPacienteseguimientos() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPacienteseguimiento($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getProductoclinicas() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addProductoclinica($relObj->copy($deepCopy));
@@ -1554,6 +1602,9 @@ abstract class BaseClinica extends BaseObject implements Persistent
         }
         if ('Insumoclinica' == $relationName) {
             $this->initInsumoclinicas();
+        }
+        if ('Pacienteseguimiento' == $relationName) {
+            $this->initPacienteseguimientos();
         }
         if ('Productoclinica' == $relationName) {
             $this->initProductoclinicas();
@@ -3373,6 +3424,281 @@ abstract class BaseClinica extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPacienteseguimientos collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Clinica The current object (for fluent API support)
+     * @see        addPacienteseguimientos()
+     */
+    public function clearPacienteseguimientos()
+    {
+        $this->collPacienteseguimientos = null; // important to set this to null since that means it is uninitialized
+        $this->collPacienteseguimientosPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPacienteseguimientos collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPacienteseguimientos($v = true)
+    {
+        $this->collPacienteseguimientosPartial = $v;
+    }
+
+    /**
+     * Initializes the collPacienteseguimientos collection.
+     *
+     * By default this just sets the collPacienteseguimientos collection to an empty array (like clearcollPacienteseguimientos());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPacienteseguimientos($overrideExisting = true)
+    {
+        if (null !== $this->collPacienteseguimientos && !$overrideExisting) {
+            return;
+        }
+        $this->collPacienteseguimientos = new PropelObjectCollection();
+        $this->collPacienteseguimientos->setModel('Pacienteseguimiento');
+    }
+
+    /**
+     * Gets an array of Pacienteseguimiento objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Clinica is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Pacienteseguimiento[] List of Pacienteseguimiento objects
+     * @throws PropelException
+     */
+    public function getPacienteseguimientos($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPacienteseguimientosPartial && !$this->isNew();
+        if (null === $this->collPacienteseguimientos || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPacienteseguimientos) {
+                // return empty collection
+                $this->initPacienteseguimientos();
+            } else {
+                $collPacienteseguimientos = PacienteseguimientoQuery::create(null, $criteria)
+                    ->filterByClinica($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPacienteseguimientosPartial && count($collPacienteseguimientos)) {
+                      $this->initPacienteseguimientos(false);
+
+                      foreach ($collPacienteseguimientos as $obj) {
+                        if (false == $this->collPacienteseguimientos->contains($obj)) {
+                          $this->collPacienteseguimientos->append($obj);
+                        }
+                      }
+
+                      $this->collPacienteseguimientosPartial = true;
+                    }
+
+                    $collPacienteseguimientos->getInternalIterator()->rewind();
+
+                    return $collPacienteseguimientos;
+                }
+
+                if ($partial && $this->collPacienteseguimientos) {
+                    foreach ($this->collPacienteseguimientos as $obj) {
+                        if ($obj->isNew()) {
+                            $collPacienteseguimientos[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPacienteseguimientos = $collPacienteseguimientos;
+                $this->collPacienteseguimientosPartial = false;
+            }
+        }
+
+        return $this->collPacienteseguimientos;
+    }
+
+    /**
+     * Sets a collection of Pacienteseguimiento objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pacienteseguimientos A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Clinica The current object (for fluent API support)
+     */
+    public function setPacienteseguimientos(PropelCollection $pacienteseguimientos, PropelPDO $con = null)
+    {
+        $pacienteseguimientosToDelete = $this->getPacienteseguimientos(new Criteria(), $con)->diff($pacienteseguimientos);
+
+
+        $this->pacienteseguimientosScheduledForDeletion = $pacienteseguimientosToDelete;
+
+        foreach ($pacienteseguimientosToDelete as $pacienteseguimientoRemoved) {
+            $pacienteseguimientoRemoved->setClinica(null);
+        }
+
+        $this->collPacienteseguimientos = null;
+        foreach ($pacienteseguimientos as $pacienteseguimiento) {
+            $this->addPacienteseguimiento($pacienteseguimiento);
+        }
+
+        $this->collPacienteseguimientos = $pacienteseguimientos;
+        $this->collPacienteseguimientosPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Pacienteseguimiento objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Pacienteseguimiento objects.
+     * @throws PropelException
+     */
+    public function countPacienteseguimientos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPacienteseguimientosPartial && !$this->isNew();
+        if (null === $this->collPacienteseguimientos || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPacienteseguimientos) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPacienteseguimientos());
+            }
+            $query = PacienteseguimientoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByClinica($this)
+                ->count($con);
+        }
+
+        return count($this->collPacienteseguimientos);
+    }
+
+    /**
+     * Method called to associate a Pacienteseguimiento object to this object
+     * through the Pacienteseguimiento foreign key attribute.
+     *
+     * @param    Pacienteseguimiento $l Pacienteseguimiento
+     * @return Clinica The current object (for fluent API support)
+     */
+    public function addPacienteseguimiento(Pacienteseguimiento $l)
+    {
+        if ($this->collPacienteseguimientos === null) {
+            $this->initPacienteseguimientos();
+            $this->collPacienteseguimientosPartial = true;
+        }
+
+        if (!in_array($l, $this->collPacienteseguimientos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPacienteseguimiento($l);
+
+            if ($this->pacienteseguimientosScheduledForDeletion and $this->pacienteseguimientosScheduledForDeletion->contains($l)) {
+                $this->pacienteseguimientosScheduledForDeletion->remove($this->pacienteseguimientosScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Pacienteseguimiento $pacienteseguimiento The pacienteseguimiento object to add.
+     */
+    protected function doAddPacienteseguimiento($pacienteseguimiento)
+    {
+        $this->collPacienteseguimientos[]= $pacienteseguimiento;
+        $pacienteseguimiento->setClinica($this);
+    }
+
+    /**
+     * @param	Pacienteseguimiento $pacienteseguimiento The pacienteseguimiento object to remove.
+     * @return Clinica The current object (for fluent API support)
+     */
+    public function removePacienteseguimiento($pacienteseguimiento)
+    {
+        if ($this->getPacienteseguimientos()->contains($pacienteseguimiento)) {
+            $this->collPacienteseguimientos->remove($this->collPacienteseguimientos->search($pacienteseguimiento));
+            if (null === $this->pacienteseguimientosScheduledForDeletion) {
+                $this->pacienteseguimientosScheduledForDeletion = clone $this->collPacienteseguimientos;
+                $this->pacienteseguimientosScheduledForDeletion->clear();
+            }
+            $this->pacienteseguimientosScheduledForDeletion[]= clone $pacienteseguimiento;
+            $pacienteseguimiento->setClinica(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Clinica is new, it will return
+     * an empty collection; or if this Clinica has previously
+     * been saved, it will retrieve related Pacienteseguimientos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Clinica.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pacienteseguimiento[] List of Pacienteseguimiento objects
+     */
+    public function getPacienteseguimientosJoinEmpleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PacienteseguimientoQuery::create(null, $criteria);
+        $query->joinWith('Empleado', $join_behavior);
+
+        return $this->getPacienteseguimientos($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Clinica is new, it will return
+     * an empty collection; or if this Clinica has previously
+     * been saved, it will retrieve related Pacienteseguimientos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Clinica.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pacienteseguimiento[] List of Pacienteseguimiento objects
+     */
+    public function getPacienteseguimientosJoinPaciente($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PacienteseguimientoQuery::create(null, $criteria);
+        $query->joinWith('Paciente', $join_behavior);
+
+        return $this->getPacienteseguimientos($query, $con);
+    }
+
+    /**
      * Clears out the collProductoclinicas collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -4789,6 +5115,11 @@ abstract class BaseClinica extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPacienteseguimientos) {
+                foreach ($this->collPacienteseguimientos as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collProductoclinicas) {
                 foreach ($this->collProductoclinicas as $o) {
                     $o->clearAllReferences($deep);
@@ -4846,6 +5177,10 @@ abstract class BaseClinica extends BaseObject implements Persistent
             $this->collInsumoclinicas->clearIterator();
         }
         $this->collInsumoclinicas = null;
+        if ($this->collPacienteseguimientos instanceof PropelCollection) {
+            $this->collPacienteseguimientos->clearIterator();
+        }
+        $this->collPacienteseguimientos = null;
         if ($this->collProductoclinicas instanceof PropelCollection) {
             $this->collProductoclinicas->clearIterator();
         }

@@ -1,0 +1,38 @@
+<div id="empleados_container">
+    <h1>Horario de trabajo</h1>
+    <?php if(count($successMessages)) :?>
+        <div class="units-row">
+            <?php foreach ($successMessages as $message) :?>
+                <div class="unit-100">    
+                    <div class="tools-alert tools-alert-green">
+                        <?php echo $message?>
+                    </div> 
+                </div>
+            <?php endforeach;?>
+        </div>
+    <?php endif;?>
+    <table>
+        <thead>
+            <tr>
+                <th>Lunes</th>  
+                <th>Martes</th>
+                <th>Miercoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sabado</th>
+                <th>Domingo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php echo $horario['lunes']?></td>
+                <td><?php echo $horario['martes']?></td>
+                <td><?php echo $horario['miercoles']?></td>
+                <td><?php echo $horario['jueves']?></td>
+                <td><?php echo $horario['viernes']?></td>
+                <td><?php echo $horario['sabado']?></td>
+                <td><?php echo $horario['domingo    ']?></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

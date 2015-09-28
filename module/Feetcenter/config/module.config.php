@@ -27,6 +27,17 @@ return array(
                 ),
                 'may_terminate' => false,
                 'child_routes' => array(
+                    'incidencia' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/incidencia[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Incidencia',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
                     'clinica' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -236,6 +247,82 @@ return array(
                     ),
                 ),
             ),
+            /*
+             * MODULO EMPLEADOS
+             */
+            'empleados' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/empleados[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Empleados\Controller\Empleados',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'empleados-reportes' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/empleados/reportes',
+                    'defaults' => array(
+                        'controller' => 'Empleados\Controller\Reportes',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                    'child_routes' => array(
+                        'nuevo' => array(
+                            'type' => 'Segment',
+                            'options' => array(
+                                'route'    => '/nuevo',
+                                'defaults' => array(
+                                    'controller'    => 'Empleados\Controller\Reportes',
+                                    'action'        => 'nuevo',
+                                ),
+                            ),
+                        ),
+                        'filter' => array(
+                            'type' => 'Segment',
+                            'options' => array(
+                                'route'    => '/filter',
+                                'defaults' => array(
+                                    'controller'    => 'Empleados\Controller\Reportes',
+                                    'action'        => 'filter',
+                                ),
+                            ),
+                        ),
+                        'vernota' => array(
+                            'type' => 'Segment',
+                            'options' => array(
+                                'route'    => '/vernota',
+                                'defaults' => array(
+                                    'controller'    => 'Empleados\Controller\Reportes',
+                                    'action'        => 'vernota',
+                                ),
+                            ),
+                        ),
+                        'editar' => array(
+                            'type' => 'Segment',
+                            'options' => array(
+                                'route'    => '/editar/:id',
+                                'defaults' => array(
+                                    'controller'    => 'Empleados\Controller\Reportes',
+                                    'action'        => 'editar',
+                                ),
+                            ),
+                        ),
+                        'eliminar' => array(
+                            'type' => 'Segment',
+                            'options' => array(
+                                'route'    => '/eliminar/:id',
+                                'defaults' => array(
+                                    'controller'    => 'Empleados\Controller\Reportes',
+                                    'action'        => 'eliminar',
+                                ),
+                            ),
+                        ),
+                    ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -270,6 +357,7 @@ return array(
             'Catalogos\Controller\Producto' => 'Catalogos\Controller\ProductoController',
             'Catalogos\Controller\Servicio' => 'Catalogos\Controller\ServicioController',
             'Catalogos\Controller\Empleado' => 'Catalogos\Controller\EmpleadoController',
+            'Catalogos\Controller\Incidencia' => 'Catalogos\Controller\IncidenciaController',
             //Compras
             'Compras\Controller\Compras' => 'Compras\Controller\ComprasController',
             //Login
@@ -283,6 +371,9 @@ return array(
             'Inventario\Controller\Precios' => 'Inventario\Controller\PreciosController',
             //Egresos
             'Egresos\Controller\Egresos' => 'Egresos\Controller\EgresosController',
+            //Empleados
+            'Empleados\Controller\Empleados' => 'Empleados\Controller\EmpleadosController',
+            'Empleados\Controller\Reportes' => 'Empleados\Controller\ReportesController',
         ),
     ),
     'view_manager' => array(

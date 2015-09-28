@@ -40,6 +40,8 @@ class PacienteseguimientoTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idpacienteseguimiento', 'Idpacienteseguimiento', 'INTEGER', true, null, null);
         $this->addForeignKey('idpaciente', 'Idpaciente', 'INTEGER', 'paciente', 'idpaciente', true, null, null);
+        $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
+        $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', true, null, null);
         $this->addColumn('idcanalcomunicacion', 'Idcanalcomunicacion', 'INTEGER', true, null, null);
         $this->addColumn('pacienteseguimiento_fechacreacion', 'PacienteseguimientoFechacreacion', 'TIMESTAMP', true, null, null);
         $this->addColumn('pacienteseguimiento_comentario', 'PacienteseguimientoComentario', 'LONGVARCHAR', true, null, null);
@@ -52,6 +54,8 @@ class PacienteseguimientoTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Empleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Paciente', 'Paciente', RelationMap::MANY_TO_ONE, array('idpaciente' => 'idpaciente', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 

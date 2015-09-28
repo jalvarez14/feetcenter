@@ -24,13 +24,13 @@ abstract class BaseEmpleadohorarioPeer
     const TM_CLASS = 'EmpleadohorarioTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the idempleadohorario field */
     const IDEMPLEADOHORARIO = 'empleadohorario.idempleadohorario';
@@ -46,6 +46,9 @@ abstract class BaseEmpleadohorarioPeer
 
     /** the column name for the empleadohorario_dia field */
     const EMPLEADOHORARIO_DIA = 'empleadohorario.empleadohorario_dia';
+
+    /** the column name for the empleadohorario_descanso field */
+    const EMPLEADOHORARIO_DESCANSO = 'empleadohorario.empleadohorario_descanso';
 
     /** The enumerated values for the empleadohorario_dia field */
     const EMPLEADOHORARIO_DIA_LUNES = 'lunes';
@@ -75,12 +78,12 @@ abstract class BaseEmpleadohorarioPeer
      * e.g. EmpleadohorarioPeer::$fieldNames[EmpleadohorarioPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleadohorario', 'Idempleado', 'EmpleadohorarioEntrada', 'EmpleadohorarioSalida', 'EmpleadohorarioDia', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadohorario', 'idempleado', 'empleadohorarioEntrada', 'empleadohorarioSalida', 'empleadohorarioDia', ),
-        BasePeer::TYPE_COLNAME => array (EmpleadohorarioPeer::IDEMPLEADOHORARIO, EmpleadohorarioPeer::IDEMPLEADO, EmpleadohorarioPeer::EMPLEADOHORARIO_ENTRADA, EmpleadohorarioPeer::EMPLEADOHORARIO_SALIDA, EmpleadohorarioPeer::EMPLEADOHORARIO_DIA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOHORARIO', 'IDEMPLEADO', 'EMPLEADOHORARIO_ENTRADA', 'EMPLEADOHORARIO_SALIDA', 'EMPLEADOHORARIO_DIA', ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleadohorario', 'idempleado', 'empleadohorario_entrada', 'empleadohorario_salida', 'empleadohorario_dia', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleadohorario', 'Idempleado', 'EmpleadohorarioEntrada', 'EmpleadohorarioSalida', 'EmpleadohorarioDia', 'EmpleadohorarioDescanso', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadohorario', 'idempleado', 'empleadohorarioEntrada', 'empleadohorarioSalida', 'empleadohorarioDia', 'empleadohorarioDescanso', ),
+        BasePeer::TYPE_COLNAME => array (EmpleadohorarioPeer::IDEMPLEADOHORARIO, EmpleadohorarioPeer::IDEMPLEADO, EmpleadohorarioPeer::EMPLEADOHORARIO_ENTRADA, EmpleadohorarioPeer::EMPLEADOHORARIO_SALIDA, EmpleadohorarioPeer::EMPLEADOHORARIO_DIA, EmpleadohorarioPeer::EMPLEADOHORARIO_DESCANSO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOHORARIO', 'IDEMPLEADO', 'EMPLEADOHORARIO_ENTRADA', 'EMPLEADOHORARIO_SALIDA', 'EMPLEADOHORARIO_DIA', 'EMPLEADOHORARIO_DESCANSO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleadohorario', 'idempleado', 'empleadohorario_entrada', 'empleadohorario_salida', 'empleadohorario_dia', 'empleadohorario_descanso', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -90,12 +93,12 @@ abstract class BaseEmpleadohorarioPeer
      * e.g. EmpleadohorarioPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleadohorario' => 0, 'Idempleado' => 1, 'EmpleadohorarioEntrada' => 2, 'EmpleadohorarioSalida' => 3, 'EmpleadohorarioDia' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadohorario' => 0, 'idempleado' => 1, 'empleadohorarioEntrada' => 2, 'empleadohorarioSalida' => 3, 'empleadohorarioDia' => 4, ),
-        BasePeer::TYPE_COLNAME => array (EmpleadohorarioPeer::IDEMPLEADOHORARIO => 0, EmpleadohorarioPeer::IDEMPLEADO => 1, EmpleadohorarioPeer::EMPLEADOHORARIO_ENTRADA => 2, EmpleadohorarioPeer::EMPLEADOHORARIO_SALIDA => 3, EmpleadohorarioPeer::EMPLEADOHORARIO_DIA => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOHORARIO' => 0, 'IDEMPLEADO' => 1, 'EMPLEADOHORARIO_ENTRADA' => 2, 'EMPLEADOHORARIO_SALIDA' => 3, 'EMPLEADOHORARIO_DIA' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleadohorario' => 0, 'idempleado' => 1, 'empleadohorario_entrada' => 2, 'empleadohorario_salida' => 3, 'empleadohorario_dia' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleadohorario' => 0, 'Idempleado' => 1, 'EmpleadohorarioEntrada' => 2, 'EmpleadohorarioSalida' => 3, 'EmpleadohorarioDia' => 4, 'EmpleadohorarioDescanso' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadohorario' => 0, 'idempleado' => 1, 'empleadohorarioEntrada' => 2, 'empleadohorarioSalida' => 3, 'empleadohorarioDia' => 4, 'empleadohorarioDescanso' => 5, ),
+        BasePeer::TYPE_COLNAME => array (EmpleadohorarioPeer::IDEMPLEADOHORARIO => 0, EmpleadohorarioPeer::IDEMPLEADO => 1, EmpleadohorarioPeer::EMPLEADOHORARIO_ENTRADA => 2, EmpleadohorarioPeer::EMPLEADOHORARIO_SALIDA => 3, EmpleadohorarioPeer::EMPLEADOHORARIO_DIA => 4, EmpleadohorarioPeer::EMPLEADOHORARIO_DESCANSO => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOHORARIO' => 0, 'IDEMPLEADO' => 1, 'EMPLEADOHORARIO_ENTRADA' => 2, 'EMPLEADOHORARIO_SALIDA' => 3, 'EMPLEADOHORARIO_DIA' => 4, 'EMPLEADOHORARIO_DESCANSO' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleadohorario' => 0, 'idempleado' => 1, 'empleadohorario_entrada' => 2, 'empleadohorario_salida' => 3, 'empleadohorario_dia' => 4, 'empleadohorario_descanso' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /** The enumerated values for this table */
@@ -232,12 +235,14 @@ abstract class BaseEmpleadohorarioPeer
             $criteria->addSelectColumn(EmpleadohorarioPeer::EMPLEADOHORARIO_ENTRADA);
             $criteria->addSelectColumn(EmpleadohorarioPeer::EMPLEADOHORARIO_SALIDA);
             $criteria->addSelectColumn(EmpleadohorarioPeer::EMPLEADOHORARIO_DIA);
+            $criteria->addSelectColumn(EmpleadohorarioPeer::EMPLEADOHORARIO_DESCANSO);
         } else {
             $criteria->addSelectColumn($alias . '.idempleadohorario');
             $criteria->addSelectColumn($alias . '.idempleado');
             $criteria->addSelectColumn($alias . '.empleadohorario_entrada');
             $criteria->addSelectColumn($alias . '.empleadohorario_salida');
             $criteria->addSelectColumn($alias . '.empleadohorario_dia');
+            $criteria->addSelectColumn($alias . '.empleadohorario_descanso');
         }
     }
 

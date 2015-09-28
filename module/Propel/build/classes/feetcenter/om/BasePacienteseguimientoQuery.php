@@ -8,6 +8,8 @@
  *
  * @method PacienteseguimientoQuery orderByIdpacienteseguimiento($order = Criteria::ASC) Order by the idpacienteseguimiento column
  * @method PacienteseguimientoQuery orderByIdpaciente($order = Criteria::ASC) Order by the idpaciente column
+ * @method PacienteseguimientoQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
+ * @method PacienteseguimientoQuery orderByIdempleado($order = Criteria::ASC) Order by the idempleado column
  * @method PacienteseguimientoQuery orderByIdcanalcomunicacion($order = Criteria::ASC) Order by the idcanalcomunicacion column
  * @method PacienteseguimientoQuery orderByPacienteseguimientoFechacreacion($order = Criteria::ASC) Order by the pacienteseguimiento_fechacreacion column
  * @method PacienteseguimientoQuery orderByPacienteseguimientoComentario($order = Criteria::ASC) Order by the pacienteseguimiento_comentario column
@@ -15,6 +17,8 @@
  *
  * @method PacienteseguimientoQuery groupByIdpacienteseguimiento() Group by the idpacienteseguimiento column
  * @method PacienteseguimientoQuery groupByIdpaciente() Group by the idpaciente column
+ * @method PacienteseguimientoQuery groupByIdclinica() Group by the idclinica column
+ * @method PacienteseguimientoQuery groupByIdempleado() Group by the idempleado column
  * @method PacienteseguimientoQuery groupByIdcanalcomunicacion() Group by the idcanalcomunicacion column
  * @method PacienteseguimientoQuery groupByPacienteseguimientoFechacreacion() Group by the pacienteseguimiento_fechacreacion column
  * @method PacienteseguimientoQuery groupByPacienteseguimientoComentario() Group by the pacienteseguimiento_comentario column
@@ -24,6 +28,14 @@
  * @method PacienteseguimientoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PacienteseguimientoQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method PacienteseguimientoQuery leftJoinClinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Clinica relation
+ * @method PacienteseguimientoQuery rightJoinClinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Clinica relation
+ * @method PacienteseguimientoQuery innerJoinClinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Clinica relation
+ *
+ * @method PacienteseguimientoQuery leftJoinEmpleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Empleado relation
+ * @method PacienteseguimientoQuery rightJoinEmpleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleado relation
+ * @method PacienteseguimientoQuery innerJoinEmpleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleado relation
+ *
  * @method PacienteseguimientoQuery leftJoinPaciente($relationAlias = null) Adds a LEFT JOIN clause to the query using the Paciente relation
  * @method PacienteseguimientoQuery rightJoinPaciente($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Paciente relation
  * @method PacienteseguimientoQuery innerJoinPaciente($relationAlias = null) Adds a INNER JOIN clause to the query using the Paciente relation
@@ -32,6 +44,8 @@
  * @method Pacienteseguimiento findOneOrCreate(PropelPDO $con = null) Return the first Pacienteseguimiento matching the query, or a new Pacienteseguimiento object populated from the query conditions when no match is found
  *
  * @method Pacienteseguimiento findOneByIdpaciente(int $idpaciente) Return the first Pacienteseguimiento filtered by the idpaciente column
+ * @method Pacienteseguimiento findOneByIdclinica(int $idclinica) Return the first Pacienteseguimiento filtered by the idclinica column
+ * @method Pacienteseguimiento findOneByIdempleado(int $idempleado) Return the first Pacienteseguimiento filtered by the idempleado column
  * @method Pacienteseguimiento findOneByIdcanalcomunicacion(int $idcanalcomunicacion) Return the first Pacienteseguimiento filtered by the idcanalcomunicacion column
  * @method Pacienteseguimiento findOneByPacienteseguimientoFechacreacion(string $pacienteseguimiento_fechacreacion) Return the first Pacienteseguimiento filtered by the pacienteseguimiento_fechacreacion column
  * @method Pacienteseguimiento findOneByPacienteseguimientoComentario(string $pacienteseguimiento_comentario) Return the first Pacienteseguimiento filtered by the pacienteseguimiento_comentario column
@@ -39,6 +53,8 @@
  *
  * @method array findByIdpacienteseguimiento(int $idpacienteseguimiento) Return Pacienteseguimiento objects filtered by the idpacienteseguimiento column
  * @method array findByIdpaciente(int $idpaciente) Return Pacienteseguimiento objects filtered by the idpaciente column
+ * @method array findByIdclinica(int $idclinica) Return Pacienteseguimiento objects filtered by the idclinica column
+ * @method array findByIdempleado(int $idempleado) Return Pacienteseguimiento objects filtered by the idempleado column
  * @method array findByIdcanalcomunicacion(int $idcanalcomunicacion) Return Pacienteseguimiento objects filtered by the idcanalcomunicacion column
  * @method array findByPacienteseguimientoFechacreacion(string $pacienteseguimiento_fechacreacion) Return Pacienteseguimiento objects filtered by the pacienteseguimiento_fechacreacion column
  * @method array findByPacienteseguimientoComentario(string $pacienteseguimiento_comentario) Return Pacienteseguimiento objects filtered by the pacienteseguimiento_comentario column
@@ -150,7 +166,7 @@ abstract class BasePacienteseguimientoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idpacienteseguimiento`, `idpaciente`, `idcanalcomunicacion`, `pacienteseguimiento_fechacreacion`, `pacienteseguimiento_comentario`, `pacienteseguimiento_fecha` FROM `pacienteseguimiento` WHERE `idpacienteseguimiento` = :p0';
+        $sql = 'SELECT `idpacienteseguimiento`, `idpaciente`, `idclinica`, `idempleado`, `idcanalcomunicacion`, `pacienteseguimiento_fechacreacion`, `pacienteseguimiento_comentario`, `pacienteseguimiento_fecha` FROM `pacienteseguimiento` WHERE `idpacienteseguimiento` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -326,6 +342,94 @@ abstract class BasePacienteseguimientoQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the idclinica column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdclinica(1234); // WHERE idclinica = 1234
+     * $query->filterByIdclinica(array(12, 34)); // WHERE idclinica IN (12, 34)
+     * $query->filterByIdclinica(array('min' => 12)); // WHERE idclinica >= 12
+     * $query->filterByIdclinica(array('max' => 12)); // WHERE idclinica <= 12
+     * </code>
+     *
+     * @see       filterByClinica()
+     *
+     * @param     mixed $idclinica The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PacienteseguimientoQuery The current query, for fluid interface
+     */
+    public function filterByIdclinica($idclinica = null, $comparison = null)
+    {
+        if (is_array($idclinica)) {
+            $useMinMax = false;
+            if (isset($idclinica['min'])) {
+                $this->addUsingAlias(PacienteseguimientoPeer::IDCLINICA, $idclinica['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idclinica['max'])) {
+                $this->addUsingAlias(PacienteseguimientoPeer::IDCLINICA, $idclinica['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PacienteseguimientoPeer::IDCLINICA, $idclinica, $comparison);
+    }
+
+    /**
+     * Filter the query on the idempleado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdempleado(1234); // WHERE idempleado = 1234
+     * $query->filterByIdempleado(array(12, 34)); // WHERE idempleado IN (12, 34)
+     * $query->filterByIdempleado(array('min' => 12)); // WHERE idempleado >= 12
+     * $query->filterByIdempleado(array('max' => 12)); // WHERE idempleado <= 12
+     * </code>
+     *
+     * @see       filterByEmpleado()
+     *
+     * @param     mixed $idempleado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PacienteseguimientoQuery The current query, for fluid interface
+     */
+    public function filterByIdempleado($idempleado = null, $comparison = null)
+    {
+        if (is_array($idempleado)) {
+            $useMinMax = false;
+            if (isset($idempleado['min'])) {
+                $this->addUsingAlias(PacienteseguimientoPeer::IDEMPLEADO, $idempleado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idempleado['max'])) {
+                $this->addUsingAlias(PacienteseguimientoPeer::IDEMPLEADO, $idempleado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PacienteseguimientoPeer::IDEMPLEADO, $idempleado, $comparison);
+    }
+
+    /**
      * Filter the query on the idcanalcomunicacion column
      *
      * Example usage:
@@ -480,6 +584,158 @@ abstract class BasePacienteseguimientoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHA, $pacienteseguimientoFecha, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Clinica object
+     *
+     * @param   Clinica|PropelObjectCollection $clinica The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PacienteseguimientoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByClinica($clinica, $comparison = null)
+    {
+        if ($clinica instanceof Clinica) {
+            return $this
+                ->addUsingAlias(PacienteseguimientoPeer::IDCLINICA, $clinica->getIdclinica(), $comparison);
+        } elseif ($clinica instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PacienteseguimientoPeer::IDCLINICA, $clinica->toKeyValue('PrimaryKey', 'Idclinica'), $comparison);
+        } else {
+            throw new PropelException('filterByClinica() only accepts arguments of type Clinica or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Clinica relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PacienteseguimientoQuery The current query, for fluid interface
+     */
+    public function joinClinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Clinica');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Clinica');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Clinica relation Clinica object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ClinicaQuery A secondary query class using the current class as primary query
+     */
+    public function useClinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinClinica($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Clinica', 'ClinicaQuery');
+    }
+
+    /**
+     * Filter the query by a related Empleado object
+     *
+     * @param   Empleado|PropelObjectCollection $empleado The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PacienteseguimientoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByEmpleado($empleado, $comparison = null)
+    {
+        if ($empleado instanceof Empleado) {
+            return $this
+                ->addUsingAlias(PacienteseguimientoPeer::IDEMPLEADO, $empleado->getIdempleado(), $comparison);
+        } elseif ($empleado instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PacienteseguimientoPeer::IDEMPLEADO, $empleado->toKeyValue('PrimaryKey', 'Idempleado'), $comparison);
+        } else {
+            throw new PropelException('filterByEmpleado() only accepts arguments of type Empleado or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Empleado relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PacienteseguimientoQuery The current query, for fluid interface
+     */
+    public function joinEmpleado($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Empleado');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Empleado');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Empleado relation Empleado object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EmpleadoQuery A secondary query class using the current class as primary query
+     */
+    public function useEmpleadoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEmpleado($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Empleado', 'EmpleadoQuery');
     }
 
     /**
