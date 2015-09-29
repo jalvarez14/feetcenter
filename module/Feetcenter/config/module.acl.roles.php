@@ -35,6 +35,13 @@ return array(
             'empleados-reportes/vernota',
             'empleados-reportes/editar',
             'empleados-reportes/eliminar',
+            //pacientes
+            'pacientes',
+            'pacientes/nuevo',
+            'pacientes/filter',
+            'pacientes/editar',
+            'pacientes/eliminar',
+            'grupos',
         ),
         "deny"=>array(
              
@@ -61,6 +68,13 @@ return array(
             'empleados-reportes/vernota',
             'empleados-reportes/editar',
             'empleados-reportes/eliminar',
+            //pacientes
+            'pacientes',
+            'pacientes/nuevo',
+            'pacientes/filter',
+            'pacientes/editar',
+            'pacientes/eliminar',
+            'grupos',
         ),
         "deny"=>array(
             //Inventarios
@@ -89,6 +103,10 @@ return array(
             'empleados',
             'empleados-reportes',
             'empleados-reportes/vernota',
+            //pacientes
+            'pacientes',
+            'pacientes/filter',
+            
         ),
         "deny"=>array(
             //Catalogos
@@ -117,6 +135,11 @@ return array(
             'empleados-reportes/filter',
             'empleados-reportes/editar',
             'empleados-reportes/eliminar',
+            //pacientes
+            'pacientes/nuevo',
+            'pacientes/editar',
+            'pacientes/eliminar',
+            'grupos',
             
         ),
     ),

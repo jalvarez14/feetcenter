@@ -1,0 +1,48 @@
+<div id="pacientes_container">
+    <h1>Pacientes</h1>
+    <?php if(count($successMessages)) :?>
+        <div class="units-row">
+            <?php foreach ($successMessages as $message) :?>
+                <div class="unit-100">    
+                    <div class="tools-alert tools-alert-green">
+                        <?php echo $message?>
+                    </div> 
+                </div>
+            <?php endforeach;?>
+        </div>
+    <?php endif;?>
+    <div class="units-row">
+        <div class="unit-30">
+            Clínica
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Clínica</th>
+                <th>Fecha registro</th>
+                <th>Nombre</th>
+                <th>Celular</th>
+                <th>Atendido por</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+<script src="/js/pacientes/pacientes.js"></script>
+<script>
+    var pacientes = $('#pacientes_container').pacientes({
+        idclinica: <?php echo $idclinica?>,
+        idrol: <?php echo $idrol?>,
+    });
+    pacientes.init();
+    
+</script>

@@ -13,6 +13,9 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('css/style.css'))
+                        ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input-facebook.css'))
+                        ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input-mac.css'))
+                        ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input.css'))
                         ->prependStylesheet($this->basePath('plugins/fancyBox/source/jquery.fancybox.css'))
                          ->prependStylesheet($this->basePath('css/plugin/multiple.css'))
                         ->prependStylesheet($this->basePath('css/plugin/datatable/jquery.dataTables.css'))
@@ -23,7 +26,8 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
-                ->prependFile($this->basePath('plugins/fancyBox/source/jquery.fancybox.js'))
+            ->prependFile($this->basePath('plugins/tokeninput/src/jquery.tokeninput.js'))
+            ->prependFile($this->basePath('plugins/fancyBox/source/jquery.fancybox.js'))
             ->prependFile($this->basePath('/js/plugin/multiple.js'))
             ->prependFile($this->basePath('js/plugin/datatable/jquery.dataTables.js'))
             ->prependFile($this->basePath('js/plugin/picker.date.js'))
@@ -66,8 +70,9 @@
             <li><a href="/empleados/reportes">Reportes</a></li>
         </ul>
         <ul id="dropdown-pacientes" class="dropdown">
-            <li><a href="#">Nuevo paciente</a></li>
-            <li><a href="#">Pacientes</a></li>
+            <li><a href="/pacientes/nuevo">Nuevo paciente</a></li>
+            <li><a href="/pacientes">Pacientes</a></li>
+            <li><a href="/pacientes/grupos">Grupos</a></li>
             <li><a href="#">Expediente</a></li>
             <li><a href="#">Seguimiento</a></li>
         </ul>

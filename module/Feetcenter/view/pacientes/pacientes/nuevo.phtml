@@ -1,0 +1,122 @@
+<div id="clinica_container">
+    <h1>Nuevo paciente</h1>
+    <?php 
+        $form->setAttribute('action', '/pacientes/nuevo');
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-33">
+            <label>
+                Clinica
+                <?php echo $this->formSelect($form->get('idclinica')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Atendido por
+                <?php echo $this->formSelect($form->get('idempleado')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-33">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('paciente_nombre')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Celular <span class="req">*</span>
+                <?php echo $this->formText($form->get('paciente_celular')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Teléfono
+                <?php echo $this->formText($form->get('paciente_telefono')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-33">
+            <label>
+                Calle
+                <?php echo $this->formText($form->get('paciente_calle')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Numero
+                <?php echo $this->formText($form->get('paciente_numero')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Colonia
+                <?php echo $this->formText($form->get('paciente_colonia')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-33">
+            <label>
+                Código postal
+                <?php echo $this->formText($form->get('paciente_codigopostal')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Ciudad
+                <?php echo $this->formText($form->get('paciente_ciudad')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Estado
+                <?php echo $this->formText($form->get('paciente_estado')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-33">
+            <label>
+                Sexo
+                <?php echo $this->formSelect($form->get('paciente_sexo')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Fecha de nacimiento
+                <?php echo $this->formText($form->get('paciente_fechanacimiento')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script>
+
+    //Inicializamos los campos de fecha
+    $('input[name=paciente_fechanacimiento]').pickadate({
+        monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+        monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+        weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+        weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+        today: 'hoy',
+        clear: 'borrar',
+        close: 'cerrar',
+        firstDay: 1,
+        format: 'd !de mmmm !de yyyy',
+        formatSubmit: 'yyyy/mm/dd',
+        selectYears: true,
+        selectMonths: true,
+        selectYears: 25,
+    });
+
+
+</script>

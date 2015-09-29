@@ -519,6 +519,10 @@ abstract class BaseConceptoincidenciaPeer
             $criteria = $values->buildCriteria(); // build Criteria from Conceptoincidencia object
         }
 
+        if ($criteria->containsKey(ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA) && $criteria->keyContainsValue(ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA.')');
+        }
+
 
         // Set the correct dbName
         $criteria->setDbName(ConceptoincidenciaPeer::DATABASE_NAME);

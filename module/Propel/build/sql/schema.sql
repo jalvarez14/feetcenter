@@ -170,7 +170,7 @@ DROP TABLE IF EXISTS `conceptoincidencia`;
 
 CREATE TABLE `conceptoincidencia`
 (
-    `idconceptoincidencia` INTEGER NOT NULL,
+    `idconceptoincidencia` INTEGER NOT NULL AUTO_INCREMENT,
     `conceptoincidencia_nombre` VARCHAR(255) NOT NULL,
     `conceptoincidencia_descripcion` TEXT NOT NULL,
     PRIMARY KEY (`idconceptoincidencia`)
@@ -607,11 +607,20 @@ CREATE TABLE `paciente`
     `paciente_estado` VARCHAR(45),
     `paciente_sexo` enum('Hombre','Mujer'),
     `paciente_fechanacimiento` DATE,
+    `paciente_fecharegistro` DATE NOT NULL,
     PRIMARY KEY (`idpaciente`),
     INDEX `idempleado` (`idempleado`),
+    INDEX `idclinica` (`idclinica`),
+    CONSTRAINT `idclinica_paciente`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT `idempleado_paciente`
         FOREIGN KEY (`idempleado`)
         REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
