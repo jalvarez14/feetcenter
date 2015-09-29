@@ -323,6 +323,72 @@ return array(
                         ),
                     ),
             ),
+            /*
+             * MODULO Pacientes
+             */
+            'pacientes' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/pacientes',
+                    'defaults' => array(
+                        'controller' => 'Pacientes\Controller\Pacientes',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'nuevo' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/nuevo',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Pacientes',
+                               'action'        => 'nuevo',
+                           ),
+                       ),
+                   ),
+                    'filter' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/filter',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Pacientes',
+                               'action'        => 'filter',
+                           ),
+                       ),
+                   ),
+                    'editar' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/editar/:id',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Pacientes',
+                               'action'        => 'editar',
+                           ),
+                       ),
+                   ),
+                    'eliminar' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/eliminar/:id',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Pacientes',
+                               'action'        => 'eliminar',
+                           ),
+                       ),
+                   ),
+                ),
+            ),
+            'grupos' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/pacientes/grupos[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Pacientes\Controller\Grupos',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -374,6 +440,9 @@ return array(
             //Empleados
             'Empleados\Controller\Empleados' => 'Empleados\Controller\EmpleadosController',
             'Empleados\Controller\Reportes' => 'Empleados\Controller\ReportesController',
+            //Pacientes
+            'Pacientes\Controller\Pacientes' => 'Pacientes\Controller\PacientesController',
+            'Pacientes\Controller\Grupos' => 'Pacientes\Controller\GruposController',
         ),
     ),
     'view_manager' => array(

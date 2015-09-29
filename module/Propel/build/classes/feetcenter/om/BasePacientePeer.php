@@ -24,13 +24,13 @@ abstract class BasePacientePeer
     const TM_CLASS = 'PacienteTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 14;
+    const NUM_COLUMNS = 15;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 14;
+    const NUM_HYDRATE_COLUMNS = 15;
 
     /** the column name for the idpaciente field */
     const IDPACIENTE = 'paciente.idpaciente';
@@ -74,6 +74,9 @@ abstract class BasePacientePeer
     /** the column name for the paciente_fechanacimiento field */
     const PACIENTE_FECHANACIMIENTO = 'paciente.paciente_fechanacimiento';
 
+    /** the column name for the paciente_fecharegistro field */
+    const PACIENTE_FECHAREGISTRO = 'paciente.paciente_fecharegistro';
+
     /** The enumerated values for the paciente_sexo field */
     const PACIENTE_SEXO_HOMBRE = 'Hombre';
     const PACIENTE_SEXO_MUJER = 'Mujer';
@@ -97,12 +100,12 @@ abstract class BasePacientePeer
      * e.g. PacientePeer::$fieldNames[PacientePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idpaciente', 'Idclinica', 'Idempleado', 'PacienteNombre', 'PacienteCelular', 'PacienteTelefono', 'PacienteCalle', 'PacienteNumero', 'PacienteColonia', 'PacienteCodigopostal', 'PacienteCiudad', 'PacienteEstado', 'PacienteSexo', 'PacienteFechanacimiento', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idpaciente', 'idclinica', 'idempleado', 'pacienteNombre', 'pacienteCelular', 'pacienteTelefono', 'pacienteCalle', 'pacienteNumero', 'pacienteColonia', 'pacienteCodigopostal', 'pacienteCiudad', 'pacienteEstado', 'pacienteSexo', 'pacienteFechanacimiento', ),
-        BasePeer::TYPE_COLNAME => array (PacientePeer::IDPACIENTE, PacientePeer::IDCLINICA, PacientePeer::IDEMPLEADO, PacientePeer::PACIENTE_NOMBRE, PacientePeer::PACIENTE_CELULAR, PacientePeer::PACIENTE_TELEFONO, PacientePeer::PACIENTE_CALLE, PacientePeer::PACIENTE_NUMERO, PacientePeer::PACIENTE_COLONIA, PacientePeer::PACIENTE_CODIGOPOSTAL, PacientePeer::PACIENTE_CIUDAD, PacientePeer::PACIENTE_ESTADO, PacientePeer::PACIENTE_SEXO, PacientePeer::PACIENTE_FECHANACIMIENTO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPACIENTE', 'IDCLINICA', 'IDEMPLEADO', 'PACIENTE_NOMBRE', 'PACIENTE_CELULAR', 'PACIENTE_TELEFONO', 'PACIENTE_CALLE', 'PACIENTE_NUMERO', 'PACIENTE_COLONIA', 'PACIENTE_CODIGOPOSTAL', 'PACIENTE_CIUDAD', 'PACIENTE_ESTADO', 'PACIENTE_SEXO', 'PACIENTE_FECHANACIMIENTO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idpaciente', 'idclinica', 'idempleado', 'paciente_nombre', 'paciente_celular', 'paciente_telefono', 'paciente_calle', 'paciente_numero', 'paciente_colonia', 'paciente_codigopostal', 'paciente_ciudad', 'paciente_estado', 'paciente_sexo', 'paciente_fechanacimiento', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
+        BasePeer::TYPE_PHPNAME => array ('Idpaciente', 'Idclinica', 'Idempleado', 'PacienteNombre', 'PacienteCelular', 'PacienteTelefono', 'PacienteCalle', 'PacienteNumero', 'PacienteColonia', 'PacienteCodigopostal', 'PacienteCiudad', 'PacienteEstado', 'PacienteSexo', 'PacienteFechanacimiento', 'PacienteFecharegistro', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idpaciente', 'idclinica', 'idempleado', 'pacienteNombre', 'pacienteCelular', 'pacienteTelefono', 'pacienteCalle', 'pacienteNumero', 'pacienteColonia', 'pacienteCodigopostal', 'pacienteCiudad', 'pacienteEstado', 'pacienteSexo', 'pacienteFechanacimiento', 'pacienteFecharegistro', ),
+        BasePeer::TYPE_COLNAME => array (PacientePeer::IDPACIENTE, PacientePeer::IDCLINICA, PacientePeer::IDEMPLEADO, PacientePeer::PACIENTE_NOMBRE, PacientePeer::PACIENTE_CELULAR, PacientePeer::PACIENTE_TELEFONO, PacientePeer::PACIENTE_CALLE, PacientePeer::PACIENTE_NUMERO, PacientePeer::PACIENTE_COLONIA, PacientePeer::PACIENTE_CODIGOPOSTAL, PacientePeer::PACIENTE_CIUDAD, PacientePeer::PACIENTE_ESTADO, PacientePeer::PACIENTE_SEXO, PacientePeer::PACIENTE_FECHANACIMIENTO, PacientePeer::PACIENTE_FECHAREGISTRO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPACIENTE', 'IDCLINICA', 'IDEMPLEADO', 'PACIENTE_NOMBRE', 'PACIENTE_CELULAR', 'PACIENTE_TELEFONO', 'PACIENTE_CALLE', 'PACIENTE_NUMERO', 'PACIENTE_COLONIA', 'PACIENTE_CODIGOPOSTAL', 'PACIENTE_CIUDAD', 'PACIENTE_ESTADO', 'PACIENTE_SEXO', 'PACIENTE_FECHANACIMIENTO', 'PACIENTE_FECHAREGISTRO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idpaciente', 'idclinica', 'idempleado', 'paciente_nombre', 'paciente_celular', 'paciente_telefono', 'paciente_calle', 'paciente_numero', 'paciente_colonia', 'paciente_codigopostal', 'paciente_ciudad', 'paciente_estado', 'paciente_sexo', 'paciente_fechanacimiento', 'paciente_fecharegistro', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
     );
 
     /**
@@ -112,12 +115,12 @@ abstract class BasePacientePeer
      * e.g. PacientePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idpaciente' => 0, 'Idclinica' => 1, 'Idempleado' => 2, 'PacienteNombre' => 3, 'PacienteCelular' => 4, 'PacienteTelefono' => 5, 'PacienteCalle' => 6, 'PacienteNumero' => 7, 'PacienteColonia' => 8, 'PacienteCodigopostal' => 9, 'PacienteCiudad' => 10, 'PacienteEstado' => 11, 'PacienteSexo' => 12, 'PacienteFechanacimiento' => 13, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idpaciente' => 0, 'idclinica' => 1, 'idempleado' => 2, 'pacienteNombre' => 3, 'pacienteCelular' => 4, 'pacienteTelefono' => 5, 'pacienteCalle' => 6, 'pacienteNumero' => 7, 'pacienteColonia' => 8, 'pacienteCodigopostal' => 9, 'pacienteCiudad' => 10, 'pacienteEstado' => 11, 'pacienteSexo' => 12, 'pacienteFechanacimiento' => 13, ),
-        BasePeer::TYPE_COLNAME => array (PacientePeer::IDPACIENTE => 0, PacientePeer::IDCLINICA => 1, PacientePeer::IDEMPLEADO => 2, PacientePeer::PACIENTE_NOMBRE => 3, PacientePeer::PACIENTE_CELULAR => 4, PacientePeer::PACIENTE_TELEFONO => 5, PacientePeer::PACIENTE_CALLE => 6, PacientePeer::PACIENTE_NUMERO => 7, PacientePeer::PACIENTE_COLONIA => 8, PacientePeer::PACIENTE_CODIGOPOSTAL => 9, PacientePeer::PACIENTE_CIUDAD => 10, PacientePeer::PACIENTE_ESTADO => 11, PacientePeer::PACIENTE_SEXO => 12, PacientePeer::PACIENTE_FECHANACIMIENTO => 13, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPACIENTE' => 0, 'IDCLINICA' => 1, 'IDEMPLEADO' => 2, 'PACIENTE_NOMBRE' => 3, 'PACIENTE_CELULAR' => 4, 'PACIENTE_TELEFONO' => 5, 'PACIENTE_CALLE' => 6, 'PACIENTE_NUMERO' => 7, 'PACIENTE_COLONIA' => 8, 'PACIENTE_CODIGOPOSTAL' => 9, 'PACIENTE_CIUDAD' => 10, 'PACIENTE_ESTADO' => 11, 'PACIENTE_SEXO' => 12, 'PACIENTE_FECHANACIMIENTO' => 13, ),
-        BasePeer::TYPE_FIELDNAME => array ('idpaciente' => 0, 'idclinica' => 1, 'idempleado' => 2, 'paciente_nombre' => 3, 'paciente_celular' => 4, 'paciente_telefono' => 5, 'paciente_calle' => 6, 'paciente_numero' => 7, 'paciente_colonia' => 8, 'paciente_codigopostal' => 9, 'paciente_ciudad' => 10, 'paciente_estado' => 11, 'paciente_sexo' => 12, 'paciente_fechanacimiento' => 13, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
+        BasePeer::TYPE_PHPNAME => array ('Idpaciente' => 0, 'Idclinica' => 1, 'Idempleado' => 2, 'PacienteNombre' => 3, 'PacienteCelular' => 4, 'PacienteTelefono' => 5, 'PacienteCalle' => 6, 'PacienteNumero' => 7, 'PacienteColonia' => 8, 'PacienteCodigopostal' => 9, 'PacienteCiudad' => 10, 'PacienteEstado' => 11, 'PacienteSexo' => 12, 'PacienteFechanacimiento' => 13, 'PacienteFecharegistro' => 14, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idpaciente' => 0, 'idclinica' => 1, 'idempleado' => 2, 'pacienteNombre' => 3, 'pacienteCelular' => 4, 'pacienteTelefono' => 5, 'pacienteCalle' => 6, 'pacienteNumero' => 7, 'pacienteColonia' => 8, 'pacienteCodigopostal' => 9, 'pacienteCiudad' => 10, 'pacienteEstado' => 11, 'pacienteSexo' => 12, 'pacienteFechanacimiento' => 13, 'pacienteFecharegistro' => 14, ),
+        BasePeer::TYPE_COLNAME => array (PacientePeer::IDPACIENTE => 0, PacientePeer::IDCLINICA => 1, PacientePeer::IDEMPLEADO => 2, PacientePeer::PACIENTE_NOMBRE => 3, PacientePeer::PACIENTE_CELULAR => 4, PacientePeer::PACIENTE_TELEFONO => 5, PacientePeer::PACIENTE_CALLE => 6, PacientePeer::PACIENTE_NUMERO => 7, PacientePeer::PACIENTE_COLONIA => 8, PacientePeer::PACIENTE_CODIGOPOSTAL => 9, PacientePeer::PACIENTE_CIUDAD => 10, PacientePeer::PACIENTE_ESTADO => 11, PacientePeer::PACIENTE_SEXO => 12, PacientePeer::PACIENTE_FECHANACIMIENTO => 13, PacientePeer::PACIENTE_FECHAREGISTRO => 14, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPACIENTE' => 0, 'IDCLINICA' => 1, 'IDEMPLEADO' => 2, 'PACIENTE_NOMBRE' => 3, 'PACIENTE_CELULAR' => 4, 'PACIENTE_TELEFONO' => 5, 'PACIENTE_CALLE' => 6, 'PACIENTE_NUMERO' => 7, 'PACIENTE_COLONIA' => 8, 'PACIENTE_CODIGOPOSTAL' => 9, 'PACIENTE_CIUDAD' => 10, 'PACIENTE_ESTADO' => 11, 'PACIENTE_SEXO' => 12, 'PACIENTE_FECHANACIMIENTO' => 13, 'PACIENTE_FECHAREGISTRO' => 14, ),
+        BasePeer::TYPE_FIELDNAME => array ('idpaciente' => 0, 'idclinica' => 1, 'idempleado' => 2, 'paciente_nombre' => 3, 'paciente_celular' => 4, 'paciente_telefono' => 5, 'paciente_calle' => 6, 'paciente_numero' => 7, 'paciente_colonia' => 8, 'paciente_codigopostal' => 9, 'paciente_ciudad' => 10, 'paciente_estado' => 11, 'paciente_sexo' => 12, 'paciente_fechanacimiento' => 13, 'paciente_fecharegistro' => 14, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
     );
 
     /** The enumerated values for this table */
@@ -258,6 +261,7 @@ abstract class BasePacientePeer
             $criteria->addSelectColumn(PacientePeer::PACIENTE_ESTADO);
             $criteria->addSelectColumn(PacientePeer::PACIENTE_SEXO);
             $criteria->addSelectColumn(PacientePeer::PACIENTE_FECHANACIMIENTO);
+            $criteria->addSelectColumn(PacientePeer::PACIENTE_FECHAREGISTRO);
         } else {
             $criteria->addSelectColumn($alias . '.idpaciente');
             $criteria->addSelectColumn($alias . '.idclinica');
@@ -273,6 +277,7 @@ abstract class BasePacientePeer
             $criteria->addSelectColumn($alias . '.paciente_estado');
             $criteria->addSelectColumn($alias . '.paciente_sexo');
             $criteria->addSelectColumn($alias . '.paciente_fechanacimiento');
+            $criteria->addSelectColumn($alias . '.paciente_fecharegistro');
         }
     }
 
@@ -590,6 +595,57 @@ abstract class BasePacientePeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related Clinica table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinClinica(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PacientePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PacientePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PacientePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PacientePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PacientePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining the related Empleado table
      *
      * @param      Criteria $criteria
@@ -637,6 +693,73 @@ abstract class BasePacientePeer
         $stmt->closeCursor();
 
         return $count;
+    }
+
+
+    /**
+     * Selects a collection of Paciente objects pre-filled with their Clinica objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Paciente objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinClinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PacientePeer::DATABASE_NAME);
+        }
+
+        PacientePeer::addSelectColumns($criteria);
+        $startcol = PacientePeer::NUM_HYDRATE_COLUMNS;
+        ClinicaPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PacientePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PacientePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PacientePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PacientePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PacientePeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Paciente) to $obj2 (Clinica)
+                $obj2->addPaciente($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
 
@@ -743,6 +866,8 @@ abstract class BasePacientePeer
             $con = Propel::getConnection(PacientePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
+        $criteria->addJoin(PacientePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
         $criteria->addJoin(PacientePeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -779,8 +904,13 @@ abstract class BasePacientePeer
         PacientePeer::addSelectColumns($criteria);
         $startcol2 = PacientePeer::NUM_HYDRATE_COLUMNS;
 
+        ClinicaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
+
         EmpleadoPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PacientePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
         $criteria->addJoin(PacientePeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
@@ -801,23 +931,291 @@ abstract class BasePacientePeer
                 PacientePeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-            // Add objects for joined Empleado rows
+            // Add objects for joined Clinica rows
 
-            $key2 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
             if ($key2 !== null) {
-                $obj2 = EmpleadoPeer::getInstanceFromPool($key2);
+                $obj2 = ClinicaPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
+                    $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (Paciente) to the collection in $obj2 (Clinica)
+                $obj2->addPaciente($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Empleado rows
+
+            $key3 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = EmpleadoPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
                     $cls = EmpleadoPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    EmpleadoPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (Paciente) to the collection in $obj3 (Empleado)
+                $obj3->addPaciente($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Clinica table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptClinica(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PacientePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PacientePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PacientePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PacientePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PacientePeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Empleado table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptEmpleado(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PacientePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PacientePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PacientePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PacientePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PacientePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Paciente objects pre-filled with all related objects except Clinica.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Paciente objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptClinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PacientePeer::DATABASE_NAME);
+        }
+
+        PacientePeer::addSelectColumns($criteria);
+        $startcol2 = PacientePeer::NUM_HYDRATE_COLUMNS;
+
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PacientePeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PacientePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PacientePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PacientePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PacientePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Empleado rows
+
+                $key2 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = EmpleadoPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = EmpleadoPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
                     EmpleadoPeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 loaded
+                } // if $obj2 already loaded
 
                 // Add the $obj1 (Paciente) to the collection in $obj2 (Empleado)
                 $obj2->addPaciente($obj1);
-            } // if joined row not null
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Paciente objects pre-filled with all related objects except Empleado.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Paciente objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptEmpleado(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PacientePeer::DATABASE_NAME);
+        }
+
+        PacientePeer::addSelectColumns($criteria);
+        $startcol2 = PacientePeer::NUM_HYDRATE_COLUMNS;
+
+        ClinicaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PacientePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PacientePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PacientePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PacientePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PacientePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Clinica rows
+
+                $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Paciente) to the collection in $obj2 (Clinica)
+                $obj2->addPaciente($obj1);
+
+            } // if joined row is not null
 
             $results[] = $obj1;
         }

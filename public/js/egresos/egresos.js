@@ -215,8 +215,8 @@
             });
             
             $container.find("select[name=concepto_filter]").multipleSelect({
-                allSelected:'Todas las clinicas',
-                selectAllText:'Todas las clinicas',
+                allSelected:'Todos los conceptos',
+                selectAllText:'Todos los conceptos',
                 onClick : filter,
                 onCheckAll:filter,
                 onUncheckAll:filter,

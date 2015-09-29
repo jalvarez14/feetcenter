@@ -36,7 +36,7 @@ class ConceptoincidenciaTableMap extends TableMap
         $this->setPhpName('Conceptoincidencia');
         $this->setClassname('Conceptoincidencia');
         $this->setPackage('feetcenter');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idconceptoincidencia', 'Idconceptoincidencia', 'INTEGER', true, null, null);
         $this->addColumn('conceptoincidencia_nombre', 'ConceptoincidenciaNombre', 'VARCHAR', true, 255, null);

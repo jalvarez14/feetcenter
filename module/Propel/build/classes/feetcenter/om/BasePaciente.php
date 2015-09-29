@@ -114,6 +114,17 @@ abstract class BasePaciente extends BaseObject implements Persistent
     protected $paciente_fechanacimiento;
 
     /**
+     * The value for the paciente_fecharegistro field.
+     * @var        string
+     */
+    protected $paciente_fecharegistro;
+
+    /**
+     * @var        Clinica
+     */
+    protected $aClinica;
+
+    /**
      * @var        Empleado
      */
     protected $aEmpleado;
@@ -382,6 +393,46 @@ abstract class BasePaciente extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [optionally formatted] temporal [paciente_fecharegistro] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getPacienteFecharegistro($format = '%x')
+    {
+        if ($this->paciente_fecharegistro === null) {
+            return null;
+        }
+
+        if ($this->paciente_fecharegistro === '0000-00-00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->paciente_fecharegistro);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->paciente_fecharegistro, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
      * Set the value of [idpaciente] column.
      *
      * @param  int $v new value
@@ -417,6 +468,10 @@ abstract class BasePaciente extends BaseObject implements Persistent
         if ($this->idclinica !== $v) {
             $this->idclinica = $v;
             $this->modifiedColumns[] = PacientePeer::IDCLINICA;
+        }
+
+        if ($this->aClinica !== null && $this->aClinica->getIdclinica() !== $v) {
+            $this->aClinica = null;
         }
 
 
@@ -682,6 +737,29 @@ abstract class BasePaciente extends BaseObject implements Persistent
     } // setPacienteFechanacimiento()
 
     /**
+     * Sets the value of [paciente_fecharegistro] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function setPacienteFecharegistro($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->paciente_fecharegistro !== null || $dt !== null) {
+            $currentDateAsString = ($this->paciente_fecharegistro !== null && $tmpDt = new DateTime($this->paciente_fecharegistro)) ? $tmpDt->format('Y-m-d') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->paciente_fecharegistro = $newDateAsString;
+                $this->modifiedColumns[] = PacientePeer::PACIENTE_FECHAREGISTRO;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setPacienteFecharegistro()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -727,6 +805,7 @@ abstract class BasePaciente extends BaseObject implements Persistent
             $this->paciente_estado = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->paciente_sexo = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->paciente_fechanacimiento = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->paciente_fecharegistro = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -736,7 +815,7 @@ abstract class BasePaciente extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 14; // 14 = PacientePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 15; // 15 = PacientePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Paciente object", $e);
@@ -759,6 +838,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aClinica !== null && $this->idclinica !== $this->aClinica->getIdclinica()) {
+            $this->aClinica = null;
+        }
         if ($this->aEmpleado !== null && $this->idempleado !== $this->aEmpleado->getIdempleado()) {
             $this->aEmpleado = null;
         }
@@ -801,6 +883,7 @@ abstract class BasePaciente extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aClinica = null;
             $this->aEmpleado = null;
             $this->collGrupopacientes = null;
 
@@ -929,6 +1012,13 @@ abstract class BasePaciente extends BaseObject implements Persistent
             // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
+
+            if ($this->aClinica !== null) {
+                if ($this->aClinica->isModified() || $this->aClinica->isNew()) {
+                    $affectedRows += $this->aClinica->save($con);
+                }
+                $this->setClinica($this->aClinica);
+            }
 
             if ($this->aEmpleado !== null) {
                 if ($this->aEmpleado->isModified() || $this->aEmpleado->isNew()) {
@@ -1101,6 +1191,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
         if ($this->isColumnModified(PacientePeer::PACIENTE_FECHANACIMIENTO)) {
             $modifiedColumns[':p' . $index++]  = '`paciente_fechanacimiento`';
         }
+        if ($this->isColumnModified(PacientePeer::PACIENTE_FECHAREGISTRO)) {
+            $modifiedColumns[':p' . $index++]  = '`paciente_fecharegistro`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `paciente` (%s) VALUES (%s)',
@@ -1153,6 +1246,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
                         break;
                     case '`paciente_fechanacimiento`':
                         $stmt->bindValue($identifier, $this->paciente_fechanacimiento, PDO::PARAM_STR);
+                        break;
+                    case '`paciente_fecharegistro`':
+                        $stmt->bindValue($identifier, $this->paciente_fecharegistro, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1252,6 +1348,12 @@ abstract class BasePaciente extends BaseObject implements Persistent
             // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
+
+            if ($this->aClinica !== null) {
+                if (!$this->aClinica->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aClinica->getValidationFailures());
+                }
+            }
 
             if ($this->aEmpleado !== null) {
                 if (!$this->aEmpleado->validate($columns)) {
@@ -1382,6 +1484,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
             case 13:
                 return $this->getPacienteFechanacimiento();
                 break;
+            case 14:
+                return $this->getPacienteFecharegistro();
+                break;
             default:
                 return null;
                 break;
@@ -1425,6 +1530,7 @@ abstract class BasePaciente extends BaseObject implements Persistent
             $keys[11] => $this->getPacienteEstado(),
             $keys[12] => $this->getPacienteSexo(),
             $keys[13] => $this->getPacienteFechanacimiento(),
+            $keys[14] => $this->getPacienteFecharegistro(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1432,6 +1538,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aClinica) {
+                $result['Clinica'] = $this->aClinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aEmpleado) {
                 $result['Empleado'] = $this->aEmpleado->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1526,6 +1635,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
             case 13:
                 $this->setPacienteFechanacimiento($value);
                 break;
+            case 14:
+                $this->setPacienteFecharegistro($value);
+                break;
         } // switch()
     }
 
@@ -1564,6 +1676,7 @@ abstract class BasePaciente extends BaseObject implements Persistent
         if (array_key_exists($keys[11], $arr)) $this->setPacienteEstado($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setPacienteSexo($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setPacienteFechanacimiento($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setPacienteFecharegistro($arr[$keys[14]]);
     }
 
     /**
@@ -1589,6 +1702,7 @@ abstract class BasePaciente extends BaseObject implements Persistent
         if ($this->isColumnModified(PacientePeer::PACIENTE_ESTADO)) $criteria->add(PacientePeer::PACIENTE_ESTADO, $this->paciente_estado);
         if ($this->isColumnModified(PacientePeer::PACIENTE_SEXO)) $criteria->add(PacientePeer::PACIENTE_SEXO, $this->paciente_sexo);
         if ($this->isColumnModified(PacientePeer::PACIENTE_FECHANACIMIENTO)) $criteria->add(PacientePeer::PACIENTE_FECHANACIMIENTO, $this->paciente_fechanacimiento);
+        if ($this->isColumnModified(PacientePeer::PACIENTE_FECHAREGISTRO)) $criteria->add(PacientePeer::PACIENTE_FECHAREGISTRO, $this->paciente_fecharegistro);
 
         return $criteria;
     }
@@ -1665,6 +1779,7 @@ abstract class BasePaciente extends BaseObject implements Persistent
         $copyObj->setPacienteEstado($this->getPacienteEstado());
         $copyObj->setPacienteSexo($this->getPacienteSexo());
         $copyObj->setPacienteFechanacimiento($this->getPacienteFechanacimiento());
+        $copyObj->setPacienteFecharegistro($this->getPacienteFecharegistro());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1751,6 +1866,58 @@ abstract class BasePaciente extends BaseObject implements Persistent
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a Clinica object.
+     *
+     * @param                  Clinica $v
+     * @return Paciente The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setClinica(Clinica $v = null)
+    {
+        if ($v === null) {
+            $this->setIdclinica(NULL);
+        } else {
+            $this->setIdclinica($v->getIdclinica());
+        }
+
+        $this->aClinica = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Clinica object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPaciente($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Clinica object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Clinica The associated Clinica object.
+     * @throws PropelException
+     */
+    public function getClinica(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aClinica === null && ($this->idclinica !== null) && $doQuery) {
+            $this->aClinica = ClinicaQuery::create()->findPk($this->idclinica, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aClinica->addPacientes($this);
+             */
+        }
+
+        return $this->aClinica;
     }
 
     /**
@@ -3127,6 +3294,7 @@ abstract class BasePaciente extends BaseObject implements Persistent
         $this->paciente_estado = null;
         $this->paciente_sexo = null;
         $this->paciente_fechanacimiento = null;
+        $this->paciente_fecharegistro = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -3174,6 +3342,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->aClinica instanceof Persistent) {
+              $this->aClinica->clearAllReferences($deep);
+            }
             if ($this->aEmpleado instanceof Persistent) {
               $this->aEmpleado->clearAllReferences($deep);
             }
@@ -3201,6 +3372,7 @@ abstract class BasePaciente extends BaseObject implements Persistent
             $this->collVisitas->clearIterator();
         }
         $this->collVisitas = null;
+        $this->aClinica = null;
         $this->aEmpleado = null;
     }
 

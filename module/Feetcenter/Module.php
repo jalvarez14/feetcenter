@@ -110,6 +110,7 @@ class Module
                     'Inventario' => __DIR__ . '/src/'  .'Inventario',
                     'Egresos' => __DIR__ . '/src/'  .'Egresos',
                     'Empleados' => __DIR__ . '/src/'  .'Empleados',
+                    'Pacientes' => __DIR__ . '/src/'  .'Pacientes',
                 ),
             ),
         );

@@ -1,0 +1,65 @@
+<div id="grupo_container">
+    <h1>Nuevo grupo</h1>
+    <?php 
+        $form->setAttribute('action', '/pacientes/grupos/nuevo');
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('grupo_nombre')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Descripción
+                <?php echo $this->formTextarea($form->get('grupo_descripcion')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Pacientes</legend>
+                <div class="units-row">
+                    <div class="unit-80">
+                      Nombre
+                      <input class="width-100"type="text" name="paciente_autocomplete">  
+                    </div>
+                    <div class="unit-20" style="margin-top: 4px;">
+                        <a data-action="addPaciente" class="btn btn-blue" style="height: 30px; margin-top: 20px; width: 100%;">Agregar</a>
+                    </div>
+                </div>
+                <table id="tabla_pacientes">
+                    <thead>
+                        <tr>
+                            <th>Clínica</th>
+                            <th>Nombre</th>
+                            <th>Celular</th>
+                            <th>Teléfono</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script src="/js/pacientes/grupos.js"></script>
+<script>
+    var grupoFrom = $('#grupo_container').grupos();
+    grupoFrom.form();
+</script>

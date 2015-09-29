@@ -1,0 +1,82 @@
+<h1>Grupos<a style="float: right; text-decoration: none"href="/pacientes/grupos/nuevo">Nuevo</a></h1>
+<?php if(count($successMessages)) :?>
+    <div class="units-row">
+        <?php foreach ($successMessages as $message) :?>
+            <div class="unit-100">    
+                <div class="tools-alert tools-alert-green">
+                    <?php echo $message?>
+                </div> 
+            </div>
+        <?php endforeach;?>
+    </div>
+<?php endif;?>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Fecha de registro</th>
+            <th>Miembros</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($collection as $entity) : ?>
+            <tr id="<?php echo $entity['idgrupo']?>">
+                <td><?php echo $entity['grupo_nombre']?></td>
+                <td><?php echo $entity['grupo_descripcion']?></td>
+                <td><?php echo $entity['grupo_creadoen']?></td>
+                <td><?php echo $entity['count']?></td>
+                <td class="tr_options"><a href="<?php echo '/pacientes/grupos/editar/'.$entity['idgrupo']?>">Editar</a><a class="delete-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Advertencia</h2>" data-content="/pacientes/grupos/eliminar?html=true" >Eliminar</a></td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>
+<script>
+$(function()
+{
+    $.ajax({
+        url: '/json/lang_es_datatable.json',
+        dataType: 'json',
+        success: function(data){
+            var table = $('table').DataTable({
+                language:data,
+            });
+            table.on( 'draw', function () {
+                $('[data-tools="modal"]').modal();
+            });
+        }
+    });
+    
+    $('.delete-modal').on('loading.tools.modal', function(modal)
+    {
+        var $modalHeader = this.$modalHeader;
+        $modalHeader.addClass('modal_header_warning');
+        var id = this.$element.closest('tr').attr('id');
+        var $modal = this ;
+        
+        this.createCancelButton('Cancelar');
+
+        var buttonDelete = this.createDeleteButton('Eliminar');
+
+        buttonDelete.on('click', $.proxy(function()
+        {
+            //Hacemos la peticion ajax
+            $.ajax({
+                url:'/pacientes/grupos/eliminar/'+id,
+                dataType: 'json',
+                method:'POST',
+                success: function(data){
+                    if(data.response){
+                        $modal.close();
+                        window.location.replace('grupos');
+                    }
+                }
+            });
+
+            
+        }, this));
+
+    });
+});
+</script>
