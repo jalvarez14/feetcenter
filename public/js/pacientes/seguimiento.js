@@ -65,7 +65,6 @@
                   if(data.result.length > 0){
                       //Agregamos los nuevos registros
                         $.each(data.result,function(){
-                            if(settings.idrol != 3){
                                 var rowNode = $table.row.add([
                                     this.clinica_nombre,
                                     this.paciente_fecharegistro,
@@ -74,15 +73,6 @@
                                     this.empleado_nombre,
                                     '<td class="tr_options"><a href="/pacientes/seguimiento/ver/'+this.idpaciente+'">Ver segumiento</a></td>'
                                 ]).draw().node();
-                            }else{
-                                var rowNode = $table.row.add([
-                                    this.clinica_nombre,
-                                    this.paciente_fecharegistro,
-                                    this.paciente_nombre,
-                                    this.paciente_celular,
-                                    this.empleado_nombre,
-                                ]).draw().node();
-                            }
                             $(rowNode).attr('id',this.idpaciente);
                         });
                   }
@@ -99,10 +89,7 @@
         plugin.init = function(){
             
             settings = plugin.settings = $.extend({}, defaults, options);
-            if(settings.idrol == 3){
-                container.find('thead tr th').last().remove();
-            }
-            
+
             $.ajax({
                 url: '/json/lang_es_datatable.json',
                 dataType: 'json',

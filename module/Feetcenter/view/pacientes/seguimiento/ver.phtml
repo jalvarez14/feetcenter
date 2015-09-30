@@ -25,7 +25,7 @@
         <?php $seguimiento = new Pacienteseguimiento();?>
         <?php foreach($seguimientos as $seguimiento) : ?>
             <tr id="<?php echo $seguimiento->getIdpacienteseguimiento()?>">
-                <td><?php echo $seguimiento->getPaciente()->getClinica()->getClinicaNombre()?></td>
+                <td><?php echo $seguimiento->getClinica()->getClinicaNombre()?></td>
                 <td><?php echo $seguimiento->getPacienteseguimientoFecha('d/m/Y')?></td>
                 <td><?php echo $seguimiento->getEmpleado()->getEmpleadoNombre()?></td>
                 <td><?php echo $seguimiento->getCanalcomunicacion()->getCanalcomunicacionNombre()?></td>
@@ -38,6 +38,14 @@
 <script>
 $(function()
 {
+    
+    var idrol = <?php echo $idrol?>;
+    
+    if(idrol == 3){
+       $('thead tr th').last().remove();
+       $('td.tr_options').remove();
+    }
+    
     $.ajax({
         url: '/json/lang_es_datatable.json',
         dataType: 'json',

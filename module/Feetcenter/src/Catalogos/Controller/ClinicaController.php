@@ -334,6 +334,7 @@ class ClinicaController extends AbstractActionController
                     $clinica_encargados->delete();
                     
                     if(isset($post_data['clinica_encargado']) && !empty($post_data['clinica_encargado'])){
+                       
                         //Por cada encargado, los vamos a registrar tanto en encargado como en empleado, pero son su rol correspondiente
                         if(is_array($post_data['clinica_encargado'])){
                             foreach ($post_data['clinica_encargado'] as $encargado){
@@ -352,12 +353,14 @@ class ClinicaController extends AbstractActionController
                             //Lo agregamos como encargado
                             $encargado_clinica = new \Encargadoclinica();
                             $encargado_clinica->setIdclinica($entity->getIdclinica());
-                            $encargado_clinica->setIdempleado($encargado);
+                            $encargado_clinica->setIdempleado($post_data['clinica_encargado']);
+                            
                             $encargado_clinica->save();
+                             
                             //Lo agregamos como empleado
                             $encargado_empleado = new \Clinicaempleado();
                             $encargado_empleado->setIdclinica($entity->getIdclinica());
-                            $encargado_empleado->setIdempleado($encargado);
+                            $encargado_empleado->setIdempleado($post_data['clinica_encargado']);
                             $encargado_empleado->save();
                         }
                     }

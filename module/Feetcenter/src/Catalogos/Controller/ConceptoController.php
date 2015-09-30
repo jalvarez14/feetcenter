@@ -16,6 +16,7 @@ class ConceptoController extends AbstractActionController
 {
     public function indexAction()
     {
+
         $collection = \ConceptoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
 
         

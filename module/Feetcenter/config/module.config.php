@@ -58,7 +58,6 @@ return array(
                                 'action'        => 'index',
                             ),
                         ),
-                        
                     ),
                     'insumo' => array(
                         'type' => 'Segment',

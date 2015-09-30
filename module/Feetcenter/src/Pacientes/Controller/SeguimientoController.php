@@ -23,8 +23,11 @@ class SeguimientoController extends AbstractActionController
         $paciente = \PacienteQuery::create()->findPk($id);
         
         $seguimientos = $paciente->getPacienteseguimientos();
+       
+        $idrol = \Shared\Session\AouthSession::getIdrol();
         
         return new ViewModel(array(
+            'idrol' => $idrol,
             'paciente' => $paciente,
             'seguimientos' => $seguimientos,
             'successMessages' => $this->flashMessenger()->getSuccessMessages(),
@@ -229,7 +232,7 @@ class SeguimientoController extends AbstractActionController
         }elseif($sesion->getIdrol() == 3){//PEDICURISTA (PENDIENTE)
              $clinicas = \ClinicaQuery::create()->find();
              $idclinica = $sesion->getIdClinica();
-            
+             
         }
 
         return new ViewModel(array(

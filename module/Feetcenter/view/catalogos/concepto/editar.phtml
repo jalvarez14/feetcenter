@@ -1,7 +1,7 @@
 <div id="clinica_container">
     <h1>Concepto: <?php echo $form->get('concepto_nombre')->getValue()?></h1></h1> 
     <?php 
-        $form->setAttribute('action', '/catalogos/concepto/nuevo');
+        $form->setAttribute('action', '/catalogos/concepto/editar/'.$id);
         $form->setAttribute('novalidate', true);
         $form->setAttribute('class', 'forms');
         $form->prepare();
