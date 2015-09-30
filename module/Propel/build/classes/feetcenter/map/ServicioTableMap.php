@@ -57,7 +57,6 @@ class ServicioTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Servicioclinica', 'Servicioclinica', RelationMap::ONE_TO_MANY, array('idservicio' => 'idservicio', ), 'CASCADE', 'CASCADE', 'Servicioclinicas');
         $this->addRelation('Servicioinsumo', 'Servicioinsumo', RelationMap::ONE_TO_MANY, array('idservicio' => 'idservicio', ), 'CASCADE', 'CASCADE', 'Servicioinsumos');
     } // buildRelations()
 

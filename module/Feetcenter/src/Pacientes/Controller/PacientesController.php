@@ -206,8 +206,7 @@ class PacientesController extends AbstractActionController
             'idclinica' => $idclinica,    
             'successMessages' => $this->flashMessenger()->getSuccessMessages(),
         ));
-        
-        return new ViewModel();
+
     }
     
     public function nuevoAction()
@@ -227,7 +226,7 @@ class PacientesController extends AbstractActionController
             }
             
             $entity = new \Paciente();
-            
+           
             foreach($post_data as $key => $value){
                 if(\PacientePeer::getTableMap()->hasColumn($key) && $key!='paciente_fechanacimiento'){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);

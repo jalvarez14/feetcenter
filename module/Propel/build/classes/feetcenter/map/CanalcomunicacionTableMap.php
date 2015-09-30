@@ -49,6 +49,7 @@ class CanalcomunicacionTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Pacienteseguimiento', 'Pacienteseguimiento', RelationMap::ONE_TO_MANY, array('idcanalcomunicacion' => 'idcanalcomunicacion', ), 'CASCADE', 'CASCADE', 'Pacienteseguimientos');
     } // buildRelations()
 
 } // CanalcomunicacionTableMap

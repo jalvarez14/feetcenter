@@ -23,6 +23,7 @@
  * @method EmpleadoQuery orderByEmpleadoComprobantedomiclio($order = Criteria::ASC) Order by the empleado_comprobantedomiclio column
  * @method EmpleadoQuery orderByEmpleadoComprobanteidentificacion($order = Criteria::ASC) Order by the empleado_comprobanteidentificacion column
  * @method EmpleadoQuery orderByEmpleadoSueldo($order = Criteria::ASC) Order by the empleado_sueldo column
+ * @method EmpleadoQuery orderByEmpleadoDiadescanso($order = Criteria::ASC) Order by the empleado_diadescanso column
  * @method EmpleadoQuery orderByEmpleadoFoto($order = Criteria::ASC) Order by the empleado_foto column
  * @method EmpleadoQuery orderByEmpleadoTipocomisionproducto($order = Criteria::ASC) Order by the empleado_tipocomisionproducto column
  * @method EmpleadoQuery orderByEmpleadoCantidadcomisionproducto($order = Criteria::ASC) Order by the empleado_cantidadcomisionproducto column
@@ -46,6 +47,7 @@
  * @method EmpleadoQuery groupByEmpleadoComprobantedomiclio() Group by the empleado_comprobantedomiclio column
  * @method EmpleadoQuery groupByEmpleadoComprobanteidentificacion() Group by the empleado_comprobanteidentificacion column
  * @method EmpleadoQuery groupByEmpleadoSueldo() Group by the empleado_sueldo column
+ * @method EmpleadoQuery groupByEmpleadoDiadescanso() Group by the empleado_diadescanso column
  * @method EmpleadoQuery groupByEmpleadoFoto() Group by the empleado_foto column
  * @method EmpleadoQuery groupByEmpleadoTipocomisionproducto() Group by the empleado_tipocomisionproducto column
  * @method EmpleadoQuery groupByEmpleadoCantidadcomisionproducto() Group by the empleado_cantidadcomisionproducto column
@@ -147,6 +149,7 @@
  * @method Empleado findOneByEmpleadoComprobantedomiclio(string $empleado_comprobantedomiclio) Return the first Empleado filtered by the empleado_comprobantedomiclio column
  * @method Empleado findOneByEmpleadoComprobanteidentificacion(string $empleado_comprobanteidentificacion) Return the first Empleado filtered by the empleado_comprobanteidentificacion column
  * @method Empleado findOneByEmpleadoSueldo(string $empleado_sueldo) Return the first Empleado filtered by the empleado_sueldo column
+ * @method Empleado findOneByEmpleadoDiadescanso(string $empleado_diadescanso) Return the first Empleado filtered by the empleado_diadescanso column
  * @method Empleado findOneByEmpleadoFoto(string $empleado_foto) Return the first Empleado filtered by the empleado_foto column
  * @method Empleado findOneByEmpleadoTipocomisionproducto(string $empleado_tipocomisionproducto) Return the first Empleado filtered by the empleado_tipocomisionproducto column
  * @method Empleado findOneByEmpleadoCantidadcomisionproducto(string $empleado_cantidadcomisionproducto) Return the first Empleado filtered by the empleado_cantidadcomisionproducto column
@@ -170,6 +173,7 @@
  * @method array findByEmpleadoComprobantedomiclio(string $empleado_comprobantedomiclio) Return Empleado objects filtered by the empleado_comprobantedomiclio column
  * @method array findByEmpleadoComprobanteidentificacion(string $empleado_comprobanteidentificacion) Return Empleado objects filtered by the empleado_comprobanteidentificacion column
  * @method array findByEmpleadoSueldo(string $empleado_sueldo) Return Empleado objects filtered by the empleado_sueldo column
+ * @method array findByEmpleadoDiadescanso(string $empleado_diadescanso) Return Empleado objects filtered by the empleado_diadescanso column
  * @method array findByEmpleadoFoto(string $empleado_foto) Return Empleado objects filtered by the empleado_foto column
  * @method array findByEmpleadoTipocomisionproducto(string $empleado_tipocomisionproducto) Return Empleado objects filtered by the empleado_tipocomisionproducto column
  * @method array findByEmpleadoCantidadcomisionproducto(string $empleado_cantidadcomisionproducto) Return Empleado objects filtered by the empleado_cantidadcomisionproducto column
@@ -282,7 +286,7 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idempleado`, `empleado_registradoen`, `empleado_nombre`, `empleado_nss`, `empleado_rfc`, `empleado_calle`, `empleado_numero`, `empleado_colonia`, `empleado_codigopostal`, `empleado_ciudad`, `empleado_sexo`, `empleado_fechanacimiento`, `empleado_telefono`, `empleado_celular`, `empleado_comprobantedomiclio`, `empleado_comprobanteidentificacion`, `empleado_sueldo`, `empleado_foto`, `empleado_tipocomisionproducto`, `empleado_cantidadcomisionproducto`, `empleado_tipocomisionservicio`, `empleado_cantidadcomisionservicio` FROM `empleado` WHERE `idempleado` = :p0';
+        $sql = 'SELECT `idempleado`, `empleado_registradoen`, `empleado_nombre`, `empleado_nss`, `empleado_rfc`, `empleado_calle`, `empleado_numero`, `empleado_colonia`, `empleado_codigopostal`, `empleado_ciudad`, `empleado_sexo`, `empleado_fechanacimiento`, `empleado_telefono`, `empleado_celular`, `empleado_comprobantedomiclio`, `empleado_comprobanteidentificacion`, `empleado_sueldo`, `empleado_diadescanso`, `empleado_foto`, `empleado_tipocomisionproducto`, `empleado_cantidadcomisionproducto`, `empleado_tipocomisionservicio`, `empleado_cantidadcomisionservicio` FROM `empleado` WHERE `idempleado` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -916,6 +920,35 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EmpleadoPeer::EMPLEADO_SUELDO, $empleadoSueldo, $comparison);
+    }
+
+    /**
+     * Filter the query on the empleado_diadescanso column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmpleadoDiadescanso('fooValue');   // WHERE empleado_diadescanso = 'fooValue'
+     * $query->filterByEmpleadoDiadescanso('%fooValue%'); // WHERE empleado_diadescanso LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $empleadoDiadescanso The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function filterByEmpleadoDiadescanso($empleadoDiadescanso = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($empleadoDiadescanso)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $empleadoDiadescanso)) {
+                $empleadoDiadescanso = str_replace('*', '%', $empleadoDiadescanso);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(EmpleadoPeer::EMPLEADO_DIADESCANSO, $empleadoDiadescanso, $comparison);
     }
 
     /**

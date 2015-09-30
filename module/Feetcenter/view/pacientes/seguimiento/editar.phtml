@@ -1,0 +1,57 @@
+<div id="clinica_container">
+    <h1>Seguimiento #<?php echo $id ?>(<?php echo $paciente->getPacienteNombre()?>)</h1>
+    <?php 
+        $form->setAttribute('action', '/pacientes/seguimiento/'.$paciente->getIdpaciente().'/editar/'.$id);
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        
+        <div class="unit-50">
+            <label>
+                Fecha <span class="req">*</span>
+                <?php echo $this->formHidden($form->get('idpaciente')); ?>
+                <?php echo $this->formText($form->get('pacienteseguimiento_fecha')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Canal de comunicación <span class="req">*</span>
+                <?php echo $this->formSelect($form->get('idcanalcomunicacion')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Comentario <span class="req">*</span>
+                <?php echo $this->formTextarea($form->get('pacienteseguimiento_comentario')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script>
+    
+    $('input[name=pacienteseguimiento_fecha]').pickadate({
+        monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+        monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+        weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+        weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+        today: 'hoy',
+        clear: 'borrar',
+        close: 'cerrar',
+        firstDay: 1,
+        format: 'd !de mmmm !de yyyy',
+        formatSubmit: 'yyyy/mm/dd',
+        selectYears: true,
+        selectMonths: true,
+        selectYears: 25,
+    });
+            
+
+</script>

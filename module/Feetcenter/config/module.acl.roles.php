@@ -42,6 +42,11 @@ return array(
             'pacientes/editar',
             'pacientes/eliminar',
             'grupos',
+            'seguimiento',
+            'seguimiento/ver',
+            'seguimiento/nuevo',
+            'seguimiento/editar',
+            'seguimiento/eliminar',
         ),
         "deny"=>array(
              
@@ -75,6 +80,11 @@ return array(
             'pacientes/editar',
             'pacientes/eliminar',
             'grupos',
+            'seguimiento',
+            'seguimiento/ver',
+            'seguimiento/nuevo',
+            'seguimiento/editar',
+            'seguimiento/eliminar',
         ),
         "deny"=>array(
             //Inventarios
@@ -106,6 +116,8 @@ return array(
             //pacientes
             'pacientes',
             'pacientes/filter',
+            'seguimiento',
+            'seguimiento/ver',
             
         ),
         "deny"=>array(
@@ -140,6 +152,9 @@ return array(
             'pacientes/editar',
             'pacientes/eliminar',
             'grupos',
+            'seguimiento/nuevo',
+            'seguimiento/editar',
+            'seguimiento/eliminar',
             
         ),
     ),

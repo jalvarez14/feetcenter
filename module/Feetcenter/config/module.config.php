@@ -389,6 +389,59 @@ return array(
                     ),
                 ),
             ),
+            'seguimiento' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/pacientes/seguimiento',
+                    'defaults' => array(
+                        'controller' => 'Pacientes\Controller\Seguimiento',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'ver' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/ver/:id',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Seguimiento',
+                               'action'        => 'ver',
+                           ),
+                       ),
+                   ),
+                    'nuevo' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/:id/nuevo',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Seguimiento',
+                               'action'        => 'nuevo',
+                           ),
+                       ),
+                   ),
+                    'editar' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/:idpaciente/editar/:id',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Seguimiento',
+                               'action'        => 'editar',
+                           ),
+                       ),
+                   ),
+                    'eliminar' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/:idpaciente/eliminar/:id',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Seguimiento',
+                               'action'        => 'eliminar',
+                           ),
+                       ),
+                   ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -443,6 +496,7 @@ return array(
             //Pacientes
             'Pacientes\Controller\Pacientes' => 'Pacientes\Controller\PacientesController',
             'Pacientes\Controller\Grupos' => 'Pacientes\Controller\GruposController',
+            'Pacientes\Controller\Seguimiento' => 'Pacientes\Controller\SeguimientoController',
         ),
     ),
     'view_manager' => array(

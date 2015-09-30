@@ -78,6 +78,11 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
     protected $pacienteseguimiento_fecha;
 
     /**
+     * @var        Canalcomunicacion
+     */
+    protected $aCanalcomunicacion;
+
+    /**
      * @var        Clinica
      */
     protected $aClinica;
@@ -371,6 +376,10 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
             $this->modifiedColumns[] = PacienteseguimientoPeer::IDCANALCOMUNICACION;
         }
 
+        if ($this->aCanalcomunicacion !== null && $this->aCanalcomunicacion->getIdcanalcomunicacion() !== $v) {
+            $this->aCanalcomunicacion = null;
+        }
+
 
         return $this;
     } // setIdcanalcomunicacion()
@@ -523,6 +532,9 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
         if ($this->aEmpleado !== null && $this->idempleado !== $this->aEmpleado->getIdempleado()) {
             $this->aEmpleado = null;
         }
+        if ($this->aCanalcomunicacion !== null && $this->idcanalcomunicacion !== $this->aCanalcomunicacion->getIdcanalcomunicacion()) {
+            $this->aCanalcomunicacion = null;
+        }
     } // ensureConsistency
 
     /**
@@ -562,6 +574,7 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aCanalcomunicacion = null;
             $this->aClinica = null;
             $this->aEmpleado = null;
             $this->aPaciente = null;
@@ -682,6 +695,13 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
             // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
+
+            if ($this->aCanalcomunicacion !== null) {
+                if ($this->aCanalcomunicacion->isModified() || $this->aCanalcomunicacion->isNew()) {
+                    $affectedRows += $this->aCanalcomunicacion->save($con);
+                }
+                $this->setCanalcomunicacion($this->aCanalcomunicacion);
+            }
 
             if ($this->aClinica !== null) {
                 if ($this->aClinica->isModified() || $this->aClinica->isNew()) {
@@ -899,6 +919,12 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aCanalcomunicacion !== null) {
+                if (!$this->aCanalcomunicacion->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aCanalcomunicacion->getValidationFailures());
+                }
+            }
+
             if ($this->aClinica !== null) {
                 if (!$this->aClinica->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aClinica->getValidationFailures());
@@ -1026,6 +1052,9 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aCanalcomunicacion) {
+                $result['Canalcomunicacion'] = $this->aCanalcomunicacion->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aClinica) {
                 $result['Clinica'] = $this->aClinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1273,6 +1302,58 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a Canalcomunicacion object.
+     *
+     * @param                  Canalcomunicacion $v
+     * @return Pacienteseguimiento The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setCanalcomunicacion(Canalcomunicacion $v = null)
+    {
+        if ($v === null) {
+            $this->setIdcanalcomunicacion(NULL);
+        } else {
+            $this->setIdcanalcomunicacion($v->getIdcanalcomunicacion());
+        }
+
+        $this->aCanalcomunicacion = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Canalcomunicacion object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPacienteseguimiento($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Canalcomunicacion object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Canalcomunicacion The associated Canalcomunicacion object.
+     * @throws PropelException
+     */
+    public function getCanalcomunicacion(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aCanalcomunicacion === null && ($this->idcanalcomunicacion !== null) && $doQuery) {
+            $this->aCanalcomunicacion = CanalcomunicacionQuery::create()->findPk($this->idcanalcomunicacion, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aCanalcomunicacion->addPacienteseguimientos($this);
+             */
+        }
+
+        return $this->aCanalcomunicacion;
+    }
+
+    /**
      * Declares an association between this object and a Clinica object.
      *
      * @param                  Clinica $v
@@ -1463,6 +1544,9 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aCanalcomunicacion instanceof Persistent) {
+              $this->aCanalcomunicacion->clearAllReferences($deep);
+            }
             if ($this->aClinica instanceof Persistent) {
               $this->aClinica->clearAllReferences($deep);
             }
@@ -1476,6 +1560,7 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aCanalcomunicacion = null;
         $this->aClinica = null;
         $this->aEmpleado = null;
         $this->aPaciente = null;

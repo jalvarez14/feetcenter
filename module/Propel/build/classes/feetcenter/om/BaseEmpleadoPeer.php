@@ -24,13 +24,13 @@ abstract class BaseEmpleadoPeer
     const TM_CLASS = 'EmpleadoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 22;
+    const NUM_COLUMNS = 23;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 22;
+    const NUM_HYDRATE_COLUMNS = 23;
 
     /** the column name for the idempleado field */
     const IDEMPLEADO = 'empleado.idempleado';
@@ -83,6 +83,9 @@ abstract class BaseEmpleadoPeer
     /** the column name for the empleado_sueldo field */
     const EMPLEADO_SUELDO = 'empleado.empleado_sueldo';
 
+    /** the column name for the empleado_diadescanso field */
+    const EMPLEADO_DIADESCANSO = 'empleado.empleado_diadescanso';
+
     /** the column name for the empleado_foto field */
     const EMPLEADO_FOTO = 'empleado.empleado_foto';
 
@@ -101,6 +104,15 @@ abstract class BaseEmpleadoPeer
     /** The enumerated values for the empleado_sexo field */
     const EMPLEADO_SEXO_HOMBRE = 'Hombre';
     const EMPLEADO_SEXO_MUJER = 'Mujer';
+
+    /** The enumerated values for the empleado_diadescanso field */
+    const EMPLEADO_DIADESCANSO_LUNES = 'lunes';
+    const EMPLEADO_DIADESCANSO_MARTES = 'martes';
+    const EMPLEADO_DIADESCANSO_MIERCOLES = 'miercoles';
+    const EMPLEADO_DIADESCANSO_JUEVES = 'jueves';
+    const EMPLEADO_DIADESCANSO_VIERNES = 'viernes';
+    const EMPLEADO_DIADESCANSO_SABADO = 'sabado';
+    const EMPLEADO_DIADESCANSO_DOMINGO = 'domingo';
 
     /** The enumerated values for the empleado_tipocomisionproducto field */
     const EMPLEADO_TIPOCOMISIONPRODUCTO_PORCENTAJE = 'porcentaje';
@@ -129,12 +141,12 @@ abstract class BaseEmpleadoPeer
      * e.g. EmpleadoPeer::$fieldNames[EmpleadoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleado', 'EmpleadoRegistradoen', 'EmpleadoNombre', 'EmpleadoNss', 'EmpleadoRfc', 'EmpleadoCalle', 'EmpleadoNumero', 'EmpleadoColonia', 'EmpleadoCodigopostal', 'EmpleadoCiudad', 'EmpleadoSexo', 'EmpleadoFechanacimiento', 'EmpleadoTelefono', 'EmpleadoCelular', 'EmpleadoComprobantedomiclio', 'EmpleadoComprobanteidentificacion', 'EmpleadoSueldo', 'EmpleadoFoto', 'EmpleadoTipocomisionproducto', 'EmpleadoCantidadcomisionproducto', 'EmpleadoTipocomisionservicio', 'EmpleadoCantidadcomisionservicio', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado', 'empleadoRegistradoen', 'empleadoNombre', 'empleadoNss', 'empleadoRfc', 'empleadoCalle', 'empleadoNumero', 'empleadoColonia', 'empleadoCodigopostal', 'empleadoCiudad', 'empleadoSexo', 'empleadoFechanacimiento', 'empleadoTelefono', 'empleadoCelular', 'empleadoComprobantedomiclio', 'empleadoComprobanteidentificacion', 'empleadoSueldo', 'empleadoFoto', 'empleadoTipocomisionproducto', 'empleadoCantidadcomisionproducto', 'empleadoTipocomisionservicio', 'empleadoCantidadcomisionservicio', ),
-        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO, EmpleadoPeer::EMPLEADO_REGISTRADOEN, EmpleadoPeer::EMPLEADO_NOMBRE, EmpleadoPeer::EMPLEADO_NSS, EmpleadoPeer::EMPLEADO_RFC, EmpleadoPeer::EMPLEADO_CALLE, EmpleadoPeer::EMPLEADO_NUMERO, EmpleadoPeer::EMPLEADO_COLONIA, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL, EmpleadoPeer::EMPLEADO_CIUDAD, EmpleadoPeer::EMPLEADO_SEXO, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO, EmpleadoPeer::EMPLEADO_TELEFONO, EmpleadoPeer::EMPLEADO_CELULAR, EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO, EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION, EmpleadoPeer::EMPLEADO_SUELDO, EmpleadoPeer::EMPLEADO_FOTO, EmpleadoPeer::EMPLEADO_TIPOCOMISIONPRODUCTO, EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONPRODUCTO, EmpleadoPeer::EMPLEADO_TIPOCOMISIONSERVICIO, EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONSERVICIO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO', 'EMPLEADO_REGISTRADOEN', 'EMPLEADO_NOMBRE', 'EMPLEADO_NSS', 'EMPLEADO_RFC', 'EMPLEADO_CALLE', 'EMPLEADO_NUMERO', 'EMPLEADO_COLONIA', 'EMPLEADO_CODIGOPOSTAL', 'EMPLEADO_CIUDAD', 'EMPLEADO_SEXO', 'EMPLEADO_FECHANACIMIENTO', 'EMPLEADO_TELEFONO', 'EMPLEADO_CELULAR', 'EMPLEADO_COMPROBANTEDOMICLIO', 'EMPLEADO_COMPROBANTEIDENTIFICACION', 'EMPLEADO_SUELDO', 'EMPLEADO_FOTO', 'EMPLEADO_TIPOCOMISIONPRODUCTO', 'EMPLEADO_CANTIDADCOMISIONPRODUCTO', 'EMPLEADO_TIPOCOMISIONSERVICIO', 'EMPLEADO_CANTIDADCOMISIONSERVICIO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleado', 'empleado_registradoen', 'empleado_nombre', 'empleado_nss', 'empleado_rfc', 'empleado_calle', 'empleado_numero', 'empleado_colonia', 'empleado_codigopostal', 'empleado_ciudad', 'empleado_sexo', 'empleado_fechanacimiento', 'empleado_telefono', 'empleado_celular', 'empleado_comprobantedomiclio', 'empleado_comprobanteidentificacion', 'empleado_sueldo', 'empleado_foto', 'empleado_tipocomisionproducto', 'empleado_cantidadcomisionproducto', 'empleado_tipocomisionservicio', 'empleado_cantidadcomisionservicio', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleado', 'EmpleadoRegistradoen', 'EmpleadoNombre', 'EmpleadoNss', 'EmpleadoRfc', 'EmpleadoCalle', 'EmpleadoNumero', 'EmpleadoColonia', 'EmpleadoCodigopostal', 'EmpleadoCiudad', 'EmpleadoSexo', 'EmpleadoFechanacimiento', 'EmpleadoTelefono', 'EmpleadoCelular', 'EmpleadoComprobantedomiclio', 'EmpleadoComprobanteidentificacion', 'EmpleadoSueldo', 'EmpleadoDiadescanso', 'EmpleadoFoto', 'EmpleadoTipocomisionproducto', 'EmpleadoCantidadcomisionproducto', 'EmpleadoTipocomisionservicio', 'EmpleadoCantidadcomisionservicio', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado', 'empleadoRegistradoen', 'empleadoNombre', 'empleadoNss', 'empleadoRfc', 'empleadoCalle', 'empleadoNumero', 'empleadoColonia', 'empleadoCodigopostal', 'empleadoCiudad', 'empleadoSexo', 'empleadoFechanacimiento', 'empleadoTelefono', 'empleadoCelular', 'empleadoComprobantedomiclio', 'empleadoComprobanteidentificacion', 'empleadoSueldo', 'empleadoDiadescanso', 'empleadoFoto', 'empleadoTipocomisionproducto', 'empleadoCantidadcomisionproducto', 'empleadoTipocomisionservicio', 'empleadoCantidadcomisionservicio', ),
+        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO, EmpleadoPeer::EMPLEADO_REGISTRADOEN, EmpleadoPeer::EMPLEADO_NOMBRE, EmpleadoPeer::EMPLEADO_NSS, EmpleadoPeer::EMPLEADO_RFC, EmpleadoPeer::EMPLEADO_CALLE, EmpleadoPeer::EMPLEADO_NUMERO, EmpleadoPeer::EMPLEADO_COLONIA, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL, EmpleadoPeer::EMPLEADO_CIUDAD, EmpleadoPeer::EMPLEADO_SEXO, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO, EmpleadoPeer::EMPLEADO_TELEFONO, EmpleadoPeer::EMPLEADO_CELULAR, EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO, EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION, EmpleadoPeer::EMPLEADO_SUELDO, EmpleadoPeer::EMPLEADO_DIADESCANSO, EmpleadoPeer::EMPLEADO_FOTO, EmpleadoPeer::EMPLEADO_TIPOCOMISIONPRODUCTO, EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONPRODUCTO, EmpleadoPeer::EMPLEADO_TIPOCOMISIONSERVICIO, EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONSERVICIO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO', 'EMPLEADO_REGISTRADOEN', 'EMPLEADO_NOMBRE', 'EMPLEADO_NSS', 'EMPLEADO_RFC', 'EMPLEADO_CALLE', 'EMPLEADO_NUMERO', 'EMPLEADO_COLONIA', 'EMPLEADO_CODIGOPOSTAL', 'EMPLEADO_CIUDAD', 'EMPLEADO_SEXO', 'EMPLEADO_FECHANACIMIENTO', 'EMPLEADO_TELEFONO', 'EMPLEADO_CELULAR', 'EMPLEADO_COMPROBANTEDOMICLIO', 'EMPLEADO_COMPROBANTEIDENTIFICACION', 'EMPLEADO_SUELDO', 'EMPLEADO_DIADESCANSO', 'EMPLEADO_FOTO', 'EMPLEADO_TIPOCOMISIONPRODUCTO', 'EMPLEADO_CANTIDADCOMISIONPRODUCTO', 'EMPLEADO_TIPOCOMISIONSERVICIO', 'EMPLEADO_CANTIDADCOMISIONSERVICIO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleado', 'empleado_registradoen', 'empleado_nombre', 'empleado_nss', 'empleado_rfc', 'empleado_calle', 'empleado_numero', 'empleado_colonia', 'empleado_codigopostal', 'empleado_ciudad', 'empleado_sexo', 'empleado_fechanacimiento', 'empleado_telefono', 'empleado_celular', 'empleado_comprobantedomiclio', 'empleado_comprobanteidentificacion', 'empleado_sueldo', 'empleado_diadescanso', 'empleado_foto', 'empleado_tipocomisionproducto', 'empleado_cantidadcomisionproducto', 'empleado_tipocomisionservicio', 'empleado_cantidadcomisionservicio', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
     );
 
     /**
@@ -144,12 +156,12 @@ abstract class BaseEmpleadoPeer
      * e.g. EmpleadoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleado' => 0, 'EmpleadoRegistradoen' => 1, 'EmpleadoNombre' => 2, 'EmpleadoNss' => 3, 'EmpleadoRfc' => 4, 'EmpleadoCalle' => 5, 'EmpleadoNumero' => 6, 'EmpleadoColonia' => 7, 'EmpleadoCodigopostal' => 8, 'EmpleadoCiudad' => 9, 'EmpleadoSexo' => 10, 'EmpleadoFechanacimiento' => 11, 'EmpleadoTelefono' => 12, 'EmpleadoCelular' => 13, 'EmpleadoComprobantedomiclio' => 14, 'EmpleadoComprobanteidentificacion' => 15, 'EmpleadoSueldo' => 16, 'EmpleadoFoto' => 17, 'EmpleadoTipocomisionproducto' => 18, 'EmpleadoCantidadcomisionproducto' => 19, 'EmpleadoTipocomisionservicio' => 20, 'EmpleadoCantidadcomisionservicio' => 21, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado' => 0, 'empleadoRegistradoen' => 1, 'empleadoNombre' => 2, 'empleadoNss' => 3, 'empleadoRfc' => 4, 'empleadoCalle' => 5, 'empleadoNumero' => 6, 'empleadoColonia' => 7, 'empleadoCodigopostal' => 8, 'empleadoCiudad' => 9, 'empleadoSexo' => 10, 'empleadoFechanacimiento' => 11, 'empleadoTelefono' => 12, 'empleadoCelular' => 13, 'empleadoComprobantedomiclio' => 14, 'empleadoComprobanteidentificacion' => 15, 'empleadoSueldo' => 16, 'empleadoFoto' => 17, 'empleadoTipocomisionproducto' => 18, 'empleadoCantidadcomisionproducto' => 19, 'empleadoTipocomisionservicio' => 20, 'empleadoCantidadcomisionservicio' => 21, ),
-        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO => 0, EmpleadoPeer::EMPLEADO_REGISTRADOEN => 1, EmpleadoPeer::EMPLEADO_NOMBRE => 2, EmpleadoPeer::EMPLEADO_NSS => 3, EmpleadoPeer::EMPLEADO_RFC => 4, EmpleadoPeer::EMPLEADO_CALLE => 5, EmpleadoPeer::EMPLEADO_NUMERO => 6, EmpleadoPeer::EMPLEADO_COLONIA => 7, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL => 8, EmpleadoPeer::EMPLEADO_CIUDAD => 9, EmpleadoPeer::EMPLEADO_SEXO => 10, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO => 11, EmpleadoPeer::EMPLEADO_TELEFONO => 12, EmpleadoPeer::EMPLEADO_CELULAR => 13, EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO => 14, EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION => 15, EmpleadoPeer::EMPLEADO_SUELDO => 16, EmpleadoPeer::EMPLEADO_FOTO => 17, EmpleadoPeer::EMPLEADO_TIPOCOMISIONPRODUCTO => 18, EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONPRODUCTO => 19, EmpleadoPeer::EMPLEADO_TIPOCOMISIONSERVICIO => 20, EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONSERVICIO => 21, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO' => 0, 'EMPLEADO_REGISTRADOEN' => 1, 'EMPLEADO_NOMBRE' => 2, 'EMPLEADO_NSS' => 3, 'EMPLEADO_RFC' => 4, 'EMPLEADO_CALLE' => 5, 'EMPLEADO_NUMERO' => 6, 'EMPLEADO_COLONIA' => 7, 'EMPLEADO_CODIGOPOSTAL' => 8, 'EMPLEADO_CIUDAD' => 9, 'EMPLEADO_SEXO' => 10, 'EMPLEADO_FECHANACIMIENTO' => 11, 'EMPLEADO_TELEFONO' => 12, 'EMPLEADO_CELULAR' => 13, 'EMPLEADO_COMPROBANTEDOMICLIO' => 14, 'EMPLEADO_COMPROBANTEIDENTIFICACION' => 15, 'EMPLEADO_SUELDO' => 16, 'EMPLEADO_FOTO' => 17, 'EMPLEADO_TIPOCOMISIONPRODUCTO' => 18, 'EMPLEADO_CANTIDADCOMISIONPRODUCTO' => 19, 'EMPLEADO_TIPOCOMISIONSERVICIO' => 20, 'EMPLEADO_CANTIDADCOMISIONSERVICIO' => 21, ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleado' => 0, 'empleado_registradoen' => 1, 'empleado_nombre' => 2, 'empleado_nss' => 3, 'empleado_rfc' => 4, 'empleado_calle' => 5, 'empleado_numero' => 6, 'empleado_colonia' => 7, 'empleado_codigopostal' => 8, 'empleado_ciudad' => 9, 'empleado_sexo' => 10, 'empleado_fechanacimiento' => 11, 'empleado_telefono' => 12, 'empleado_celular' => 13, 'empleado_comprobantedomiclio' => 14, 'empleado_comprobanteidentificacion' => 15, 'empleado_sueldo' => 16, 'empleado_foto' => 17, 'empleado_tipocomisionproducto' => 18, 'empleado_cantidadcomisionproducto' => 19, 'empleado_tipocomisionservicio' => 20, 'empleado_cantidadcomisionservicio' => 21, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleado' => 0, 'EmpleadoRegistradoen' => 1, 'EmpleadoNombre' => 2, 'EmpleadoNss' => 3, 'EmpleadoRfc' => 4, 'EmpleadoCalle' => 5, 'EmpleadoNumero' => 6, 'EmpleadoColonia' => 7, 'EmpleadoCodigopostal' => 8, 'EmpleadoCiudad' => 9, 'EmpleadoSexo' => 10, 'EmpleadoFechanacimiento' => 11, 'EmpleadoTelefono' => 12, 'EmpleadoCelular' => 13, 'EmpleadoComprobantedomiclio' => 14, 'EmpleadoComprobanteidentificacion' => 15, 'EmpleadoSueldo' => 16, 'EmpleadoDiadescanso' => 17, 'EmpleadoFoto' => 18, 'EmpleadoTipocomisionproducto' => 19, 'EmpleadoCantidadcomisionproducto' => 20, 'EmpleadoTipocomisionservicio' => 21, 'EmpleadoCantidadcomisionservicio' => 22, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado' => 0, 'empleadoRegistradoen' => 1, 'empleadoNombre' => 2, 'empleadoNss' => 3, 'empleadoRfc' => 4, 'empleadoCalle' => 5, 'empleadoNumero' => 6, 'empleadoColonia' => 7, 'empleadoCodigopostal' => 8, 'empleadoCiudad' => 9, 'empleadoSexo' => 10, 'empleadoFechanacimiento' => 11, 'empleadoTelefono' => 12, 'empleadoCelular' => 13, 'empleadoComprobantedomiclio' => 14, 'empleadoComprobanteidentificacion' => 15, 'empleadoSueldo' => 16, 'empleadoDiadescanso' => 17, 'empleadoFoto' => 18, 'empleadoTipocomisionproducto' => 19, 'empleadoCantidadcomisionproducto' => 20, 'empleadoTipocomisionservicio' => 21, 'empleadoCantidadcomisionservicio' => 22, ),
+        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO => 0, EmpleadoPeer::EMPLEADO_REGISTRADOEN => 1, EmpleadoPeer::EMPLEADO_NOMBRE => 2, EmpleadoPeer::EMPLEADO_NSS => 3, EmpleadoPeer::EMPLEADO_RFC => 4, EmpleadoPeer::EMPLEADO_CALLE => 5, EmpleadoPeer::EMPLEADO_NUMERO => 6, EmpleadoPeer::EMPLEADO_COLONIA => 7, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL => 8, EmpleadoPeer::EMPLEADO_CIUDAD => 9, EmpleadoPeer::EMPLEADO_SEXO => 10, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO => 11, EmpleadoPeer::EMPLEADO_TELEFONO => 12, EmpleadoPeer::EMPLEADO_CELULAR => 13, EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO => 14, EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION => 15, EmpleadoPeer::EMPLEADO_SUELDO => 16, EmpleadoPeer::EMPLEADO_DIADESCANSO => 17, EmpleadoPeer::EMPLEADO_FOTO => 18, EmpleadoPeer::EMPLEADO_TIPOCOMISIONPRODUCTO => 19, EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONPRODUCTO => 20, EmpleadoPeer::EMPLEADO_TIPOCOMISIONSERVICIO => 21, EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONSERVICIO => 22, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO' => 0, 'EMPLEADO_REGISTRADOEN' => 1, 'EMPLEADO_NOMBRE' => 2, 'EMPLEADO_NSS' => 3, 'EMPLEADO_RFC' => 4, 'EMPLEADO_CALLE' => 5, 'EMPLEADO_NUMERO' => 6, 'EMPLEADO_COLONIA' => 7, 'EMPLEADO_CODIGOPOSTAL' => 8, 'EMPLEADO_CIUDAD' => 9, 'EMPLEADO_SEXO' => 10, 'EMPLEADO_FECHANACIMIENTO' => 11, 'EMPLEADO_TELEFONO' => 12, 'EMPLEADO_CELULAR' => 13, 'EMPLEADO_COMPROBANTEDOMICLIO' => 14, 'EMPLEADO_COMPROBANTEIDENTIFICACION' => 15, 'EMPLEADO_SUELDO' => 16, 'EMPLEADO_DIADESCANSO' => 17, 'EMPLEADO_FOTO' => 18, 'EMPLEADO_TIPOCOMISIONPRODUCTO' => 19, 'EMPLEADO_CANTIDADCOMISIONPRODUCTO' => 20, 'EMPLEADO_TIPOCOMISIONSERVICIO' => 21, 'EMPLEADO_CANTIDADCOMISIONSERVICIO' => 22, ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleado' => 0, 'empleado_registradoen' => 1, 'empleado_nombre' => 2, 'empleado_nss' => 3, 'empleado_rfc' => 4, 'empleado_calle' => 5, 'empleado_numero' => 6, 'empleado_colonia' => 7, 'empleado_codigopostal' => 8, 'empleado_ciudad' => 9, 'empleado_sexo' => 10, 'empleado_fechanacimiento' => 11, 'empleado_telefono' => 12, 'empleado_celular' => 13, 'empleado_comprobantedomiclio' => 14, 'empleado_comprobanteidentificacion' => 15, 'empleado_sueldo' => 16, 'empleado_diadescanso' => 17, 'empleado_foto' => 18, 'empleado_tipocomisionproducto' => 19, 'empleado_cantidadcomisionproducto' => 20, 'empleado_tipocomisionservicio' => 21, 'empleado_cantidadcomisionservicio' => 22, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
     );
 
     /** The enumerated values for this table */
@@ -157,6 +169,15 @@ abstract class BaseEmpleadoPeer
         EmpleadoPeer::EMPLEADO_SEXO => array(
             EmpleadoPeer::EMPLEADO_SEXO_HOMBRE,
             EmpleadoPeer::EMPLEADO_SEXO_MUJER,
+        ),
+        EmpleadoPeer::EMPLEADO_DIADESCANSO => array(
+            EmpleadoPeer::EMPLEADO_DIADESCANSO_LUNES,
+            EmpleadoPeer::EMPLEADO_DIADESCANSO_MARTES,
+            EmpleadoPeer::EMPLEADO_DIADESCANSO_MIERCOLES,
+            EmpleadoPeer::EMPLEADO_DIADESCANSO_JUEVES,
+            EmpleadoPeer::EMPLEADO_DIADESCANSO_VIERNES,
+            EmpleadoPeer::EMPLEADO_DIADESCANSO_SABADO,
+            EmpleadoPeer::EMPLEADO_DIADESCANSO_DOMINGO,
         ),
         EmpleadoPeer::EMPLEADO_TIPOCOMISIONPRODUCTO => array(
             EmpleadoPeer::EMPLEADO_TIPOCOMISIONPRODUCTO_PORCENTAJE,
@@ -301,6 +322,7 @@ abstract class BaseEmpleadoPeer
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO);
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION);
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_SUELDO);
+            $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_DIADESCANSO);
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_FOTO);
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_TIPOCOMISIONPRODUCTO);
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONPRODUCTO);
@@ -324,6 +346,7 @@ abstract class BaseEmpleadoPeer
             $criteria->addSelectColumn($alias . '.empleado_comprobantedomiclio');
             $criteria->addSelectColumn($alias . '.empleado_comprobanteidentificacion');
             $criteria->addSelectColumn($alias . '.empleado_sueldo');
+            $criteria->addSelectColumn($alias . '.empleado_diadescanso');
             $criteria->addSelectColumn($alias . '.empleado_foto');
             $criteria->addSelectColumn($alias . '.empleado_tipocomisionproducto');
             $criteria->addSelectColumn($alias . '.empleado_cantidadcomisionproducto');

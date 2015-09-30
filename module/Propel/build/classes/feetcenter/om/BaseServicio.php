@@ -72,12 +72,6 @@ abstract class BaseServicio extends BaseObject implements Persistent
     protected $servicio_comision;
 
     /**
-     * @var        PropelObjectCollection|Servicioclinica[] Collection to store aggregation of Servicioclinica objects.
-     */
-    protected $collServicioclinicas;
-    protected $collServicioclinicasPartial;
-
-    /**
      * @var        PropelObjectCollection|Servicioinsumo[] Collection to store aggregation of Servicioinsumo objects.
      */
     protected $collServicioinsumos;
@@ -102,12 +96,6 @@ abstract class BaseServicio extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $servicioclinicasScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -465,8 +453,6 @@ abstract class BaseServicio extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collServicioclinicas = null;
-
             $this->collServicioinsumos = null;
 
         } // if (deep)
@@ -591,23 +577,6 @@ abstract class BaseServicio extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->servicioclinicasScheduledForDeletion !== null) {
-                if (!$this->servicioclinicasScheduledForDeletion->isEmpty()) {
-                    ServicioclinicaQuery::create()
-                        ->filterByPrimaryKeys($this->servicioclinicasScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->servicioclinicasScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collServicioclinicas !== null) {
-                foreach ($this->collServicioclinicas as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             if ($this->servicioinsumosScheduledForDeletion !== null) {
@@ -805,14 +774,6 @@ abstract class BaseServicio extends BaseObject implements Persistent
             }
 
 
-                if ($this->collServicioclinicas !== null) {
-                    foreach ($this->collServicioclinicas as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collServicioinsumos !== null) {
                     foreach ($this->collServicioinsumos as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -920,9 +881,6 @@ abstract class BaseServicio extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collServicioclinicas) {
-                $result['Servicioclinicas'] = $this->collServicioclinicas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
             if (null !== $this->collServicioinsumos) {
                 $result['Servicioinsumos'] = $this->collServicioinsumos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1107,12 +1065,6 @@ abstract class BaseServicio extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getServicioclinicas() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addServicioclinica($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getServicioinsumos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addServicioinsumo($relObj->copy($deepCopy));
@@ -1180,262 +1132,9 @@ abstract class BaseServicio extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('Servicioclinica' == $relationName) {
-            $this->initServicioclinicas();
-        }
         if ('Servicioinsumo' == $relationName) {
             $this->initServicioinsumos();
         }
-    }
-
-    /**
-     * Clears out the collServicioclinicas collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Servicio The current object (for fluent API support)
-     * @see        addServicioclinicas()
-     */
-    public function clearServicioclinicas()
-    {
-        $this->collServicioclinicas = null; // important to set this to null since that means it is uninitialized
-        $this->collServicioclinicasPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collServicioclinicas collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialServicioclinicas($v = true)
-    {
-        $this->collServicioclinicasPartial = $v;
-    }
-
-    /**
-     * Initializes the collServicioclinicas collection.
-     *
-     * By default this just sets the collServicioclinicas collection to an empty array (like clearcollServicioclinicas());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initServicioclinicas($overrideExisting = true)
-    {
-        if (null !== $this->collServicioclinicas && !$overrideExisting) {
-            return;
-        }
-        $this->collServicioclinicas = new PropelObjectCollection();
-        $this->collServicioclinicas->setModel('Servicioclinica');
-    }
-
-    /**
-     * Gets an array of Servicioclinica objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Servicio is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Servicioclinica[] List of Servicioclinica objects
-     * @throws PropelException
-     */
-    public function getServicioclinicas($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collServicioclinicasPartial && !$this->isNew();
-        if (null === $this->collServicioclinicas || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collServicioclinicas) {
-                // return empty collection
-                $this->initServicioclinicas();
-            } else {
-                $collServicioclinicas = ServicioclinicaQuery::create(null, $criteria)
-                    ->filterByServicio($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collServicioclinicasPartial && count($collServicioclinicas)) {
-                      $this->initServicioclinicas(false);
-
-                      foreach ($collServicioclinicas as $obj) {
-                        if (false == $this->collServicioclinicas->contains($obj)) {
-                          $this->collServicioclinicas->append($obj);
-                        }
-                      }
-
-                      $this->collServicioclinicasPartial = true;
-                    }
-
-                    $collServicioclinicas->getInternalIterator()->rewind();
-
-                    return $collServicioclinicas;
-                }
-
-                if ($partial && $this->collServicioclinicas) {
-                    foreach ($this->collServicioclinicas as $obj) {
-                        if ($obj->isNew()) {
-                            $collServicioclinicas[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collServicioclinicas = $collServicioclinicas;
-                $this->collServicioclinicasPartial = false;
-            }
-        }
-
-        return $this->collServicioclinicas;
-    }
-
-    /**
-     * Sets a collection of Servicioclinica objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $servicioclinicas A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Servicio The current object (for fluent API support)
-     */
-    public function setServicioclinicas(PropelCollection $servicioclinicas, PropelPDO $con = null)
-    {
-        $servicioclinicasToDelete = $this->getServicioclinicas(new Criteria(), $con)->diff($servicioclinicas);
-
-
-        $this->servicioclinicasScheduledForDeletion = $servicioclinicasToDelete;
-
-        foreach ($servicioclinicasToDelete as $servicioclinicaRemoved) {
-            $servicioclinicaRemoved->setServicio(null);
-        }
-
-        $this->collServicioclinicas = null;
-        foreach ($servicioclinicas as $servicioclinica) {
-            $this->addServicioclinica($servicioclinica);
-        }
-
-        $this->collServicioclinicas = $servicioclinicas;
-        $this->collServicioclinicasPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Servicioclinica objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Servicioclinica objects.
-     * @throws PropelException
-     */
-    public function countServicioclinicas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collServicioclinicasPartial && !$this->isNew();
-        if (null === $this->collServicioclinicas || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collServicioclinicas) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getServicioclinicas());
-            }
-            $query = ServicioclinicaQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByServicio($this)
-                ->count($con);
-        }
-
-        return count($this->collServicioclinicas);
-    }
-
-    /**
-     * Method called to associate a Servicioclinica object to this object
-     * through the Servicioclinica foreign key attribute.
-     *
-     * @param    Servicioclinica $l Servicioclinica
-     * @return Servicio The current object (for fluent API support)
-     */
-    public function addServicioclinica(Servicioclinica $l)
-    {
-        if ($this->collServicioclinicas === null) {
-            $this->initServicioclinicas();
-            $this->collServicioclinicasPartial = true;
-        }
-
-        if (!in_array($l, $this->collServicioclinicas->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddServicioclinica($l);
-
-            if ($this->servicioclinicasScheduledForDeletion and $this->servicioclinicasScheduledForDeletion->contains($l)) {
-                $this->servicioclinicasScheduledForDeletion->remove($this->servicioclinicasScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Servicioclinica $servicioclinica The servicioclinica object to add.
-     */
-    protected function doAddServicioclinica($servicioclinica)
-    {
-        $this->collServicioclinicas[]= $servicioclinica;
-        $servicioclinica->setServicio($this);
-    }
-
-    /**
-     * @param	Servicioclinica $servicioclinica The servicioclinica object to remove.
-     * @return Servicio The current object (for fluent API support)
-     */
-    public function removeServicioclinica($servicioclinica)
-    {
-        if ($this->getServicioclinicas()->contains($servicioclinica)) {
-            $this->collServicioclinicas->remove($this->collServicioclinicas->search($servicioclinica));
-            if (null === $this->servicioclinicasScheduledForDeletion) {
-                $this->servicioclinicasScheduledForDeletion = clone $this->collServicioclinicas;
-                $this->servicioclinicasScheduledForDeletion->clear();
-            }
-            $this->servicioclinicasScheduledForDeletion[]= clone $servicioclinica;
-            $servicioclinica->setServicio(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Servicio is new, it will return
-     * an empty collection; or if this Servicio has previously
-     * been saved, it will retrieve related Servicioclinicas from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Servicio.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Servicioclinica[] List of Servicioclinica objects
-     */
-    public function getServicioclinicasJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ServicioclinicaQuery::create(null, $criteria);
-        $query->joinWith('Clinica', $join_behavior);
-
-        return $this->getServicioclinicas($query, $con);
     }
 
     /**
@@ -1722,11 +1421,6 @@ abstract class BaseServicio extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collServicioclinicas) {
-                foreach ($this->collServicioclinicas as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collServicioinsumos) {
                 foreach ($this->collServicioinsumos as $o) {
                     $o->clearAllReferences($deep);
@@ -1736,10 +1430,6 @@ abstract class BaseServicio extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collServicioclinicas instanceof PropelCollection) {
-            $this->collServicioclinicas->clearIterator();
-        }
-        $this->collServicioclinicas = null;
         if ($this->collServicioinsumos instanceof PropelCollection) {
             $this->collServicioinsumos->clearIterator();
         }

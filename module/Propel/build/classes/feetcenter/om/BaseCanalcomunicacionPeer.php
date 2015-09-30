@@ -365,6 +365,9 @@ abstract class BaseCanalcomunicacionPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in PacienteseguimientoPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PacienteseguimientoPeer::clearInstancePool();
     }
 
     /**
@@ -594,6 +597,7 @@ abstract class BaseCanalcomunicacionPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
+            $affectedRows += CanalcomunicacionPeer::doOnDeleteCascade(new Criteria(CanalcomunicacionPeer::DATABASE_NAME), $con);
             $affectedRows += BasePeer::doDeleteAll(CanalcomunicacionPeer::TABLE_NAME, $con, CanalcomunicacionPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
@@ -627,24 +631,14 @@ abstract class BaseCanalcomunicacionPeer
         }
 
         if ($values instanceof Criteria) {
-            // invalidate the cache for all objects of this type, since we have no
-            // way of knowing (without running a query) what objects should be invalidated
-            // from the cache based on this Criteria.
-            CanalcomunicacionPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
         } elseif ($values instanceof Canalcomunicacion) { // it's a model object
-            // invalidate the cache for this single object
-            CanalcomunicacionPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(CanalcomunicacionPeer::DATABASE_NAME);
             $criteria->add(CanalcomunicacionPeer::IDCANALCOMUNICACION, (array) $values, Criteria::IN);
-            // invalidate the cache for this object(s)
-            foreach ((array) $values as $singleval) {
-                CanalcomunicacionPeer::removeInstanceFromPool($singleval);
-            }
         }
 
         // Set the correct dbName
@@ -657,6 +651,23 @@ abstract class BaseCanalcomunicacionPeer
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
 
+            // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
+            $c = clone $criteria;
+            $affectedRows += CanalcomunicacionPeer::doOnDeleteCascade($c, $con);
+
+            // Because this db requires some delete cascade/set null emulation, we have to
+            // clear the cached instance *after* the emulation has happened (since
+            // instances get re-added by the select statement contained therein).
+            if ($values instanceof Criteria) {
+                CanalcomunicacionPeer::clearInstancePool();
+            } elseif ($values instanceof Canalcomunicacion) { // it's a model object
+                CanalcomunicacionPeer::removeInstanceFromPool($values);
+            } else { // it's a primary key, or an array of pks
+                foreach ((array) $values as $singleval) {
+                    CanalcomunicacionPeer::removeInstanceFromPool($singleval);
+                }
+            }
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             CanalcomunicacionPeer::clearRelatedInstancePool();
             $con->commit();
@@ -666,6 +677,39 @@ abstract class BaseCanalcomunicacionPeer
             $con->rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
+     * feature (like MySQL or SQLite).
+     *
+     * This method is not very speedy because it must perform a query first to get
+     * the implicated records and then perform the deletes by calling those Peer classes.
+     *
+     * This method should be used within a transaction if possible.
+     *
+     * @param      Criteria $criteria
+     * @param      PropelPDO $con
+     * @return int The number of affected rows (if supported by underlying database driver).
+     */
+    protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
+    {
+        // initialize var to track total num of affected rows
+        $affectedRows = 0;
+
+        // first find the objects that are implicated by the $criteria
+        $objects = CanalcomunicacionPeer::doSelect($criteria, $con);
+        foreach ($objects as $obj) {
+
+
+            // delete related Pacienteseguimiento objects
+            $criteria = new Criteria(PacienteseguimientoPeer::DATABASE_NAME);
+
+            $criteria->add(PacienteseguimientoPeer::IDCANALCOMUNICACION, $obj->getIdcanalcomunicacion());
+            $affectedRows += PacienteseguimientoPeer::doDelete($criteria, $con);
+        }
+
+        return $affectedRows;
     }
 
     /**

@@ -18,6 +18,10 @@
  * @method CanalcomunicacionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method CanalcomunicacionQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method CanalcomunicacionQuery leftJoinPacienteseguimiento($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pacienteseguimiento relation
+ * @method CanalcomunicacionQuery rightJoinPacienteseguimiento($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pacienteseguimiento relation
+ * @method CanalcomunicacionQuery innerJoinPacienteseguimiento($relationAlias = null) Adds a INNER JOIN clause to the query using the Pacienteseguimiento relation
+ *
  * @method Canalcomunicacion findOne(PropelPDO $con = null) Return the first Canalcomunicacion matching the query
  * @method Canalcomunicacion findOneOrCreate(PropelPDO $con = null) Return the first Canalcomunicacion matching the query, or a new Canalcomunicacion object populated from the query conditions when no match is found
  *
@@ -321,6 +325,80 @@ abstract class BaseCanalcomunicacionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CanalcomunicacionPeer::CANALCOMUNICACION_DESCRIPCION, $canalcomunicacionDescripcion, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Pacienteseguimiento object
+     *
+     * @param   Pacienteseguimiento|PropelObjectCollection $pacienteseguimiento  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 CanalcomunicacionQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPacienteseguimiento($pacienteseguimiento, $comparison = null)
+    {
+        if ($pacienteseguimiento instanceof Pacienteseguimiento) {
+            return $this
+                ->addUsingAlias(CanalcomunicacionPeer::IDCANALCOMUNICACION, $pacienteseguimiento->getIdcanalcomunicacion(), $comparison);
+        } elseif ($pacienteseguimiento instanceof PropelObjectCollection) {
+            return $this
+                ->usePacienteseguimientoQuery()
+                ->filterByPrimaryKeys($pacienteseguimiento->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPacienteseguimiento() only accepts arguments of type Pacienteseguimiento or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Pacienteseguimiento relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return CanalcomunicacionQuery The current query, for fluid interface
+     */
+    public function joinPacienteseguimiento($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Pacienteseguimiento');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Pacienteseguimiento');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Pacienteseguimiento relation Pacienteseguimiento object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   PacienteseguimientoQuery A secondary query class using the current class as primary query
+     */
+    public function usePacienteseguimientoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPacienteseguimiento($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Pacienteseguimiento', 'PacienteseguimientoQuery');
     }
 
     /**

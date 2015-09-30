@@ -39,8 +39,8 @@ class ServicioclinicaTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idservicioclinica', 'Idservicioclinica', 'INTEGER', true, null, null);
-        $this->addForeignKey('idservicio', 'Idservicio', 'INTEGER', 'servicio', 'idservicio', true, null, null);
-        $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
+        $this->addColumn('idservicio', 'Idservicio', 'INTEGER', true, null, null);
+        $this->addColumn('idclinica', 'Idclinica', 'INTEGER', true, null, null);
         $this->addColumn('servicioclinica_precio', 'ServicioclinicaPrecio', 'DECIMAL', true, 10, null);
         // validators
     } // initialize()
@@ -50,8 +50,6 @@ class ServicioclinicaTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Servicio', 'Servicio', RelationMap::MANY_TO_ONE, array('idservicio' => 'idservicio', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Visitadetalle', 'Visitadetalle', RelationMap::ONE_TO_MANY, array('idservicioclinica' => 'idservicioclinica', ), 'CASCADE', 'CASCADE', 'Visitadetalles');
     } // buildRelations()
 

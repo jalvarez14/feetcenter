@@ -255,6 +255,7 @@ CREATE TABLE `empleado`
     `empleado_comprobantedomiclio` TEXT,
     `empleado_comprobanteidentificacion` TEXT,
     `empleado_sueldo` DECIMAL(10,2),
+    `empleado_diadescanso` enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo') NOT NULL,
     `empleado_foto` TEXT,
     `empleado_tipocomisionproducto` enum('porcentaje','cantidad'),
     `empleado_cantidadcomisionproducto` DECIMAL(10,2),
@@ -333,7 +334,6 @@ CREATE TABLE `empleadohorario`
     `empleadohorario_entrada` TIME NOT NULL,
     `empleadohorario_salida` TIME NOT NULL,
     `empleadohorario_dia` enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo') NOT NULL,
-    `empleadohorario_descanso` TINYINT(1) NOT NULL,
     PRIMARY KEY (`idempleadohorario`),
     INDEX `idempleado` (`idempleado`),
     CONSTRAINT `idempleado_empleadohorario`
@@ -384,7 +384,6 @@ CREATE TABLE `empleadoreporte`
     `idclinica` INTEGER NOT NULL,
     `idempleado` INTEGER NOT NULL,
     `idempleadoreportado` INTEGER NOT NULL,
-    `idconceptoincidencia` INTEGER NOT NULL,
     `empleadoreporte_fechacreacion` DATETIME NOT NULL,
     `empleadoreporte_comentario` TEXT NOT NULL,
     `empleadoreporte_fechasuceso` DATE NOT NULL,
@@ -392,15 +391,9 @@ CREATE TABLE `empleadoreporte`
     INDEX `idclinica` (`idclinica`),
     INDEX `idempleado` (`idempleado`),
     INDEX `idempleadoreportado` (`idempleadoreportado`),
-    INDEX `idconceptoincidencia` (`idconceptoincidencia`),
     CONSTRAINT `idclinica_empleadoreporte`
         FOREIGN KEY (`idclinica`)
         REFERENCES `clinica` (`idclinica`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `idconceptoincidencia_empleadoreporte`
-        FOREIGN KEY (`idconceptoincidencia`)
-        REFERENCES `conceptoincidencia` (`idconceptoincidencia`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idempleado_empleadoreporte`
@@ -643,6 +636,12 @@ CREATE TABLE `pacienteseguimiento`
     INDEX `idpaciente` (`idpaciente`),
     INDEX `idempleado` (`idempleado`),
     INDEX `idclinica` (`idclinica`),
+    INDEX `idcanalcomunicacion` (`idcanalcomunicacion`),
+    CONSTRAINT `idcanalcomunicacion_pacienteseguimiento`
+        FOREIGN KEY (`idcanalcomunicacion`)
+        REFERENCES `canalcomunicacion` (`idcanalcomunicacion`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT `idclinica_pacienteseguimiento`
         FOREIGN KEY (`idclinica`)
         REFERENCES `clinica` (`idclinica`)
@@ -817,19 +816,7 @@ CREATE TABLE `servicioclinica`
     `idservicio` INTEGER NOT NULL,
     `idclinica` INTEGER NOT NULL,
     `servicioclinica_precio` DECIMAL(10,2) NOT NULL,
-    PRIMARY KEY (`idservicioclinica`),
-    INDEX `idservicio` (`idservicio`),
-    INDEX `idclinica` (`idclinica`),
-    CONSTRAINT `idclinica_servicioclinica`
-        FOREIGN KEY (`idclinica`)
-        REFERENCES `clinica` (`idclinica`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `idservicio_servicioclinica`
-        FOREIGN KEY (`idservicio`)
-        REFERENCES `servicio` (`idservicio`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
+    PRIMARY KEY (`idservicioclinica`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

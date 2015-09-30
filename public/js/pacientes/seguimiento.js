@@ -5,16 +5,16 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.pacientes = function(data){
+    $.fn.seguimiento = function(data){
         var _this = $(this);
-        var plugin = _this.data('pacientes');
+        var plugin = _this.data('seguimiento');
         
         /*Inicializado ?*/
         if (!plugin) {
             
-            plugin = new $.clinica(this, data);
+            plugin = new $.seguimiento(this, data);
             
-            _this.data('pacientes', plugin);
+            _this.data('seguimiento', plugin);
             
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.clinica = function(container, options){
+    $.seguimiento = function(container, options){
         
         var plugin = this;
         
@@ -51,7 +51,6 @@
         * Private methods
         */
        
-       
        var filter = function(){
            
            var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
@@ -73,7 +72,7 @@
                                     this.paciente_nombre,
                                     this.paciente_celular,
                                     this.empleado_nombre,
-                                    '<td class="tr_options"><a href="/pacientes/editar/'+this.idpaciente+'">Editar</a><a class="delete-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Advertencia</h2>" data-content="/pacientes/eliminar/delete?html=true" >Eliminar</a></td>'
+                                    '<td class="tr_options"><a href="/pacientes/seguimiento/ver/'+this.idpaciente+'">Ver segumiento</a></td>'
                                 ]).draw().node();
                             }else{
                                 var rowNode = $table.row.add([
@@ -85,45 +84,13 @@
                                 ]).draw().node();
                             }
                             $(rowNode).attr('id',this.idpaciente);
-                            //Las opciones 
-                            if(settings.idrol != 3){
-                                $(rowNode).find('td').last().addClass('tr_options');
-                                $(rowNode).find('td').last().find('a.delete-modal').modal();
-                                $(rowNode).find('td').last().find('a.delete-modal').on('loading.tools.modal', function(modal){
-                                    var $modalHeader = this.$modalHeader;
-                                    $modalHeader.addClass('modal_header_warning');
-                                    var id = this.$element.closest('tr').attr('id');
-                                    var $modal = this ;
-
-                                    this.createCancelButton('Cancelar');
-
-                                    var buttonDelete = this.createDeleteButton('Eliminar');
-
-                                    buttonDelete.on('click', $.proxy(function()
-                                    {
-                                        //Hacemos la peticion ajax
-                                        $.ajax({
-                                            url:'/pacientes/eliminar/'+id,
-                                            dataType: 'json',
-                                            method:'POST',
-                                            success: function(data){
-                                                if(data.response){
-                                                    $modal.close();
-                                                    window.location.replace('/pacientes');
-                                                }
-                                            }
-                                        });
-
-
-                                    }, this));
-                                });
-                            }
                         });
                   }
                   $table.draw();
                }  
            });
        };
+
        
        /*
         * Public methods
@@ -162,8 +129,6 @@
            
             
         }
-
-       
     }
     
     

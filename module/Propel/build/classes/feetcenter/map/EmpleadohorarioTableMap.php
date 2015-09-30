@@ -52,7 +52,6 @@ class EmpleadohorarioTableMap extends TableMap
   5 => 'sabado',
   6 => 'domingo',
 ));
-        $this->addColumn('empleadohorario_descanso', 'EmpleadohorarioDescanso', 'BOOLEAN', true, 1, null);
         // validators
     } // initialize()
 

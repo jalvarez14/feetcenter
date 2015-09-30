@@ -54,16 +54,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     protected $servicioclinica_precio;
 
     /**
-     * @var        Clinica
-     */
-    protected $aClinica;
-
-    /**
-     * @var        Servicio
-     */
-    protected $aServicio;
-
-    /**
      * @var        PropelObjectCollection|Visitadetalle[] Collection to store aggregation of Visitadetalle objects.
      */
     protected $collVisitadetalles;
@@ -177,10 +167,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
             $this->modifiedColumns[] = ServicioclinicaPeer::IDSERVICIO;
         }
 
-        if ($this->aServicio !== null && $this->aServicio->getIdservicio() !== $v) {
-            $this->aServicio = null;
-        }
-
 
         return $this;
     } // setIdservicio()
@@ -200,10 +186,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         if ($this->idclinica !== $v) {
             $this->idclinica = $v;
             $this->modifiedColumns[] = ServicioclinicaPeer::IDCLINICA;
-        }
-
-        if ($this->aClinica !== null && $this->aClinica->getIdclinica() !== $v) {
-            $this->aClinica = null;
         }
 
 
@@ -299,12 +281,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aServicio !== null && $this->idservicio !== $this->aServicio->getIdservicio()) {
-            $this->aServicio = null;
-        }
-        if ($this->aClinica !== null && $this->idclinica !== $this->aClinica->getIdclinica()) {
-            $this->aClinica = null;
-        }
     } // ensureConsistency
 
     /**
@@ -344,8 +320,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aClinica = null;
-            $this->aServicio = null;
             $this->collVisitadetalles = null;
 
         } // if (deep)
@@ -460,25 +434,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
-
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aClinica !== null) {
-                if ($this->aClinica->isModified() || $this->aClinica->isNew()) {
-                    $affectedRows += $this->aClinica->save($con);
-                }
-                $this->setClinica($this->aClinica);
-            }
-
-            if ($this->aServicio !== null) {
-                if ($this->aServicio->isModified() || $this->aServicio->isNew()) {
-                    $affectedRows += $this->aServicio->save($con);
-                }
-                $this->setServicio($this->aServicio);
-            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -663,24 +618,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            // We call the validate method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aClinica !== null) {
-                if (!$this->aClinica->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aClinica->getValidationFailures());
-                }
-            }
-
-            if ($this->aServicio !== null) {
-                if (!$this->aServicio->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aServicio->getValidationFailures());
-                }
-            }
-
-
             if (($retval = ServicioclinicaPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
@@ -781,12 +718,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aClinica) {
-                $result['Clinica'] = $this->aClinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aServicio) {
-                $result['Servicio'] = $this->aServicio->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->collVisitadetalles) {
                 $result['Visitadetalles'] = $this->collVisitadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1007,110 +938,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         }
 
         return self::$peer;
-    }
-
-    /**
-     * Declares an association between this object and a Clinica object.
-     *
-     * @param                  Clinica $v
-     * @return Servicioclinica The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setClinica(Clinica $v = null)
-    {
-        if ($v === null) {
-            $this->setIdclinica(NULL);
-        } else {
-            $this->setIdclinica($v->getIdclinica());
-        }
-
-        $this->aClinica = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Clinica object, it will not be re-added.
-        if ($v !== null) {
-            $v->addServicioclinica($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Clinica object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Clinica The associated Clinica object.
-     * @throws PropelException
-     */
-    public function getClinica(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aClinica === null && ($this->idclinica !== null) && $doQuery) {
-            $this->aClinica = ClinicaQuery::create()->findPk($this->idclinica, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aClinica->addServicioclinicas($this);
-             */
-        }
-
-        return $this->aClinica;
-    }
-
-    /**
-     * Declares an association between this object and a Servicio object.
-     *
-     * @param                  Servicio $v
-     * @return Servicioclinica The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setServicio(Servicio $v = null)
-    {
-        if ($v === null) {
-            $this->setIdservicio(NULL);
-        } else {
-            $this->setIdservicio($v->getIdservicio());
-        }
-
-        $this->aServicio = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Servicio object, it will not be re-added.
-        if ($v !== null) {
-            $v->addServicioclinica($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Servicio object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Servicio The associated Servicio object.
-     * @throws PropelException
-     */
-    public function getServicio(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aServicio === null && ($this->idservicio !== null) && $doQuery) {
-            $this->aServicio = ServicioQuery::create()->findPk($this->idservicio, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aServicio->addServicioclinicas($this);
-             */
-        }
-
-        return $this->aServicio;
     }
 
 
@@ -1440,12 +1267,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->aClinica instanceof Persistent) {
-              $this->aClinica->clearAllReferences($deep);
-            }
-            if ($this->aServicio instanceof Persistent) {
-              $this->aServicio->clearAllReferences($deep);
-            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -1454,8 +1275,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
             $this->collVisitadetalles->clearIterator();
         }
         $this->collVisitadetalles = null;
-        $this->aClinica = null;
-        $this->aServicio = null;
     }
 
     /**

@@ -1,0 +1,87 @@
+<h1><?php echo $paciente->getPacienteNombre()?><a style="float: right; text-decoration: none"href="/pacientes/seguimiento/<?php echo $paciente->getIdpaciente().'/'?>nuevo">Nuevo</a></h1>
+<?php if(count($successMessages)) :?>
+    <div class="units-row">
+        <?php foreach ($successMessages as $message) :?>
+            <div class="unit-100">    
+                <div class="tools-alert tools-alert-green">
+                    <?php echo $message?>
+                </div> 
+            </div>
+        <?php endforeach;?>
+    </div>
+<?php endif;?>
+<table>
+    <thead>
+        <tr>
+            <th>Clínica</th>
+            <th>Fecha registro</th>
+            <th>Empleado</th>
+            <th>Canal de comunicación</th>
+            <th>Comentario</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $seguimiento = new Pacienteseguimiento();?>
+        <?php foreach($seguimientos as $seguimiento) : ?>
+            <tr id="<?php echo $seguimiento->getIdpacienteseguimiento()?>">
+                <td><?php echo $seguimiento->getPaciente()->getClinica()->getClinicaNombre()?></td>
+                <td><?php echo $seguimiento->getPacienteseguimientoFecha('d/m/Y')?></td>
+                <td><?php echo $seguimiento->getEmpleado()->getEmpleadoNombre()?></td>
+                <td><?php echo $seguimiento->getCanalcomunicacion()->getCanalcomunicacionNombre()?></td>
+                <td><?php echo $seguimiento->getPacienteseguimientoComentario()?></td>
+                <td class="tr_options"><a href="<?php echo '/pacientes/seguimiento/'.$paciente->getIdpaciente()?>/editar/<?php echo $seguimiento->getIdpacienteseguimiento()?>">Editar</a><a class="delete-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Advertencia</h2>" data-content="<?php echo urldecode('/pacientes/seguimiento/'.$paciente->getIdpaciente().'/eliminar/'.$seguimiento->getIdpacienteseguimiento().'?html=true')?>" >Eliminar</a></td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>
+<script>
+$(function()
+{
+    $.ajax({
+        url: '/json/lang_es_datatable.json',
+        dataType: 'json',
+        success: function(data){
+            var table = $('table').DataTable({
+                language:data,
+            });
+            table.on( 'draw', function () {
+                $('[data-tools="modal"]').modal();
+            });
+        }
+    });
+    
+    $('.delete-modal').on('loading.tools.modal', function(modal)
+    {
+        var idpaciente = <?php echo $paciente->getIdpaciente()?>;
+        
+        var $modalHeader = this.$modalHeader;
+        $modalHeader.addClass('modal_header_warning');
+        var id = this.$element.closest('tr').attr('id');
+        var $modal = this ;
+        
+        this.createCancelButton('Cancelar');
+
+        var buttonDelete = this.createDeleteButton('Eliminar');
+
+        buttonDelete.on('click', $.proxy(function()
+        {
+            //Hacemos la peticion ajax
+            $.ajax({
+                url:'/pacientes/seguimiento/999/eliminar/'+id,
+                dataType: 'json',
+                method:'POST',
+                success: function(data){
+                    if(data.response){
+                        $modal.close();
+                        window.location.replace('/pacientes/seguimiento/ver/'+idpaciente);
+                    }
+                }
+            });
+
+            
+        }, this));
+
+    });
+});
+</script>
