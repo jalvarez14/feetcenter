@@ -60,6 +60,12 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
     protected $empleadohorario_dia;
 
     /**
+     * The value for the empleadohorario_descanso field.
+     * @var        boolean
+     */
+    protected $empleadohorario_descanso;
+
+    /**
      * @var        Empleado
      */
     protected $aEmpleado;
@@ -188,6 +194,17 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [empleadohorario_descanso] column value.
+     *
+     * @return boolean
+     */
+    public function getEmpleadohorarioDescanso()
+    {
+
+        return $this->empleadohorario_descanso;
+    }
+
+    /**
      * Set the value of [idempleadohorario] column.
      *
      * @param  int $v new value
@@ -301,6 +318,35 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
     } // setEmpleadohorarioDia()
 
     /**
+     * Sets the value of the [empleadohorario_descanso] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Empleadohorario The current object (for fluent API support)
+     */
+    public function setEmpleadohorarioDescanso($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->empleadohorario_descanso !== $v) {
+            $this->empleadohorario_descanso = $v;
+            $this->modifiedColumns[] = EmpleadohorarioPeer::EMPLEADOHORARIO_DESCANSO;
+        }
+
+
+        return $this;
+    } // setEmpleadohorarioDescanso()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -337,6 +383,7 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
             $this->empleadohorario_entrada = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->empleadohorario_salida = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->empleadohorario_dia = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->empleadohorario_descanso = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -346,7 +393,7 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = EmpleadohorarioPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = EmpleadohorarioPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Empleadohorario object", $e);
@@ -589,6 +636,9 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadohorarioPeer::EMPLEADOHORARIO_DIA)) {
             $modifiedColumns[':p' . $index++]  = '`empleadohorario_dia`';
         }
+        if ($this->isColumnModified(EmpleadohorarioPeer::EMPLEADOHORARIO_DESCANSO)) {
+            $modifiedColumns[':p' . $index++]  = '`empleadohorario_descanso`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `empleadohorario` (%s) VALUES (%s)',
@@ -614,6 +664,9 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
                         break;
                     case '`empleadohorario_dia`':
                         $stmt->bindValue($identifier, $this->empleadohorario_dia, PDO::PARAM_STR);
+                        break;
+                    case '`empleadohorario_descanso`':
+                        $stmt->bindValue($identifier, (int) $this->empleadohorario_descanso, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -776,6 +829,9 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
             case 4:
                 return $this->getEmpleadohorarioDia();
                 break;
+            case 5:
+                return $this->getEmpleadohorarioDescanso();
+                break;
             default:
                 return null;
                 break;
@@ -810,6 +866,7 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
             $keys[2] => $this->getEmpleadohorarioEntrada(),
             $keys[3] => $this->getEmpleadohorarioSalida(),
             $keys[4] => $this->getEmpleadohorarioDia(),
+            $keys[5] => $this->getEmpleadohorarioDescanso(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -869,6 +926,9 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
             case 4:
                 $this->setEmpleadohorarioDia($value);
                 break;
+            case 5:
+                $this->setEmpleadohorarioDescanso($value);
+                break;
         } // switch()
     }
 
@@ -898,6 +958,7 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setEmpleadohorarioEntrada($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setEmpleadohorarioSalida($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setEmpleadohorarioDia($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setEmpleadohorarioDescanso($arr[$keys[5]]);
     }
 
     /**
@@ -914,6 +975,7 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadohorarioPeer::EMPLEADOHORARIO_ENTRADA)) $criteria->add(EmpleadohorarioPeer::EMPLEADOHORARIO_ENTRADA, $this->empleadohorario_entrada);
         if ($this->isColumnModified(EmpleadohorarioPeer::EMPLEADOHORARIO_SALIDA)) $criteria->add(EmpleadohorarioPeer::EMPLEADOHORARIO_SALIDA, $this->empleadohorario_salida);
         if ($this->isColumnModified(EmpleadohorarioPeer::EMPLEADOHORARIO_DIA)) $criteria->add(EmpleadohorarioPeer::EMPLEADOHORARIO_DIA, $this->empleadohorario_dia);
+        if ($this->isColumnModified(EmpleadohorarioPeer::EMPLEADOHORARIO_DESCANSO)) $criteria->add(EmpleadohorarioPeer::EMPLEADOHORARIO_DESCANSO, $this->empleadohorario_descanso);
 
         return $criteria;
     }
@@ -981,6 +1043,7 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
         $copyObj->setEmpleadohorarioEntrada($this->getEmpleadohorarioEntrada());
         $copyObj->setEmpleadohorarioSalida($this->getEmpleadohorarioSalida());
         $copyObj->setEmpleadohorarioDia($this->getEmpleadohorarioDia());
+        $copyObj->setEmpleadohorarioDescanso($this->getEmpleadohorarioDescanso());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1101,6 +1164,7 @@ abstract class BaseEmpleadohorario extends BaseObject implements Persistent
         $this->empleadohorario_entrada = null;
         $this->empleadohorario_salida = null;
         $this->empleadohorario_dia = null;
+        $this->empleadohorario_descanso = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

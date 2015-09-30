@@ -49,6 +49,7 @@ class ConceptoincidenciaTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Empleadoreporte', 'Empleadoreporte', RelationMap::ONE_TO_MANY, array('idconceptoincidencia' => 'idconceptoincidencia', ), 'CASCADE', 'CASCADE', 'Empleadoreportes');
     } // buildRelations()
 
 } // ConceptoincidenciaTableMap

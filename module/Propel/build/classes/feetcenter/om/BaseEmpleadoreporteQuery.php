@@ -10,6 +10,7 @@
  * @method EmpleadoreporteQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
  * @method EmpleadoreporteQuery orderByIdempleado($order = Criteria::ASC) Order by the idempleado column
  * @method EmpleadoreporteQuery orderByIdempleadoreportado($order = Criteria::ASC) Order by the idempleadoreportado column
+ * @method EmpleadoreporteQuery orderByIdconceptoincidencia($order = Criteria::ASC) Order by the idconceptoincidencia column
  * @method EmpleadoreporteQuery orderByEmpleadoreporteFechacreacion($order = Criteria::ASC) Order by the empleadoreporte_fechacreacion column
  * @method EmpleadoreporteQuery orderByEmpleadoreporteComentario($order = Criteria::ASC) Order by the empleadoreporte_comentario column
  * @method EmpleadoreporteQuery orderByEmpleadoreporteFechasuceso($order = Criteria::ASC) Order by the empleadoreporte_fechasuceso column
@@ -18,6 +19,7 @@
  * @method EmpleadoreporteQuery groupByIdclinica() Group by the idclinica column
  * @method EmpleadoreporteQuery groupByIdempleado() Group by the idempleado column
  * @method EmpleadoreporteQuery groupByIdempleadoreportado() Group by the idempleadoreportado column
+ * @method EmpleadoreporteQuery groupByIdconceptoincidencia() Group by the idconceptoincidencia column
  * @method EmpleadoreporteQuery groupByEmpleadoreporteFechacreacion() Group by the empleadoreporte_fechacreacion column
  * @method EmpleadoreporteQuery groupByEmpleadoreporteComentario() Group by the empleadoreporte_comentario column
  * @method EmpleadoreporteQuery groupByEmpleadoreporteFechasuceso() Group by the empleadoreporte_fechasuceso column
@@ -29,6 +31,10 @@
  * @method EmpleadoreporteQuery leftJoinClinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Clinica relation
  * @method EmpleadoreporteQuery rightJoinClinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Clinica relation
  * @method EmpleadoreporteQuery innerJoinClinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Clinica relation
+ *
+ * @method EmpleadoreporteQuery leftJoinConceptoincidencia($relationAlias = null) Adds a LEFT JOIN clause to the query using the Conceptoincidencia relation
+ * @method EmpleadoreporteQuery rightJoinConceptoincidencia($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Conceptoincidencia relation
+ * @method EmpleadoreporteQuery innerJoinConceptoincidencia($relationAlias = null) Adds a INNER JOIN clause to the query using the Conceptoincidencia relation
  *
  * @method EmpleadoreporteQuery leftJoinEmpleadoRelatedByIdempleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the EmpleadoRelatedByIdempleado relation
  * @method EmpleadoreporteQuery rightJoinEmpleadoRelatedByIdempleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EmpleadoRelatedByIdempleado relation
@@ -44,6 +50,7 @@
  * @method Empleadoreporte findOneByIdclinica(int $idclinica) Return the first Empleadoreporte filtered by the idclinica column
  * @method Empleadoreporte findOneByIdempleado(int $idempleado) Return the first Empleadoreporte filtered by the idempleado column
  * @method Empleadoreporte findOneByIdempleadoreportado(int $idempleadoreportado) Return the first Empleadoreporte filtered by the idempleadoreportado column
+ * @method Empleadoreporte findOneByIdconceptoincidencia(int $idconceptoincidencia) Return the first Empleadoreporte filtered by the idconceptoincidencia column
  * @method Empleadoreporte findOneByEmpleadoreporteFechacreacion(string $empleadoreporte_fechacreacion) Return the first Empleadoreporte filtered by the empleadoreporte_fechacreacion column
  * @method Empleadoreporte findOneByEmpleadoreporteComentario(string $empleadoreporte_comentario) Return the first Empleadoreporte filtered by the empleadoreporte_comentario column
  * @method Empleadoreporte findOneByEmpleadoreporteFechasuceso(string $empleadoreporte_fechasuceso) Return the first Empleadoreporte filtered by the empleadoreporte_fechasuceso column
@@ -52,6 +59,7 @@
  * @method array findByIdclinica(int $idclinica) Return Empleadoreporte objects filtered by the idclinica column
  * @method array findByIdempleado(int $idempleado) Return Empleadoreporte objects filtered by the idempleado column
  * @method array findByIdempleadoreportado(int $idempleadoreportado) Return Empleadoreporte objects filtered by the idempleadoreportado column
+ * @method array findByIdconceptoincidencia(int $idconceptoincidencia) Return Empleadoreporte objects filtered by the idconceptoincidencia column
  * @method array findByEmpleadoreporteFechacreacion(string $empleadoreporte_fechacreacion) Return Empleadoreporte objects filtered by the empleadoreporte_fechacreacion column
  * @method array findByEmpleadoreporteComentario(string $empleadoreporte_comentario) Return Empleadoreporte objects filtered by the empleadoreporte_comentario column
  * @method array findByEmpleadoreporteFechasuceso(string $empleadoreporte_fechasuceso) Return Empleadoreporte objects filtered by the empleadoreporte_fechasuceso column
@@ -162,7 +170,7 @@ abstract class BaseEmpleadoreporteQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idempleadoreporte`, `idclinica`, `idempleado`, `idempleadoreportado`, `empleadoreporte_fechacreacion`, `empleadoreporte_comentario`, `empleadoreporte_fechasuceso` FROM `empleadoreporte` WHERE `idempleadoreporte` = :p0';
+        $sql = 'SELECT `idempleadoreporte`, `idclinica`, `idempleado`, `idempleadoreportado`, `idconceptoincidencia`, `empleadoreporte_fechacreacion`, `empleadoreporte_comentario`, `empleadoreporte_fechasuceso` FROM `empleadoreporte` WHERE `idempleadoreporte` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -426,6 +434,50 @@ abstract class BaseEmpleadoreporteQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the idconceptoincidencia column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdconceptoincidencia(1234); // WHERE idconceptoincidencia = 1234
+     * $query->filterByIdconceptoincidencia(array(12, 34)); // WHERE idconceptoincidencia IN (12, 34)
+     * $query->filterByIdconceptoincidencia(array('min' => 12)); // WHERE idconceptoincidencia >= 12
+     * $query->filterByIdconceptoincidencia(array('max' => 12)); // WHERE idconceptoincidencia <= 12
+     * </code>
+     *
+     * @see       filterByConceptoincidencia()
+     *
+     * @param     mixed $idconceptoincidencia The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EmpleadoreporteQuery The current query, for fluid interface
+     */
+    public function filterByIdconceptoincidencia($idconceptoincidencia = null, $comparison = null)
+    {
+        if (is_array($idconceptoincidencia)) {
+            $useMinMax = false;
+            if (isset($idconceptoincidencia['min'])) {
+                $this->addUsingAlias(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, $idconceptoincidencia['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idconceptoincidencia['max'])) {
+                $this->addUsingAlias(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, $idconceptoincidencia['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, $idconceptoincidencia, $comparison);
+    }
+
+    /**
      * Filter the query on the empleadoreporte_fechacreacion column
      *
      * Example usage:
@@ -614,6 +666,82 @@ abstract class BaseEmpleadoreporteQuery extends ModelCriteria
         return $this
             ->joinClinica($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Clinica', 'ClinicaQuery');
+    }
+
+    /**
+     * Filter the query by a related Conceptoincidencia object
+     *
+     * @param   Conceptoincidencia|PropelObjectCollection $conceptoincidencia The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoreporteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByConceptoincidencia($conceptoincidencia, $comparison = null)
+    {
+        if ($conceptoincidencia instanceof Conceptoincidencia) {
+            return $this
+                ->addUsingAlias(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, $conceptoincidencia->getIdconceptoincidencia(), $comparison);
+        } elseif ($conceptoincidencia instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, $conceptoincidencia->toKeyValue('PrimaryKey', 'Idconceptoincidencia'), $comparison);
+        } else {
+            throw new PropelException('filterByConceptoincidencia() only accepts arguments of type Conceptoincidencia or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Conceptoincidencia relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoreporteQuery The current query, for fluid interface
+     */
+    public function joinConceptoincidencia($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Conceptoincidencia');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Conceptoincidencia');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Conceptoincidencia relation Conceptoincidencia object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ConceptoincidenciaQuery A secondary query class using the current class as primary query
+     */
+    public function useConceptoincidenciaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinConceptoincidencia($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Conceptoincidencia', 'ConceptoincidenciaQuery');
     }
 
     /**

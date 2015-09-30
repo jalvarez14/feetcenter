@@ -48,6 +48,12 @@ abstract class BaseConceptoincidencia extends BaseObject implements Persistent
     protected $conceptoincidencia_descripcion;
 
     /**
+     * @var        PropelObjectCollection|Empleadoreporte[] Collection to store aggregation of Empleadoreporte objects.
+     */
+    protected $collEmpleadoreportes;
+    protected $collEmpleadoreportesPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -66,6 +72,12 @@ abstract class BaseConceptoincidencia extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $empleadoreportesScheduledForDeletion = null;
 
     /**
      * Get the [idconceptoincidencia] column value.
@@ -269,6 +281,8 @@ abstract class BaseConceptoincidencia extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collEmpleadoreportes = null;
+
         } // if (deep)
     }
 
@@ -391,6 +405,23 @@ abstract class BaseConceptoincidencia extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->empleadoreportesScheduledForDeletion !== null) {
+                if (!$this->empleadoreportesScheduledForDeletion->isEmpty()) {
+                    EmpleadoreporteQuery::create()
+                        ->filterByPrimaryKeys($this->empleadoreportesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->empleadoreportesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collEmpleadoreportes !== null) {
+                foreach ($this->collEmpleadoreportes as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -547,6 +578,14 @@ abstract class BaseConceptoincidencia extends BaseObject implements Persistent
             }
 
 
+                if ($this->collEmpleadoreportes !== null) {
+                    foreach ($this->collEmpleadoreportes as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -608,10 +647,11 @@ abstract class BaseConceptoincidencia extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['Conceptoincidencia'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -628,6 +668,11 @@ abstract class BaseConceptoincidencia extends BaseObject implements Persistent
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->collEmpleadoreportes) {
+                $result['Empleadoreportes'] = $this->collEmpleadoreportes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -776,6 +821,24 @@ abstract class BaseConceptoincidencia extends BaseObject implements Persistent
     {
         $copyObj->setConceptoincidenciaNombre($this->getConceptoincidenciaNombre());
         $copyObj->setConceptoincidenciaDescripcion($this->getConceptoincidenciaDescripcion());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            foreach ($this->getEmpleadoreportes() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addEmpleadoreporte($relObj->copy($deepCopy));
+                }
+            }
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdconceptoincidencia(NULL); // this is a auto-increment column, so set to default value
@@ -822,6 +885,322 @@ abstract class BaseConceptoincidencia extends BaseObject implements Persistent
         return self::$peer;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Empleadoreporte' == $relationName) {
+            $this->initEmpleadoreportes();
+        }
+    }
+
+    /**
+     * Clears out the collEmpleadoreportes collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Conceptoincidencia The current object (for fluent API support)
+     * @see        addEmpleadoreportes()
+     */
+    public function clearEmpleadoreportes()
+    {
+        $this->collEmpleadoreportes = null; // important to set this to null since that means it is uninitialized
+        $this->collEmpleadoreportesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collEmpleadoreportes collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialEmpleadoreportes($v = true)
+    {
+        $this->collEmpleadoreportesPartial = $v;
+    }
+
+    /**
+     * Initializes the collEmpleadoreportes collection.
+     *
+     * By default this just sets the collEmpleadoreportes collection to an empty array (like clearcollEmpleadoreportes());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initEmpleadoreportes($overrideExisting = true)
+    {
+        if (null !== $this->collEmpleadoreportes && !$overrideExisting) {
+            return;
+        }
+        $this->collEmpleadoreportes = new PropelObjectCollection();
+        $this->collEmpleadoreportes->setModel('Empleadoreporte');
+    }
+
+    /**
+     * Gets an array of Empleadoreporte objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Conceptoincidencia is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     * @throws PropelException
+     */
+    public function getEmpleadoreportes($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collEmpleadoreportesPartial && !$this->isNew();
+        if (null === $this->collEmpleadoreportes || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collEmpleadoreportes) {
+                // return empty collection
+                $this->initEmpleadoreportes();
+            } else {
+                $collEmpleadoreportes = EmpleadoreporteQuery::create(null, $criteria)
+                    ->filterByConceptoincidencia($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collEmpleadoreportesPartial && count($collEmpleadoreportes)) {
+                      $this->initEmpleadoreportes(false);
+
+                      foreach ($collEmpleadoreportes as $obj) {
+                        if (false == $this->collEmpleadoreportes->contains($obj)) {
+                          $this->collEmpleadoreportes->append($obj);
+                        }
+                      }
+
+                      $this->collEmpleadoreportesPartial = true;
+                    }
+
+                    $collEmpleadoreportes->getInternalIterator()->rewind();
+
+                    return $collEmpleadoreportes;
+                }
+
+                if ($partial && $this->collEmpleadoreportes) {
+                    foreach ($this->collEmpleadoreportes as $obj) {
+                        if ($obj->isNew()) {
+                            $collEmpleadoreportes[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collEmpleadoreportes = $collEmpleadoreportes;
+                $this->collEmpleadoreportesPartial = false;
+            }
+        }
+
+        return $this->collEmpleadoreportes;
+    }
+
+    /**
+     * Sets a collection of Empleadoreporte objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $empleadoreportes A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Conceptoincidencia The current object (for fluent API support)
+     */
+    public function setEmpleadoreportes(PropelCollection $empleadoreportes, PropelPDO $con = null)
+    {
+        $empleadoreportesToDelete = $this->getEmpleadoreportes(new Criteria(), $con)->diff($empleadoreportes);
+
+
+        $this->empleadoreportesScheduledForDeletion = $empleadoreportesToDelete;
+
+        foreach ($empleadoreportesToDelete as $empleadoreporteRemoved) {
+            $empleadoreporteRemoved->setConceptoincidencia(null);
+        }
+
+        $this->collEmpleadoreportes = null;
+        foreach ($empleadoreportes as $empleadoreporte) {
+            $this->addEmpleadoreporte($empleadoreporte);
+        }
+
+        $this->collEmpleadoreportes = $empleadoreportes;
+        $this->collEmpleadoreportesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Empleadoreporte objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Empleadoreporte objects.
+     * @throws PropelException
+     */
+    public function countEmpleadoreportes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collEmpleadoreportesPartial && !$this->isNew();
+        if (null === $this->collEmpleadoreportes || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collEmpleadoreportes) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getEmpleadoreportes());
+            }
+            $query = EmpleadoreporteQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByConceptoincidencia($this)
+                ->count($con);
+        }
+
+        return count($this->collEmpleadoreportes);
+    }
+
+    /**
+     * Method called to associate a Empleadoreporte object to this object
+     * through the Empleadoreporte foreign key attribute.
+     *
+     * @param    Empleadoreporte $l Empleadoreporte
+     * @return Conceptoincidencia The current object (for fluent API support)
+     */
+    public function addEmpleadoreporte(Empleadoreporte $l)
+    {
+        if ($this->collEmpleadoreportes === null) {
+            $this->initEmpleadoreportes();
+            $this->collEmpleadoreportesPartial = true;
+        }
+
+        if (!in_array($l, $this->collEmpleadoreportes->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddEmpleadoreporte($l);
+
+            if ($this->empleadoreportesScheduledForDeletion and $this->empleadoreportesScheduledForDeletion->contains($l)) {
+                $this->empleadoreportesScheduledForDeletion->remove($this->empleadoreportesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Empleadoreporte $empleadoreporte The empleadoreporte object to add.
+     */
+    protected function doAddEmpleadoreporte($empleadoreporte)
+    {
+        $this->collEmpleadoreportes[]= $empleadoreporte;
+        $empleadoreporte->setConceptoincidencia($this);
+    }
+
+    /**
+     * @param	Empleadoreporte $empleadoreporte The empleadoreporte object to remove.
+     * @return Conceptoincidencia The current object (for fluent API support)
+     */
+    public function removeEmpleadoreporte($empleadoreporte)
+    {
+        if ($this->getEmpleadoreportes()->contains($empleadoreporte)) {
+            $this->collEmpleadoreportes->remove($this->collEmpleadoreportes->search($empleadoreporte));
+            if (null === $this->empleadoreportesScheduledForDeletion) {
+                $this->empleadoreportesScheduledForDeletion = clone $this->collEmpleadoreportes;
+                $this->empleadoreportesScheduledForDeletion->clear();
+            }
+            $this->empleadoreportesScheduledForDeletion[]= clone $empleadoreporte;
+            $empleadoreporte->setConceptoincidencia(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Conceptoincidencia is new, it will return
+     * an empty collection; or if this Conceptoincidencia has previously
+     * been saved, it will retrieve related Empleadoreportes from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Conceptoincidencia.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     */
+    public function getEmpleadoreportesJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = EmpleadoreporteQuery::create(null, $criteria);
+        $query->joinWith('Clinica', $join_behavior);
+
+        return $this->getEmpleadoreportes($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Conceptoincidencia is new, it will return
+     * an empty collection; or if this Conceptoincidencia has previously
+     * been saved, it will retrieve related Empleadoreportes from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Conceptoincidencia.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     */
+    public function getEmpleadoreportesJoinEmpleadoRelatedByIdempleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = EmpleadoreporteQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleado', $join_behavior);
+
+        return $this->getEmpleadoreportes($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Conceptoincidencia is new, it will return
+     * an empty collection; or if this Conceptoincidencia has previously
+     * been saved, it will retrieve related Empleadoreportes from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Conceptoincidencia.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     */
+    public function getEmpleadoreportesJoinEmpleadoRelatedByIdempleadoreportado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = EmpleadoreporteQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleadoreportado', $join_behavior);
+
+        return $this->getEmpleadoreportes($query, $con);
+    }
+
     /**
      * Clears the current object and sets all attributes to their default values
      */
@@ -852,10 +1231,19 @@ abstract class BaseConceptoincidencia extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collEmpleadoreportes) {
+                foreach ($this->collEmpleadoreportes as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collEmpleadoreportes instanceof PropelCollection) {
+            $this->collEmpleadoreportes->clearIterator();
+        }
+        $this->collEmpleadoreportes = null;
     }
 
     /**

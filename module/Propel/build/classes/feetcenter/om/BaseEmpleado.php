@@ -132,12 +132,6 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     protected $empleado_sueldo;
 
     /**
-     * The value for the empleado_diadescanso field.
-     * @var        string
-     */
-    protected $empleado_diadescanso;
-
-    /**
      * The value for the empleado_foto field.
      * @var        string
      */
@@ -649,17 +643,6 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [empleado_diadescanso] column value.
-     *
-     * @return string
-     */
-    public function getEmpleadoDiadescanso()
-    {
-
-        return $this->empleado_diadescanso;
-    }
-
-    /**
      * Get the [empleado_foto] column value.
      *
      * @return string
@@ -1076,27 +1059,6 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     } // setEmpleadoSueldo()
 
     /**
-     * Set the value of [empleado_diadescanso] column.
-     *
-     * @param  string $v new value
-     * @return Empleado The current object (for fluent API support)
-     */
-    public function setEmpleadoDiadescanso($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->empleado_diadescanso !== $v) {
-            $this->empleado_diadescanso = $v;
-            $this->modifiedColumns[] = EmpleadoPeer::EMPLEADO_DIADESCANSO;
-        }
-
-
-        return $this;
-    } // setEmpleadoDiadescanso()
-
-    /**
      * Set the value of [empleado_foto] column.
      *
      * @param  string $v new value
@@ -1250,12 +1212,11 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->empleado_comprobantedomiclio = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
             $this->empleado_comprobanteidentificacion = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
             $this->empleado_sueldo = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-            $this->empleado_diadescanso = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
-            $this->empleado_foto = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-            $this->empleado_tipocomisionproducto = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
-            $this->empleado_cantidadcomisionproducto = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
-            $this->empleado_tipocomisionservicio = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
-            $this->empleado_cantidadcomisionservicio = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
+            $this->empleado_foto = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->empleado_tipocomisionproducto = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->empleado_cantidadcomisionproducto = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->empleado_tipocomisionservicio = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->empleado_cantidadcomisionservicio = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1265,7 +1226,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 23; // 23 = EmpleadoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 22; // 22 = EmpleadoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Empleado object", $e);
@@ -1870,9 +1831,6 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_SUELDO)) {
             $modifiedColumns[':p' . $index++]  = '`empleado_sueldo`';
         }
-        if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_DIADESCANSO)) {
-            $modifiedColumns[':p' . $index++]  = '`empleado_diadescanso`';
-        }
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_FOTO)) {
             $modifiedColumns[':p' . $index++]  = '`empleado_foto`';
         }
@@ -1949,9 +1907,6 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                         break;
                     case '`empleado_sueldo`':
                         $stmt->bindValue($identifier, $this->empleado_sueldo, PDO::PARAM_STR);
-                        break;
-                    case '`empleado_diadescanso`':
-                        $stmt->bindValue($identifier, $this->empleado_diadescanso, PDO::PARAM_STR);
                         break;
                     case '`empleado_foto`':
                         $stmt->bindValue($identifier, $this->empleado_foto, PDO::PARAM_STR);
@@ -2298,21 +2253,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 return $this->getEmpleadoSueldo();
                 break;
             case 17:
-                return $this->getEmpleadoDiadescanso();
-                break;
-            case 18:
                 return $this->getEmpleadoFoto();
                 break;
-            case 19:
+            case 18:
                 return $this->getEmpleadoTipocomisionproducto();
                 break;
-            case 20:
+            case 19:
                 return $this->getEmpleadoCantidadcomisionproducto();
                 break;
-            case 21:
+            case 20:
                 return $this->getEmpleadoTipocomisionservicio();
                 break;
-            case 22:
+            case 21:
                 return $this->getEmpleadoCantidadcomisionservicio();
                 break;
             default:
@@ -2361,12 +2313,11 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $keys[14] => $this->getEmpleadoComprobantedomiclio(),
             $keys[15] => $this->getEmpleadoComprobanteidentificacion(),
             $keys[16] => $this->getEmpleadoSueldo(),
-            $keys[17] => $this->getEmpleadoDiadescanso(),
-            $keys[18] => $this->getEmpleadoFoto(),
-            $keys[19] => $this->getEmpleadoTipocomisionproducto(),
-            $keys[20] => $this->getEmpleadoCantidadcomisionproducto(),
-            $keys[21] => $this->getEmpleadoTipocomisionservicio(),
-            $keys[22] => $this->getEmpleadoCantidadcomisionservicio(),
+            $keys[17] => $this->getEmpleadoFoto(),
+            $keys[18] => $this->getEmpleadoTipocomisionproducto(),
+            $keys[19] => $this->getEmpleadoCantidadcomisionproducto(),
+            $keys[20] => $this->getEmpleadoTipocomisionservicio(),
+            $keys[21] => $this->getEmpleadoCantidadcomisionservicio(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2514,21 +2465,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 $this->setEmpleadoSueldo($value);
                 break;
             case 17:
-                $this->setEmpleadoDiadescanso($value);
-                break;
-            case 18:
                 $this->setEmpleadoFoto($value);
                 break;
-            case 19:
+            case 18:
                 $this->setEmpleadoTipocomisionproducto($value);
                 break;
-            case 20:
+            case 19:
                 $this->setEmpleadoCantidadcomisionproducto($value);
                 break;
-            case 21:
+            case 20:
                 $this->setEmpleadoTipocomisionservicio($value);
                 break;
-            case 22:
+            case 21:
                 $this->setEmpleadoCantidadcomisionservicio($value);
                 break;
         } // switch()
@@ -2572,12 +2520,11 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if (array_key_exists($keys[14], $arr)) $this->setEmpleadoComprobantedomiclio($arr[$keys[14]]);
         if (array_key_exists($keys[15], $arr)) $this->setEmpleadoComprobanteidentificacion($arr[$keys[15]]);
         if (array_key_exists($keys[16], $arr)) $this->setEmpleadoSueldo($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setEmpleadoDiadescanso($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setEmpleadoFoto($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setEmpleadoTipocomisionproducto($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setEmpleadoCantidadcomisionproducto($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setEmpleadoTipocomisionservicio($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setEmpleadoCantidadcomisionservicio($arr[$keys[22]]);
+        if (array_key_exists($keys[17], $arr)) $this->setEmpleadoFoto($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setEmpleadoTipocomisionproducto($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setEmpleadoCantidadcomisionproducto($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setEmpleadoTipocomisionservicio($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setEmpleadoCantidadcomisionservicio($arr[$keys[21]]);
     }
 
     /**
@@ -2606,7 +2553,6 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO)) $criteria->add(EmpleadoPeer::EMPLEADO_COMPROBANTEDOMICLIO, $this->empleado_comprobantedomiclio);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION)) $criteria->add(EmpleadoPeer::EMPLEADO_COMPROBANTEIDENTIFICACION, $this->empleado_comprobanteidentificacion);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_SUELDO)) $criteria->add(EmpleadoPeer::EMPLEADO_SUELDO, $this->empleado_sueldo);
-        if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_DIADESCANSO)) $criteria->add(EmpleadoPeer::EMPLEADO_DIADESCANSO, $this->empleado_diadescanso);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_FOTO)) $criteria->add(EmpleadoPeer::EMPLEADO_FOTO, $this->empleado_foto);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_TIPOCOMISIONPRODUCTO)) $criteria->add(EmpleadoPeer::EMPLEADO_TIPOCOMISIONPRODUCTO, $this->empleado_tipocomisionproducto);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONPRODUCTO)) $criteria->add(EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONPRODUCTO, $this->empleado_cantidadcomisionproducto);
@@ -2691,7 +2637,6 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $copyObj->setEmpleadoComprobantedomiclio($this->getEmpleadoComprobantedomiclio());
         $copyObj->setEmpleadoComprobanteidentificacion($this->getEmpleadoComprobanteidentificacion());
         $copyObj->setEmpleadoSueldo($this->getEmpleadoSueldo());
-        $copyObj->setEmpleadoDiadescanso($this->getEmpleadoDiadescanso());
         $copyObj->setEmpleadoFoto($this->getEmpleadoFoto());
         $copyObj->setEmpleadoTipocomisionproducto($this->getEmpleadoTipocomisionproducto());
         $copyObj->setEmpleadoCantidadcomisionproducto($this->getEmpleadoCantidadcomisionproducto());
@@ -4930,6 +4875,31 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         return $this->getEmpleadoreportesRelatedByIdempleado($query, $con);
     }
 
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related EmpleadoreportesRelatedByIdempleado from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     */
+    public function getEmpleadoreportesRelatedByIdempleadoJoinConceptoincidencia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = EmpleadoreporteQuery::create(null, $criteria);
+        $query->joinWith('Conceptoincidencia', $join_behavior);
+
+        return $this->getEmpleadoreportesRelatedByIdempleado($query, $con);
+    }
+
     /**
      * Clears out the collEmpleadoreportesRelatedByIdempleadoreportado collection
      *
@@ -5176,6 +5146,31 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     {
         $query = EmpleadoreporteQuery::create(null, $criteria);
         $query->joinWith('Clinica', $join_behavior);
+
+        return $this->getEmpleadoreportesRelatedByIdempleadoreportado($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related EmpleadoreportesRelatedByIdempleadoreportado from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Empleadoreporte[] List of Empleadoreporte objects
+     */
+    public function getEmpleadoreportesRelatedByIdempleadoreportadoJoinConceptoincidencia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = EmpleadoreporteQuery::create(null, $criteria);
+        $query->joinWith('Conceptoincidencia', $join_behavior);
 
         return $this->getEmpleadoreportesRelatedByIdempleadoreportado($query, $con);
     }
@@ -7552,7 +7547,6 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $this->empleado_comprobantedomiclio = null;
         $this->empleado_comprobanteidentificacion = null;
         $this->empleado_sueldo = null;
-        $this->empleado_diadescanso = null;
         $this->empleado_foto = null;
         $this->empleado_tipocomisionproducto = null;
         $this->empleado_cantidadcomisionproducto = null;

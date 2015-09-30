@@ -186,7 +186,6 @@
     <column name="empleado_comprobantedomiclio" phpName="EmpleadoComprobantedomiclio" type="LONGVARCHAR" required="false"/>
     <column name="empleado_comprobanteidentificacion" phpName="EmpleadoComprobanteidentificacion" type="LONGVARCHAR" required="false"/>
     <column name="empleado_sueldo" phpName="EmpleadoSueldo" type="DECIMAL" size="10" scale="2" required="false"/>
-    <column name="empleado_diadescanso" phpName="EmpleadoDiadescanso" type="CHAR" sqlType="enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo')" required="true"/>
     <column name="empleado_foto" phpName="EmpleadoFoto" type="LONGVARCHAR" required="false"/>
     <column name="empleado_tipocomisionproducto" phpName="EmpleadoTipocomisionproducto" type="CHAR" sqlType="enum('porcentaje','cantidad')" required="false"/>
     <column name="empleado_cantidadcomisionproducto" phpName="EmpleadoCantidadcomisionproducto" type="DECIMAL" size="10" scale="2" required="false"/>
@@ -247,6 +246,7 @@
     <column name="empleadohorario_entrada" phpName="EmpleadohorarioEntrada" type="TIME" required="true"/>
     <column name="empleadohorario_salida" phpName="EmpleadohorarioSalida" type="TIME" required="true"/>
     <column name="empleadohorario_dia" phpName="EmpleadohorarioDia" type="CHAR" sqlType="enum('lunes','martes','miercoles','jueves','viernes','sabado','domingo')" required="true"/>
+    <column name="empleadohorario_descanso" phpName="EmpleadohorarioDescanso" type="BOOLEAN" size="1" required="true"/>
     <foreign-key foreignTable="empleado" name="idempleado_empleadohorario" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idempleado" foreign="idempleado"/>
     </foreign-key>
@@ -285,11 +285,15 @@
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
     <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
     <column name="idempleadoreportado" phpName="Idempleadoreportado" type="INTEGER" required="true"/>
+    <column name="idconceptoincidencia" phpName="Idconceptoincidencia" type="INTEGER" required="true"/>
     <column name="empleadoreporte_fechacreacion" phpName="EmpleadoreporteFechacreacion" type="TIMESTAMP" required="true"/>
     <column name="empleadoreporte_comentario" phpName="EmpleadoreporteComentario" type="LONGVARCHAR" required="true"/>
     <column name="empleadoreporte_fechasuceso" phpName="EmpleadoreporteFechasuceso" type="DATE" required="true"/>
     <foreign-key foreignTable="clinica" name="idclinica_empleadoreporte" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <foreign-key foreignTable="conceptoincidencia" name="idconceptoincidencia_empleadoreporte" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idconceptoincidencia" foreign="idconceptoincidencia"/>
     </foreign-key>
     <foreign-key foreignTable="empleado" name="idempleado_empleadoreporte" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idempleado" foreign="idempleado"/>
@@ -305,6 +309,9 @@
     </index>
     <index name="idempleadoreportado">
       <index-column name="idempleadoreportado"/>
+    </index>
+    <index name="idconceptoincidencia">
+      <index-column name="idconceptoincidencia"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
@@ -615,6 +622,18 @@
     <column name="idservicio" phpName="Idservicio" type="INTEGER" required="true"/>
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
     <column name="servicioclinica_precio" phpName="ServicioclinicaPrecio" type="DECIMAL" size="10" scale="2" required="true"/>
+    <foreign-key foreignTable="clinica" name="idclinica_servicioclinica" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <foreign-key foreignTable="servicio" name="idservicio_servicioclinica" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idservicio" foreign="idservicio"/>
+    </foreign-key>
+    <index name="idservicio">
+      <index-column name="idservicio"/>
+    </index>
+    <index name="idclinica">
+      <index-column name="idclinica"/>
+    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

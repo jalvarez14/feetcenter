@@ -61,6 +61,7 @@ class ClinicaTableMap extends TableMap
         $this->addRelation('Paciente', 'Paciente', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Pacientes');
         $this->addRelation('Pacienteseguimiento', 'Pacienteseguimiento', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Pacienteseguimientos');
         $this->addRelation('Productoclinica', 'Productoclinica', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Productoclinicas');
+        $this->addRelation('Servicioclinica', 'Servicioclinica', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Servicioclinicas');
         $this->addRelation('TransferenciaRelatedByIdclinicadestinataria', 'Transferencia', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinicadestinataria', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdclinicadestinataria');
         $this->addRelation('TransferenciaRelatedByIdclinicaremitente', 'Transferencia', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinicaremitente', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdclinicaremitente');
         $this->addRelation('Visita', 'Visita', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Visitas');

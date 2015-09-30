@@ -442,6 +442,9 @@ abstract class BaseServicioPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in ServicioclinicaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ServicioclinicaPeer::clearInstancePool();
         // Invalidate objects in ServicioinsumoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ServicioinsumoPeer::clearInstancePool();
@@ -778,6 +781,12 @@ abstract class BaseServicioPeer
         $objects = ServicioPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
+
+            // delete related Servicioclinica objects
+            $criteria = new Criteria(ServicioclinicaPeer::DATABASE_NAME);
+
+            $criteria->add(ServicioclinicaPeer::IDSERVICIO, $obj->getIdservicio());
+            $affectedRows += ServicioclinicaPeer::doDelete($criteria, $con);
 
             // delete related Servicioinsumo objects
             $criteria = new Criteria(ServicioinsumoPeer::DATABASE_NAME);

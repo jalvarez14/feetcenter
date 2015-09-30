@@ -62,6 +62,10 @@
  * @method ClinicaQuery rightJoinProductoclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productoclinica relation
  * @method ClinicaQuery innerJoinProductoclinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Productoclinica relation
  *
+ * @method ClinicaQuery leftJoinServicioclinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Servicioclinica relation
+ * @method ClinicaQuery rightJoinServicioclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Servicioclinica relation
+ * @method ClinicaQuery innerJoinServicioclinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Servicioclinica relation
+ *
  * @method ClinicaQuery leftJoinTransferenciaRelatedByIdclinicadestinataria($relationAlias = null) Adds a LEFT JOIN clause to the query using the TransferenciaRelatedByIdclinicadestinataria relation
  * @method ClinicaQuery rightJoinTransferenciaRelatedByIdclinicadestinataria($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TransferenciaRelatedByIdclinicadestinataria relation
  * @method ClinicaQuery innerJoinTransferenciaRelatedByIdclinicadestinataria($relationAlias = null) Adds a INNER JOIN clause to the query using the TransferenciaRelatedByIdclinicadestinataria relation
@@ -1179,6 +1183,80 @@ abstract class BaseClinicaQuery extends ModelCriteria
         return $this
             ->joinProductoclinica($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Productoclinica', 'ProductoclinicaQuery');
+    }
+
+    /**
+     * Filter the query by a related Servicioclinica object
+     *
+     * @param   Servicioclinica|PropelObjectCollection $servicioclinica  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ClinicaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByServicioclinica($servicioclinica, $comparison = null)
+    {
+        if ($servicioclinica instanceof Servicioclinica) {
+            return $this
+                ->addUsingAlias(ClinicaPeer::IDCLINICA, $servicioclinica->getIdclinica(), $comparison);
+        } elseif ($servicioclinica instanceof PropelObjectCollection) {
+            return $this
+                ->useServicioclinicaQuery()
+                ->filterByPrimaryKeys($servicioclinica->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByServicioclinica() only accepts arguments of type Servicioclinica or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Servicioclinica relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ClinicaQuery The current query, for fluid interface
+     */
+    public function joinServicioclinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Servicioclinica');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Servicioclinica');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Servicioclinica relation Servicioclinica object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ServicioclinicaQuery A secondary query class using the current class as primary query
+     */
+    public function useServicioclinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinServicioclinica($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Servicioclinica', 'ServicioclinicaQuery');
     }
 
     /**

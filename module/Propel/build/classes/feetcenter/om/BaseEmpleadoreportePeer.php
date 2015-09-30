@@ -24,13 +24,13 @@ abstract class BaseEmpleadoreportePeer
     const TM_CLASS = 'EmpleadoreporteTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the idempleadoreporte field */
     const IDEMPLEADOREPORTE = 'empleadoreporte.idempleadoreporte';
@@ -43,6 +43,9 @@ abstract class BaseEmpleadoreportePeer
 
     /** the column name for the idempleadoreportado field */
     const IDEMPLEADOREPORTADO = 'empleadoreporte.idempleadoreportado';
+
+    /** the column name for the idconceptoincidencia field */
+    const IDCONCEPTOINCIDENCIA = 'empleadoreporte.idconceptoincidencia';
 
     /** the column name for the empleadoreporte_fechacreacion field */
     const EMPLEADOREPORTE_FECHACREACION = 'empleadoreporte.empleadoreporte_fechacreacion';
@@ -72,12 +75,12 @@ abstract class BaseEmpleadoreportePeer
      * e.g. EmpleadoreportePeer::$fieldNames[EmpleadoreportePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleadoreporte', 'Idclinica', 'Idempleado', 'Idempleadoreportado', 'EmpleadoreporteFechacreacion', 'EmpleadoreporteComentario', 'EmpleadoreporteFechasuceso', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadoreporte', 'idclinica', 'idempleado', 'idempleadoreportado', 'empleadoreporteFechacreacion', 'empleadoreporteComentario', 'empleadoreporteFechasuceso', ),
-        BasePeer::TYPE_COLNAME => array (EmpleadoreportePeer::IDEMPLEADOREPORTE, EmpleadoreportePeer::IDCLINICA, EmpleadoreportePeer::IDEMPLEADO, EmpleadoreportePeer::IDEMPLEADOREPORTADO, EmpleadoreportePeer::EMPLEADOREPORTE_FECHACREACION, EmpleadoreportePeer::EMPLEADOREPORTE_COMENTARIO, EmpleadoreportePeer::EMPLEADOREPORTE_FECHASUCESO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOREPORTE', 'IDCLINICA', 'IDEMPLEADO', 'IDEMPLEADOREPORTADO', 'EMPLEADOREPORTE_FECHACREACION', 'EMPLEADOREPORTE_COMENTARIO', 'EMPLEADOREPORTE_FECHASUCESO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleadoreporte', 'idclinica', 'idempleado', 'idempleadoreportado', 'empleadoreporte_fechacreacion', 'empleadoreporte_comentario', 'empleadoreporte_fechasuceso', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleadoreporte', 'Idclinica', 'Idempleado', 'Idempleadoreportado', 'Idconceptoincidencia', 'EmpleadoreporteFechacreacion', 'EmpleadoreporteComentario', 'EmpleadoreporteFechasuceso', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadoreporte', 'idclinica', 'idempleado', 'idempleadoreportado', 'idconceptoincidencia', 'empleadoreporteFechacreacion', 'empleadoreporteComentario', 'empleadoreporteFechasuceso', ),
+        BasePeer::TYPE_COLNAME => array (EmpleadoreportePeer::IDEMPLEADOREPORTE, EmpleadoreportePeer::IDCLINICA, EmpleadoreportePeer::IDEMPLEADO, EmpleadoreportePeer::IDEMPLEADOREPORTADO, EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, EmpleadoreportePeer::EMPLEADOREPORTE_FECHACREACION, EmpleadoreportePeer::EMPLEADOREPORTE_COMENTARIO, EmpleadoreportePeer::EMPLEADOREPORTE_FECHASUCESO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOREPORTE', 'IDCLINICA', 'IDEMPLEADO', 'IDEMPLEADOREPORTADO', 'IDCONCEPTOINCIDENCIA', 'EMPLEADOREPORTE_FECHACREACION', 'EMPLEADOREPORTE_COMENTARIO', 'EMPLEADOREPORTE_FECHASUCESO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleadoreporte', 'idclinica', 'idempleado', 'idempleadoreportado', 'idconceptoincidencia', 'empleadoreporte_fechacreacion', 'empleadoreporte_comentario', 'empleadoreporte_fechasuceso', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -87,12 +90,12 @@ abstract class BaseEmpleadoreportePeer
      * e.g. EmpleadoreportePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleadoreporte' => 0, 'Idclinica' => 1, 'Idempleado' => 2, 'Idempleadoreportado' => 3, 'EmpleadoreporteFechacreacion' => 4, 'EmpleadoreporteComentario' => 5, 'EmpleadoreporteFechasuceso' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadoreporte' => 0, 'idclinica' => 1, 'idempleado' => 2, 'idempleadoreportado' => 3, 'empleadoreporteFechacreacion' => 4, 'empleadoreporteComentario' => 5, 'empleadoreporteFechasuceso' => 6, ),
-        BasePeer::TYPE_COLNAME => array (EmpleadoreportePeer::IDEMPLEADOREPORTE => 0, EmpleadoreportePeer::IDCLINICA => 1, EmpleadoreportePeer::IDEMPLEADO => 2, EmpleadoreportePeer::IDEMPLEADOREPORTADO => 3, EmpleadoreportePeer::EMPLEADOREPORTE_FECHACREACION => 4, EmpleadoreportePeer::EMPLEADOREPORTE_COMENTARIO => 5, EmpleadoreportePeer::EMPLEADOREPORTE_FECHASUCESO => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOREPORTE' => 0, 'IDCLINICA' => 1, 'IDEMPLEADO' => 2, 'IDEMPLEADOREPORTADO' => 3, 'EMPLEADOREPORTE_FECHACREACION' => 4, 'EMPLEADOREPORTE_COMENTARIO' => 5, 'EMPLEADOREPORTE_FECHASUCESO' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleadoreporte' => 0, 'idclinica' => 1, 'idempleado' => 2, 'idempleadoreportado' => 3, 'empleadoreporte_fechacreacion' => 4, 'empleadoreporte_comentario' => 5, 'empleadoreporte_fechasuceso' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleadoreporte' => 0, 'Idclinica' => 1, 'Idempleado' => 2, 'Idempleadoreportado' => 3, 'Idconceptoincidencia' => 4, 'EmpleadoreporteFechacreacion' => 5, 'EmpleadoreporteComentario' => 6, 'EmpleadoreporteFechasuceso' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadoreporte' => 0, 'idclinica' => 1, 'idempleado' => 2, 'idempleadoreportado' => 3, 'idconceptoincidencia' => 4, 'empleadoreporteFechacreacion' => 5, 'empleadoreporteComentario' => 6, 'empleadoreporteFechasuceso' => 7, ),
+        BasePeer::TYPE_COLNAME => array (EmpleadoreportePeer::IDEMPLEADOREPORTE => 0, EmpleadoreportePeer::IDCLINICA => 1, EmpleadoreportePeer::IDEMPLEADO => 2, EmpleadoreportePeer::IDEMPLEADOREPORTADO => 3, EmpleadoreportePeer::IDCONCEPTOINCIDENCIA => 4, EmpleadoreportePeer::EMPLEADOREPORTE_FECHACREACION => 5, EmpleadoreportePeer::EMPLEADOREPORTE_COMENTARIO => 6, EmpleadoreportePeer::EMPLEADOREPORTE_FECHASUCESO => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOREPORTE' => 0, 'IDCLINICA' => 1, 'IDEMPLEADO' => 2, 'IDEMPLEADOREPORTADO' => 3, 'IDCONCEPTOINCIDENCIA' => 4, 'EMPLEADOREPORTE_FECHACREACION' => 5, 'EMPLEADOREPORTE_COMENTARIO' => 6, 'EMPLEADOREPORTE_FECHASUCESO' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleadoreporte' => 0, 'idclinica' => 1, 'idempleado' => 2, 'idempleadoreportado' => 3, 'idconceptoincidencia' => 4, 'empleadoreporte_fechacreacion' => 5, 'empleadoreporte_comentario' => 6, 'empleadoreporte_fechasuceso' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -170,6 +173,7 @@ abstract class BaseEmpleadoreportePeer
             $criteria->addSelectColumn(EmpleadoreportePeer::IDCLINICA);
             $criteria->addSelectColumn(EmpleadoreportePeer::IDEMPLEADO);
             $criteria->addSelectColumn(EmpleadoreportePeer::IDEMPLEADOREPORTADO);
+            $criteria->addSelectColumn(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA);
             $criteria->addSelectColumn(EmpleadoreportePeer::EMPLEADOREPORTE_FECHACREACION);
             $criteria->addSelectColumn(EmpleadoreportePeer::EMPLEADOREPORTE_COMENTARIO);
             $criteria->addSelectColumn(EmpleadoreportePeer::EMPLEADOREPORTE_FECHASUCESO);
@@ -178,6 +182,7 @@ abstract class BaseEmpleadoreportePeer
             $criteria->addSelectColumn($alias . '.idclinica');
             $criteria->addSelectColumn($alias . '.idempleado');
             $criteria->addSelectColumn($alias . '.idempleadoreportado');
+            $criteria->addSelectColumn($alias . '.idconceptoincidencia');
             $criteria->addSelectColumn($alias . '.empleadoreporte_fechacreacion');
             $criteria->addSelectColumn($alias . '.empleadoreporte_comentario');
             $criteria->addSelectColumn($alias . '.empleadoreporte_fechasuceso');
@@ -534,6 +539,57 @@ abstract class BaseEmpleadoreportePeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related Conceptoincidencia table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinConceptoincidencia(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(EmpleadoreportePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            EmpleadoreportePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(EmpleadoreportePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(EmpleadoreportePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining the related EmpleadoRelatedByIdempleado table
      *
      * @param      Criteria $criteria
@@ -690,6 +746,73 @@ abstract class BaseEmpleadoreportePeer
                 } // if obj2 already loaded
 
                 // Add the $obj1 (Empleadoreporte) to $obj2 (Clinica)
+                $obj2->addEmpleadoreporte($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Empleadoreporte objects pre-filled with their Conceptoincidencia objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Empleadoreporte objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinConceptoincidencia(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EmpleadoreportePeer::DATABASE_NAME);
+        }
+
+        EmpleadoreportePeer::addSelectColumns($criteria);
+        $startcol = EmpleadoreportePeer::NUM_HYDRATE_COLUMNS;
+        ConceptoincidenciaPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EmpleadoreportePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EmpleadoreportePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = EmpleadoreportePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EmpleadoreportePeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = ConceptoincidenciaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = ConceptoincidenciaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = ConceptoincidenciaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    ConceptoincidenciaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Empleadoreporte) to $obj2 (Conceptoincidencia)
                 $obj2->addEmpleadoreporte($obj1);
 
             } // if joined row was not null
@@ -874,6 +997,8 @@ abstract class BaseEmpleadoreportePeer
 
         $criteria->addJoin(EmpleadoreportePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
+        $criteria->addJoin(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $join_behavior);
+
         $criteria->addJoin(EmpleadoreportePeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
         $criteria->addJoin(EmpleadoreportePeer::IDEMPLEADOREPORTADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
@@ -915,13 +1040,18 @@ abstract class BaseEmpleadoreportePeer
         ClinicaPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
 
-        EmpleadoPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+        ConceptoincidenciaPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ConceptoincidenciaPeer::NUM_HYDRATE_COLUMNS;
 
         EmpleadoPeer::addSelectColumns($criteria);
         $startcol5 = $startcol4 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
 
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(EmpleadoreportePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $join_behavior);
 
         $criteria->addJoin(EmpleadoreportePeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
@@ -962,22 +1092,22 @@ abstract class BaseEmpleadoreportePeer
                 $obj2->addEmpleadoreporte($obj1);
             } // if joined row not null
 
-            // Add objects for joined Empleado rows
+            // Add objects for joined Conceptoincidencia rows
 
-            $key3 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            $key3 = ConceptoincidenciaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
             if ($key3 !== null) {
-                $obj3 = EmpleadoPeer::getInstanceFromPool($key3);
+                $obj3 = ConceptoincidenciaPeer::getInstanceFromPool($key3);
                 if (!$obj3) {
 
-                    $cls = EmpleadoPeer::getOMClass();
+                    $cls = ConceptoincidenciaPeer::getOMClass();
 
                     $obj3 = new $cls();
                     $obj3->hydrate($row, $startcol3);
-                    EmpleadoPeer::addInstanceToPool($obj3, $key3);
+                    ConceptoincidenciaPeer::addInstanceToPool($obj3, $key3);
                 } // if obj3 loaded
 
-                // Add the $obj1 (Empleadoreporte) to the collection in $obj3 (Empleado)
-                $obj3->addEmpleadoreporteRelatedByIdempleado($obj1);
+                // Add the $obj1 (Empleadoreporte) to the collection in $obj3 (Conceptoincidencia)
+                $obj3->addEmpleadoreporte($obj1);
             } // if joined row not null
 
             // Add objects for joined Empleado rows
@@ -995,7 +1125,25 @@ abstract class BaseEmpleadoreportePeer
                 } // if obj4 loaded
 
                 // Add the $obj1 (Empleadoreporte) to the collection in $obj4 (Empleado)
-                $obj4->addEmpleadoreporteRelatedByIdempleadoreportado($obj1);
+                $obj4->addEmpleadoreporteRelatedByIdempleado($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Empleado rows
+
+            $key5 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+            if ($key5 !== null) {
+                $obj5 = EmpleadoPeer::getInstanceFromPool($key5);
+                if (!$obj5) {
+
+                    $cls = EmpleadoPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    EmpleadoPeer::addInstanceToPool($obj5, $key5);
+                } // if obj5 loaded
+
+                // Add the $obj1 (Empleadoreporte) to the collection in $obj5 (Empleado)
+                $obj5->addEmpleadoreporteRelatedByIdempleadoreportado($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -1041,6 +1189,63 @@ abstract class BaseEmpleadoreportePeer
         if ($con === null) {
             $con = Propel::getConnection(EmpleadoreportePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
+
+        $criteria->addJoin(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $join_behavior);
+
+        $criteria->addJoin(EmpleadoreportePeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $criteria->addJoin(EmpleadoreportePeer::IDEMPLEADOREPORTADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Conceptoincidencia table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptConceptoincidencia(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(EmpleadoreportePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            EmpleadoreportePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(EmpleadoreportePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(EmpleadoreportePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(EmpleadoreportePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
         $criteria->addJoin(EmpleadoreportePeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
@@ -1097,6 +1302,8 @@ abstract class BaseEmpleadoreportePeer
 
         $criteria->addJoin(EmpleadoreportePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
+        $criteria->addJoin(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1148,6 +1355,8 @@ abstract class BaseEmpleadoreportePeer
 
         $criteria->addJoin(EmpleadoreportePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
+        $criteria->addJoin(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1185,11 +1394,16 @@ abstract class BaseEmpleadoreportePeer
         EmpleadoreportePeer::addSelectColumns($criteria);
         $startcol2 = EmpleadoreportePeer::NUM_HYDRATE_COLUMNS;
 
-        EmpleadoPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+        ConceptoincidenciaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ConceptoincidenciaPeer::NUM_HYDRATE_COLUMNS;
 
         EmpleadoPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $join_behavior);
 
         $criteria->addJoin(EmpleadoreportePeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
@@ -1213,22 +1427,22 @@ abstract class BaseEmpleadoreportePeer
                 EmpleadoreportePeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined Empleado rows
+                // Add objects for joined Conceptoincidencia rows
 
-                $key2 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                $key2 = ConceptoincidenciaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
                 if ($key2 !== null) {
-                    $obj2 = EmpleadoPeer::getInstanceFromPool($key2);
+                    $obj2 = ConceptoincidenciaPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
 
-                        $cls = EmpleadoPeer::getOMClass();
+                        $cls = ConceptoincidenciaPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    EmpleadoPeer::addInstanceToPool($obj2, $key2);
+                    ConceptoincidenciaPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (Empleadoreporte) to the collection in $obj2 (Empleado)
-                $obj2->addEmpleadoreporteRelatedByIdempleado($obj1);
+                // Add the $obj1 (Empleadoreporte) to the collection in $obj2 (Conceptoincidencia)
+                $obj2->addEmpleadoreporte($obj1);
 
             } // if joined row is not null
 
@@ -1247,7 +1461,148 @@ abstract class BaseEmpleadoreportePeer
                 } // if $obj3 already loaded
 
                 // Add the $obj1 (Empleadoreporte) to the collection in $obj3 (Empleado)
-                $obj3->addEmpleadoreporteRelatedByIdempleadoreportado($obj1);
+                $obj3->addEmpleadoreporteRelatedByIdempleado($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Empleado rows
+
+                $key4 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = EmpleadoPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = EmpleadoPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    EmpleadoPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (Empleadoreporte) to the collection in $obj4 (Empleado)
+                $obj4->addEmpleadoreporteRelatedByIdempleadoreportado($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Empleadoreporte objects pre-filled with all related objects except Conceptoincidencia.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Empleadoreporte objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptConceptoincidencia(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EmpleadoreportePeer::DATABASE_NAME);
+        }
+
+        EmpleadoreportePeer::addSelectColumns($criteria);
+        $startcol2 = EmpleadoreportePeer::NUM_HYDRATE_COLUMNS;
+
+        ClinicaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EmpleadoreportePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(EmpleadoreportePeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $criteria->addJoin(EmpleadoreportePeer::IDEMPLEADOREPORTADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EmpleadoreportePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EmpleadoreportePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = EmpleadoreportePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EmpleadoreportePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Clinica rows
+
+                $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Empleadoreporte) to the collection in $obj2 (Clinica)
+                $obj2->addEmpleadoreporte($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Empleado rows
+
+                $key3 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = EmpleadoPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = EmpleadoPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    EmpleadoPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Empleadoreporte) to the collection in $obj3 (Empleado)
+                $obj3->addEmpleadoreporteRelatedByIdempleado($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Empleado rows
+
+                $key4 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = EmpleadoPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = EmpleadoPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    EmpleadoPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (Empleadoreporte) to the collection in $obj4 (Empleado)
+                $obj4->addEmpleadoreporteRelatedByIdempleadoreportado($obj1);
 
             } // if joined row is not null
 
@@ -1286,7 +1641,12 @@ abstract class BaseEmpleadoreportePeer
         ClinicaPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
 
+        ConceptoincidenciaPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ConceptoincidenciaPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(EmpleadoreportePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1325,6 +1685,25 @@ abstract class BaseEmpleadoreportePeer
 
             } // if joined row is not null
 
+                // Add objects for joined Conceptoincidencia rows
+
+                $key3 = ConceptoincidenciaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ConceptoincidenciaPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ConceptoincidenciaPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ConceptoincidenciaPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Empleadoreporte) to the collection in $obj3 (Conceptoincidencia)
+                $obj3->addEmpleadoreporte($obj1);
+
+            } // if joined row is not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -1360,7 +1739,12 @@ abstract class BaseEmpleadoreportePeer
         ClinicaPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
 
+        ConceptoincidenciaPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ConceptoincidenciaPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(EmpleadoreportePeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(EmpleadoreportePeer::IDCONCEPTOINCIDENCIA, ConceptoincidenciaPeer::IDCONCEPTOINCIDENCIA, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1396,6 +1780,25 @@ abstract class BaseEmpleadoreportePeer
 
                 // Add the $obj1 (Empleadoreporte) to the collection in $obj2 (Clinica)
                 $obj2->addEmpleadoreporte($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Conceptoincidencia rows
+
+                $key3 = ConceptoincidenciaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ConceptoincidenciaPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ConceptoincidenciaPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ConceptoincidenciaPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Empleadoreporte) to the collection in $obj3 (Conceptoincidencia)
+                $obj3->addEmpleadoreporte($obj1);
 
             } // if joined row is not null
 
