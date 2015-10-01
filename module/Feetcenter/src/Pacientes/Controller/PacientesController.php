@@ -65,6 +65,20 @@ class PacientesController extends AbstractActionController
             
             $entity->save();
             
+            $entity->getGrupopersonalsRelatedByIdpaciente()->delete();
+            
+            //Ahora los pacientes
+            if(isset($post_data['pacientes'])){
+                foreach ($post_data['pacientes'] as $idpaciente){
+                    $grupo_paciente = new \Grupopersonal();
+                    $grupo_paciente->setIdpaciente($entity->getIdpaciente())
+                                   ->setIdpacienteagregado($idpaciente)
+                                   ->save();
+                }
+            }
+            
+            
+            
             //Agregamos un mensaje
             $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 
@@ -106,9 +120,13 @@ class PacientesController extends AbstractActionController
         //Le ponemos los datos de nuestro lugar a nuestro formulario
         $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
         
+        //Los pacientes deñ grupo
+        $pacientes = $entity->getGrupopersonalsRelatedByIdpaciente();
+                
         return new ViewModel(array(
             'id'  => $idpaciente,
             'form' => $form,
+            'pacientes' => $pacientes,
         ));
     }
     
@@ -234,7 +252,6 @@ class PacientesController extends AbstractActionController
             }
             
             //Setiamos las fechas
-            
              $entity->setPacienteFecharegistro(new \DateTime());
              
              
@@ -244,6 +261,18 @@ class PacientesController extends AbstractActionController
             
             
             $entity->save();
+            
+            //Ahora los pacientes
+            if(isset($post_data['pacientes'])){
+                foreach ($post_data['pacientes'] as $idpaciente){
+                    $grupo_paciente = new \Grupopersonal();
+                    $grupo_paciente->setIdpaciente($entity->getIdpaciente())
+                                   ->setIdpacienteagregado($idpaciente)
+                                   ->save();
+                }
+            }
+            
+            
             
             //Agregamos un mensaje
             $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');

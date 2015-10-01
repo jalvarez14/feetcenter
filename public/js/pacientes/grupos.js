@@ -59,7 +59,7 @@
         plugin.init = function(){
             
             settings = plugin.settings = $.extend({}, defaults, options);
-
+             
             
         }
         
@@ -67,11 +67,11 @@
          
             var pacientes_array = new Array();
             
-            $container.find('tbody tr').each(function(){
+            $container.find('#tabla_pacientes tbody tr').each(function(){
                 var id = $(this).attr('id');
                 pacientes_array.push(parseInt(id));
             });
-            
+           
             $container.find('tbody tr').find('a').on('click',function(){
                 var id = $(this).closest('tr').attr('id');
 
@@ -130,7 +130,7 @@
                             $(this).closest('tr').remove();
                         });
                         
-                        $container.find('tbody').append(tr);
+                        $container.find('#tabla_pacientes tbody').append(tr);
                         
                         container.find('input[name=paciente_autocomplete]').tokenInput("clear");
                         
