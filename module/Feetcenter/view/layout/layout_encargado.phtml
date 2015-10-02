@@ -13,7 +13,7 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('css/style.css'))
-
+                        ->prependStylesheet($this->basePath('bower_components/fullcalendar/fullcalendar.css'))
                         ->prependStylesheet($this->basePath('plugins/bootstrap-timepicker-0.5.1/css/bootstrap-timepicker.css'))
                         ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input-facebook.css'))
                         ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input-mac.css'))
@@ -28,7 +28,6 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
-
                 ->prependFile($this->basePath('plugins/bootstrap-timepicker-0.5.1/js/bootstrap-timepicker.js'))
                 ->prependFile($this->basePath('plugins/fancyBox/source/jquery.fancybox.js'))
 
@@ -53,7 +52,7 @@
             <nav id="top_header_resources" class="navbar navbar-left">
                 <ul>
                     <li><img width="60" height="60" src="/img/logo/top_logo.png"></li>
-                    <li><a href="#">Agenda</a></li>
+                    <li><a href="/agenda">Agenda</a></li>
                     <li><a href="#" data-tools="dropdown" data-target="#dropdown-pacientes">Pacientes</a></li>
                     <li><a href="#" data-tools="dropdown" data-target="#dropdown-ventas">Ventas</a></li>
                     <li><a href="#"  data-tools="dropdown" data-target="#dropdown-inventarios">Inventarios</a></li>

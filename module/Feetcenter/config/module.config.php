@@ -441,6 +441,19 @@ return array(
                    ),
                 ),
             ),
+            /*
+             * MODULO AGENDA
+             */
+            'agenda' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/agenda[/:action][/:id]',
+                    'defaults' => array(
+                        'controller'    => 'Agenda\Controller\Agenda',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -496,6 +509,8 @@ return array(
             'Pacientes\Controller\Pacientes' => 'Pacientes\Controller\PacientesController',
             'Pacientes\Controller\Grupos' => 'Pacientes\Controller\GruposController',
             'Pacientes\Controller\Seguimiento' => 'Pacientes\Controller\SeguimientoController',
+            //Agenda
+            'Agenda\Controller\Agenda' => 'Agenda\Controller\AgendaController',
         ),
     ),
     'view_manager' => array(

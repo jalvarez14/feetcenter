@@ -1,0 +1,21 @@
+<div id="agenda_container">
+    <h1>Agenda</h1>
+    <?php if(count($successMessages)) :?>
+        <div class="units-row">
+            <?php foreach ($successMessages as $message) :?>
+                <div class="unit-100">    
+                    <div class="tools-alert tools-alert-green">
+                        <?php echo $message?>
+                    </div> 
+                </div>
+            <?php endforeach;?>
+        </div>
+    <?php endif;?>
+    <div id='calendar'></div>
+</div>
+<script src='/bower_components/fullcalendar/fullcalendar.js'></script>
+<script src='/js/agenda/agenda.js'></script>
+<script>
+    var agenda = $('#agenda_container').agenda();
+    agenda.init();
+</script>

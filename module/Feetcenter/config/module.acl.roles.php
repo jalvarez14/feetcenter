@@ -47,6 +47,8 @@ return array(
             'seguimiento/nuevo',
             'seguimiento/editar',
             'seguimiento/eliminar',
+            //Agenda
+            'agenda',
         ),
         "deny"=>array(
              
@@ -85,6 +87,8 @@ return array(
             'seguimiento/nuevo',
             'seguimiento/editar',
             'seguimiento/eliminar',
+            //Agenda
+            'agenda',
         ),
         "deny"=>array(
             //Inventarios
@@ -102,6 +106,7 @@ return array(
             'catalogos/incidencia',
             //Compras
             'compras',
+            
         ),
     ),
     'Pedicurista' => array(
@@ -118,6 +123,8 @@ return array(
             'pacientes/filter',
             'seguimiento',
             'seguimiento/ver',
+            //Agenda
+            'agenda',
             
         ),
         "deny"=>array(
