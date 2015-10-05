@@ -155,3 +155,13 @@ table tr a {
 table.dataTable tbody tr.warning{
     background: #fff4cc;
 }
+
+/*AGENDA*/
+.fc-cell-content{
+    text-align: center;
+}
+
+.fc-resource-area{
+    width: 216px;
+    max-width: 215px;
+}

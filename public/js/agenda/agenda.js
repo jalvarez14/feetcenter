@@ -50,6 +50,40 @@
         /*
         * Private methods
         */
+       
+        var initCalendar = function(){
+            
+             var clinica_select =   $("select[name=idclinica]").multipleSelect('getSelects');
+             settings.idclinica = clinica_select[0];
+             
+             $container.find('#calendar').fullCalendar('destroy');
+             
+             
+             //Inicializamos el calendario
+             //Inicializamos nuestro calendario
+             $container.find('#calendar').fullCalendar({
+                 selectable:true,
+                 schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+                 defaultView: 'timelineDay',
+                 resourceLabelText: 'Empleados',
+                 views: {
+                    timelineDay: {
+                        scrollTime:'08:00:00',
+                        slotDuration:'00:15:00',
+                        slotLabelInterval: '00:15',
+                    },
+                },
+                select:function( start, end, jsEvent, view, resoruce){
+                    console.log(start.format('D/M/YYYY H:m'));
+                    console.log(end.format('D/M/YYYY H:m'));
+                },
+                resources: '/agenda/getpedicuristasbyclinica/'+settings.idclinica,
+                
+
+             });
+             
+             
+        }
 
        
        /*
@@ -60,15 +94,19 @@
             
             settings = plugin.settings = $.extend({}, defaults, options);
             
-            //Inicializamos nuestro calendario
-             $container.find('#calendar').fullCalendar({
-                 firstDay:1,
-                 header:{
-                     left:   'title',
-                     center: 'asdad',
-                     right:  'agendaDay'                     
-                 }
-             });
+            //Inicializamos nuestro multiple select
+            $container.find("select[name=idclinica]").multipleSelect({
+                single:true,   
+                onClick : initCalendar,
+            });
+            
+            $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.idclinica]);
+            
+            initCalendar();
+            
+            
+            
+            
             
         }
 

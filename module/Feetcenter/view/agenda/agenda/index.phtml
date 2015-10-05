@@ -11,11 +11,26 @@
             <?php endforeach;?>
         </div>
     <?php endif;?>
+    <div class="units-row">
+        <div class="unit-30">
+            Clinica
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
     <div id='calendar'></div>
 </div>
-<script src='/bower_components/fullcalendar/fullcalendar.js'></script>
+<script src='bower_components/fullcalendar/moment/min/moment.min.js'></script>
+<script src='bower_components/fullcalendar/fullcalendar/dist/fullcalendar.js'></script>
+<script src='bower_components/fullcalendar/fullcalendar-scheduler/dist/scheduler.js'></script>
+<script src='bower_components/fullcalendar/fullcalendar/dist/lang/es.js'></script>
 <script src='/js/agenda/agenda.js'></script>
 <script>
-    var agenda = $('#agenda_container').agenda();
+    var agenda = $('#agenda_container').agenda({
+        idclinica: <?php echo $idclinica?>,
+    });
     agenda.init();
 </script>

@@ -16,7 +16,46 @@ class AgendaController extends AbstractActionController
 {
     public function indexAction()
     {
-                        
-        return new ViewModel();
+        $sesion = new \Shared\Session\AouthSession();
+        $idrol = $sesion->getIdrol();
+        
+        //Administrador
+        if($idrol == 1){
+            $clinicas = \ClinicaQuery::create()->find();
+            $idclinica = 1;
+        }else{
+            $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica());
+            $idclinica = $sesion->getIdClinica();
+        }
+             
+        return new ViewModel(array(
+            'clinicas' => $clinicas,
+            'idclinica' => $idclinica,
+        ));
     }
+    
+    public function getPedicuristasbyclinicaAction(){
+        
+        $idclinica = $this->params()->fromRoute('id');       
+        $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
+        
+        //Damos formato
+        $resources = array();
+        $empleado = new \Clinicaempleado();
+        foreach ($empleados as $empleado){
+            $tmp['id'] = $empleado->getEmpleado()->getIdempleado();
+            $tmp['title'] = $empleado->getEmpleado()->getEmpleadoNombre();
+            if(is_null($empleado->getEmpleado()->getEmpleadoFoto())){
+                $tmp['img'] = '/img/empleados/default.jpg';
+            }else{
+                $tmp['img'] = $empleado->getEmpleado()->getEmpleadoFoto();
+            }
+            $resources[] = $tmp;
+        }
+        return $this->response->setContent(json_encode($resources));
+
+
+    }
+ 
+    
 }
