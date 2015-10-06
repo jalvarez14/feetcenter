@@ -44,7 +44,7 @@ class AgendaController extends AbstractActionController
         $empleado = new \Clinicaempleado();
         foreach ($empleados as $empleado){
             $tmp['id'] = $empleado->getEmpleado()->getIdempleado();
-            $tmp['title'] = $empleado->getEmpleado()->getEmpleadoNombre();
+            $tmp['name'] = $empleado->getEmpleado()->getEmpleadoNombre();
             if(is_null($empleado->getEmpleado()->getEmpleadoFoto())){
                 $tmp['img'] = '/img/empleados/default.jpg';
             }else{

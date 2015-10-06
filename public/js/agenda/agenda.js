@@ -61,25 +61,15 @@
              
              //Inicializamos el calendario
              //Inicializamos nuestro calendario
-             $container.find('#calendar').fullCalendar({
-                 selectable:true,
-                 schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-                 defaultView: 'timelineDay',
-                 resourceLabelText: 'Empleados',
-                 views: {
-                    timelineDay: {
-                        scrollTime:'08:00:00',
-                        slotDuration:'00:15:00',
-                        slotLabelInterval: '00:15',
-                    },
-                },
-                select:function( start, end, jsEvent, view, resoruce){
-                    console.log(start.format('D/M/YYYY H:m'));
-                    console.log(end.format('D/M/YYYY H:m'));
-                },
-                resources: '/agenda/getpedicuristasbyclinica/'+settings.idclinica,
-                
-
+             $('#calendar').fullCalendar({
+                 allDaySlot:false,
+                 defaultView: 'resourceDay',
+                 scrollTime: '08:00:00',
+                 slotDuration: '00:15:00',
+                 selectHelper: true,
+                 selectable: true,
+                 resources: '/agenda/getpedicuristasbyclinica/'+settings.idclinica,
+                 
              });
              
              

@@ -13,8 +13,7 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('css/style.css'))
-                        ->prependStylesheet($this->basePath('bower_components/fullcalendar/fullcalendar/dist/fullcalendar.css'))
-                        ->prependStylesheet($this->basePath('bower_components/fullcalendar/fullcalendar-scheduler/dist/scheduler.css'))
+                        ->prependStylesheet($this->basePath('plugins/fullcalendar/fullcalendar.css'))
                         ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input-facebook.css'))
                         ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input-mac.css'))
                         ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input.css'))
@@ -42,7 +41,7 @@
             ->prependFile($this->basePath('js/plugin/numeric.js'))     
             ->prependFile($this->basePath('js/form.js'))
             ->prependFile($this->basePath('js/kube.min.js'))
-            ->prependFile($this->basePath('bower_components/fullcalendar/jquery/dist/jquery.min.js'));
+            ->prependFile($this->basePath('js/jquery.min.js'));
         ?>
 
     </head>
