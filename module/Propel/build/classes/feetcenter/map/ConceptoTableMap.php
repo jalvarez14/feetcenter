@@ -36,7 +36,7 @@ class ConceptoTableMap extends TableMap
         $this->setPhpName('Concepto');
         $this->setClassname('Concepto');
         $this->setPackage('feetcenter');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idconcepto', 'Idconcepto', 'INTEGER', true, null, null);
         $this->addColumn('concepto_nombre', 'ConceptoNombre', 'VARCHAR', true, 255, null);

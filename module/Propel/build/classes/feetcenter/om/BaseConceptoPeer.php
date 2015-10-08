@@ -519,6 +519,10 @@ abstract class BaseConceptoPeer
             $criteria = $values->buildCriteria(); // build Criteria from Concepto object
         }
 
+        if ($criteria->containsKey(ConceptoPeer::IDCONCEPTO) && $criteria->keyContainsValue(ConceptoPeer::IDCONCEPTO) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ConceptoPeer::IDCONCEPTO.')');
+        }
+
 
         // Set the correct dbName
         $criteria->setDbName(ConceptoPeer::DATABASE_NAME);

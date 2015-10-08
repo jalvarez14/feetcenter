@@ -115,6 +115,9 @@ return array (
   'BaseVisitadetalle' => 'feetcenter/om/BaseVisitadetalle.php',
   'BaseVisitadetallePeer' => 'feetcenter/om/BaseVisitadetallePeer.php',
   'BaseVisitadetalleQuery' => 'feetcenter/om/BaseVisitadetalleQuery.php',
+  'BaseVisitapago' => 'feetcenter/om/BaseVisitapago.php',
+  'BaseVisitapagoPeer' => 'feetcenter/om/BaseVisitapagoPeer.php',
+  'BaseVisitapagoQuery' => 'feetcenter/om/BaseVisitapagoQuery.php',
   'Canalcomunicacion' => 'feetcenter/Canalcomunicacion.php',
   'CanalcomunicacionPeer' => 'feetcenter/CanalcomunicacionPeer.php',
   'CanalcomunicacionQuery' => 'feetcenter/CanalcomunicacionQuery.php',
@@ -267,4 +270,8 @@ return array (
   'VisitadetallePeer' => 'feetcenter/VisitadetallePeer.php',
   'VisitadetalleQuery' => 'feetcenter/VisitadetalleQuery.php',
   'VisitadetalleTableMap' => 'feetcenter/map/VisitadetalleTableMap.php',
+  'Visitapago' => 'feetcenter/Visitapago.php',
+  'VisitapagoPeer' => 'feetcenter/VisitapagoPeer.php',
+  'VisitapagoQuery' => 'feetcenter/VisitapagoQuery.php',
+  'VisitapagoTableMap' => 'feetcenter/map/VisitapagoTableMap.php',
 );

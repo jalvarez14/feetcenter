@@ -156,7 +156,7 @@ DROP TABLE IF EXISTS `concepto`;
 
 CREATE TABLE `concepto`
 (
-    `idconcepto` INTEGER NOT NULL,
+    `idconcepto` INTEGER NOT NULL AUTO_INCREMENT,
     `concepto_nombre` VARCHAR(255) NOT NULL,
     `concepto_descripcion` TEXT NOT NULL,
     PRIMARY KEY (`idconcepto`)
@@ -964,8 +964,6 @@ CREATE TABLE `visita`
     `visita_status` enum('por confirmar','confimada','cancelo','no se presento','reprogramda','en servicio','terminado') NOT NULL,
     `visita_estatuspago` enum('pagada','no pagada'),
     `visita_total` DECIMAL(10,2),
-    `visita_metodopago` enum('efectivo','tarjeta'),
-    `visita_pagoreferencia` TEXT,
     PRIMARY KEY (`idvisita`),
     INDEX `idempleadocreador` (`idempleadocreador`),
     INDEX `idempleado` (`idempleado`),
@@ -1024,6 +1022,29 @@ CREATE TABLE `visitadetalle`
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idvisita_visitadetalle`
+        FOREIGN KEY (`idvisita`)
+        REFERENCES `visita` (`idvisita`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- visitapago
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `visitapago`;
+
+CREATE TABLE `visitapago`
+(
+    `idvisitapago` INTEGER NOT NULL AUTO_INCREMENT,
+    `idvisita` INTEGER NOT NULL,
+    `visitapago_tipo` enum('efectivo','tarjeta','tarjeta de puntos') NOT NULL,
+    `visitapago_cantidad` DECIMAL(10,2) NOT NULL,
+    `visitapago_fecha` DATETIME NOT NULL,
+    `visitapago_referencia` TEXT,
+    PRIMARY KEY (`idvisitapago`),
+    INDEX `idvisita` (`idvisita`),
+    CONSTRAINT `idvisita_visitapago`
         FOREIGN KEY (`idvisita`)
         REFERENCES `visita` (`idvisita`)
         ON UPDATE CASCADE

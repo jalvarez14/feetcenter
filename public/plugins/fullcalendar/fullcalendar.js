@@ -5249,7 +5249,7 @@ function AgendaEventRenderer() {
 				"'" +
 				"position:absolute;" +
 				"top:" + seg.top + "px;" +
-				"left:" + seg.left + "px;" +
+				"left:" + seg.left  + "px;" +
 				skinCss +
 				"'" +
 			">" +
@@ -6738,7 +6738,7 @@ function ResourceView(element, calendar, viewName) {
 					if (selectionHelper) {
 						slotBind(selectionHelper);
 						slotContainer.append(selectionHelper);
-						setOuterWidth(selectionHelper, rect.width, true); // needs to be after appended
+						setOuterWidth(selectionHelper, rect.width + 3, true); // needs to be after appended
 						setOuterHeight(selectionHelper, rect.height, true);
 					}
 				}
@@ -7167,9 +7167,9 @@ function ResourceEventRenderer() {
 			width = right - left;
 
 			seg.top = top;
-			seg.left = left;
-			seg.outerWidth = width;
-			seg.outerHeight = bottom - top;
+			seg.left = left - 2;
+			seg.outerWidth = width + 13;
+			seg.outerHeight = bottom - top + 3;
 			html += slotSegHtml(event, seg);
 		}
 

@@ -1,3 +1,19 @@
+<style>
+    .disable {
+
+      background-color: rgb(255, 190, 190);
+
+    }
+    
+    .fc-widget-header{
+        background-color: #FFF;
+    }
+    
+    .agenda_descanso{
+        cursor: not-allowed;
+        width: 100%;
+    }
+</style>
 <div id="agenda_container">
     <h1>Agenda</h1>
     <?php if(count($successMessages)) :?>
@@ -23,6 +39,7 @@
     </div>
     <div id='calendar'></div>
 </div>
+<script src="/plugins/fullcalendar/moment.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.1/moment.min.js"></script>
 <script src="/plugins/fullcalendar/fullcalendar.js"></script>

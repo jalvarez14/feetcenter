@@ -111,7 +111,7 @@
     </vendor>
   </table>
   <table name="concepto" phpName="Concepto" idMethod="native">
-    <column name="idconcepto" phpName="Idconcepto" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="idconcepto" phpName="Idconcepto" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="concepto_nombre" phpName="ConceptoNombre" type="VARCHAR" size="255" required="true"/>
     <column name="concepto_descripcion" phpName="ConceptoDescripcion" type="LONGVARCHAR" required="true"/>
     <vendor type="mysql">
@@ -739,8 +739,6 @@
     <column name="visita_status" phpName="VisitaStatus" type="CHAR" sqlType="enum('por confirmar','confimada','cancelo','no se presento','reprogramda','en servicio','terminado')" required="true"/>
     <column name="visita_estatuspago" phpName="VisitaEstatuspago" type="CHAR" sqlType="enum('pagada','no pagada')" required="false"/>
     <column name="visita_total" phpName="VisitaTotal" type="DECIMAL" size="10" scale="2" required="false"/>
-    <column name="visita_metodopago" phpName="VisitaMetodopago" type="CHAR" sqlType="enum('efectivo','tarjeta')" required="false"/>
-    <column name="visita_pagoreferencia" phpName="VisitaPagoreferencia" type="LONGVARCHAR" required="false"/>
     <foreign-key foreignTable="clinica" name="idclinica_visita" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
     </foreign-key>
@@ -793,6 +791,23 @@
     <index name="idservicioclinica">
       <index-column name="idservicioclinica"/>
     </index>
+    <index name="idvisita">
+      <index-column name="idvisita"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="visitapago" phpName="Visitapago" idMethod="native">
+    <column name="idvisitapago" phpName="Idvisitapago" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idvisita" phpName="Idvisita" type="INTEGER" required="true"/>
+    <column name="visitapago_tipo" phpName="VisitapagoTipo" type="CHAR" sqlType="enum('efectivo','tarjeta','tarjeta de puntos')" required="true"/>
+    <column name="visitapago_cantidad" phpName="VisitapagoCantidad" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="visitapago_fecha" phpName="VisitapagoFecha" type="TIMESTAMP" required="true"/>
+    <column name="visitapago_referencia" phpName="VisitapagoReferencia" type="LONGVARCHAR" required="false"/>
+    <foreign-key foreignTable="visita" name="idvisita_visitapago" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idvisita" foreign="idvisita"/>
+    </foreign-key>
     <index name="idvisita">
       <index-column name="idvisita"/>
     </index>

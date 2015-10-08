@@ -18,8 +18,6 @@
  * @method VisitaQuery orderByVisitaStatus($order = Criteria::ASC) Order by the visita_status column
  * @method VisitaQuery orderByVisitaEstatuspago($order = Criteria::ASC) Order by the visita_estatuspago column
  * @method VisitaQuery orderByVisitaTotal($order = Criteria::ASC) Order by the visita_total column
- * @method VisitaQuery orderByVisitaMetodopago($order = Criteria::ASC) Order by the visita_metodopago column
- * @method VisitaQuery orderByVisitaPagoreferencia($order = Criteria::ASC) Order by the visita_pagoreferencia column
  *
  * @method VisitaQuery groupByIdvisita() Group by the idvisita column
  * @method VisitaQuery groupByIdempleado() Group by the idempleado column
@@ -33,8 +31,6 @@
  * @method VisitaQuery groupByVisitaStatus() Group by the visita_status column
  * @method VisitaQuery groupByVisitaEstatuspago() Group by the visita_estatuspago column
  * @method VisitaQuery groupByVisitaTotal() Group by the visita_total column
- * @method VisitaQuery groupByVisitaMetodopago() Group by the visita_metodopago column
- * @method VisitaQuery groupByVisitaPagoreferencia() Group by the visita_pagoreferencia column
  *
  * @method VisitaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method VisitaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -60,6 +56,10 @@
  * @method VisitaQuery rightJoinVisitadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Visitadetalle relation
  * @method VisitaQuery innerJoinVisitadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Visitadetalle relation
  *
+ * @method VisitaQuery leftJoinVisitapago($relationAlias = null) Adds a LEFT JOIN clause to the query using the Visitapago relation
+ * @method VisitaQuery rightJoinVisitapago($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Visitapago relation
+ * @method VisitaQuery innerJoinVisitapago($relationAlias = null) Adds a INNER JOIN clause to the query using the Visitapago relation
+ *
  * @method Visita findOne(PropelPDO $con = null) Return the first Visita matching the query
  * @method Visita findOneOrCreate(PropelPDO $con = null) Return the first Visita matching the query, or a new Visita object populated from the query conditions when no match is found
  *
@@ -74,8 +74,6 @@
  * @method Visita findOneByVisitaStatus(string $visita_status) Return the first Visita filtered by the visita_status column
  * @method Visita findOneByVisitaEstatuspago(string $visita_estatuspago) Return the first Visita filtered by the visita_estatuspago column
  * @method Visita findOneByVisitaTotal(string $visita_total) Return the first Visita filtered by the visita_total column
- * @method Visita findOneByVisitaMetodopago(string $visita_metodopago) Return the first Visita filtered by the visita_metodopago column
- * @method Visita findOneByVisitaPagoreferencia(string $visita_pagoreferencia) Return the first Visita filtered by the visita_pagoreferencia column
  *
  * @method array findByIdvisita(int $idvisita) Return Visita objects filtered by the idvisita column
  * @method array findByIdempleado(int $idempleado) Return Visita objects filtered by the idempleado column
@@ -89,8 +87,6 @@
  * @method array findByVisitaStatus(string $visita_status) Return Visita objects filtered by the visita_status column
  * @method array findByVisitaEstatuspago(string $visita_estatuspago) Return Visita objects filtered by the visita_estatuspago column
  * @method array findByVisitaTotal(string $visita_total) Return Visita objects filtered by the visita_total column
- * @method array findByVisitaMetodopago(string $visita_metodopago) Return Visita objects filtered by the visita_metodopago column
- * @method array findByVisitaPagoreferencia(string $visita_pagoreferencia) Return Visita objects filtered by the visita_pagoreferencia column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -198,7 +194,7 @@ abstract class BaseVisitaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_fecha`, `visita_hora`, `visita_status`, `visita_estatuspago`, `visita_total`, `visita_metodopago`, `visita_pagoreferencia` FROM `visita` WHERE `idvisita` = :p0';
+        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_fecha`, `visita_hora`, `visita_status`, `visita_estatuspago`, `visita_total` FROM `visita` WHERE `idvisita` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -736,64 +732,6 @@ abstract class BaseVisitaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the visita_metodopago column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByVisitaMetodopago('fooValue');   // WHERE visita_metodopago = 'fooValue'
-     * $query->filterByVisitaMetodopago('%fooValue%'); // WHERE visita_metodopago LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $visitaMetodopago The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return VisitaQuery The current query, for fluid interface
-     */
-    public function filterByVisitaMetodopago($visitaMetodopago = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($visitaMetodopago)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $visitaMetodopago)) {
-                $visitaMetodopago = str_replace('*', '%', $visitaMetodopago);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(VisitaPeer::VISITA_METODOPAGO, $visitaMetodopago, $comparison);
-    }
-
-    /**
-     * Filter the query on the visita_pagoreferencia column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByVisitaPagoreferencia('fooValue');   // WHERE visita_pagoreferencia = 'fooValue'
-     * $query->filterByVisitaPagoreferencia('%fooValue%'); // WHERE visita_pagoreferencia LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $visitaPagoreferencia The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return VisitaQuery The current query, for fluid interface
-     */
-    public function filterByVisitaPagoreferencia($visitaPagoreferencia = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($visitaPagoreferencia)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $visitaPagoreferencia)) {
-                $visitaPagoreferencia = str_replace('*', '%', $visitaPagoreferencia);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(VisitaPeer::VISITA_PAGOREFERENCIA, $visitaPagoreferencia, $comparison);
-    }
-
-    /**
      * Filter the query by a related Clinica object
      *
      * @param   Clinica|PropelObjectCollection $clinica The related object(s) to use as filter
@@ -1169,6 +1107,80 @@ abstract class BaseVisitaQuery extends ModelCriteria
         return $this
             ->joinVisitadetalle($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Visitadetalle', 'VisitadetalleQuery');
+    }
+
+    /**
+     * Filter the query by a related Visitapago object
+     *
+     * @param   Visitapago|PropelObjectCollection $visitapago  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 VisitaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByVisitapago($visitapago, $comparison = null)
+    {
+        if ($visitapago instanceof Visitapago) {
+            return $this
+                ->addUsingAlias(VisitaPeer::IDVISITA, $visitapago->getIdvisita(), $comparison);
+        } elseif ($visitapago instanceof PropelObjectCollection) {
+            return $this
+                ->useVisitapagoQuery()
+                ->filterByPrimaryKeys($visitapago->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByVisitapago() only accepts arguments of type Visitapago or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Visitapago relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function joinVisitapago($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Visitapago');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Visitapago');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Visitapago relation Visitapago object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   VisitapagoQuery A secondary query class using the current class as primary query
+     */
+    public function useVisitapagoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinVisitapago($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Visitapago', 'VisitapagoQuery');
     }
 
     /**

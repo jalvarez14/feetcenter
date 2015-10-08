@@ -102,18 +102,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
     protected $visita_total;
 
     /**
-     * The value for the visita_metodopago field.
-     * @var        string
-     */
-    protected $visita_metodopago;
-
-    /**
-     * The value for the visita_pagoreferencia field.
-     * @var        string
-     */
-    protected $visita_pagoreferencia;
-
-    /**
      * @var        Clinica
      */
     protected $aClinica;
@@ -140,6 +128,12 @@ abstract class BaseVisita extends BaseObject implements Persistent
     protected $collVisitadetallesPartial;
 
     /**
+     * @var        PropelObjectCollection|Visitapago[] Collection to store aggregation of Visitapago objects.
+     */
+    protected $collVisitapagos;
+    protected $collVisitapagosPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -164,6 +158,12 @@ abstract class BaseVisita extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $visitadetallesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $visitapagosScheduledForDeletion = null;
 
     /**
      * Get the [idvisita] column value.
@@ -324,28 +324,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
     {
 
         return $this->visita_total;
-    }
-
-    /**
-     * Get the [visita_metodopago] column value.
-     *
-     * @return string
-     */
-    public function getVisitaMetodopago()
-    {
-
-        return $this->visita_metodopago;
-    }
-
-    /**
-     * Get the [visita_pagoreferencia] column value.
-     *
-     * @return string
-     */
-    public function getVisitaPagoreferencia()
-    {
-
-        return $this->visita_pagoreferencia;
     }
 
     /**
@@ -619,48 +597,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
     } // setVisitaTotal()
 
     /**
-     * Set the value of [visita_metodopago] column.
-     *
-     * @param  string $v new value
-     * @return Visita The current object (for fluent API support)
-     */
-    public function setVisitaMetodopago($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->visita_metodopago !== $v) {
-            $this->visita_metodopago = $v;
-            $this->modifiedColumns[] = VisitaPeer::VISITA_METODOPAGO;
-        }
-
-
-        return $this;
-    } // setVisitaMetodopago()
-
-    /**
-     * Set the value of [visita_pagoreferencia] column.
-     *
-     * @param  string $v new value
-     * @return Visita The current object (for fluent API support)
-     */
-    public function setVisitaPagoreferencia($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->visita_pagoreferencia !== $v) {
-            $this->visita_pagoreferencia = $v;
-            $this->modifiedColumns[] = VisitaPeer::VISITA_PAGOREFERENCIA;
-        }
-
-
-        return $this;
-    } // setVisitaPagoreferencia()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -704,8 +640,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $this->visita_status = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->visita_estatuspago = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->visita_total = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->visita_metodopago = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->visita_pagoreferencia = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -715,7 +649,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 14; // 14 = VisitaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = VisitaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Visita object", $e);
@@ -794,6 +728,8 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $this->aEmpleadoRelatedByIdempleadocreador = null;
             $this->aPaciente = null;
             $this->collVisitadetalles = null;
+
+            $this->collVisitapagos = null;
 
         } // if (deep)
     }
@@ -969,6 +905,23 @@ abstract class BaseVisita extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->visitapagosScheduledForDeletion !== null) {
+                if (!$this->visitapagosScheduledForDeletion->isEmpty()) {
+                    VisitapagoQuery::create()
+                        ->filterByPrimaryKeys($this->visitapagosScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->visitapagosScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collVisitapagos !== null) {
+                foreach ($this->collVisitapagos as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -1031,12 +984,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_TOTAL)) {
             $modifiedColumns[':p' . $index++]  = '`visita_total`';
         }
-        if ($this->isColumnModified(VisitaPeer::VISITA_METODOPAGO)) {
-            $modifiedColumns[':p' . $index++]  = '`visita_metodopago`';
-        }
-        if ($this->isColumnModified(VisitaPeer::VISITA_PAGOREFERENCIA)) {
-            $modifiedColumns[':p' . $index++]  = '`visita_pagoreferencia`';
-        }
 
         $sql = sprintf(
             'INSERT INTO `visita` (%s) VALUES (%s)',
@@ -1083,12 +1030,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
                         break;
                     case '`visita_total`':
                         $stmt->bindValue($identifier, $this->visita_total, PDO::PARAM_STR);
-                        break;
-                    case '`visita_metodopago`':
-                        $stmt->bindValue($identifier, $this->visita_metodopago, PDO::PARAM_STR);
-                        break;
-                    case '`visita_pagoreferencia`':
-                        $stmt->bindValue($identifier, $this->visita_pagoreferencia, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1227,6 +1168,14 @@ abstract class BaseVisita extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collVisitapagos !== null) {
+                    foreach ($this->collVisitapagos as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1298,12 +1247,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
             case 11:
                 return $this->getVisitaTotal();
                 break;
-            case 12:
-                return $this->getVisitaMetodopago();
-                break;
-            case 13:
-                return $this->getVisitaPagoreferencia();
-                break;
             default:
                 return null;
                 break;
@@ -1345,8 +1288,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $keys[9] => $this->getVisitaStatus(),
             $keys[10] => $this->getVisitaEstatuspago(),
             $keys[11] => $this->getVisitaTotal(),
-            $keys[12] => $this->getVisitaMetodopago(),
-            $keys[13] => $this->getVisitaPagoreferencia(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1368,6 +1309,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
             }
             if (null !== $this->collVisitadetalles) {
                 $result['Visitadetalles'] = $this->collVisitadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collVisitapagos) {
+                $result['Visitapagos'] = $this->collVisitapagos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1439,12 +1383,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
             case 11:
                 $this->setVisitaTotal($value);
                 break;
-            case 12:
-                $this->setVisitaMetodopago($value);
-                break;
-            case 13:
-                $this->setVisitaPagoreferencia($value);
-                break;
         } // switch()
     }
 
@@ -1481,8 +1419,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if (array_key_exists($keys[9], $arr)) $this->setVisitaStatus($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setVisitaEstatuspago($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setVisitaTotal($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setVisitaMetodopago($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setVisitaPagoreferencia($arr[$keys[13]]);
     }
 
     /**
@@ -1506,8 +1442,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_STATUS)) $criteria->add(VisitaPeer::VISITA_STATUS, $this->visita_status);
         if ($this->isColumnModified(VisitaPeer::VISITA_ESTATUSPAGO)) $criteria->add(VisitaPeer::VISITA_ESTATUSPAGO, $this->visita_estatuspago);
         if ($this->isColumnModified(VisitaPeer::VISITA_TOTAL)) $criteria->add(VisitaPeer::VISITA_TOTAL, $this->visita_total);
-        if ($this->isColumnModified(VisitaPeer::VISITA_METODOPAGO)) $criteria->add(VisitaPeer::VISITA_METODOPAGO, $this->visita_metodopago);
-        if ($this->isColumnModified(VisitaPeer::VISITA_PAGOREFERENCIA)) $criteria->add(VisitaPeer::VISITA_PAGOREFERENCIA, $this->visita_pagoreferencia);
 
         return $criteria;
     }
@@ -1582,8 +1516,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $copyObj->setVisitaStatus($this->getVisitaStatus());
         $copyObj->setVisitaEstatuspago($this->getVisitaEstatuspago());
         $copyObj->setVisitaTotal($this->getVisitaTotal());
-        $copyObj->setVisitaMetodopago($this->getVisitaMetodopago());
-        $copyObj->setVisitaPagoreferencia($this->getVisitaPagoreferencia());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1595,6 +1527,12 @@ abstract class BaseVisita extends BaseObject implements Persistent
             foreach ($this->getVisitadetalles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addVisitadetalle($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getVisitapagos() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addVisitapago($relObj->copy($deepCopy));
                 }
             }
 
@@ -1869,6 +1807,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
     {
         if ('Visitadetalle' == $relationName) {
             $this->initVisitadetalles();
+        }
+        if ('Visitapago' == $relationName) {
+            $this->initVisitapagos();
         }
     }
 
@@ -2148,6 +2089,231 @@ abstract class BaseVisita extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collVisitapagos collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Visita The current object (for fluent API support)
+     * @see        addVisitapagos()
+     */
+    public function clearVisitapagos()
+    {
+        $this->collVisitapagos = null; // important to set this to null since that means it is uninitialized
+        $this->collVisitapagosPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collVisitapagos collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialVisitapagos($v = true)
+    {
+        $this->collVisitapagosPartial = $v;
+    }
+
+    /**
+     * Initializes the collVisitapagos collection.
+     *
+     * By default this just sets the collVisitapagos collection to an empty array (like clearcollVisitapagos());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initVisitapagos($overrideExisting = true)
+    {
+        if (null !== $this->collVisitapagos && !$overrideExisting) {
+            return;
+        }
+        $this->collVisitapagos = new PropelObjectCollection();
+        $this->collVisitapagos->setModel('Visitapago');
+    }
+
+    /**
+     * Gets an array of Visitapago objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Visita is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Visitapago[] List of Visitapago objects
+     * @throws PropelException
+     */
+    public function getVisitapagos($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collVisitapagosPartial && !$this->isNew();
+        if (null === $this->collVisitapagos || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collVisitapagos) {
+                // return empty collection
+                $this->initVisitapagos();
+            } else {
+                $collVisitapagos = VisitapagoQuery::create(null, $criteria)
+                    ->filterByVisita($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collVisitapagosPartial && count($collVisitapagos)) {
+                      $this->initVisitapagos(false);
+
+                      foreach ($collVisitapagos as $obj) {
+                        if (false == $this->collVisitapagos->contains($obj)) {
+                          $this->collVisitapagos->append($obj);
+                        }
+                      }
+
+                      $this->collVisitapagosPartial = true;
+                    }
+
+                    $collVisitapagos->getInternalIterator()->rewind();
+
+                    return $collVisitapagos;
+                }
+
+                if ($partial && $this->collVisitapagos) {
+                    foreach ($this->collVisitapagos as $obj) {
+                        if ($obj->isNew()) {
+                            $collVisitapagos[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collVisitapagos = $collVisitapagos;
+                $this->collVisitapagosPartial = false;
+            }
+        }
+
+        return $this->collVisitapagos;
+    }
+
+    /**
+     * Sets a collection of Visitapago objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $visitapagos A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitapagos(PropelCollection $visitapagos, PropelPDO $con = null)
+    {
+        $visitapagosToDelete = $this->getVisitapagos(new Criteria(), $con)->diff($visitapagos);
+
+
+        $this->visitapagosScheduledForDeletion = $visitapagosToDelete;
+
+        foreach ($visitapagosToDelete as $visitapagoRemoved) {
+            $visitapagoRemoved->setVisita(null);
+        }
+
+        $this->collVisitapagos = null;
+        foreach ($visitapagos as $visitapago) {
+            $this->addVisitapago($visitapago);
+        }
+
+        $this->collVisitapagos = $visitapagos;
+        $this->collVisitapagosPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Visitapago objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Visitapago objects.
+     * @throws PropelException
+     */
+    public function countVisitapagos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collVisitapagosPartial && !$this->isNew();
+        if (null === $this->collVisitapagos || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collVisitapagos) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getVisitapagos());
+            }
+            $query = VisitapagoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByVisita($this)
+                ->count($con);
+        }
+
+        return count($this->collVisitapagos);
+    }
+
+    /**
+     * Method called to associate a Visitapago object to this object
+     * through the Visitapago foreign key attribute.
+     *
+     * @param    Visitapago $l Visitapago
+     * @return Visita The current object (for fluent API support)
+     */
+    public function addVisitapago(Visitapago $l)
+    {
+        if ($this->collVisitapagos === null) {
+            $this->initVisitapagos();
+            $this->collVisitapagosPartial = true;
+        }
+
+        if (!in_array($l, $this->collVisitapagos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddVisitapago($l);
+
+            if ($this->visitapagosScheduledForDeletion and $this->visitapagosScheduledForDeletion->contains($l)) {
+                $this->visitapagosScheduledForDeletion->remove($this->visitapagosScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Visitapago $visitapago The visitapago object to add.
+     */
+    protected function doAddVisitapago($visitapago)
+    {
+        $this->collVisitapagos[]= $visitapago;
+        $visitapago->setVisita($this);
+    }
+
+    /**
+     * @param	Visitapago $visitapago The visitapago object to remove.
+     * @return Visita The current object (for fluent API support)
+     */
+    public function removeVisitapago($visitapago)
+    {
+        if ($this->getVisitapagos()->contains($visitapago)) {
+            $this->collVisitapagos->remove($this->collVisitapagos->search($visitapago));
+            if (null === $this->visitapagosScheduledForDeletion) {
+                $this->visitapagosScheduledForDeletion = clone $this->collVisitapagos;
+                $this->visitapagosScheduledForDeletion->clear();
+            }
+            $this->visitapagosScheduledForDeletion[]= clone $visitapago;
+            $visitapago->setVisita(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -2164,8 +2330,6 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $this->visita_status = null;
         $this->visita_estatuspago = null;
         $this->visita_total = null;
-        $this->visita_metodopago = null;
-        $this->visita_pagoreferencia = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -2193,6 +2357,11 @@ abstract class BaseVisita extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collVisitapagos) {
+                foreach ($this->collVisitapagos as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aClinica instanceof Persistent) {
               $this->aClinica->clearAllReferences($deep);
             }
@@ -2213,6 +2382,10 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $this->collVisitadetalles->clearIterator();
         }
         $this->collVisitadetalles = null;
+        if ($this->collVisitapagos instanceof PropelCollection) {
+            $this->collVisitapagos->clearIterator();
+        }
+        $this->collVisitapagos = null;
         $this->aClinica = null;
         $this->aEmpleadoRelatedByIdempleado = null;
         $this->aEmpleadoRelatedByIdempleadocreador = null;

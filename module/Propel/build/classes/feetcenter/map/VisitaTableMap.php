@@ -67,12 +67,6 @@ class VisitaTableMap extends TableMap
   1 => 'no pagada',
 ));
         $this->addColumn('visita_total', 'VisitaTotal', 'DECIMAL', false, 10, null);
-        $this->addColumn('visita_metodopago', 'VisitaMetodopago', 'CHAR', false, null, null);
-        $this->getColumn('visita_metodopago', false)->setValueSet(array (
-  0 => 'efectivo',
-  1 => 'tarjeta',
-));
-        $this->addColumn('visita_pagoreferencia', 'VisitaPagoreferencia', 'LONGVARCHAR', false, null, null);
         // validators
     } // initialize()
 
@@ -86,6 +80,7 @@ class VisitaTableMap extends TableMap
         $this->addRelation('EmpleadoRelatedByIdempleadocreador', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleadocreador' => 'idempleado', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Paciente', 'Paciente', RelationMap::MANY_TO_ONE, array('idpaciente' => 'idpaciente', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Visitadetalle', 'Visitadetalle', RelationMap::ONE_TO_MANY, array('idvisita' => 'idvisita', ), 'CASCADE', 'CASCADE', 'Visitadetalles');
+        $this->addRelation('Visitapago', 'Visitapago', RelationMap::ONE_TO_MANY, array('idvisita' => 'idvisita', ), 'CASCADE', 'CASCADE', 'Visitapagos');
     } // buildRelations()
 
 } // VisitaTableMap

@@ -14,8 +14,24 @@ use Zend\View\Model\ViewModel;
 
 class AgendaController extends AbstractActionController
 {
+    
+    public function dayOfWeek($day){
+        $days = array(
+            1 => 'lunes',
+            2 => 'martes',
+            3 => 'miercoles',
+            4 => 'jueves',
+            5 => 'viernes',
+            6=> 'sabado',
+            7 => 'domingo'
+        );
+        
+        return $days[$day];
+    }
+    
     public function indexAction()
     {
+
         $sesion = new \Shared\Session\AouthSession();
         $idrol = $sesion->getIdrol();
         
@@ -55,6 +71,34 @@ class AgendaController extends AbstractActionController
         return $this->response->setContent(json_encode($resources));
 
 
+    }
+    
+    public function gethorariosbyclinicaAction(){
+        
+        $idclinica = $this->params()->fromRoute('id'); 
+        $diadelasemana = $this->params()->fromQuery('dia');
+                
+        $array = array();
+            
+        $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->find();
+            $empleado = new \Clinicaempleado();
+            foreach ($empleados as $empleado){
+                //Obtenemos su horario
+                $idempleado = $empleado->getIdempleado();
+                
+                if(\EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($diadelasemana))->exists()){
+                    $empleado_horario = \EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($diadelasemana))->findOne();
+                    $tmp['entrada'] = $empleado_horario->getEmpleadohorarioEntrada('H:i:s');
+                    $tmp['salida'] = $empleado_horario->getEmpleadohorarioSalida('H:i:s');
+                    $tmp['descanso'] = $empleado_horario->getEmpleadohorarioDescanso();
+                    $array[$idempleado] = $tmp;
+                }else{
+                    $array[$idempleado] = NULL;
+                }
+ 
+            }
+            return $this->response->setContent(json_encode($array));
+            
     }
  
     
