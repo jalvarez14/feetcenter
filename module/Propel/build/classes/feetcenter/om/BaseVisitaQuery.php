@@ -13,8 +13,8 @@
  * @method VisitaQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
  * @method VisitaQuery orderByVisitaTipo($order = Criteria::ASC) Order by the visita_tipo column
  * @method VisitaQuery orderByVisitaCreadaen($order = Criteria::ASC) Order by the visita_creadaen column
- * @method VisitaQuery orderByVisitaFecha($order = Criteria::ASC) Order by the visita_fecha column
- * @method VisitaQuery orderByVisitaHora($order = Criteria::ASC) Order by the visita_hora column
+ * @method VisitaQuery orderByVisitaFechainicio($order = Criteria::ASC) Order by the visita_fechainicio column
+ * @method VisitaQuery orderByVisitaFechafin($order = Criteria::ASC) Order by the visita_fechafin column
  * @method VisitaQuery orderByVisitaStatus($order = Criteria::ASC) Order by the visita_status column
  * @method VisitaQuery orderByVisitaEstatuspago($order = Criteria::ASC) Order by the visita_estatuspago column
  * @method VisitaQuery orderByVisitaTotal($order = Criteria::ASC) Order by the visita_total column
@@ -26,8 +26,8 @@
  * @method VisitaQuery groupByIdclinica() Group by the idclinica column
  * @method VisitaQuery groupByVisitaTipo() Group by the visita_tipo column
  * @method VisitaQuery groupByVisitaCreadaen() Group by the visita_creadaen column
- * @method VisitaQuery groupByVisitaFecha() Group by the visita_fecha column
- * @method VisitaQuery groupByVisitaHora() Group by the visita_hora column
+ * @method VisitaQuery groupByVisitaFechainicio() Group by the visita_fechainicio column
+ * @method VisitaQuery groupByVisitaFechafin() Group by the visita_fechafin column
  * @method VisitaQuery groupByVisitaStatus() Group by the visita_status column
  * @method VisitaQuery groupByVisitaEstatuspago() Group by the visita_estatuspago column
  * @method VisitaQuery groupByVisitaTotal() Group by the visita_total column
@@ -69,8 +69,8 @@
  * @method Visita findOneByIdclinica(int $idclinica) Return the first Visita filtered by the idclinica column
  * @method Visita findOneByVisitaTipo(string $visita_tipo) Return the first Visita filtered by the visita_tipo column
  * @method Visita findOneByVisitaCreadaen(string $visita_creadaen) Return the first Visita filtered by the visita_creadaen column
- * @method Visita findOneByVisitaFecha(string $visita_fecha) Return the first Visita filtered by the visita_fecha column
- * @method Visita findOneByVisitaHora(string $visita_hora) Return the first Visita filtered by the visita_hora column
+ * @method Visita findOneByVisitaFechainicio(string $visita_fechainicio) Return the first Visita filtered by the visita_fechainicio column
+ * @method Visita findOneByVisitaFechafin(string $visita_fechafin) Return the first Visita filtered by the visita_fechafin column
  * @method Visita findOneByVisitaStatus(string $visita_status) Return the first Visita filtered by the visita_status column
  * @method Visita findOneByVisitaEstatuspago(string $visita_estatuspago) Return the first Visita filtered by the visita_estatuspago column
  * @method Visita findOneByVisitaTotal(string $visita_total) Return the first Visita filtered by the visita_total column
@@ -82,8 +82,8 @@
  * @method array findByIdclinica(int $idclinica) Return Visita objects filtered by the idclinica column
  * @method array findByVisitaTipo(string $visita_tipo) Return Visita objects filtered by the visita_tipo column
  * @method array findByVisitaCreadaen(string $visita_creadaen) Return Visita objects filtered by the visita_creadaen column
- * @method array findByVisitaFecha(string $visita_fecha) Return Visita objects filtered by the visita_fecha column
- * @method array findByVisitaHora(string $visita_hora) Return Visita objects filtered by the visita_hora column
+ * @method array findByVisitaFechainicio(string $visita_fechainicio) Return Visita objects filtered by the visita_fechainicio column
+ * @method array findByVisitaFechafin(string $visita_fechafin) Return Visita objects filtered by the visita_fechafin column
  * @method array findByVisitaStatus(string $visita_status) Return Visita objects filtered by the visita_status column
  * @method array findByVisitaEstatuspago(string $visita_estatuspago) Return Visita objects filtered by the visita_estatuspago column
  * @method array findByVisitaTotal(string $visita_total) Return Visita objects filtered by the visita_total column
@@ -194,7 +194,7 @@ abstract class BaseVisitaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_fecha`, `visita_hora`, `visita_status`, `visita_estatuspago`, `visita_total` FROM `visita` WHERE `idvisita` = :p0';
+        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total` FROM `visita` WHERE `idvisita` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -574,61 +574,89 @@ abstract class BaseVisitaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the visita_fecha column
+     * Filter the query on the visita_fechainicio column
      *
      * Example usage:
      * <code>
-     * $query->filterByVisitaFecha('fooValue');   // WHERE visita_fecha = 'fooValue'
-     * $query->filterByVisitaFecha('%fooValue%'); // WHERE visita_fecha LIKE '%fooValue%'
+     * $query->filterByVisitaFechainicio('2011-03-14'); // WHERE visita_fechainicio = '2011-03-14'
+     * $query->filterByVisitaFechainicio('now'); // WHERE visita_fechainicio = '2011-03-14'
+     * $query->filterByVisitaFechainicio(array('max' => 'yesterday')); // WHERE visita_fechainicio < '2011-03-13'
      * </code>
      *
-     * @param     string $visitaFecha The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     mixed $visitaFechainicio The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return VisitaQuery The current query, for fluid interface
      */
-    public function filterByVisitaFecha($visitaFecha = null, $comparison = null)
+    public function filterByVisitaFechainicio($visitaFechainicio = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($visitaFecha)) {
+        if (is_array($visitaFechainicio)) {
+            $useMinMax = false;
+            if (isset($visitaFechainicio['min'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_FECHAINICIO, $visitaFechainicio['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visitaFechainicio['max'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_FECHAINICIO, $visitaFechainicio['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $visitaFecha)) {
-                $visitaFecha = str_replace('*', '%', $visitaFecha);
-                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(VisitaPeer::VISITA_FECHA, $visitaFecha, $comparison);
+        return $this->addUsingAlias(VisitaPeer::VISITA_FECHAINICIO, $visitaFechainicio, $comparison);
     }
 
     /**
-     * Filter the query on the visita_hora column
+     * Filter the query on the visita_fechafin column
      *
      * Example usage:
      * <code>
-     * $query->filterByVisitaHora('fooValue');   // WHERE visita_hora = 'fooValue'
-     * $query->filterByVisitaHora('%fooValue%'); // WHERE visita_hora LIKE '%fooValue%'
+     * $query->filterByVisitaFechafin('2011-03-14'); // WHERE visita_fechafin = '2011-03-14'
+     * $query->filterByVisitaFechafin('now'); // WHERE visita_fechafin = '2011-03-14'
+     * $query->filterByVisitaFechafin(array('max' => 'yesterday')); // WHERE visita_fechafin < '2011-03-13'
      * </code>
      *
-     * @param     string $visitaHora The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     mixed $visitaFechafin The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return VisitaQuery The current query, for fluid interface
      */
-    public function filterByVisitaHora($visitaHora = null, $comparison = null)
+    public function filterByVisitaFechafin($visitaFechafin = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($visitaHora)) {
+        if (is_array($visitaFechafin)) {
+            $useMinMax = false;
+            if (isset($visitaFechafin['min'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_FECHAFIN, $visitaFechafin['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visitaFechafin['max'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_FECHAFIN, $visitaFechafin['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $visitaHora)) {
-                $visitaHora = str_replace('*', '%', $visitaHora);
-                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(VisitaPeer::VISITA_HORA, $visitaHora, $comparison);
+        return $this->addUsingAlias(VisitaPeer::VISITA_FECHAFIN, $visitaFechafin, $comparison);
     }
 
     /**

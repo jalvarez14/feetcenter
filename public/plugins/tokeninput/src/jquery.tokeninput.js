@@ -391,7 +391,7 @@
         .hide()
         .val("")
         .focus(function () {
-          focusWithTimeout(input_box);
+          //focusWithTimeout(input_box);
         })
         .blur(function () {
           input_box.blur();
@@ -420,7 +420,7 @@
                   }
 
                   // Focus input box
-                  focusWithTimeout(input_box);
+                  //focusWithTimeout(input_box);
               }
           })
           .mouseover(function (event) {
@@ -661,7 +661,7 @@
               if(found_existing_token) {
                   select_token(found_existing_token);
                   input_token.insertAfter(found_existing_token);
-                  focusWithTimeout(input_box);
+                  //focusWithTimeout(input_box);
                   return;
               }
           }
@@ -720,7 +720,7 @@
           }
 
           // Show the input box and give it focus again
-          focusWithTimeout(input_box);
+          //focusWithTimeout(input_box);
       }
 
       // Toggle selection of a token in the token list
@@ -752,7 +752,7 @@
           selected_token = null;
 
           // Show the input box and give it focus again
-          focusWithTimeout(input_box);
+          //focusWithTimeout(input_box);
 
           // Remove this token from the saved list
           saved_tokens = saved_tokens.slice(0,index).concat(saved_tokens.slice(index+1));
@@ -770,7 +770,7 @@
               input_box
                   .show()
                   .val("");
-              focusWithTimeout(input_box);
+              //focusWithTimeout(input_box);
           }
 
           // Execute the onDelete callback if defined

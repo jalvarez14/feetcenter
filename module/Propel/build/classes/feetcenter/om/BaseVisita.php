@@ -72,16 +72,16 @@ abstract class BaseVisita extends BaseObject implements Persistent
     protected $visita_creadaen;
 
     /**
-     * The value for the visita_fecha field.
+     * The value for the visita_fechainicio field.
      * @var        string
      */
-    protected $visita_fecha;
+    protected $visita_fechainicio;
 
     /**
-     * The value for the visita_hora field.
+     * The value for the visita_fechafin field.
      * @var        string
      */
-    protected $visita_hora;
+    protected $visita_fechafin;
 
     /**
      * The value for the visita_status field.
@@ -272,25 +272,83 @@ abstract class BaseVisita extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [visita_fecha] column value.
+     * Get the [optionally formatted] temporal [visita_fechainicio] column value.
      *
-     * @return string
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getVisitaFecha()
+    public function getVisitaFechainicio($format = 'Y-m-d H:i:s')
     {
+        if ($this->visita_fechainicio === null) {
+            return null;
+        }
 
-        return $this->visita_fecha;
+        if ($this->visita_fechainicio === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->visita_fechainicio);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->visita_fechainicio, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
-     * Get the [visita_hora] column value.
+     * Get the [optionally formatted] temporal [visita_fechafin] column value.
      *
-     * @return string
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getVisitaHora()
+    public function getVisitaFechafin($format = 'Y-m-d H:i:s')
     {
+        if ($this->visita_fechafin === null) {
+            return null;
+        }
 
-        return $this->visita_hora;
+        if ($this->visita_fechafin === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->visita_fechafin);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->visita_fechafin, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -492,46 +550,50 @@ abstract class BaseVisita extends BaseObject implements Persistent
     } // setVisitaCreadaen()
 
     /**
-     * Set the value of [visita_fecha] column.
+     * Sets the value of [visita_fechainicio] column to a normalized version of the date/time value specified.
      *
-     * @param  string $v new value
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
      * @return Visita The current object (for fluent API support)
      */
-    public function setVisitaFecha($v)
+    public function setVisitaFechainicio($v)
     {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->visita_fecha !== $v) {
-            $this->visita_fecha = $v;
-            $this->modifiedColumns[] = VisitaPeer::VISITA_FECHA;
-        }
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->visita_fechainicio !== null || $dt !== null) {
+            $currentDateAsString = ($this->visita_fechainicio !== null && $tmpDt = new DateTime($this->visita_fechainicio)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->visita_fechainicio = $newDateAsString;
+                $this->modifiedColumns[] = VisitaPeer::VISITA_FECHAINICIO;
+            }
+        } // if either are not null
 
 
         return $this;
-    } // setVisitaFecha()
+    } // setVisitaFechainicio()
 
     /**
-     * Set the value of [visita_hora] column.
+     * Sets the value of [visita_fechafin] column to a normalized version of the date/time value specified.
      *
-     * @param  string $v new value
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
      * @return Visita The current object (for fluent API support)
      */
-    public function setVisitaHora($v)
+    public function setVisitaFechafin($v)
     {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->visita_hora !== $v) {
-            $this->visita_hora = $v;
-            $this->modifiedColumns[] = VisitaPeer::VISITA_HORA;
-        }
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->visita_fechafin !== null || $dt !== null) {
+            $currentDateAsString = ($this->visita_fechafin !== null && $tmpDt = new DateTime($this->visita_fechafin)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->visita_fechafin = $newDateAsString;
+                $this->modifiedColumns[] = VisitaPeer::VISITA_FECHAFIN;
+            }
+        } // if either are not null
 
 
         return $this;
-    } // setVisitaHora()
+    } // setVisitaFechafin()
 
     /**
      * Set the value of [visita_status] column.
@@ -635,8 +697,8 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $this->idclinica = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->visita_tipo = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->visita_creadaen = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->visita_fecha = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->visita_hora = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->visita_fechainicio = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->visita_fechafin = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->visita_status = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->visita_estatuspago = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->visita_total = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
@@ -969,11 +1031,11 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_CREADAEN)) {
             $modifiedColumns[':p' . $index++]  = '`visita_creadaen`';
         }
-        if ($this->isColumnModified(VisitaPeer::VISITA_FECHA)) {
-            $modifiedColumns[':p' . $index++]  = '`visita_fecha`';
+        if ($this->isColumnModified(VisitaPeer::VISITA_FECHAINICIO)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_fechainicio`';
         }
-        if ($this->isColumnModified(VisitaPeer::VISITA_HORA)) {
-            $modifiedColumns[':p' . $index++]  = '`visita_hora`';
+        if ($this->isColumnModified(VisitaPeer::VISITA_FECHAFIN)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_fechafin`';
         }
         if ($this->isColumnModified(VisitaPeer::VISITA_STATUS)) {
             $modifiedColumns[':p' . $index++]  = '`visita_status`';
@@ -1016,11 +1078,11 @@ abstract class BaseVisita extends BaseObject implements Persistent
                     case '`visita_creadaen`':
                         $stmt->bindValue($identifier, $this->visita_creadaen, PDO::PARAM_STR);
                         break;
-                    case '`visita_fecha`':
-                        $stmt->bindValue($identifier, $this->visita_fecha, PDO::PARAM_STR);
+                    case '`visita_fechainicio`':
+                        $stmt->bindValue($identifier, $this->visita_fechainicio, PDO::PARAM_STR);
                         break;
-                    case '`visita_hora`':
-                        $stmt->bindValue($identifier, $this->visita_hora, PDO::PARAM_STR);
+                    case '`visita_fechafin`':
+                        $stmt->bindValue($identifier, $this->visita_fechafin, PDO::PARAM_STR);
                         break;
                     case '`visita_status`':
                         $stmt->bindValue($identifier, $this->visita_status, PDO::PARAM_STR);
@@ -1233,10 +1295,10 @@ abstract class BaseVisita extends BaseObject implements Persistent
                 return $this->getVisitaCreadaen();
                 break;
             case 7:
-                return $this->getVisitaFecha();
+                return $this->getVisitaFechainicio();
                 break;
             case 8:
-                return $this->getVisitaHora();
+                return $this->getVisitaFechafin();
                 break;
             case 9:
                 return $this->getVisitaStatus();
@@ -1283,8 +1345,8 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $keys[4] => $this->getIdclinica(),
             $keys[5] => $this->getVisitaTipo(),
             $keys[6] => $this->getVisitaCreadaen(),
-            $keys[7] => $this->getVisitaFecha(),
-            $keys[8] => $this->getVisitaHora(),
+            $keys[7] => $this->getVisitaFechainicio(),
+            $keys[8] => $this->getVisitaFechafin(),
             $keys[9] => $this->getVisitaStatus(),
             $keys[10] => $this->getVisitaEstatuspago(),
             $keys[11] => $this->getVisitaTotal(),
@@ -1369,10 +1431,10 @@ abstract class BaseVisita extends BaseObject implements Persistent
                 $this->setVisitaCreadaen($value);
                 break;
             case 7:
-                $this->setVisitaFecha($value);
+                $this->setVisitaFechainicio($value);
                 break;
             case 8:
-                $this->setVisitaHora($value);
+                $this->setVisitaFechafin($value);
                 break;
             case 9:
                 $this->setVisitaStatus($value);
@@ -1414,8 +1476,8 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setIdclinica($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setVisitaTipo($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setVisitaCreadaen($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setVisitaFecha($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setVisitaHora($arr[$keys[8]]);
+        if (array_key_exists($keys[7], $arr)) $this->setVisitaFechainicio($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setVisitaFechafin($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setVisitaStatus($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setVisitaEstatuspago($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setVisitaTotal($arr[$keys[11]]);
@@ -1437,8 +1499,8 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::IDCLINICA)) $criteria->add(VisitaPeer::IDCLINICA, $this->idclinica);
         if ($this->isColumnModified(VisitaPeer::VISITA_TIPO)) $criteria->add(VisitaPeer::VISITA_TIPO, $this->visita_tipo);
         if ($this->isColumnModified(VisitaPeer::VISITA_CREADAEN)) $criteria->add(VisitaPeer::VISITA_CREADAEN, $this->visita_creadaen);
-        if ($this->isColumnModified(VisitaPeer::VISITA_FECHA)) $criteria->add(VisitaPeer::VISITA_FECHA, $this->visita_fecha);
-        if ($this->isColumnModified(VisitaPeer::VISITA_HORA)) $criteria->add(VisitaPeer::VISITA_HORA, $this->visita_hora);
+        if ($this->isColumnModified(VisitaPeer::VISITA_FECHAINICIO)) $criteria->add(VisitaPeer::VISITA_FECHAINICIO, $this->visita_fechainicio);
+        if ($this->isColumnModified(VisitaPeer::VISITA_FECHAFIN)) $criteria->add(VisitaPeer::VISITA_FECHAFIN, $this->visita_fechafin);
         if ($this->isColumnModified(VisitaPeer::VISITA_STATUS)) $criteria->add(VisitaPeer::VISITA_STATUS, $this->visita_status);
         if ($this->isColumnModified(VisitaPeer::VISITA_ESTATUSPAGO)) $criteria->add(VisitaPeer::VISITA_ESTATUSPAGO, $this->visita_estatuspago);
         if ($this->isColumnModified(VisitaPeer::VISITA_TOTAL)) $criteria->add(VisitaPeer::VISITA_TOTAL, $this->visita_total);
@@ -1511,8 +1573,8 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $copyObj->setIdclinica($this->getIdclinica());
         $copyObj->setVisitaTipo($this->getVisitaTipo());
         $copyObj->setVisitaCreadaen($this->getVisitaCreadaen());
-        $copyObj->setVisitaFecha($this->getVisitaFecha());
-        $copyObj->setVisitaHora($this->getVisitaHora());
+        $copyObj->setVisitaFechainicio($this->getVisitaFechainicio());
+        $copyObj->setVisitaFechafin($this->getVisitaFechafin());
         $copyObj->setVisitaStatus($this->getVisitaStatus());
         $copyObj->setVisitaEstatuspago($this->getVisitaEstatuspago());
         $copyObj->setVisitaTotal($this->getVisitaTotal());
@@ -2325,8 +2387,8 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $this->idclinica = null;
         $this->visita_tipo = null;
         $this->visita_creadaen = null;
-        $this->visita_fecha = null;
-        $this->visita_hora = null;
+        $this->visita_fechainicio = null;
+        $this->visita_fechafin = null;
         $this->visita_status = null;
         $this->visita_estatuspago = null;
         $this->visita_total = null;

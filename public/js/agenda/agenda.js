@@ -65,6 +65,20 @@
             });
         }
         
+        var crearSinhorario = function(start,end,resource){
+            $('#calendar').fullCalendar('renderEvent', {
+                title: 'Horario sin definir',
+                start: start,
+                end: end,
+                allDay: false,
+                resources: resource,
+                className: 'agenda_horariosindefinir',
+                editable: false,
+                backgroundColor: '#CCCCCC',
+                borderColor: '#CCCCCC',
+            });
+        }
+        
         /*
          * 
          * Hace el render de los descansos y los dias nos disponibles
@@ -92,6 +106,11 @@
                                 resource = index;
                                 crearNodisponible(start,end,resource);
                             }
+                        }else{
+                            var start = date.format('YYYY-MM-DD') + ' 00:00:00';
+                            var end = date.format('YYYY-MM-DD') + ' 23:59:59';
+                            var resource = index;
+                            crearSinhorario(start,end,resource);
                         }
                     });
                 }
@@ -142,6 +161,37 @@
                     }
 
                 },
+                select: function(start, end, event,view) {
+
+                    var viewName = view.name;
+                    switch (viewName) {
+                        case 'resourceDay':
+                        {
+                            var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Modal Header');
+                            
+                            $modalLauncher.unbind();
+                            var data_content = $modalLauncher.attr('data-content');
+                            
+                            data_content = '/agenda/nuevoevento?html=true';
+                            data_content += '&start='+ start.format('YYYY-MM-DD+HH:mm:00');
+                            data_content += '&end='+ end.format('YYYY-MM-DD+HH:mm:00');
+                            data_content += '&idempleado='+ event.data.id;
+                            data_content += '&idclinica=' + settings.idclinica;
+                            
+                            $modalLauncher.attr('data-content',data_content);
+                            $modalLauncher.modal();
+                            $modalLauncher.trigger('click');
+                            $modalLauncher.unbind();
+                            
+                            
+                            break;
+                        }
+                    }
+                    
+
+
+                },
+                
                  
  
              });

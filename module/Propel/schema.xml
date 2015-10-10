@@ -734,8 +734,8 @@
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
     <column name="visita_tipo" phpName="VisitaTipo" type="CHAR" sqlType="enum('consulta','servicio')" required="true"/>
     <column name="visita_creadaen" phpName="VisitaCreadaen" type="TIMESTAMP" required="true"/>
-    <column name="visita_fecha" phpName="VisitaFecha" type="VARCHAR" size="45" required="true"/>
-    <column name="visita_hora" phpName="VisitaHora" type="VARCHAR" size="45" required="true"/>
+    <column name="visita_fechainicio" phpName="VisitaFechainicio" type="TIMESTAMP" required="true"/>
+    <column name="visita_fechafin" phpName="VisitaFechafin" type="TIMESTAMP" required="true"/>
     <column name="visita_status" phpName="VisitaStatus" type="CHAR" sqlType="enum('por confirmar','confimada','cancelo','no se presento','reprogramda','en servicio','terminado')" required="true"/>
     <column name="visita_estatuspago" phpName="VisitaEstatuspago" type="CHAR" sqlType="enum('pagada','no pagada')" required="false"/>
     <column name="visita_total" phpName="VisitaTotal" type="DECIMAL" size="10" scale="2" required="false"/>

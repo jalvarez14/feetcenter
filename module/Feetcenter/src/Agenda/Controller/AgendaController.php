@@ -100,6 +100,98 @@ class AgendaController extends AbstractActionController
             return $this->response->setContent(json_encode($array));
             
     }
+    
+    
+    public function nuevoeventoAction(){
+        
+        $sesion = new \Shared\Session\AouthSession();
+        
+        if($this->params()->fromQuery('html')){
+            
+            $idempleado = $this->params()->fromQuery('idempleado');
+            $idclinica = $this->params()->fromQuery('idclinica');
+            $empleado = \EmpleadoQuery::create()->findPk($idempleado);
+            $visita_creadaen = new \DateTime();
+            $visita_fechainicio = $this->params()->fromQuery('start');
+            $visita_fecha = new \DateTime($visita_fechainicio);
+            $visita_fechafin = $this->params()->fromQuery('end');
+            
+            //Instanciamos nuestro formulario
+            $form = new \Agenda\Form\EventoForm($sesion->getIdempleado(), $idclinica, $idempleado, $visita_creadaen->format('Y-m-d H:i:s'), $visita_fechainicio,$visita_fechafin);
+            $form->setAttribute('action', '/agenda/nuevoevento');
+            $form->setAttribute('novalidate', true);
+            $form->setAttribute('class', 'forms');
+            
+
+            
+            $viewModel = new ViewModel();
+            $viewModel->setVariables(array(
+                'form' => $form,
+                'empleado' => $empleado,
+                'fecha' => $visita_fecha,
+            ));
+            $viewModel->setTerminal(true);
+            return $viewModel;
+            
+        }
+        
+        
+    }
+    
+    public function findpacientesAction()
+    {
+        $query = $this->params()->fromQuery('q');
+        
+        $result = \PacienteQuery::create()->joinClinica()->withColumn('clinica_nombre')->filterByPacienteNombre('%'.$query .'%', \Criteria::LIKE)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        
+        //Damos el formato
+        $result_array = array();
+        foreach ($result as $r){
+            $tmp['id'] = $r['idpaciente'];  
+            $tmp['name'] = $r['paciente_nombre'].' - Celular: '.$r['paciente_celular'].' - Teléfono: '.$r['paciente_telefono'];
+            $tmp['paciente_nombre'] = $r['paciente_nombre'];
+            $tmp['clinica_nombre'] = $r['clinica_nombre'];
+            $tmp['paciente_celular'] = $r['paciente_celular'];
+            $tmp['paciente_telefono'] = $r['paciente_telefono'];
+            //adicional
+            $tmp['visita_total'] = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->count();
+            $tmp['visita_ultima'] = '';
+            if(\VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
+                 $visitas = \VisitaQuery::create()->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
+                 $tmp['visita_ultima'] = $visitas->getVisitaFechainicio('d/m/Y - H:i:s');
+            }
+
+            $result_array[] = $tmp;
+        }
+        
+        return $this->getResponse()->setContent(\Zend\Json\Json::encode($result_array));
+        
+        
+    }
+    
+    public function quickaddpacienteAction(){
+
+        $request = $this->getRequest();
+        
+        if($request->isPost()){
+            $post_data = $request->getPost();
+            
+            $entity = new \Paciente();
+            
+            foreach($post_data as $key => $value){
+                if(\PacientePeer::getTableMap()->hasColumn($key)){
+                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                }
+            }
+            
+            $entity->setPacienteFecharegistro(new \DateTime());
+            $entity->save();
+            
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'data' => $entity->toArray(\BasePeer::TYPE_FIELDNAME))));
+
+        }
+        
+    }
  
     
 }

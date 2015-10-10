@@ -53,11 +53,11 @@ abstract class BaseVisitaPeer
     /** the column name for the visita_creadaen field */
     const VISITA_CREADAEN = 'visita.visita_creadaen';
 
-    /** the column name for the visita_fecha field */
-    const VISITA_FECHA = 'visita.visita_fecha';
+    /** the column name for the visita_fechainicio field */
+    const VISITA_FECHAINICIO = 'visita.visita_fechainicio';
 
-    /** the column name for the visita_hora field */
-    const VISITA_HORA = 'visita.visita_hora';
+    /** the column name for the visita_fechafin field */
+    const VISITA_FECHAFIN = 'visita.visita_fechafin';
 
     /** the column name for the visita_status field */
     const VISITA_STATUS = 'visita.visita_status';
@@ -104,11 +104,11 @@ abstract class BaseVisitaPeer
      * e.g. VisitaPeer::$fieldNames[VisitaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idvisita', 'Idempleado', 'Idempleadocreador', 'Idpaciente', 'Idclinica', 'VisitaTipo', 'VisitaCreadaen', 'VisitaFecha', 'VisitaHora', 'VisitaStatus', 'VisitaEstatuspago', 'VisitaTotal', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisita', 'idempleado', 'idempleadocreador', 'idpaciente', 'idclinica', 'visitaTipo', 'visitaCreadaen', 'visitaFecha', 'visitaHora', 'visitaStatus', 'visitaEstatuspago', 'visitaTotal', ),
-        BasePeer::TYPE_COLNAME => array (VisitaPeer::IDVISITA, VisitaPeer::IDEMPLEADO, VisitaPeer::IDEMPLEADOCREADOR, VisitaPeer::IDPACIENTE, VisitaPeer::IDCLINICA, VisitaPeer::VISITA_TIPO, VisitaPeer::VISITA_CREADAEN, VisitaPeer::VISITA_FECHA, VisitaPeer::VISITA_HORA, VisitaPeer::VISITA_STATUS, VisitaPeer::VISITA_ESTATUSPAGO, VisitaPeer::VISITA_TOTAL, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITA', 'IDEMPLEADO', 'IDEMPLEADOCREADOR', 'IDPACIENTE', 'IDCLINICA', 'VISITA_TIPO', 'VISITA_CREADAEN', 'VISITA_FECHA', 'VISITA_HORA', 'VISITA_STATUS', 'VISITA_ESTATUSPAGO', 'VISITA_TOTAL', ),
-        BasePeer::TYPE_FIELDNAME => array ('idvisita', 'idempleado', 'idempleadocreador', 'idpaciente', 'idclinica', 'visita_tipo', 'visita_creadaen', 'visita_fecha', 'visita_hora', 'visita_status', 'visita_estatuspago', 'visita_total', ),
+        BasePeer::TYPE_PHPNAME => array ('Idvisita', 'Idempleado', 'Idempleadocreador', 'Idpaciente', 'Idclinica', 'VisitaTipo', 'VisitaCreadaen', 'VisitaFechainicio', 'VisitaFechafin', 'VisitaStatus', 'VisitaEstatuspago', 'VisitaTotal', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisita', 'idempleado', 'idempleadocreador', 'idpaciente', 'idclinica', 'visitaTipo', 'visitaCreadaen', 'visitaFechainicio', 'visitaFechafin', 'visitaStatus', 'visitaEstatuspago', 'visitaTotal', ),
+        BasePeer::TYPE_COLNAME => array (VisitaPeer::IDVISITA, VisitaPeer::IDEMPLEADO, VisitaPeer::IDEMPLEADOCREADOR, VisitaPeer::IDPACIENTE, VisitaPeer::IDCLINICA, VisitaPeer::VISITA_TIPO, VisitaPeer::VISITA_CREADAEN, VisitaPeer::VISITA_FECHAINICIO, VisitaPeer::VISITA_FECHAFIN, VisitaPeer::VISITA_STATUS, VisitaPeer::VISITA_ESTATUSPAGO, VisitaPeer::VISITA_TOTAL, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITA', 'IDEMPLEADO', 'IDEMPLEADOCREADOR', 'IDPACIENTE', 'IDCLINICA', 'VISITA_TIPO', 'VISITA_CREADAEN', 'VISITA_FECHAINICIO', 'VISITA_FECHAFIN', 'VISITA_STATUS', 'VISITA_ESTATUSPAGO', 'VISITA_TOTAL', ),
+        BasePeer::TYPE_FIELDNAME => array ('idvisita', 'idempleado', 'idempleadocreador', 'idpaciente', 'idclinica', 'visita_tipo', 'visita_creadaen', 'visita_fechainicio', 'visita_fechafin', 'visita_status', 'visita_estatuspago', 'visita_total', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
@@ -119,11 +119,11 @@ abstract class BaseVisitaPeer
      * e.g. VisitaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idvisita' => 0, 'Idempleado' => 1, 'Idempleadocreador' => 2, 'Idpaciente' => 3, 'Idclinica' => 4, 'VisitaTipo' => 5, 'VisitaCreadaen' => 6, 'VisitaFecha' => 7, 'VisitaHora' => 8, 'VisitaStatus' => 9, 'VisitaEstatuspago' => 10, 'VisitaTotal' => 11, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisita' => 0, 'idempleado' => 1, 'idempleadocreador' => 2, 'idpaciente' => 3, 'idclinica' => 4, 'visitaTipo' => 5, 'visitaCreadaen' => 6, 'visitaFecha' => 7, 'visitaHora' => 8, 'visitaStatus' => 9, 'visitaEstatuspago' => 10, 'visitaTotal' => 11, ),
-        BasePeer::TYPE_COLNAME => array (VisitaPeer::IDVISITA => 0, VisitaPeer::IDEMPLEADO => 1, VisitaPeer::IDEMPLEADOCREADOR => 2, VisitaPeer::IDPACIENTE => 3, VisitaPeer::IDCLINICA => 4, VisitaPeer::VISITA_TIPO => 5, VisitaPeer::VISITA_CREADAEN => 6, VisitaPeer::VISITA_FECHA => 7, VisitaPeer::VISITA_HORA => 8, VisitaPeer::VISITA_STATUS => 9, VisitaPeer::VISITA_ESTATUSPAGO => 10, VisitaPeer::VISITA_TOTAL => 11, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITA' => 0, 'IDEMPLEADO' => 1, 'IDEMPLEADOCREADOR' => 2, 'IDPACIENTE' => 3, 'IDCLINICA' => 4, 'VISITA_TIPO' => 5, 'VISITA_CREADAEN' => 6, 'VISITA_FECHA' => 7, 'VISITA_HORA' => 8, 'VISITA_STATUS' => 9, 'VISITA_ESTATUSPAGO' => 10, 'VISITA_TOTAL' => 11, ),
-        BasePeer::TYPE_FIELDNAME => array ('idvisita' => 0, 'idempleado' => 1, 'idempleadocreador' => 2, 'idpaciente' => 3, 'idclinica' => 4, 'visita_tipo' => 5, 'visita_creadaen' => 6, 'visita_fecha' => 7, 'visita_hora' => 8, 'visita_status' => 9, 'visita_estatuspago' => 10, 'visita_total' => 11, ),
+        BasePeer::TYPE_PHPNAME => array ('Idvisita' => 0, 'Idempleado' => 1, 'Idempleadocreador' => 2, 'Idpaciente' => 3, 'Idclinica' => 4, 'VisitaTipo' => 5, 'VisitaCreadaen' => 6, 'VisitaFechainicio' => 7, 'VisitaFechafin' => 8, 'VisitaStatus' => 9, 'VisitaEstatuspago' => 10, 'VisitaTotal' => 11, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisita' => 0, 'idempleado' => 1, 'idempleadocreador' => 2, 'idpaciente' => 3, 'idclinica' => 4, 'visitaTipo' => 5, 'visitaCreadaen' => 6, 'visitaFechainicio' => 7, 'visitaFechafin' => 8, 'visitaStatus' => 9, 'visitaEstatuspago' => 10, 'visitaTotal' => 11, ),
+        BasePeer::TYPE_COLNAME => array (VisitaPeer::IDVISITA => 0, VisitaPeer::IDEMPLEADO => 1, VisitaPeer::IDEMPLEADOCREADOR => 2, VisitaPeer::IDPACIENTE => 3, VisitaPeer::IDCLINICA => 4, VisitaPeer::VISITA_TIPO => 5, VisitaPeer::VISITA_CREADAEN => 6, VisitaPeer::VISITA_FECHAINICIO => 7, VisitaPeer::VISITA_FECHAFIN => 8, VisitaPeer::VISITA_STATUS => 9, VisitaPeer::VISITA_ESTATUSPAGO => 10, VisitaPeer::VISITA_TOTAL => 11, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITA' => 0, 'IDEMPLEADO' => 1, 'IDEMPLEADOCREADOR' => 2, 'IDPACIENTE' => 3, 'IDCLINICA' => 4, 'VISITA_TIPO' => 5, 'VISITA_CREADAEN' => 6, 'VISITA_FECHAINICIO' => 7, 'VISITA_FECHAFIN' => 8, 'VISITA_STATUS' => 9, 'VISITA_ESTATUSPAGO' => 10, 'VISITA_TOTAL' => 11, ),
+        BasePeer::TYPE_FIELDNAME => array ('idvisita' => 0, 'idempleado' => 1, 'idempleadocreador' => 2, 'idpaciente' => 3, 'idclinica' => 4, 'visita_tipo' => 5, 'visita_creadaen' => 6, 'visita_fechainicio' => 7, 'visita_fechafin' => 8, 'visita_status' => 9, 'visita_estatuspago' => 10, 'visita_total' => 11, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
@@ -271,8 +271,8 @@ abstract class BaseVisitaPeer
             $criteria->addSelectColumn(VisitaPeer::IDCLINICA);
             $criteria->addSelectColumn(VisitaPeer::VISITA_TIPO);
             $criteria->addSelectColumn(VisitaPeer::VISITA_CREADAEN);
-            $criteria->addSelectColumn(VisitaPeer::VISITA_FECHA);
-            $criteria->addSelectColumn(VisitaPeer::VISITA_HORA);
+            $criteria->addSelectColumn(VisitaPeer::VISITA_FECHAINICIO);
+            $criteria->addSelectColumn(VisitaPeer::VISITA_FECHAFIN);
             $criteria->addSelectColumn(VisitaPeer::VISITA_STATUS);
             $criteria->addSelectColumn(VisitaPeer::VISITA_ESTATUSPAGO);
             $criteria->addSelectColumn(VisitaPeer::VISITA_TOTAL);
@@ -284,8 +284,8 @@ abstract class BaseVisitaPeer
             $criteria->addSelectColumn($alias . '.idclinica');
             $criteria->addSelectColumn($alias . '.visita_tipo');
             $criteria->addSelectColumn($alias . '.visita_creadaen');
-            $criteria->addSelectColumn($alias . '.visita_fecha');
-            $criteria->addSelectColumn($alias . '.visita_hora');
+            $criteria->addSelectColumn($alias . '.visita_fechainicio');
+            $criteria->addSelectColumn($alias . '.visita_fechafin');
             $criteria->addSelectColumn($alias . '.visita_status');
             $criteria->addSelectColumn($alias . '.visita_estatuspago');
             $criteria->addSelectColumn($alias . '.visita_total');

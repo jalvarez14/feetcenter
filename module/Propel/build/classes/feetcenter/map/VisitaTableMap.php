@@ -49,8 +49,8 @@ class VisitaTableMap extends TableMap
   1 => 'servicio',
 ));
         $this->addColumn('visita_creadaen', 'VisitaCreadaen', 'TIMESTAMP', true, null, null);
-        $this->addColumn('visita_fecha', 'VisitaFecha', 'VARCHAR', true, 45, null);
-        $this->addColumn('visita_hora', 'VisitaHora', 'VARCHAR', true, 45, null);
+        $this->addColumn('visita_fechainicio', 'VisitaFechainicio', 'TIMESTAMP', true, null, null);
+        $this->addColumn('visita_fechafin', 'VisitaFechafin', 'TIMESTAMP', true, null, null);
         $this->addColumn('visita_status', 'VisitaStatus', 'CHAR', true, null, null);
         $this->getColumn('visita_status', false)->setValueSet(array (
   0 => 'por confirmar',
