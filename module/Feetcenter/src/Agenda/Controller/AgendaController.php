@@ -101,10 +101,68 @@ class AgendaController extends AbstractActionController
             
     }
     
-    
+    public function geteventosbyclinicaAction(){
+        
+        $idclinica = $this->params()->fromRoute('id'); 
+        $dia = $this->params()->fromQuery('dia');
+        
+        $visitas = \VisitaQuery::create()->joinPaciente()->withColumn('paciente_nombre')->filterByIdclinica($idclinica)->filterByVisitaFechainicio(array('min' => $dia.' 00:00:00', 'max' => $dia. ' 23:59:59'))->find();
+        
+        return $this->response->setContent(json_encode($visitas->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
+    }
+
+
     public function nuevoeventoAction(){
         
         $sesion = new \Shared\Session\AouthSession();
+        $request = $this->getRequest();
+        
+        if($request->isPost()){
+            $post_data = $request->getPost();
+            
+            foreach ($post_data as $k => $v){
+                if(empty($v)){
+                    unset($post_data[$k]);
+                }
+            }
+            
+            $entity = new \Visita();
+            
+            foreach($post_data as $key => $value){
+                if(\VisitaPeer::getTableMap()->hasColumn($key)){
+                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                }
+            }
+            $entity->setVisitaEstatuspago('no pagada');
+            
+            $entity->save();
+            
+            //Ahora los detalles
+            if(isset($post_data['vistadetalle'])){
+                foreach ($post_data['vistadetalle'] as $detalle){
+                    $visitadetalle = new \Visitadetalle();
+                    $visitadetalle->setIdvisita($entity->getIdvisita())
+                                  ->setVisitadetalleCargo($detalle['type'])
+                                  ->setVisitadetallePreciounitario($detalle['price'])
+                                  ->setVisitadetalleCantidad($detalle['cantidad'])
+                                  ->setVisitadetalleSubtotal($detalle['subtotal']);
+                    
+                    if($detalle['type'] == 'producto'){
+                        $visitadetalle->setIdproductoclinica($detalle['id']);
+                    }else{
+                        $visitadetalle->setIdservicioclinica($detalle['id']);
+                    }
+                    
+                    $visitadetalle->save();
+
+                }
+            }
+            
+            $data = \VisitaQuery::create()->filterByIdvisita($entity->getIdvisita())->joinPaciente()->withColumn('paciente_nombre')->findOne()->toArray(\BasePeer::TYPE_FIELDNAME);      
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'data' => $data)));
+            
+        }
+        
         
         if($this->params()->fromQuery('html')){
             
@@ -122,13 +180,35 @@ class AgendaController extends AbstractActionController
             $form->setAttribute('novalidate', true);
             $form->setAttribute('class', 'forms');
             
+            //Modificamos nuestro select del estatus
+            $form->add(array(
+                'type' => 'Select',
+                'name' => 'visita_status',
+                'options' => array(
+                   'value_options' => array(
+                           'por confirmar' => 'Por confirmar',
+                           'confimada' => 'Confimada',
+                           'en servicio' => 'En servicio',
+                   ),
+                ),
+               'attributes' => array(
+                   'class' => 'width-100',
+               ),
+            ));
+            
+            //Catalogo de productos
+            $productos = \ProductoclinicaQuery::create()->joinProducto()->withColumn('producto_nombre')->withColumn('producto_precio')->filterByIdclinica($idclinica)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
 
+            //Catalogo de servicio
+            $servicios = \ServicioclinicaQuery::create()->joinServicio()->withColumn('servicio_nombre')->filterByIdclinica($idclinica)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
             
             $viewModel = new ViewModel();
             $viewModel->setVariables(array(
                 'form' => $form,
                 'empleado' => $empleado,
                 'fecha' => $visita_fecha,
+                'productos' => $productos,
+                'servicios' => $servicios,
             ));
             $viewModel->setTerminal(true);
             return $viewModel;
@@ -160,7 +240,14 @@ class AgendaController extends AbstractActionController
                  $visitas = \VisitaQuery::create()->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
                  $tmp['visita_ultima'] = $visitas->getVisitaFechainicio('d/m/Y - H:i:s');
             }
-
+            //Los relacionados
+            $tmp['relacionados'] = \GrupopersonalQuery::create()->joinPacienteRelatedByIdpacienteagregado()->filterByIdpaciente($r['idpaciente'])->withColumn('paciente_nombre')->withColumn('paciente_celular')->withColumn('paciente_telefono')->withColumn('idclinica')->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
+            foreach ($tmp['relacionados'] as $key => $value){
+                $cliniva = \ClinicaQuery::create()->findPk($value['idclinica']);
+                $clinica_nombre = $cliniva->getClinicaNombre();
+                $tmp['relacionados'][$key]['clinica_nombre'] = $clinica_nombre;
+            }
+            
             $result_array[] = $tmp;
         }
         
@@ -189,6 +276,30 @@ class AgendaController extends AbstractActionController
             
             return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'data' => $entity->toArray(\BasePeer::TYPE_FIELDNAME))));
 
+        }
+        
+    }
+    
+    public function quickupdaterelacionadosAction(){
+        $request = $this->getRequest();
+        if($request->isPost()){
+            $post_data = $request->getPost();
+            
+            $paciente = \PacienteQuery::create()->findPk($post_data['idpaciente']);
+            
+            $paciente->getGrupopersonalsRelatedByIdpaciente()->delete();
+            
+            //Ahora los pacientes
+            if(isset($post_data['relacionados'])){
+                foreach ($post_data['relacionados'] as $idpaciente){
+                    $grupo_paciente = new \Grupopersonal();
+                    $grupo_paciente->setIdpaciente($paciente->getIdpaciente())
+                                   ->setIdpacienteagregado($idpaciente)
+                                   ->save();
+                }
+            }
+            
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
         }
         
     }

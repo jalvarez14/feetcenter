@@ -90,24 +90,7 @@ class EventoForm extends Form
             ),
         ));
         
-        $this->add(array(
-             'type' => 'Select',
-             'name' => 'visita_status',
-             'options' => array(
-                'value_options' => array(
-                        'por confirmar' => 'Por confirmar',
-                        'confimada' => 'Confimada',
-                        'cancelo' => 'Cancelo',
-                        'no se presento' => 'No se presento',
-                        'reprogramda' => 'Reprogramda',
-                        'en servicio' => 'En servicio',
-                        'terminado' => 'Terminado',
-                ),
-             ),
-            'attributes' => array(
-                'class' => 'width-100',
-            ),
-        ));
+        
         
         $this->add(array(
              'type' => 'Select',

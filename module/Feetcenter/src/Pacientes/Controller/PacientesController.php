@@ -91,7 +91,7 @@ class PacientesController extends AbstractActionController
         //Administtrador
         if($sesion->getIdrol() == 1){
             $clinicas = \ClinicaQuery::create()->find();
-            $empleados = \ClinicaempleadoQuery::create()->groupBy('idempleado')->find();
+            $empleados = \ClinicaempleadoQuery::create()->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
             foreach ($empleados as $empleado){
                 $id = $empleado->getIdempleado();
                 $empleados_array[$id] = $empleado->getEmpleado()->getEmpleadoNombre();
@@ -104,7 +104,7 @@ class PacientesController extends AbstractActionController
         //Encargado
         elseif ($sesion->getIdrol() == 2) {
             $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
-            $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($sesion->getIdClinica())->groupBy('idempleado')->find();
+            $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($sesion->getIdClinica())->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
             foreach ($empleados as $empleado){
                 $id = $empleado->getIdempleado();
                 $empleados_array[$id] = $empleado->getEmpleado()->getEmpleadoNombre();
@@ -120,7 +120,7 @@ class PacientesController extends AbstractActionController
         //Le ponemos los datos de nuestro lugar a nuestro formulario
         $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
         
-        //Los pacientes deñ grupo
+        //Los pacientes de grupo
         $pacientes = $entity->getGrupopersonalsRelatedByIdpaciente();
                 
         return new ViewModel(array(

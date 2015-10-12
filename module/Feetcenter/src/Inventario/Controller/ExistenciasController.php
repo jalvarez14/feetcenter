@@ -75,7 +75,7 @@ class ExistenciasController extends AbstractActionController
                         ->setCompraStatus('pagada')
                         ->setCompraPagaren(new \DateTime)
                         ->save();
-                       
+      
                 $compra_detalle = new \Compradetalle();
                 $compra_detalle->setIdcompra($compra->getIdcompra())
                                ->setCompradetalleCantidad($post_data['cantidad'])
