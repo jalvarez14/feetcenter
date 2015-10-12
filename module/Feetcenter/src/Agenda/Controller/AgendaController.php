@@ -262,7 +262,6 @@ class AgendaController extends AbstractActionController
         
         if($request->isPost()){
             $post_data = $request->getPost();
-            
             $entity = new \Paciente();
             
             foreach($post_data as $key => $value){
@@ -270,7 +269,7 @@ class AgendaController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
-            
+            $entity->setIdpaciente(NULL);
             $entity->setPacienteFecharegistro(new \DateTime());
             $entity->save();
             
