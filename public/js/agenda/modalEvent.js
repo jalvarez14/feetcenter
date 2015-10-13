@@ -120,7 +120,7 @@
                    $span.after('<span class="error"> campo obligatorio</span>');
                }
            });
-           
+                     
            if(!empty){
                //Validamos que coincidan los celulares
                var cel1 = $container.find('#paciente_container').find('input[name=paciente_celular]').val();
@@ -417,6 +417,16 @@
             formatoCatalogo(); //Damos formato al catalogo 
             $container.find('input[name=visitadetalle_cantidad]').numeric();
             $container.find('#addProduct').on('click',addProduct);
+            
+            //El evento receso
+            $container.find('input[name=visita_option]').on('change',function(){
+                    var option = $container.find('input[name=visita_option]:checked').val();
+                    if(option == 'receso'){
+                        $container.find('#visita_container').slideUp();
+                    }else{
+                        $container.find('#visita_container').slideDown();
+                    }
+            });
             
         }
 

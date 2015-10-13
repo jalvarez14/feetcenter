@@ -40,9 +40,11 @@ class AgendaController extends AbstractActionController
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
         }else{
-            $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica());
+            $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
             $idclinica = $sesion->getIdClinica();
         }
+        
+       
              
         return new ViewModel(array(
             'clinicas' => $clinicas,
@@ -110,7 +112,34 @@ class AgendaController extends AbstractActionController
         
         return $this->response->setContent(json_encode($visitas->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
     }
-
+    
+    public function getrecesosbyclinicaAction(){
+        
+        $idclinica = $this->params()->fromRoute('id'); 
+        $dia = $this->params()->fromQuery('dia');
+        
+        $recesos = \EmpleadorecesoQuery::create()->filterByIdclinica($idclinica)->filterByEmpleadorecesoInicio(array('min' => $dia.' 00:00:00', 'max' => $dia. ' 23:59:59'))->find();
+        return $this->response->setContent(json_encode($recesos->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
+    }
+    
+    
+    
+    public function nuevorecesoAction(){
+        $sesion = new \Shared\Session\AouthSession();
+        $request = $this->getRequest();
+        if($request->isPost()){
+             $post_data = $request->getPost();
+             
+             $empleado_receso = new \Empleadoreceso();
+             $empleado_receso->setIdclinica($post_data['idclinica'])
+                             ->setIdempleado($post_data['idempleado'])
+                             ->setEmpleadorecesoFecha($post_data['visita_creadaen'])
+                             ->setEmpleadorecesoInicio($post_data['visita_fechainicio'])
+                             ->setEmpleadorecesoFin($post_data['visita_fechafin'])
+                             ->save();
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'data' => $empleado_receso->toArray(\BasePeer::TYPE_FIELDNAME))));
+        }
+    }
 
     public function nuevoeventoAction(){
         
@@ -119,7 +148,7 @@ class AgendaController extends AbstractActionController
         
         if($request->isPost()){
             $post_data = $request->getPost();
-            
+
             foreach ($post_data as $k => $v){
                 if(empty($v)){
                     unset($post_data[$k]);
@@ -302,6 +331,70 @@ class AgendaController extends AbstractActionController
         }
         
     }
+    
+    public function dropeventAction(){
+        $request = $this->getRequest();
+        if($request->isPost()){
+            $post_data = $request->getPost();
+
+            $visita = \VisitaQuery::create()->findPk($post_data['idvisita']);
+            $visita->setIdempleado($post_data['idempeleado']);
+            $visita->setVisitaFechainicio($post_data['start']);
+            $visita->setVisitaFechafin($post_data['end']);
+
+            $visita->save();
+            
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
+        }
+    }
+    
+    public function droprecesoAction(){
+        $request = $this->getRequest();
+        if($request->isPost()){
+            $post_data = $request->getPost();
+
+            $visita = \EmpleadorecesoQuery::create()->findPk($post_data['idempleadoreceso']);
+            $visita->setIdempleado($post_data['idempeleado']);
+            $visita->setEmpleadorecesoInicio($post_data['start']);
+            $visita->setEmpleadorecesoFin($post_data['end']);
+
+            $visita->save();
+            
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
+        }
+    }
+    public function resizerecesoAction(){
+        $request = $this->getRequest();
+        if($request->isPost()){
+            $post_data = $request->getPost();
+
+            $visita = \EmpleadorecesoQuery::create()->findPk($post_data['idempleadoreceso']);
+            $visita->setIdempleado($post_data['idempeleado']);
+            $visita->setEmpleadorecesoInicio($post_data['start']);
+            $visita->setEmpleadorecesoFin($post_data['end']);
+
+            $visita->save();
+            
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
+        }
+    }
+    
+    public function resizeeventAction(){
+        $request = $this->getRequest();
+        if($request->isPost()){
+            $post_data = $request->getPost();
+
+            $visita = \VisitaQuery::create()->findPk($post_data['idvisita']);
+            $visita->setVisitaFechainicio($post_data['start']);
+            $visita->setVisitaFechafin($post_data['end']);
+
+            $visita->save();
+            
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
+        }
+    }
+    
+    
  
     
 }

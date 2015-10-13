@@ -13,11 +13,19 @@
         cursor: not-allowed;
         width: 100%;
     }
+    
+    .por_confirmar{
+        background: #fb8c00;
+    }
+    
+    .receso{
+        background: #00bcd4;
+    }
 </style>
 <div id="agenda_container">
     <h1>Agenda</h1>
     <?php if(count($successMessages)) :?>
-        <div class="units-row">
+        <div class="units-row">yellow;
             <?php foreach ($successMessages as $message) :?>
                 <div class="unit-100">    
                     <div class="tools-alert tools-alert-green">
@@ -35,6 +43,12 @@
                     <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
                 <?php endforeach; ?>
             </select>
+        </div>
+        <div class="unit-30">
+            <label>
+                Fecha   
+                <input class="width-100" type="text" name="agenda_fecha" style="height: 26px;">
+            </label>
         </div>
     </div>
     <div id='calendar'></div>

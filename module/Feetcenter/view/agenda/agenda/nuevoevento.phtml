@@ -43,11 +43,23 @@
         <?php 
             echo $this->form()->openTag($form); 
         ?>
-        <div class="unit-100">
+        <div class="unit-50">
             <div><span><b>Pedicurista: </b></span><span><?php echo $empleado->getEmpleadoNombre() ?></span></div>
             <div><span><b>Fecha y hora: </b></span><span><?php echo $fecha->format('d/m/Y').' - '.$fecha->format('H:i') ?></span></div>
         </div>
+        <div class="unit-50">
+            <ul class="forms-inline-list" style="margin-top: 12px; text-align: center">
+                <li>
+                    <input checked type="radio" name="visita_option" value="visita">
+                    <label>Crear visita</label>
+                    <input type="radio" name="visita_option" value="receso">
+                    <label>Crear receso</label>
+
+                </li>
+            </ul>
+        </div>
     </div>
+    <div id="visita_container">
     <div class="units-row" style="margin-bottom: 0px;">
         <div class="unit-60">
             <label>
@@ -207,6 +219,7 @@
             </tr>
         </tfoot>
     </table>
+    </div>
 </div>
 <script src="/js/agenda/modalEvent.js"></script>
 <script>

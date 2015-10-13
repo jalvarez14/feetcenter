@@ -3965,7 +3965,7 @@ setDefaults({
 	},
 	minTime: '00:00:00',
 	maxTime: '24:00:00',
-	slotEventOverlap: true
+	slotEventOverlap: false
 });
 
 
@@ -5903,7 +5903,7 @@ setDefaults({
 	},
 	minTime: '00:00:00',
 	maxTime: '24:00:00',
-	slotEventOverlap: true
+	slotEventOverlap: false
 });
 
 
