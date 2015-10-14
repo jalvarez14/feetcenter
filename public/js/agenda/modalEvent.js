@@ -198,6 +198,14 @@
                    $(this).prop('disabled',true);
                }
            });
+           
+           $.each($container.find('tbody tr'),function(){
+                var type = $(this).find('input[name*=type]').val();
+                var id = $(this).find('input[name*=id]').val();
+                $container.find('select#visitadetalle_tipo option[data-type='+type+'][value='+id+']').hide();
+               
+           });
+           
        }
        
        var deleteProduct = function(){
@@ -428,7 +436,25 @@
                     }
             });
             
+            //Calculamos el total
+            var total = 0;
+            $.each($container.find('table#visita_detalles tbody tr'),function(){
+                var subtotal = accounting.unformat($(this).find('td').eq(3).text());
+                total += subtotal;
+            });
+            $container.find('input[name=visita_total]').val(total);
+            $container.find('#total').text(accounting.formatMoney(total));
+            $container.find('tbody a').on('click',deleteProduct);
+            
+            if(typeof settings.paciente != 'undefined'){
+                 var telefono = '';
+                 if(settings.paciente.paciente_telefono != null){
+                     telefono = settings.paciente.paciente_telefono;
+                 }
+                 $container.find('input[name=paciente_autocomplete]').tokenInput('add',{id:settings.paciente.idpaciente,visita_total:settings.paciente.visita_total,visita_ultima:settings.paciente.visita_ultima,relacionados:settings.paciente.relacionados,name:settings.paciente.paciente_nombre + ' - Celular: ' + settings.paciente.paciente_celular + ' - Telefono: ' + telefono });
+            }
         }
+
 
         /*
         * Plugin initializing

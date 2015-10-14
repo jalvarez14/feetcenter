@@ -140,7 +140,125 @@ class AgendaController extends AbstractActionController
             return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'data' => $empleado_receso->toArray(\BasePeer::TYPE_FIELDNAME))));
         }
     }
+    
+     public function editareventoAction(){
+         
+         $sesion = new \Shared\Session\AouthSession();
+         $request = $this->getRequest();
+         
+         if($request->isPost()){
+             $post_data = $request->getPost();
+             
+             $entity = \VisitaQuery::create()->findPk($post_data['idvisita']);
+             
+             foreach($post_data as $key => $value){
+                if(\VisitaPeer::getTableMap()->hasColumn($key)){
+                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                }
+            }
+            
+            $entity->save();
+            
+            $entity->getVisitadetalles()->delete();
+            
+            //Ahora los detalles
+            if(isset($post_data['vistadetalle'])){
+                foreach ($post_data['vistadetalle'] as $detalle){
+                    $visitadetalle = new \Visitadetalle();
+                    $visitadetalle->setIdvisita($entity->getIdvisita())
+                                  ->setVisitadetalleCargo($detalle['type'])
+                                  ->setVisitadetallePreciounitario($detalle['price'])
+                                  ->setVisitadetalleCantidad($detalle['cantidad'])
+                                  ->setVisitadetalleSubtotal($detalle['subtotal']);
+                    
+                    if($detalle['type'] == 'producto'){
+                        $visitadetalle->setIdproductoclinica($detalle['id']);
+                    }else{
+                        $visitadetalle->setIdservicioclinica($detalle['id']);
+                    }
+                    
+                    $visitadetalle->save();
 
+                }
+            }
+            
+            $data = \VisitaQuery::create()->filterByIdvisita($entity->getIdvisita())->joinPaciente()->withColumn('paciente_nombre')->findOne()->toArray(\BasePeer::TYPE_FIELDNAME);      
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'data' => $data)));
+                     
+             
+         }
+         if($this->params()->fromQuery('html')){
+             
+             $idvisita = $this->params()->fromQuery('idvisita');
+             $entity = \VisitaQuery::create()->findPk($idvisita);
+             
+             //Instanciamos nuestro formulario
+             $form = new \Agenda\Form\EventoForm($entity->getIdempleadocreador(), $entity->getIdclinica(), $entity->getIdclinica(), $entity->getVisitaCreadaen(), $entity->getVisitaFechainicio(), $entity->getVisitaFechafin());
+             $form->get('idvisita')->setValue($entity->getIdvisita());
+             $form->setAttribute('action', '/agenda/editareventovento/'.$entity->getIdvisita());
+             $form->setAttribute('novalidate', true);
+             $form->setAttribute('class', 'forms');
+             
+
+             //Modificamos nuestro select del estatus
+            $form->add(array(
+                'type' => 'Select',
+                'name' => 'visita_status',
+                'options' => array(
+                   'value_options' => array(
+                           'por confirmar' => 'Por confirmar',
+                           'confimada' => 'Confimada',
+                           'en servicio' => 'En servicio',
+                           'cancelo' => 'Cancelo',
+                           'no se presento' => 'No se presento',
+                           'reprogramda' => 'Reprogramda',
+                           'terminado' => 'Terminado',
+                   ),
+                ),
+               'attributes' => array(
+                   'class' => 'width-100',
+               ),
+            ));
+            
+            //Le damos valor
+            $form->get('visita_status')->setValue($entity->getVisitaStatus());
+                        
+            //Catalogo de productos
+            $productos = \ProductoclinicaQuery::create()->joinProducto()->withColumn('producto_nombre')->withColumn('producto_precio')->filterByIdclinica($entity->getIdclinica())->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+
+            //Catalogo de servicio
+            $servicios = \ServicioclinicaQuery::create()->joinServicio()->withColumn('servicio_nombre')->filterByIdclinica($entity->getIdclinica())->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
+            
+            //El paciente
+            $paciente = $entity->getPaciente();
+            $paciente_array = $paciente->toArray(\BasePeer::TYPE_FIELDNAME);
+            $paciente_array['visita_total'] = \VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->count();
+            $paciente_array['visita_ultima'] = '';
+            if(\VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
+                 $visitas = \VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
+                 $paciente_array['visita_ultima'] = $visitas->getVisitaFechainicio('d/m/Y - H:i:s');
+            }
+            $paciente_array['relacionados'] = \GrupopersonalQuery::create()->joinPacienteRelatedByIdpacienteagregado()->filterByIdpaciente($paciente->getIdpaciente())->withColumn('paciente_nombre')->withColumn('paciente_celular')->withColumn('paciente_telefono')->withColumn('idclinica')->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
+            foreach ($paciente_array['relacionados'] as $key => $value){
+                $cliniva = \ClinicaQuery::create()->findPk($value['idclinica']);
+                $clinica_nombre = $cliniva->getClinicaNombre();
+                $paciente_array['relacionados'][$key]['clinica_nombre'] = $clinica_nombre;
+            }
+
+            $viewModel = new ViewModel();
+            $viewModel->setVariables(array(
+                'form' => $form,
+                'visita' => $entity,
+                'productos' => $productos,
+                'servicios' => $servicios,
+                'paciente' => json_encode($paciente_array),
+            ));
+            $viewModel->setTerminal(true);
+            return $viewModel;
+             
+         }
+     }
+     
     public function nuevoeventoAction(){
         
         $sesion = new \Shared\Session\AouthSession();
@@ -266,7 +384,7 @@ class AgendaController extends AbstractActionController
             $tmp['visita_total'] = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->count();
             $tmp['visita_ultima'] = '';
             if(\VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
-                 $visitas = \VisitaQuery::create()->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
+                 $visitas = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
                  $tmp['visita_ultima'] = $visitas->getVisitaFechainicio('d/m/Y - H:i:s');
             }
             //Los relacionados

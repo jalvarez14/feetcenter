@@ -1,0 +1,250 @@
+<style>
+    .nuevo_paciente_close{
+        position: absolute;
+        right: 8px;
+        top: -8px;
+        color: #bbb;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 300;
+    }
+    
+    .nuevo_paciente_close:hover{
+        color: #000;
+    }
+    
+    .relacionados_close{
+        position: absolute;
+        right: 8px;
+        top: -8px;
+        color: #bbb;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 300;
+    }
+    
+    .relacionados_close:hover{
+        color: #000;
+    }
+    
+    #modal_event_container select{
+        height: 29px;
+    }
+</style>
+<div id="modal_event_container">
+    <?php echo $this->formHidden($form->get('idvisita')); ?>
+    <?php echo $this->formHidden($form->get('idpaciente')); ?>
+    <?php echo $this->formHidden($form->get('idclinica')); ?>
+    <?php echo $this->formHidden($form->get('idempleado')); ?>
+    <?php echo $this->formHidden($form->get('idempleadocreador')); ?>
+    <?php echo $this->formHidden($form->get('visita_creadaen')); ?>
+    <?php echo $this->formHidden($form->get('visita_fechainicio')); ?>
+    <?php echo $this->formHidden($form->get('visita_fechafin')); ?>
+    <div class="units-row" style="margin-bottom: 0px;">
+        <?php 
+            echo $this->form()->openTag($form); 
+            //$visita = new Visita();
+        ?>
+        <div class="unit-50">
+            <div><span><b>Pedicurista: </b></span><span><?php echo  $visita->getEmpleadoRelatedByIdempleado()->getEmpleadoNombre() ?></span></div>
+            <div><span><b>Fecha y hora: </b></span><span><?php echo $visita->getVisitaFechainicio('d/m/Y - H:i') ?></span></div>
+        </div>
+    </div>
+    <div id="visita_container">
+    <div class="units-row" style="margin-bottom: 0px;">
+        <div class="unit-60">
+            <label>
+                <b>Paciente </b><span id="span_paciente" class="req">*</span>
+            <input class="width-100" type="text" name="paciente_autocomplete">
+            </label>
+            <div class="units-row" style="margin-bottom: 12px;">
+                <div class="unit-33">
+                    <div><span><b>Total de visitas: </b></span><span id="visita_total"></span></div>
+                </div>
+                <div class="unit-60">
+                     <div><span><b>Ultima visita: </b></span><span id="visita_ultima"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="unit-40" style="margin-top: 25px;">
+              <button class="btn" style="height: 30px; padding-right: 50px; padding-left: 48px;" btn-action="open_paciente_container">Nuevo</button>
+              <button btn-action="open_relacionados_container" class="btn btn-disabled" style="margin-left: 7px; height: 30px;" disabled>Relacionados</button>
+        </div>
+    </div>
+    <div id="paciente_container" class="units-row" style="display: none">
+        <div class="unit-100">
+            <fieldset style="position: relative">
+                <span class="nuevo_paciente_close">x</span>
+                <legend>Nuevo paciente</legend>
+                <div class="units-row" style="margin-bottom: 0px;">                  
+                    <div class="unit-100">
+                        <label>
+                            Nombre <span class="req">*</span>
+                            <input required name="paciente_nombre" type="text" class="width-100">
+                        </label>
+                    </div>
+                </div>
+                <div class="units-row">
+                    <div class="unit-50">
+                        <label>
+                            Celular <span class="req">*</span>
+                            <input required name="paciente_celular" type="text" class="width-100">
+                        </label>
+                    </div>
+                    <div class="unit-50">
+                        <label>
+                            Confirmar celular <span class="req">*</span>
+                            <input required name="paciente_celular_confirmar" type="text" class="width-100">
+                        </label>
+                    </div>
+                </div>
+                <div class="units-row">
+                    <div class="unit-40 centered">
+                        <button btn-action="submit_paciente" class="btn btn-green width-100">Guardar</button>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div id="relacionados_container" class="units-row" style="display: none">
+        <div class="unit-100">
+            <fieldset style="position: relative">
+                <span class="relacionados_close">x</span>
+                <legend>Pacientes relacionados</legend>
+                <div class="units-row">
+                    <div class="unit-80">
+                      Nombre
+                      <input class="width-100"type="text" name="paciente_relacionados_autocomplete">  
+                    </div>
+                    <div class="unit-20" style="margin-top: 4px;">
+                        <a data-action="addPaciente" class="btn btn-blue" style="height: 30px; margin-top: 20px; width: 100%;">Agregar</a>
+                    </div>
+                </div>
+                <table id="tabla_pacientes">
+                    <thead>
+                        <tr>
+                            <th>Clínica</th>
+                            <th>Nombre</th>
+                            <th>Celular</th>
+                            <th>Teléfono</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                <div class="units-row">
+                    <div class="unit-40 centered">
+                        <button btn-action="submit_relacionados" class="btn btn-green width-100">Guardar</button>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row" style="margin-bottom: 0px;">
+        <div class="unit-25">
+            <b>Tipo de servicio</b>
+             <ul class="forms-inline-list">
+                <li>
+                    <input checked type="radio" name="visita_tipo" value="consulta">
+                    <label>Consulta</label>
+                    <input type="radio" name="visita_tipo" value="servicio">
+                    <label>Servicio</label>
+                    
+                </li>
+            </ul>
+        </div>
+        <div class="unit-75">
+            <label class="forms-inline-list">
+                <b>Estatus</b>
+                <?php echo $this->formSelect($form->get('visita_status')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row" id="addproduct_container">
+        <div class="unit-60">
+            <label><b>Servicio / Producto</b> <span class="req">*</span>
+                <select  class="width-100" id="visitadetalle_tipo">
+                    <option value="">Seleccione el producto/servicio...</option>
+                    <optgroup label="Productos">
+                        <?php foreach ($productos as $producto) :?>
+                            <option data-name="<?php echo $producto['producto_nombre']?>" data-existencias="<?php echo (int)$producto['productoclinica_existencia']?>" data-price="<?php echo $producto['producto_precio']?>" data-type="producto" value="<?php echo $producto['idproductoclinica']?>"><?php echo $producto['producto_nombre']?></option>
+                        <?php endforeach;?>
+                    </optgroup>
+                    <optgroup label="Servicios">
+                         <?php foreach ($servicios as $servicio) :?>
+                            <option data-name="<?php echo $servicio['servicio_nombre']?>"  data-price="<?php echo $servicio['servicioclinica_precio']?>" data-type="servicio" value="<?php echo $servicio['idservicioclinica']?>"><?php echo $servicio['servicio_nombre']?></option>
+                        <?php endforeach;?>
+                    </optgroup>
+                </select>
+            </label>
+        </div>
+        <div class="unit-20">
+            <label>
+                <b>Cantidad</b> <span class="req">*</span>
+                <input class="width-100" type="text"  name="visitadetalle_cantidad">
+            </label>
+        </div>
+        <div class="unit-20" style="margin-top: 22px;">
+            <button id="addProduct" class="btn btn-blue width-100">Agregar</button>
+        </div>
+    </div>
+    <table id="visita_detalles">
+        <thead>
+            <tr>
+                <th>Cantidad</th>
+                <th>Servicio / Producto</th>
+                <th>Opciones</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+            <?php foreach ($visita->getVisitadetalles() as $key => $value) :?>
+            <tr>
+                <?php if ($value->getIdproductoclinica() != NULL) :?>
+                    <input type="hidden" value="<?php echo $value->getIdproductoclinica()?>" name="vistadetalle[<?php echo $key?>][id]">
+                    <input type="hidden" value="producto" name="vistadetalle[<?php echo $key?>][type]">
+                    <?php $name = $value->getProductoclinica()->getProducto()->getProductoNombre()?>
+                <?php else :?>
+                    <input type="hidden" value="<?php echo $value->getIdservicioclinica()?>" name="vistadetalle[<?php echo $key?>][id]">
+                    <input type="hidden" value="servicio" name="vistadetalle[<?php echo $key?>][type]">
+                     <?php $name = $value->getServicioclinica()->getServicio()->getServicioNombre()?>
+                <?php endif;?>
+                    <input type="hidden" value="<?php echo $value->getVisitadetallePreciounitario()?>" name="vistadetalle[<?php echo $key?>][price]">
+                    <input type="hidden" value="<?php echo $value->getVisitadetalleCantidad()?>" name="vistadetalle[<?php echo $key?>][cantidad]">
+                    <input type="hidden" value="<?php echo $value->getVisitadetalleSubtotal()?>" name="vistadetalle[<?php echo $key?>][subtotal]">
+                    <td><?php echo (int) $value->getVisitadetalleCantidad()?></td>
+                    <td><?php echo $name?></td>
+                    <td><a href="javascript:void(0)">Eliminar</a></td>
+                    <td class="visitadetalle_subtotal"><?php echo $value->getVisitadetalleSubtotal()?></td>
+            </tr>
+            <?php endforeach;?>
+        </tbody>
+        <tfoot>
+            <tr>
+            <input name="visita_total" type="hidden" value="0">
+                <td colspan="3">Total</td>
+                <td id="total">$ 0</td>
+            </tr>
+        </tfoot>
+    </table>
+    </div>
+</div>
+<script src="/js/agenda/modalEvent.js"></script>
+
+<script>
+    //Nuestro checkbox de tipo de servicio
+    var visita_tipo = "<?php echo $visita->getVisitaTipo() ?>";
+    $('#modal_event_container').find('input[name=visita_tipo]').prop('checked',false);
+    $('#modal_event_container').find('input[name=visita_tipo][value='+visita_tipo+']').prop('checked',true);
+    //Le damos formato a los subtotales
+    $('td.visitadetalle_subtotal').filter(function(){
+        var value = $(this).text();
+        $(this).text(accounting.formatMoney(value));
+    });
+    $('#modal_event_container').modalEvent({
+        paciente:<?php echo $paciente?>,
+    });
+</script>

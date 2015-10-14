@@ -47,8 +47,16 @@
         
         var settings;
         
-        var cssClassMap = {"por confirmar":"por_confirmar"};
-        
+        var cssClassMap = {
+            "por confirmar":"visita_porconfirmar",
+            "confimada":"visita_confirmada",
+            "cancelo":"visita_cancelo",
+            "no se presento":"visita_nosepresento",
+            "reprogramda":"visita_reprogramda",
+            "en servicio":"visita_enservicio",
+            "terminado":"visita_terminado",
+        };
+       
         /*
         * Private methods
         */
@@ -125,11 +133,13 @@
          */
         
         var renderEventos = function(date) {
+           
             $.ajax({
                 url: '/agenda/geteventosbyclinica/' + settings.idclinica,
                 dataType: 'json',
                 data: {dia: date.format('YYYY-MM-DD')},
                 success: function (data) {
+                     
                     $.each(data, function (index, element) {
                         renderEvento(element.idvisita,element.visita_fechainicio,element.visita_fechafin,element.idempleado,element.paciente_nombre,element.visita_status);
                     });
@@ -226,12 +236,6 @@
                  selectHelper: true,
                  selectable: true,
                  resources: '/agenda/getpedicuristasbyclinica/'+settings.idclinica,
-                 eventLimit: true, // for all non-agenda views
-                    views: {
-                        resourceDay: {
-                            eventLimit: 6 // adjust to 6 only for agendaWeek/agendaDay
-                        }
-                    },
                 viewRender: function (view, element) {
 
                     var viewName = view.name;
@@ -256,9 +260,9 @@
                             
                             var now  = start.format('DD/MM/YYYY HH:mm:ss');
                             var then = end.format('DD/MM/YYYY HH:mm:ss');
-                            var diff = moment.utc(moment(then).diff(moment(now))).format("HH:mm:ss");
-                            
-                            if(moment.duration(diff).asMinutes() <= 60){
+                            var diff = end.diff(start,'minutes');
+
+                            if(diff <= 60){
                                 var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Nueva visita');
                                 
                                 $modalLauncher.unbind();
@@ -285,13 +289,12 @@
                                     guardarAction.on('click', $.proxy(function(){          
                                         
                                         var option = modal.find('input[name=visita_option]:checked').val();
-                                       
-                                        
+
                                         var empty = false;
 
                                         modal.find('span.error').remove();
                                         modal.find('#span_paciente').siblings('ul').css('border','1px solid #999');
-
+                                        
                                         if(modal.find('input[name=idpaciente]').val() == ""){
                                              empty = true;
                                              modal.find('#span_paciente').after('<span class="error"> campo obligatorio</span>');
@@ -323,7 +326,7 @@
                                                     }
                                                 }
                                             });
-                                         }else{
+                                         }else if(option == 'receso'){
                                             var formData = new FormData();
                                              $.each(modal.find('input:not(:checkbox, :radio),select'),function(){
                                                  formData.append($(this).attr('name'),$(this).val());
@@ -428,7 +431,100 @@
                      }
 
                 },
- 
+                eventClick: function( event, jsEvent, view ) { 
+                    var is_visita = true;
+                    var className = event.className[0];
+                    var type_array = className.split('_'); var type = type_array[0];
+                    
+                    if(type != 'visita'){
+                        is_visita = false;
+                    }
+                    
+                    if(is_visita){
+    
+                        var status = type_array[1];
+                        $.each(cssClassMap,function(index,element){
+                            if('visita_'+status==element){
+                                status = index;
+                            }
+                        });
+                        var is_editable = true;
+                        var now = moment();
+                        var start = event.start;
+                        var diff = start.diff(now,'minutes');
+                        if(diff > 15 && status!='en servicio'){
+                            is_editable = false;
+                        }
+                        if(is_editable){
+                            var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800); $modalLauncher.attr('data-title',event.title);
+                            $modalLauncher.unbind();
+                            var data_content = $modalLauncher.attr('data-content');
+                            data_content = '/agenda/editarevento?html=true';
+                            data_content += '&idvisita='+ event.id;
+                             
+                             $modalLauncher.attr('data-content',data_content);
+                             $modalLauncher.modal();
+                             $modalLauncher.trigger('click');
+                             $modalLauncher.unbind();
+                             
+                             $modalLauncher.on('loading.tools.modal', function(modal){
+                                    var $modal = this ;
+                                 
+                                    var $modalHeader = this.$modalHeader;
+                                    $modalHeader.addClass('modal_header_action');
+                                    this.createCancelButton('Cancelar');
+                                    var guardarAction = this.createActionButton('Guardar');
+                                    
+                                    guardarAction.on('click', $.proxy(function(){
+                                        var empty = false;
+                                        modal.find('span.error').remove();
+                                        modal.find('#span_paciente').siblings('ul').css('border','1px solid #999');
+                                        if(modal.find('input[name=idpaciente]').val() == ""){
+                                             empty = true;
+                                             modal.find('#span_paciente').after('<span class="error"> campo obligatorio</span>');
+                                             modal.find('#span_paciente').siblings('ul').css('border','1px solid red');
+                                         }
+                                         
+                                         if(!empty){
+                                            var formData = new FormData();
+                                             $.each(modal.find('input:not(:checkbox, :radio),select'),function(){
+                                                 formData.append($(this).attr('name'),$(this).val());
+                                             });
+                                             $.each(modal.find(':checkbox:checked, :radio:checked'),function(){
+                                                 formData.append($(this).attr('name'),$(this).val());
+                                             });
+                                             
+                                             //Hacemos la peticion ajax
+                                            $.ajax({
+                                                dataType: 'json', 
+                                                type: "POST",
+                                                url: '/agenda/editarevento',
+                                                data: formData,
+                                                async: false,
+                                                processData: false,
+                                                contentType: false,
+                                                success: function (data) {
+                                                    if(data.result){
+                                                        renderEvento(data.data.idvisita,data.data.visita_fechainicio,data.data.visita_fechafin,data.data.idempleado,data.data.paciente_nombre,data.data.visita_status);
+                                                        $modal.close();
+                                                    }
+                                                }
+                                            });
+                                         }
+                                        
+                                    }));
+                                    
+                                    
+                             });
+                             
+                        }else{
+                            alert('Lo sentimos, esta vista ya no es editable debido a que han transcurrido 15 minutos desde su hora de inicio');
+                        }
+                        
+                    }
+                    
+                    
+                }
              });
              
              
