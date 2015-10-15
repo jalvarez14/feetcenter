@@ -231,6 +231,81 @@
         </tfoot>
     </table>
     </div>
+    <div class="units-row" style="margin-bottom: 0px;">
+        <div class="unit-100">
+            <div id="visita_estatuspago" value="<?php echo $visita->getVisitaEstatuspago()?>"><span><b>Estatus de pago: </b></span><span><?php echo ucfirst($visita->getVisitaEstatuspago()) ?></span></div>
+        </div>
+    </div>
+    <div id="pay_container">
+        <div id="pay_nextdate_container"class="units-row" style="margin-bottom: 0px; display: none">
+            <div class="unit-100">
+                <fieldset>
+                    <legend>
+                        ¿Agendar una proxima cita?
+                    </legend>
+                    <ul class="forms-inline-list">
+                        <li>
+                            <input type="radio" name="visita_siguiente" value="si">
+                            <label>Si</label>
+                            <input type="radio" name="visita_siguiente" value="no">
+                            <label>No</label>
+
+                        </li>
+                    </ul>
+                </fieldset>
+            </div>
+        </div>
+        <div id="pay_date_container"class="units-row" style="margin-bottom: 0px; display: none">
+            <div class="unit-100">
+                <fieldset>
+                    <legend>
+                        Detalles cita
+                    </legend>
+                    <div class="units-row">
+                        <div class="unit-33">
+                           <label class="forms-inline-list">
+                                <b>Pedicurista</b> <span class="req">*</span>
+                                <select class="width-100" name="visita_siguiente_empleado">
+                                    <?php foreach ($empleados as $empleado) :?>
+                                        <option value="<?php echo $empleado->getEmpleado()->getIdempleado()?>"><?php echo $empleado->getEmpleado()->getEmpleadoNombre()?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </label> 
+                        </div>
+                        
+                        <div class="unit-33">
+                            <label>
+                                Fecha <span class="req">*</span>
+                                <input required name="visita_siguiente_fecha" type="text" class="width-100">
+                            </label>
+                        </div>
+                        <div class="unit-33">
+                            <label>
+                                Hora <span class="req">*</span>
+                                <input required name="visita_siguiente_hora" type="text" class="width-100">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="units-row">
+                    <div class="unit-40 centered">
+                        <button btn-action="submit_visita_siguiente" class="btn btn-green width-100">Guardar</button>
+                    </div>
+                </div>
+                </fieldset>
+            </div>
+        </div>
+        <div id="pay_details_container"class="units-row" style="margin-bottom: 0px; display: none">
+            <div class="unit-100">
+                <fieldset>
+                    <legend>
+                        Detalles pago
+                    </legend>
+                    <div class="units-row">
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="/js/agenda/modalEvent.js"></script>
 
@@ -239,6 +314,9 @@
     var visita_tipo = "<?php echo $visita->getVisitaTipo() ?>";
     $('#modal_event_container').find('input[name=visita_tipo]').prop('checked',false);
     $('#modal_event_container').find('input[name=visita_tipo][value='+visita_tipo+']').prop('checked',true);
+    //Nuestro select pedicurista de siguiente cita
+    var idempleado = "<?php echo $visita->getIdempleado()?>";
+    $('#modal_event_container').find('select[name=visita_siguiente_empleado]').val(idempleado);
     //Le damos formato a los subtotales
     $('td.visitadetalle_subtotal').filter(function(){
         var value = $(this).text();

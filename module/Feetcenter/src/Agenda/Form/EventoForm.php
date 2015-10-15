@@ -94,7 +94,7 @@ class EventoForm extends Form
         
         $this->add(array(
              'type' => 'Select',
-             'name' => 'visita_tipo',
+             'name' => 'visita_estatuspago',
              'options' => array(
                 'value_options' => array(
                         'pagada' => 'Pagada',

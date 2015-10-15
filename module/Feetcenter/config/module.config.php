@@ -443,7 +443,7 @@ return array(
                         'action'        => 'index',
                     ),
                     'constraints' => array(
-                        'action' => 'editarevento|getpedicuristasbyclinica|gethorariosbyclinica|geteventosbyclinica|getrecesosbyclinica|nuevoreceso|nuevoreceso|nuevoevento|findpacientes|quickaddpaciente|quickupdaterelacionados|dropevent|dropreceso|resizereceso|resizeevent',
+                        'action' => 'quickaddvisita|editarevento|getpedicuristasbyclinica|gethorariosbyclinica|geteventosbyclinica|getrecesosbyclinica|nuevoreceso|nuevoreceso|nuevoevento|findpacientes|quickaddpaciente|quickupdaterelacionados|dropevent|dropreceso|resizereceso|resizeevent',
                     ),
                 ),
             ),

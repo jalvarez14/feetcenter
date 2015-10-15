@@ -198,27 +198,76 @@ class AgendaController extends AbstractActionController
              $form->setAttribute('action', '/agenda/editareventovento/'.$entity->getIdvisita());
              $form->setAttribute('novalidate', true);
              $form->setAttribute('class', 'forms');
+             $form->get('visita_estatuspago')->setValue($entity->getVisitaEstatuspago());
              
-
-             //Modificamos nuestro select del estatus
-            $form->add(array(
-                'type' => 'Select',
-                'name' => 'visita_status',
-                'options' => array(
-                   'value_options' => array(
-                           'por confirmar' => 'Por confirmar',
-                           'confimada' => 'Confimada',
-                           'en servicio' => 'En servicio',
-                           'cancelo' => 'Cancelo',
-                           'no se presento' => 'No se presento',
-                           'reprogramda' => 'Reprogramda',
-                           'terminado' => 'Terminado',
+             $status = $entity->getVisitaStatus();
+            
+            if($status == 'confimada'){ 
+                //Modificamos nuestro select del estatus
+                $form->add(array(
+                    'type' => 'Select',
+                    'name' => 'visita_status',
+                    'options' => array(
+                       'value_options' => array(
+                            'por confirmar' => 'Por confirmar',
+                            'confimada' => 'Confimada',
+                            'en servicio' => 'En servicio',
+                            'cancelo' => 'Cancelo',
+                            'no se presento' => 'No se presento',
+                            'reprogramda' => 'Reprogramda',
+                       ),
+                    ),
+                   'attributes' => array(
+                       'class' => 'width-100',
                    ),
-                ),
-               'attributes' => array(
-                   'class' => 'width-100',
-               ),
-            ));
+                ));
+            }elseif($status == 'terminado'){
+                $form->add(array(
+                    'type' => 'Select',
+                    'name' => 'visita_status',
+                    'options' => array(
+                       'value_options' => array(
+                               'en servicio' => 'En servicio',
+                                'terminado' => 'Terminado',
+                       ),
+                    ),
+                   'attributes' => array(
+                       'class' => 'width-100',
+                   ),
+                ));
+            }elseif($status == 'en servicio'){
+                $form->add(array(
+                    'type' => 'Select',
+                    'name' => 'visita_status',
+                    'options' => array(
+                       'value_options' => array(
+                               'en servicio' => 'En servicio',
+                                'terminado' => 'Terminado',
+                       ),
+                    ),
+                   'attributes' => array(
+                       'class' => 'width-100',
+                   ),
+                ));
+            }else{
+                $form->add(array(
+                    'type' => 'Select',
+                    'name' => 'visita_status',
+                    'options' => array(
+                       'value_options' => array(
+                               'por confirmar' => 'Por confirmar',
+                               'confimada' => 'Confimada',
+                               'en servicio' => 'En servicio',
+                               'cancelo' => 'Cancelo',
+                               'no se presento' => 'No se presento',
+                               'reprogramda' => 'Reprogramda',
+                       ),
+                    ),
+                   'attributes' => array(
+                       'class' => 'width-100',
+                   ),
+                ));
+            }
             
             //Le damos valor
             $form->get('visita_status')->setValue($entity->getVisitaStatus());
@@ -228,6 +277,9 @@ class AgendaController extends AbstractActionController
 
             //Catalogo de servicio
             $servicios = \ServicioclinicaQuery::create()->joinServicio()->withColumn('servicio_nombre')->filterByIdclinica($entity->getIdclinica())->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
+            
+            
+            $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($entity->getIdclinica())->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
             
             //El paciente
             $paciente = $entity->getPaciente();
@@ -252,6 +304,7 @@ class AgendaController extends AbstractActionController
                 'productos' => $productos,
                 'servicios' => $servicios,
                 'paciente' => json_encode($paciente_array),
+                'empleados' => $empleados,
             ));
             $viewModel->setTerminal(true);
             return $viewModel;
@@ -426,6 +479,31 @@ class AgendaController extends AbstractActionController
         
     }
     
+    public function quickaddvisitaAction(){
+        
+        $request = $this->getRequest();
+        $sesion = new \Shared\Session\AouthSession();
+        if($request->isPost()){
+            $post_data = $request->getPost();
+
+            $entity = new \Visita();
+
+            foreach($post_data as $key => $value){
+                if(\VisitaPeer::getTableMap()->hasColumn($key)){
+                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                }
+            }
+            $entity->setIdempleadocreador($sesion->getIdempleado());
+            $entity->setVisitaTipo('servicio');
+            $entity->setVisitaCreadaen(new \DateTime());
+            $entity->save();
+
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
+        }
+    }
+    
+
+
     public function quickupdaterelacionadosAction(){
         $request = $this->getRequest();
         if($request->isPost()){

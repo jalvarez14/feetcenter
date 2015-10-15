@@ -462,12 +462,7 @@
                         var now = moment();
                         var start = moment(event.start);
                         var diff = now.diff(start,'minutes');
-                        console.log(now);
-                        console.log(start);
-                        console.log(event.start);
-                        console.log(diff);
-                        
-                       
+          
                         if(diff > 15 && status!='en servicio'){
                             is_editable = false;
                         }
@@ -491,23 +486,33 @@
                                     this.createCancelButton('Cancelar');
                                     var guardarAction = this.createActionButton('Guardar');
                                     var pagarAction = this.createActionButton('Pagar');
-                                    pagarAction.prop('disabled',true);
                                     pagarAction.css('background','#4caf50');
                                     
                                     
                                     /*
                                      * Evento pagar
                                      */
+                                    pagarAction.prop('disabled',true);
                                     var modalEventContainer = modal.find('#modal_event_container');
+                                    var status =  modal.find('select[name=visita_status]').val();
+                                    var status_pay = modal.find('#visita_estatuspago').attr('value');
+
+                                    if(status == 'terminado' && status_pay == 'no pagada'){
+                                        modal.find('span.token-input-delete-token').hide();
+                                        modalEventContainer.find('input,button,select:not(select[name=visita_status])').prop('disabled',true);
+                                        modalEventContainer.find('input,button,select:not(select[name=visita_status])').css('cursor','not-allowed');
+                                        pagarAction.prop('disabled',false);
+                                    }
                                      
                                     modal.find('select[name=visita_status]').on('change',function(){
                                         var status =  modal.find('select[name=visita_status]').val();
-                                        if(status == 'terminado'){
+                                        if(status == 'terminado' && status_pay == 'no pagada'){
                                             modal.find('span.token-input-delete-token').hide();
                                             modalEventContainer.find('input,button,select:not(select[name=visita_status])').prop('disabled',true);
-                                            modalEventContainer.find('input,select,button').css('cursor','not-allowed');
-                                            pagarAction.prop('disabled',false);
-                                        }else{
+                                            modalEventContainer.find('input,button,select:not(select[name=visita_status])').css('cursor','not-allowed');
+                                             pagarAction.prop('disabled',false);
+                                        }
+                                        else{
                                              modal.find('span.token-input-delete-token').show();
                                              modalEventContainer.find('input,button,select:not(select[name=visita_status])').css('cursor','auto');
                                              modalEventContainer.find('input,button,select').prop('disabled',false);
@@ -515,12 +520,120 @@
                                         }
                                     });
                                     
-                                    /*
-                                     *  Evento Guardar
-                                     */
+                                     var nextDateContainer = modal.find('#pay_nextdate_container');
+                                     var dateContainer = modal.find('#pay_date_container');
+                                     var payDetailsContainer = modal.find('#pay_details_container');
+                                     
                                      pagarAction.on('click', $.proxy(function(){
+                                         //HABILITAMOS INPUTS
+                                         nextDateContainer.find('input,button,select').css('cursor','auto');
+                                         nextDateContainer.find('input,button,select').prop('disabled',false);
+                                         dateContainer.find('input,button,select').css('cursor','auto');
+                                         dateContainer.find('input,button,select').prop('disabled',false);
+                                         
+                                         pagarAction.prop('disabled',true);
                                          guardarAction.prop('disabled',true);
-                                         modalEventContainer.slideUp();
+                                         modalEventContainer.children(':not(:last-child)').hide();
+                                         nextDateContainer.slideDown();
+                                         
+                                         //El evento para generar una nueva cita
+                                         nextDateContainer.find('input[name=visita_siguiente]').on('change',function(){
+                                             var is_next_date = nextDateContainer.find('input[name=visita_siguiente]:checked').val();
+                                             if(is_next_date == 'si'){
+                                                dateContainer.slideDown();
+                                                /*Inicializamos nuestros calendarios*/
+                                                dateContainer.find('input[name=visita_siguiente_fecha]').pickadate({
+                                                    monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                                                    monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                                                    weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                                                    weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                                                    today: 'hoy',
+                                                    clear: 'borrar',
+                                                    close: 'cerrar',
+                                                    firstDay: 1,
+                                                    format: 'd !de mmmm !de yyyy',
+                                                    formatSubmit: 'yyyy/mm/dd',
+                                                    selectYears: true,
+                                                    selectMonths: true,
+                                                    min: new Date(),
+                                                    selectYears: 25,
+                                                });
+                                                /*El componente de hota*/
+                                                dateContainer.find('input[name=visita_siguiente_hora]').timepicker({
+                                                            minuteStep: 1,
+                                                            template: 'modal',
+                                                            
+                                                            showSeconds: false,
+                                                            showMeridian: false,
+                                                            defaultTime: false
+                                                });
+                                                //El evento submit
+                         
+                                                dateContainer.find('[btn-action=submit_visita_siguiente]').on('click',function(){
+
+                                                    var empty = false;
+                                                    var avaliable = true;
+                                                    
+                                                    dateContainer.find('span.error').remove();
+                                                    dateContainer.find('[required]').removeClass('input-error');
+                                                        
+                                                    $.each(dateContainer.find('input:visible'),function(){
+                                                        if($(this).val() == ""){
+                                                            empty = true;
+                                                            $(this).addClass('input-error');
+                                                            var $span = $(this).siblings('span.req');
+                                                            $span.after('<span class="error"> campo obligatorio</span>');
+
+                                                        } 
+                                                    });
+                                                    
+                                                    if(!empty){
+                                                        
+                                                        var form_data = new FormData();
+                                                        
+                                                        form_data.append('idpaciente',modal.find('input[name=idpaciente]').val());
+                                                        form_data.append('idclinica',modal.find('input[name=idclinica]').val());
+                                                        form_data.append('idempleado',modal.find('select[name=visita_siguiente_empleado]').val());
+                                                        
+                                                        var fechainicio = modal.find('input[name=visita_siguiente_fecha_submit]').val() + ' ' + modal.find('input[name=visita_siguiente_hora]').val();
+                                                        form_data.append('visita_fechainicio',fechainicio);
+                                                        
+                                                        fechainicio = moment(fechainicio);
+                                                        var fechafin = fechainicio.add(30, 'm'); //dureacion por default 30 minutos
+                                                        fechafin = moment(fechafin.format('YYYY-MM-DD HH:mm'));
+                                                        form_data.append('visita_fechafin',fechafin.format('YYYY-MM-DD HH:mm'));
+                                                        
+                                                        var event = {resources:{0:parseInt(modal.find('input[name=idempleado]').val())},start:fechainicio,end:fechafin,id:0};
+                                                     
+                                                        if(!isOverlapping(event)){
+                                                            //Hacemos nuestra peticion ajax
+                                                            $.ajax({
+                                                                url:'/quickaddvisita',
+                                                                method:'POST',
+                                                                dataType:'json',
+                                                                data:form_data,
+                                                                processData: false,
+                                                                contentType: false,
+                                                                success: function(data){
+                                                                    if(data.result){
+                                                                         alert('Registro guardado exitosamente');
+                                                                         dateContainer.slideUp();
+                                                                         payDetailsContainer.slideDown();
+                                                                    }
+
+                                                                }
+                                                            });
+                                                        }else{
+                                                            alert('Sin disponibilidad!');
+                                                        }
+                                                    }
+                                                });
+                                             }else{
+                                                 console.log('no cita');
+                                                 dateContainer.slideUp();
+                                             }
+                                         });
+                                         
                                      }));
                                     guardarAction.on('click', $.proxy(function(){
                                         var empty = false;
@@ -585,8 +698,7 @@
              
             // "calendar" on line below should ref the element on which fc has been called 
             var array = $('#calendar').fullCalendar('clientEvents');
-           
-           
+            
             for(var i in array){
                 if (event.resources[0] == array[i].resources[0] && event.end > array[i].start && event.start < array[i].end && event.id !==array[i].id){
                    return true;
