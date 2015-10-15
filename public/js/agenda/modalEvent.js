@@ -145,7 +145,7 @@
                
                //Hacemos nuestra peticion ajax
                $.ajax({
-                   url:'/agenda/quickaddpaciente',
+                   url:'/quickaddpaciente',
                    method:'POST',
                    dataType:'json',
                    data:form_data,
@@ -174,7 +174,7 @@
            
            //Hacemos nuestra peticion ajax
             $.ajax({
-                url:'/agenda/quickupdaterelacionados',
+                url:'/quickupdaterelacionados',
                 method:'POST',
                 dataType:'json',
                 data:form_data,
@@ -327,7 +327,7 @@
             settings = plugin.settings = $.extend({}, defaults, options);
             
             //Inicializamos al autocomplete
-            $container.find('input[name=paciente_autocomplete]').tokenInput('/agenda/findpacientes',{
+            $container.find('input[name=paciente_autocomplete]').tokenInput('/findpacientes',{
                 //propertyToSearch: 'paciente_nombre',
                 hintText: "Comience a escribir...",
                 noResultsText: "No se encontraron resultados...",

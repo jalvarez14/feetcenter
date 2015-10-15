@@ -95,7 +95,7 @@
          */
         var renderDescansos = function (date) {
             $.ajax({
-                url: '/agenda/gethorariosbyclinica/' + settings.idclinica,
+                url: '/gethorariosbyclinica/' + settings.idclinica,
                 dataType: 'json',
                 data: {dia: date.isoWeekday()},
                 success: function (data) {
@@ -135,7 +135,7 @@
         var renderEventos = function(date) {
            
             $.ajax({
-                url: '/agenda/geteventosbyclinica/' + settings.idclinica,
+                url: '/geteventosbyclinica/' + settings.idclinica,
                 dataType: 'json',
                 data: {dia: date.format('YYYY-MM-DD')},
                 success: function (data) {
@@ -149,7 +149,7 @@
         
         var renderRecesos = function(date) {
             $.ajax({
-                url: '/agenda/getrecesosbyclinica/' + settings.idclinica,
+                url: '/getrecesosbyclinica/' + settings.idclinica,
                 dataType: 'json',
                 data: {dia: date.format('YYYY-MM-DD')},
                 success: function (data){
@@ -228,6 +228,7 @@
                     center: '',
                     right:  'prev,next'
                 },
+                 timezone:'local',
                  now:date,
                  allDaySlot:false,
                  defaultView: 'resourceDay',
@@ -235,7 +236,7 @@
                  slotDuration: '00:15:00',
                  selectHelper: true,
                  selectable: true,
-                 resources: '/agenda/getpedicuristasbyclinica/'+settings.idclinica,
+                 resources: '/getpedicuristasbyclinica/'+settings.idclinica,
                 viewRender: function (view, element) {
 
                     var viewName = view.name;
@@ -261,14 +262,23 @@
                             var now  = start.format('DD/MM/YYYY HH:mm:ss');
                             var then = end.format('DD/MM/YYYY HH:mm:ss');
                             var diff = end.diff(start,'minutes');
-
+                            
+                            var n = moment();
+                            var d = start.diff(n,'minutes');
+                                
+                            if(d < 0){
+                                alert('No es posible crear una cita en una fecha/hora anterior a la actual!');
+                                unselect();
+                                return;
+                            }
+                            
                             if(diff <= 60){
                                 var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Nueva visita');
                                 
                                 $modalLauncher.unbind();
                                 var data_content = $modalLauncher.attr('data-content');
 
-                                data_content = '/agenda/nuevoevento?html=true';
+                                data_content = '/nuevoevento?html=true';
                                 data_content += '&start='+ start.format('YYYY-MM-DD+HH:mm:00');
                                 data_content += '&end='+ end.format('YYYY-MM-DD+HH:mm:00');
                                 data_content += '&idempleado='+ event.data.id;
@@ -314,7 +324,7 @@
                                             $.ajax({
                                                 dataType: 'json', 
                                                 type: "POST",
-                                                url: '/agenda/nuevoevento',
+                                                url: '/nuevoevento',
                                                 data: formData,
                                                 async: false,
                                                 processData: false,
@@ -338,7 +348,7 @@
                                              $.ajax({
                                                 dataType: 'json', 
                                                 type: "POST",
-                                                url: '/agenda/nuevoreceso',
+                                                url: '/nuevoreceso',
                                                 data: formData,
                                                 async: false,
                                                 processData: false,
@@ -377,7 +387,7 @@
                                     $.ajax({
                                         dataType: 'json', 
                                         type: "POST",
-                                        url: '/agenda/resizeevent',
+                                        url: '/resizeevent',
                                         data: {idvisita:event.id,start:event.start.format('YYYY/MM/DD HH:mm:00'),end:event.end.format('YYYY/MM/DD HH:mm:00')},
 
                                     });
@@ -386,7 +396,7 @@
                                     $.ajax({
                                         dataType: 'json', 
                                         type: "POST",
-                                        url: '/agenda/resizereceso',
+                                        url: '/resizereceso',
                                         data: {idempleadoreceso:event.id,idempeleado:event.resources[0],start:event.start.format('YYYY/MM/DD HH:mm:00'),end:event.end.format('YYYY/MM/DD HH:mm:00')},
 
                                     });
@@ -410,7 +420,7 @@
                                     $.ajax({
                                         dataType: 'json', 
                                         type: "POST",
-                                        url: '/agenda/dropevent',
+                                        url: '/dropevent',
                                         data: {idvisita:event.id,idempeleado:event.resources[0],start:event.start.format('YYYY/MM/DD HH:mm:00'),end:event.end.format('YYYY/MM/DD HH:mm:00')},
 
                                     });
@@ -419,7 +429,7 @@
                                     $.ajax({
                                         dataType: 'json', 
                                         type: "POST",
-                                        url: '/agenda/dropreceso',
+                                        url: '/dropreceso',
                                         data: {idempleadoreceso:event.id,idempeleado:event.resources[0],start:event.start.format('YYYY/MM/DD HH:mm:00'),end:event.end.format('YYYY/MM/DD HH:mm:00')},
 
                                     });
@@ -450,8 +460,14 @@
                         });
                         var is_editable = true;
                         var now = moment();
-                        var start = event.start;
-                        var diff = start.diff(now,'minutes');
+                        var start = moment(event.start);
+                        var diff = now.diff(start,'minutes');
+                        console.log(now);
+                        console.log(start);
+                        console.log(event.start);
+                        console.log(diff);
+                        
+                       
                         if(diff > 15 && status!='en servicio'){
                             is_editable = false;
                         }
@@ -459,7 +475,7 @@
                             var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800); $modalLauncher.attr('data-title',event.title);
                             $modalLauncher.unbind();
                             var data_content = $modalLauncher.attr('data-content');
-                            data_content = '/agenda/editarevento?html=true';
+                            data_content = '/editarevento?html=true';
                             data_content += '&idvisita='+ event.id;
                              
                              $modalLauncher.attr('data-content',data_content);
@@ -529,7 +545,7 @@
                                             $.ajax({
                                                 dataType: 'json', 
                                                 type: "POST",
-                                                url: '/agenda/editarevento',
+                                                url: '/editarevento',
                                                 data: formData,
                                                 async: false,
                                                 processData: false,

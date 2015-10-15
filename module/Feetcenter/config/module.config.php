@@ -10,16 +10,6 @@
 return array(
     'router' => array(
         'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'Feetcenter\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
             'catalogos' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -447,10 +437,13 @@ return array(
             'agenda' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/agenda[/:action][/:id]',
+                    'route'    => '/[:action][/:id]',
                     'defaults' => array(
                         'controller'    => 'Agenda\Controller\Agenda',
                         'action'        => 'index',
+                    ),
+                    'constraints' => array(
+                        'action' => 'editarevento|getpedicuristasbyclinica|gethorariosbyclinica|geteventosbyclinica|getrecesosbyclinica|nuevoreceso|nuevoreceso|nuevoevento|findpacientes|quickaddpaciente|quickupdaterelacionados|dropevent|dropreceso|resizereceso|resizeevent',
                     ),
                 ),
             ),
