@@ -2,7 +2,6 @@
 return array(
     'Administrador' => array(
         "allow"=>array(
-            'home',
             //Catalogos
             'catalogos/clinica',
             'catalogos/insumo',
@@ -56,7 +55,6 @@ return array(
     ),
     'Encargado' => array(
         "allow"=>array(
-            'home',
             //Login
             'login',
             //Inventarios
@@ -111,7 +109,6 @@ return array(
     ),
     'Pedicurista' => array(
         "allow"=>array(
-            'home',
             //Login
             'login',
             //Empleados

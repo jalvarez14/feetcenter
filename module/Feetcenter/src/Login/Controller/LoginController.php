@@ -21,7 +21,7 @@ class LoginController extends AbstractActionController
         $session = new \Shared\Session\AouthSession();
         
         if($session->isActive()){
-            return $this->redirect()->toRoute('home');
+            return $this->redirect()->toRoute('agenda');
         }
         
         //Instanciamos nuestro formulario
@@ -87,7 +87,7 @@ class LoginController extends AbstractActionController
                         
                         
 
-                        return $this->redirect()->toRoute('home');
+                        return $this->redirect()->toRoute('agenda');
                     }else{
                         
                         $this->flashMessenger()->addErrorMessage('El usuario ya ha iniciado sesión en otro dispositivo');
