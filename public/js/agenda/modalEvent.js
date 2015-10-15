@@ -453,6 +453,7 @@
                  }
                  $container.find('input[name=paciente_autocomplete]').tokenInput('add',{id:settings.paciente.idpaciente,visita_total:settings.paciente.visita_total,visita_ultima:settings.paciente.visita_ultima,relacionados:settings.paciente.relacionados,name:settings.paciente.paciente_nombre + ' - Celular: ' + settings.paciente.paciente_celular + ' - Telefono: ' + telefono });
             }
+
         }
 
 

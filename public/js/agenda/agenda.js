@@ -474,7 +474,38 @@
                                     $modalHeader.addClass('modal_header_action');
                                     this.createCancelButton('Cancelar');
                                     var guardarAction = this.createActionButton('Guardar');
+                                    var pagarAction = this.createActionButton('Pagar');
+                                    pagarAction.prop('disabled',true);
+                                    pagarAction.css('background','#4caf50');
                                     
+                                    
+                                    /*
+                                     * Evento pagar
+                                     */
+                                    var modalEventContainer = modal.find('#modal_event_container');
+                                     
+                                    modal.find('select[name=visita_status]').on('change',function(){
+                                        var status =  modal.find('select[name=visita_status]').val();
+                                        if(status == 'terminado'){
+                                            modal.find('span.token-input-delete-token').hide();
+                                            modalEventContainer.find('input,button,select:not(select[name=visita_status])').prop('disabled',true);
+                                            modalEventContainer.find('input,select,button').css('cursor','not-allowed');
+                                            pagarAction.prop('disabled',false);
+                                        }else{
+                                             modal.find('span.token-input-delete-token').show();
+                                             modalEventContainer.find('input,button,select:not(select[name=visita_status])').css('cursor','auto');
+                                             modalEventContainer.find('input,button,select').prop('disabled',false);
+                                             pagarAction.prop('disabled',true);
+                                        }
+                                    });
+                                    
+                                    /*
+                                     *  Evento Guardar
+                                     */
+                                     pagarAction.on('click', $.proxy(function(){
+                                         guardarAction.prop('disabled',true);
+                                         modalEventContainer.slideUp();
+                                     }));
                                     guardarAction.on('click', $.proxy(function(){
                                         var empty = false;
                                         modal.find('span.error').remove();
@@ -513,7 +544,6 @@
                                          }
                                         
                                     }));
-                                    
                                     
                              });
                              
