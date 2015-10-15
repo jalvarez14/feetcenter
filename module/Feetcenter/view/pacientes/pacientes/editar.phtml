@@ -1,5 +1,5 @@
 <div id="clinica_container">
-    <h1>Paciente: <?php echo $form->get('paciente_nombre')->getValue()?></h1>
+    <h1>Cliente: <?php echo $form->get('paciente_nombre')->getValue()?></h1>
     <?php 
         $form->setAttribute('action', '/pacientes/editar/'.$id);
         $form->setAttribute('novalidate', true);
@@ -98,7 +98,7 @@
     <div class="units-row">
         <div class="unit-100">
             <fieldset>
-                <legend>Pacientes relacionados</legend>
+                <legend>Clientes relacionados</legend>
                 <div class="units-row">
                     <div class="unit-80">
                       Nombre
@@ -119,14 +119,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $paciente = new Grupopersonal();?>
-                        <?php foreach ($pacientes as $paciente) :?>
-                        <tr id="<?php echo $paciente->getPacienteRelatedByIdpacienteagregado()->getIdpaciente()?>">
-                            <input type="hidden" value="<?php echo $paciente->getPacienteRelatedByIdpacienteagregado()->getIdpaciente()?>" name="pacientes[]">
-                            <td><?php echo $paciente->getPacienteRelatedByIdpacienteagregado()->getClinica()->getClinicaNombre()?></td>
-                            <td><?php echo $paciente->getPacienteRelatedByIdpacienteagregado()->getPacienteNombre()?></td>
-                            <td><?php echo $paciente->getPacienteRelatedByIdpacienteagregado()->getPacienteCelular()?></td>
-                            <td><?php echo $paciente->getPacienteRelatedByIdpacienteagregado()->getPacienteTelefono()?></td>
+                        <?php $cliente = new Grupopersonal();?>
+                        <?php foreach ($pacientes as $cliente) :?>
+                        <tr id="<?php echo $cliente->getPacienteRelatedByIdpacienteagregado()->getIdpaciente()?>">
+                            <input type="hidden" value="<?php echo $cliente->getPacienteRelatedByIdpacienteagregado()->getIdpaciente()?>" name="pacientes[]">
+                            <td><?php echo $cliente->getPacienteRelatedByIdpacienteagregado()->getClinica()->getClinicaNombre()?></td>
+                            <td><?php echo $cliente->getPacienteRelatedByIdpacienteagregado()->getPacienteNombre()?></td>
+                            <td><?php echo $cliente->getPacienteRelatedByIdpacienteagregado()->getPacienteCelular()?></td>
+                            <td><?php echo $cliente->getPacienteRelatedByIdpacienteagregado()->getPacienteTelefono()?></td>
                             <td>
                             <a href="javascript:void(0)">Eliminar</a>
                             </td>
