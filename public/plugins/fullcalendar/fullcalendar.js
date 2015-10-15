@@ -7168,7 +7168,7 @@ function ResourceEventRenderer() {
 
 			seg.top = top;
 			seg.left = left - 2;
-			seg.outerWidth = width + 13;
+			seg.outerWidth = width + 15;
 			seg.outerHeight = bottom - top + 3;
 			html += slotSegHtml(event, seg);
 		}

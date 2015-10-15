@@ -193,7 +193,7 @@ class AgendaController extends AbstractActionController
              $entity = \VisitaQuery::create()->findPk($idvisita);
              
              //Instanciamos nuestro formulario
-             $form = new \Agenda\Form\EventoForm($entity->getIdempleadocreador(), $entity->getIdclinica(), $entity->getIdclinica(), $entity->getVisitaCreadaen(), $entity->getVisitaFechainicio(), $entity->getVisitaFechafin());
+             $form = new \Agenda\Form\EventoForm($entity->getIdempleadocreador(), $entity->getIdclinica(), $entity->getIdempleado(), $entity->getVisitaCreadaen(), $entity->getVisitaFechainicio(), $entity->getVisitaFechafin());
              $form->get('idvisita')->setValue($entity->getIdvisita());
              $form->setAttribute('action', '/agenda/editareventovento/'.$entity->getIdvisita());
              $form->setAttribute('novalidate', true);

@@ -505,7 +505,7 @@
                                                 contentType: false,
                                                 success: function (data) {
                                                     if(data.result){
-                                                        renderEvento(data.data.idvisita,data.data.visita_fechainicio,data.data.visita_fechafin,data.data.idempleado,data.data.paciente_nombre,data.data.visita_status);
+                                                        initCalendar();
                                                         $modal.close();
                                                     }
                                                 }
