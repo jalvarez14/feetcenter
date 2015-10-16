@@ -273,98 +273,104 @@
                             }
                             
                             if(diff <= 60){
-                                var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Nueva visita');
-                                
-                                $modalLauncher.unbind();
-                                var data_content = $modalLauncher.attr('data-content');
+                                var eventCheck = {resources:{0:parseInt(event.data.id)},start:start,end:end,id:0};
+                                //Que no se traslapen
+                                if(!isOverlapping(eventCheck)){
+                                    var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Nueva visita');
 
-                                data_content = '/nuevoevento?html=true';
-                                data_content += '&start='+ start.format('YYYY-MM-DD+HH:mm:00');
-                                data_content += '&end='+ end.format('YYYY-MM-DD+HH:mm:00');
-                                data_content += '&idempleado='+ event.data.id;
-                                data_content += '&idclinica=' + settings.idclinica;
+                                    $modalLauncher.unbind();
+                                    var data_content = $modalLauncher.attr('data-content');
 
-                                $modalLauncher.attr('data-content',data_content);
-                                $modalLauncher.modal();
-                                $modalLauncher.trigger('click');
-                                $modalLauncher.unbind();
+                                    data_content = '/nuevoevento?html=true';
+                                    data_content += '&start='+ start.format('YYYY-MM-DD+HH:mm:00');
+                                    data_content += '&end='+ end.format('YYYY-MM-DD+HH:mm:00');
+                                    data_content += '&idempleado='+ event.data.id;
+                                    data_content += '&idclinica=' + settings.idclinica;
 
-                                $modalLauncher.on('loading.tools.modal', function(modal){
-                                    var $modal = this ;
+                                    $modalLauncher.attr('data-content',data_content);
+                                    $modalLauncher.modal();
+                                    $modalLauncher.trigger('click');
+                                    $modalLauncher.unbind();
 
-                                    var $modalHeader = this.$modalHeader;
-                                    $modalHeader.addClass('modal_header_action');
-                                    this.createCancelButton('Cancelar');
-                                    var guardarAction = this.createActionButton('Guardar');
-                                    guardarAction.on('click', $.proxy(function(){          
-                                        
-                                        var option = modal.find('input[name=visita_option]:checked').val();
+                                    $modalLauncher.on('loading.tools.modal', function(modal){
+                                        var $modal = this ;
 
-                                        var empty = false;
+                                        var $modalHeader = this.$modalHeader;
+                                        $modalHeader.addClass('modal_header_action');
+                                        this.createCancelButton('Cancelar');
+                                        var guardarAction = this.createActionButton('Guardar');
+                                        guardarAction.on('click', $.proxy(function(){          
 
-                                        modal.find('span.error').remove();
-                                        modal.find('#span_paciente').siblings('ul').css('border','1px solid #999');
-                                        
-                                        if(modal.find('input[name=idpaciente]').val() == ""){
-                                             empty = true;
-                                             modal.find('#span_paciente').after('<span class="error"> campo obligatorio</span>');
-                                             modal.find('#span_paciente').siblings('ul').css('border','1px solid red');
-                                         }
+                                            var option = modal.find('input[name=visita_option]:checked').val();
 
-                                         if(!empty && option == 'visita'){
-                                             var formData = new FormData();
-                                             $.each(modal.find('input:not(:checkbox, :radio),select'),function(){
-                                                 formData.append($(this).attr('name'),$(this).val());
-                                             });
-                                             $.each(modal.find(':checkbox:checked, :radio:checked'),function(){
-                                                 formData.append($(this).attr('name'),$(this).val());
-                                             });
+                                            var empty = false;
 
-                                             //Hacemos la peticion ajax
-                                            $.ajax({
-                                                dataType: 'json', 
-                                                type: "POST",
-                                                url: '/nuevoevento',
-                                                data: formData,
-                                                async: false,
-                                                processData: false,
-                                                contentType: false,
-                                                success: function (data) {
-                                                    if(data.result){
-                                                        renderEvento(data.data.idvisita,data.data.visita_fechainicio,data.data.visita_fechafin,data.data.idempleado,data.data.paciente_nombre,data.data.visita_status);
-                                                        $modal.close();
+                                            modal.find('span.error').remove();
+                                            modal.find('#span_paciente').siblings('ul').css('border','1px solid #999');
+
+                                            if(modal.find('input[name=idpaciente]').val() == ""){
+                                                 empty = true;
+                                                 modal.find('#span_paciente').after('<span class="error"> campo obligatorio</span>');
+                                                 modal.find('#span_paciente').siblings('ul').css('border','1px solid red');
+                                             }
+
+                                             if(!empty && option == 'visita'){
+                                                 var formData = new FormData();
+                                                 $.each(modal.find('input:not(:checkbox, :radio),select'),function(){
+                                                     formData.append($(this).attr('name'),$(this).val());
+                                                 });
+                                                 $.each(modal.find(':checkbox:checked, :radio:checked'),function(){
+                                                     formData.append($(this).attr('name'),$(this).val());
+                                                 });
+
+                                                 //Hacemos la peticion ajax
+                                                $.ajax({
+                                                    dataType: 'json', 
+                                                    type: "POST",
+                                                    url: '/nuevoevento',
+                                                    data: formData,
+                                                    async: false,
+                                                    processData: false,
+                                                    contentType: false,
+                                                    success: function (data) {
+                                                        if(data.result){
+                                                            renderEvento(data.data.idvisita,data.data.visita_fechainicio,data.data.visita_fechafin,data.data.idempleado,data.data.paciente_nombre,data.data.visita_status);
+                                                            $modal.close();
+                                                        }
                                                     }
-                                                }
-                                            });
-                                         }else if(option == 'receso'){
-                                            var formData = new FormData();
-                                             $.each(modal.find('input:not(:checkbox, :radio),select'),function(){
-                                                 formData.append($(this).attr('name'),$(this).val());
-                                             });
-                                             $.each(modal.find(':checkbox:checked, :radio:checked'),function(){
-                                                 formData.append($(this).attr('name'),$(this).val());
-                                             });
-                                             
-                                             $.ajax({
-                                                dataType: 'json', 
-                                                type: "POST",
-                                                url: '/nuevoreceso',
-                                                data: formData,
-                                                async: false,
-                                                processData: false,
-                                                contentType: false,
-                                                success: function (data) {
-                                                    if(data.result){
-                                                        renderReceso(data.data.idempleadoreceso,data.data.empleadoreceso_inicio,data.data.empleadoreceso_fin,data.data.idempleado);
-                                                        $modal.close();
+                                                });
+                                             }else if(option == 'receso'){
+                                                var formData = new FormData();
+                                                 $.each(modal.find('input:not(:checkbox, :radio),select'),function(){
+                                                     formData.append($(this).attr('name'),$(this).val());
+                                                 });
+                                                 $.each(modal.find(':checkbox:checked, :radio:checked'),function(){
+                                                     formData.append($(this).attr('name'),$(this).val());
+                                                 });
+
+                                                 $.ajax({
+                                                    dataType: 'json', 
+                                                    type: "POST",
+                                                    url: '/nuevoreceso',
+                                                    data: formData,
+                                                    async: false,
+                                                    processData: false,
+                                                    contentType: false,
+                                                    success: function (data) {
+                                                        if(data.result){
+                                                            renderReceso(data.data.idempleadoreceso,data.data.empleadoreceso_inicio,data.data.empleadoreceso_fin,data.data.idempleado);
+                                                            $modal.close();
+                                                        }
                                                     }
-                                                }
-                                            });
-                                         }
+                                                });
+                                             }
 
-                                    }));
+                                        }));
 
-                                });
+                                    });
+                                }else{
+                                     unselect();
+                                }
                             }else{
                                 alert('La duracion debe de ser igual o menor a 60 minutos!');
                                 unselect();
@@ -525,6 +531,8 @@
                                      var payDetailsContainer = modal.find('#pay_details_container');
                                      
                                      pagarAction.on('click', $.proxy(function(){
+                                         //RENOMBRAMOS BOTON
+                                         pagarAction.text('Continuar');
                                          //HABILITAMOS INPUTS
                                          nextDateContainer.find('input,button,select').css('cursor','auto');
                                          nextDateContainer.find('input,button,select').prop('disabled',false);
@@ -540,6 +548,8 @@
                                          nextDateContainer.find('input[name=visita_siguiente]').on('change',function(){
                                              var is_next_date = nextDateContainer.find('input[name=visita_siguiente]:checked').val();
                                              if(is_next_date == 'si'){
+                                                 pagarAction.prop('disabled',true);
+                                                dateContainer.find('[btn-action=submit_visita_siguiente]').unbind();
                                                 dateContainer.slideDown();
                                                 /*Inicializamos nuestros calendarios*/
                                                 dateContainer.find('input[name=visita_siguiente_fecha]').pickadate({
@@ -598,14 +608,11 @@
                                                         var fechainicio = modal.find('input[name=visita_siguiente_fecha_submit]').val() + ' ' + modal.find('input[name=visita_siguiente_hora]').val();
                                                         form_data.append('visita_fechainicio',fechainicio);
                                                         
-                                                        fechainicio = moment(fechainicio);
+                                                        fechainicio = moment(fechainicio,"YYYY-MM-DD");
                                                         var fechafin = fechainicio.add(30, 'm'); //dureacion por default 30 minutos
                                                         fechafin = moment(fechafin.format('YYYY-MM-DD HH:mm'));
                                                         form_data.append('visita_fechafin',fechafin.format('YYYY-MM-DD HH:mm'));
-                                                        
-                                                        var event = {resources:{0:parseInt(modal.find('input[name=idempleado]').val())},start:fechainicio,end:fechafin,id:0};
-                                                     
-                                                        if(!isOverlapping(event)){
+                                                            
                                                             //Hacemos nuestra peticion ajax
                                                             $.ajax({
                                                                 url:'/quickaddvisita',
@@ -615,22 +622,35 @@
                                                                 processData: false,
                                                                 contentType: false,
                                                                 success: function(data){
-                                                                    if(data.result){
-                                                                         alert('Registro guardado exitosamente');
-                                                                         dateContainer.slideUp();
-                                                                         payDetailsContainer.slideDown();
+                                                                    if(!data.result){
+                                                                         alert(data.msg);
+                                                                    }else{
+                                                                         alert('Cita agendada con exito!');
+                                                                         nextDateContainer.find('input,button,select').css('cursor','not-allowed');
+                                                                         nextDateContainer.find('input,button,select').prop('disabled',true);
+                                                                         dateContainer.find('fieldset').find('div').eq(0).remove();dateContainer.find('fieldset').find('div').eq(1).remove();
+                                                                         dateContainer.find('fieldset').prepend('<div class="units-row" style="margin-bottom: 0px;"><div class="unit-100"><b>Pedicurista: </b>'+data.empleado+'</div>');
+                                                                         dateContainer.find('fieldset').prepend('<div class="units-row" style="margin-bottom: 0px;"><div class="unit-100"><b>Fecha y hora: </b>'+data.fecha+'</div>');
+                                                                         dateContainer.find('fieldset').find('#pay_date_anticipado_selector').slideDown();
+                                                                         //El evento de pago anticipado
+                                                                         dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]').on('change',function(){
+                                                                             var anticipado = dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]:checked').val();
+                                                                             if(anticipado == 'si'){
+                                                                                 dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideDown();
+                                                                                 pagarAction.prop('disabled',false);
+                                                                             }else{
+                                                                                 dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideUp();
+                                                                                pagarAction.prop('disabled',false);
+                                                                             }
+                                                                         });
                                                                     }
-
                                                                 }
                                                             });
-                                                        }else{
-                                                            alert('Sin disponibilidad!');
-                                                        }
                                                     }
                                                 });
                                              }else{
-                                                 console.log('no cita');
                                                  dateContainer.slideUp();
+                                                 pagarAction.prop('disabled',false);
                                              }
                                          });
                                          

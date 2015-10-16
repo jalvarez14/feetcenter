@@ -148,7 +148,7 @@ class AgendaController extends AbstractActionController
          
          if($request->isPost()){
              $post_data = $request->getPost();
-             
+            
              $entity = \VisitaQuery::create()->findPk($post_data['idvisita']);
              
              foreach($post_data as $key => $value){
@@ -258,9 +258,6 @@ class AgendaController extends AbstractActionController
                                'por confirmar' => 'Por confirmar',
                                'confimada' => 'Confimada',
                                'en servicio' => 'En servicio',
-                               'cancelo' => 'Cancelo',
-                               'no se presento' => 'No se presento',
-                               'reprogramda' => 'Reprogramda',
                        ),
                     ),
                    'attributes' => array(
@@ -485,7 +482,13 @@ class AgendaController extends AbstractActionController
         $sesion = new \Shared\Session\AouthSession();
         if($request->isPost()){
             $post_data = $request->getPost();
-
+            
+            $empleado = \EmpleadoQuery::create()->findOneByIdempleado($post_data['idempleado']);
+            $disponibilidad = $this->checkDisponibilidad($empleado->getIdempleado(),$post_data['visita_fechainicio']);
+            if(!$disponibilidad['result']){
+                return $this->getResponse()->setContent(\Zend\Json\Json::encode($disponibilidad));
+            }
+            
             $entity = new \Visita();
 
             foreach($post_data as $key => $value){
@@ -498,11 +501,55 @@ class AgendaController extends AbstractActionController
             $entity->setVisitaCreadaen(new \DateTime());
             $entity->save();
 
-            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'fecha'=> $entity->getVisitaFechainicio('d/m/Y'), 'empleado' => $entity->getEmpleadoRelatedByIdempleado()->getEmpleadoNombre())));
         }
     }
     
+    public function checkDisponibilidad($idempleado, $fecha){
+        $empleado = \EmpleadoQuery::create()->findOneByIdempleado($idempleado);
+        $fecha = new \DateTime($fecha);
+        $day_week = $this->dayWeekMap((int)$fecha->format('w'));
+        $horarioDescanso = \EmpleadohorarioQuery::create()->filterByEmpleadohorarioDia($day_week)->filterByIdempleado($idempleado)->findOne();
+        
+        $disponible = true;
+        //Verificamos que no descanse
+        if($horarioDescanso->getEmpleadohorarioDescanso()){
+            return array('result' => false,'msg' => 'No es posible agendar la cita debido a que el pedicurista descansa el dia seleccionado');
+        }
+        //Verificamos disponibilidad en cuanto a su horario
+        $fecha_entrada = new \DateTime($fecha->format('Y-m-d').' '.$horarioDescanso->getEmpleadohorarioEntrada());
+        $fecha_salida = new \DateTime($fecha->format('Y-m-d').' '.$horarioDescanso->getEmpleadohorarioSalida());
+        if($fecha>=$fecha_entrada && $fecha<= $fecha_salida){
+            
+        }else{
+            return array('result' => false,'msg' => 'No es posible agendar la cita debido a que el pedicurista NO se encuentra en horario laboral en la fecha/hora seleccionada');
+        }
+        //Verificamos la disponibilidad en cuanto a sus citas
+        $visitas = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByVisitaFechainicio(array('min' => $fecha->format('Y-m-d').' '.'00:00:00', 'max' => $fecha->format('Y-m-d').' '.'23:59:59'))->find();
+       
+        foreach ($visitas as $visita){
+            if($fecha >= new \DateTime($visita->getVisitaFechainicio()) && $fecha < new \DateTime($visita->getVisitaFechafin())){
+                return array('result' => false,'msg' => 'No es posible agendar la cita debido a que el pedicurista no cuanta disponibilidad en la fecha/hora seleccionada');
+            }
+        }
 
+        return array('result' => true);
+
+    }
+    
+    public function dayWeekMap($day){
+        $day_week = array(
+            0 => 'domingo',
+            1 => 'lunes',
+            2 => 'martes',
+            3 => 'miercoles',
+            4 => 'jueves',
+            5 => 'viernes',
+            6 => 'sabado',
+        );
+        
+        return $day_week[$day];
+    }
 
     public function quickupdaterelacionadosAction(){
         $request = $this->getRequest();
