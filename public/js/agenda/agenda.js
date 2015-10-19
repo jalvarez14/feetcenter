@@ -464,15 +464,21 @@
                                 status = index;
                             }
                         });
+                        
+                        
                         var is_editable = true;
                         var now = moment();
                         var start = moment(event.start);
                         var diff = now.diff(start,'minutes');
           
-                        if(diff > 15 && status!='en servicio'){
+                        if(diff > 15 && $.inArray(status,['en servicio', 'terminado']) < 0){
                             is_editable = false;
                         }
+                        
                         if(is_editable){
+                            
+                           
+                            
                             var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800); $modalLauncher.attr('data-title',event.title);
                             $modalLauncher.unbind();
                             var data_content = $modalLauncher.attr('data-content');
@@ -486,13 +492,28 @@
                              
                              $modalLauncher.on('loading.tools.modal', function(modal){
                                     var $modal = this ;
-                                 
+
                                     var $modalHeader = this.$modalHeader;
                                     $modalHeader.addClass('modal_header_action');
                                     this.createCancelButton('Cancelar');
                                     var guardarAction = this.createActionButton('Guardar');
                                     var pagarAction = this.createActionButton('Pagar');
                                     pagarAction.css('background','#4caf50');
+                                    
+                                    var status_pago = modal.find('div#visita_estatuspago').attr('value');
+                                    var status = modal.find('select[name=visita_status]').val();
+                                    if(status == 'terminado' && status_pago == 'pagada'){
+                                        pagarAction.prop('disabled',true);
+                                        guardarAction.prop('disabled',true);
+                                        modal.find('input,select,button').prop('disabled',true);
+                                        modal.find('table#visita_detalles th').eq(2).remove();
+                                        modal.find('table#visita_detalles tbody tr').filter(function(){
+                                            $(this).find('td').eq(2).remove();
+                                        });
+                                        modal.find('table#visita_detalles tfoot tr').find('td').eq(0).attr('colspan',2);
+                                        modal.find('span.token-input-delete-token').remove();
+                                    }
+                                    
                                     
                                     
                                     /*
@@ -529,6 +550,9 @@
                                      var nextDateContainer = modal.find('#pay_nextdate_container');
                                      var dateContainer = modal.find('#pay_date_container');
                                      var payDetailsContainer = modal.find('#pay_details_container');
+                                     var payMethodContainer = modal.find('#pay_method_container');
+                                     
+                                     
                                      
                                      pagarAction.on('click', $.proxy(function(){
                                          //RENOMBRAMOS BOTON
@@ -538,6 +562,32 @@
                                          nextDateContainer.find('input,button,select').prop('disabled',false);
                                          dateContainer.find('input,button,select').css('cursor','auto');
                                          dateContainer.find('input,button,select').prop('disabled',false);
+                                         payMethodContainer.find('input,button,select').css('cursor','auto');
+                                         payMethodContainer.find('input,button,select').prop('disabled',false);
+                                         payMethodContainer.find('input').numeric();
+                                         //Eventos method pay
+                                         payMethodContainer.find('#addMethodPay').on('click',function(){
+                                             
+                                             var count = payMethodContainer.find('div.units-row').length;
+                                             var row = payMethodContainer.find('div.units-row').eq(0).clone();
+                                             //renombramos formulario
+                                             row.find('select').attr('name','visitapago_tipo['+count+'][type]');
+                                             row.find('input').attr('name','visitapago_tipo['+count+'][cantidad]');
+                                             row.find('input').numeric();
+                                             var total = payDetailsContainer.find('input[name=visita_total]').val();
+                                             var res = parseFloat(total) - parseFloat(row.find('input').val());
+                                             
+                                             row.find('input').val(res);
+                                             
+                                             row.find('button').after('<a href="javascript:void(0)">Eliminar</a>');
+                                             row.find('button').remove();
+                                             row.find('a').parent().css('margin-top','27px');
+                                             row.find('a').on('click',function(){
+                                                $(this).closest('div.units-row').remove();
+                                             });
+                                             payMethodContainer.find('fieldset').append(row);
+                                         });
+                                         
                                          
                                          pagarAction.prop('disabled',true);
                                          guardarAction.prop('disabled',true);
@@ -608,7 +658,8 @@
                                                         var fechainicio = modal.find('input[name=visita_siguiente_fecha_submit]').val() + ' ' + modal.find('input[name=visita_siguiente_hora]').val();
                                                         form_data.append('visita_fechainicio',fechainicio);
                                                         
-                                                        fechainicio = moment(fechainicio,"YYYY-MM-DD");
+                                                        fechainicio = moment(fechainicio,"YYYY-MM-DD HH:mm");
+
                                                         var fechafin = fechainicio.add(30, 'm'); //dureacion por default 30 minutos
                                                         fechafin = moment(fechafin.format('YYYY-MM-DD HH:mm'));
                                                         form_data.append('visita_fechafin',fechafin.format('YYYY-MM-DD HH:mm'));
@@ -638,10 +689,78 @@
                                                                              if(anticipado == 'si'){
                                                                                  dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideDown();
                                                                                  pagarAction.prop('disabled',false);
+                                                                                 
                                                                              }else{
                                                                                  dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideUp();
                                                                                 pagarAction.prop('disabled',false);
                                                                              }
+                                                                             pagarAction.unbind();
+                                                                             pagarAction.on('click', $.proxy(function(){
+                                                                               pagarAction.text('Pagar');
+                                                                               pagarAction.prop('disabled',true);
+                                                                               dateContainer.hide();
+                                                                               nextDateContainer.hide();
+                                                                               payDetailsContainer.slideDown();
+                                                                               if(anticipado == 'si'){
+                                                                                     pagarAction.text('Pagar');
+                                                                                    pagarAction.unbind();
+                                                                                     var itemCount = payDetailsContainer.find('tbody tr').length;
+                                                                                     var selected = dateContainer.find('select[name=pay_date_anticipado_servicio] option:selected');
+                                                                                     
+                                                                                     //                                                                                 
+                                                                                     var id = selected.val();
+                                                                                     var item = selected.attr('data-name');
+                                                                                     var price = selected.attr('data-price');
+                                                                                     var subtotal = parseInt(price);
+                                                                                     var inputs = $('<input type="hidden" name="vistadetallepay['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+itemCount+'][type]" value="servicio"><input type="hidden" name="vistadetallepay['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+itemCount+'][cantidad]" value="1"><input type="hidden" name="vistadetallepay['+itemCount+'][subtotal]" value="'+subtotal+'">');
+
+                                                                                    //Nuestra row
+                                                                                    var tr = $('<tr>');
+                                                                                    tr.append(inputs);
+                                                                                    tr.append('<td>1</td>');
+                                                                                    tr.append('<td>'+item+'</td>');
+                                                                                    tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+
+                                                                                    payDetailsContainer.find('table#pay_details tbody').append(tr);
+
+                                                                                    //Calculamos el total
+                                                                                    var total = 0;
+                                                                                    $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
+                                                                                        var subtotal = accounting.unformat($(this).find('td').eq(2).text());
+                                                                                        total += subtotal;
+                                                                                    });
+                                                                                    payDetailsContainer.find('input[name=visita_total]').val(total);
+                                                                                    payDetailsContainer.find('#total').text(accounting.formatMoney(total));
+                                                                                    
+                                                                                    payMethodContainer.find('input').val(total);
+                                                                                    payMethodContainer.slideDown();
+                                                                                    pagarAction.on('click', $.proxy(function(){
+                                                                                        pay($modal);
+                                                                                    }));
+                                                                                     
+                                                                               }else{
+                                                                                   pagarAction.text('Pagar');
+                                                                                   payDetailsContainer.slideDown();
+                                                                                   //Calculamos el total
+                                                                                    var total = 0;
+                                                                                    $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
+                                                                                        var subtotal = accounting.unformat($(this).find('td').eq(2).text());
+                                                                                        total += subtotal;
+                                                                                    });
+                                                                                    payDetailsContainer.find('input[name=visita_total]').val(total);
+                                                                                    payDetailsContainer.find('#total').text(accounting.formatMoney(total));
+                                                                                    
+                                                                                    payMethodContainer.find('input').val(total);
+                                                                                    payMethodContainer.slideDown();
+                   
+                                                                               }
+                                                                               pagarAction.unbind();
+                                                                               pagarAction.prop('disabled',false);
+                                                                               pagarAction.on('click', $.proxy(function(){
+                                                                                   pay($modal);
+                                                                               }));
+                                                                               
+                                                                             }));
                                                                          });
                                                                     }
                                                                 }
@@ -649,8 +768,36 @@
                                                     }
                                                 });
                                              }else{
+                                                  
                                                  dateContainer.slideUp();
                                                  pagarAction.prop('disabled',false);
+                                                 pagarAction.unbind();
+                                                 pagarAction.on('click', $.proxy(function(){
+                                                    pagarAction.text('Pagar');
+                                                     pagarAction.unbind();
+                                                     dateContainer.hide();
+                                                     nextDateContainer.hide();
+                                                     
+                                                     //Calculamos el total
+                                                    var total = 0;
+                                                    $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
+                                                        var subtotal = accounting.unformat($(this).find('td').eq(2).text());
+                                                        total += subtotal;
+                                                    });
+                                                    payDetailsContainer.find('input[name=visita_total]').val(total);
+                                                    payDetailsContainer.find('#total').text(accounting.formatMoney(total));
+                                                                                    
+                                                    payMethodContainer.find('input').val(total);
+                                                    
+                                                     payDetailsContainer.slideDown();
+                                                     payMethodContainer.slideDown();
+                                                     
+                                                     pagarAction.on('click', $.proxy(function(){
+                                                         
+                                                         pay($modal);
+                                                     }));
+                                                 }));
+                                                 
                                              }
                                          });
                                          
@@ -705,9 +852,63 @@
                     
                 }
              });
-             
-             
+        }
+        
+        function pay(modal){
 
+            var payMethodContainer = modal.$modalBody.find('#pay_container');
+            var empty = false;
+            
+          
+            payMethodContainer.find('input[required]').removeClass('input-error');
+             payMethodContainer.find('span.error').remove();
+            $.each(payMethodContainer.find('#pay_method_container input[required]'),function(){
+                if($(this).val() == ""){
+                    empty = true;
+                    $(this).addClass('input-error');
+                    var $span = $(this).siblings('span.req');
+                    $span.after('<span class="error"> campo obligatorio</span>');
+                }
+            });
+            
+            if(!empty){
+                var total = parseFloat(payMethodContainer.find('input[name=visita_total]').val());
+                var sum = 0;
+                $.each(payMethodContainer.find('#pay_method_container input[name*=cantidad]'),function(){
+                    sum += parseFloat($(this).val());
+                });
+                
+                if(total == sum){
+                    
+                    var formData = new FormData();
+                    $.each(modal.$modalBody.find('input:not(:checkbox, :radio),select'),function(){
+                        formData.append($(this).attr('name'),$(this).val());
+                    });
+                    $.each(modal.$modalBody.find(':checkbox:checked, :radio:checked'),function(){
+                        formData.append($(this).attr('name'),$(this).val());
+                    });
+                     //Hacemos la peticion ajax
+                    $.ajax({
+                        dataType: 'json', 
+                        type: "POST",
+                        url: '/pagar',
+                        data: formData,
+                        async: false,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            if(data.result){
+                                initCalendar();
+                                modal.close();
+                            }
+                        }
+                    });
+                }else{
+                    alert('Cantidad(s) incorrecta, el total debe de se igual a $'+total );
+                }
+
+                
+            }
         }
         
         function unselect(){

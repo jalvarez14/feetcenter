@@ -42,10 +42,10 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     protected $idempledo;
 
     /**
-     * The value for the idvisitadetalle field.
+     * The value for the idclinica field.
      * @var        int
      */
-    protected $idvisitadetalle;
+    protected $idclinica;
 
     /**
      * The value for the empleadocomision_fecha field.
@@ -54,20 +54,44 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     protected $empleadocomision_fecha;
 
     /**
-     * The value for the empleadocomision_comision field.
+     * The value for the empleadocomision_comisionservicios field.
      * @var        string
      */
-    protected $empleadocomision_comision;
+    protected $empleadocomision_comisionservicios;
+
+    /**
+     * The value for the empleadocomision_comisionproductos field.
+     * @var        string
+     */
+    protected $empleadocomision_comisionproductos;
+
+    /**
+     * The value for the empleadocomision_serviciosvendidos field.
+     * @var        int
+     */
+    protected $empleadocomision_serviciosvendidos;
+
+    /**
+     * The value for the empleadocomision_productosvendidos field.
+     * @var        int
+     */
+    protected $empleadocomision_productosvendidos;
+
+    /**
+     * The value for the empleadocomision_acumulado field.
+     * @var        string
+     */
+    protected $empleadocomision_acumulado;
+
+    /**
+     * @var        Clinica
+     */
+    protected $aClinica;
 
     /**
      * @var        Empleado
      */
     protected $aEmpleado;
-
-    /**
-     * @var        Visitadetalle
-     */
-    protected $aVisitadetalle;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -112,14 +136,14 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [idvisitadetalle] column value.
+     * Get the [idclinica] column value.
      *
      * @return int
      */
-    public function getIdvisitadetalle()
+    public function getIdclinica()
     {
 
-        return $this->idvisitadetalle;
+        return $this->idclinica;
     }
 
     /**
@@ -128,16 +152,16 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getEmpleadocomisionFecha($format = 'Y-m-d H:i:s')
+    public function getEmpleadocomisionFecha($format = '%x')
     {
         if ($this->empleadocomision_fecha === null) {
             return null;
         }
 
-        if ($this->empleadocomision_fecha === '0000-00-00 00:00:00') {
+        if ($this->empleadocomision_fecha === '0000-00-00') {
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
@@ -163,14 +187,58 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [empleadocomision_comision] column value.
+     * Get the [empleadocomision_comisionservicios] column value.
      *
      * @return string
      */
-    public function getEmpleadocomisionComision()
+    public function getEmpleadocomisionComisionservicios()
     {
 
-        return $this->empleadocomision_comision;
+        return $this->empleadocomision_comisionservicios;
+    }
+
+    /**
+     * Get the [empleadocomision_comisionproductos] column value.
+     *
+     * @return string
+     */
+    public function getEmpleadocomisionComisionproductos()
+    {
+
+        return $this->empleadocomision_comisionproductos;
+    }
+
+    /**
+     * Get the [empleadocomision_serviciosvendidos] column value.
+     *
+     * @return int
+     */
+    public function getEmpleadocomisionServiciosvendidos()
+    {
+
+        return $this->empleadocomision_serviciosvendidos;
+    }
+
+    /**
+     * Get the [empleadocomision_productosvendidos] column value.
+     *
+     * @return int
+     */
+    public function getEmpleadocomisionProductosvendidos()
+    {
+
+        return $this->empleadocomision_productosvendidos;
+    }
+
+    /**
+     * Get the [empleadocomision_acumulado] column value.
+     *
+     * @return string
+     */
+    public function getEmpleadocomisionAcumulado()
+    {
+
+        return $this->empleadocomision_acumulado;
     }
 
     /**
@@ -220,29 +288,29 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     } // setIdempledo()
 
     /**
-     * Set the value of [idvisitadetalle] column.
+     * Set the value of [idclinica] column.
      *
      * @param  int $v new value
      * @return Empleadocomision The current object (for fluent API support)
      */
-    public function setIdvisitadetalle($v)
+    public function setIdclinica($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idvisitadetalle !== $v) {
-            $this->idvisitadetalle = $v;
-            $this->modifiedColumns[] = EmpleadocomisionPeer::IDVISITADETALLE;
+        if ($this->idclinica !== $v) {
+            $this->idclinica = $v;
+            $this->modifiedColumns[] = EmpleadocomisionPeer::IDCLINICA;
         }
 
-        if ($this->aVisitadetalle !== null && $this->aVisitadetalle->getIdvisitadetalle() !== $v) {
-            $this->aVisitadetalle = null;
+        if ($this->aClinica !== null && $this->aClinica->getIdclinica() !== $v) {
+            $this->aClinica = null;
         }
 
 
         return $this;
-    } // setIdvisitadetalle()
+    } // setIdclinica()
 
     /**
      * Sets the value of [empleadocomision_fecha] column to a normalized version of the date/time value specified.
@@ -255,8 +323,8 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
         if ($this->empleadocomision_fecha !== null || $dt !== null) {
-            $currentDateAsString = ($this->empleadocomision_fecha !== null && $tmpDt = new DateTime($this->empleadocomision_fecha)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            $currentDateAsString = ($this->empleadocomision_fecha !== null && $tmpDt = new DateTime($this->empleadocomision_fecha)) ? $tmpDt->format('Y-m-d') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->empleadocomision_fecha = $newDateAsString;
                 $this->modifiedColumns[] = EmpleadocomisionPeer::EMPLEADOCOMISION_FECHA;
@@ -268,25 +336,109 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     } // setEmpleadocomisionFecha()
 
     /**
-     * Set the value of [empleadocomision_comision] column.
+     * Set the value of [empleadocomision_comisionservicios] column.
      *
      * @param  string $v new value
      * @return Empleadocomision The current object (for fluent API support)
      */
-    public function setEmpleadocomisionComision($v)
+    public function setEmpleadocomisionComisionservicios($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->empleadocomision_comision !== $v) {
-            $this->empleadocomision_comision = $v;
-            $this->modifiedColumns[] = EmpleadocomisionPeer::EMPLEADOCOMISION_COMISION;
+        if ($this->empleadocomision_comisionservicios !== $v) {
+            $this->empleadocomision_comisionservicios = $v;
+            $this->modifiedColumns[] = EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONSERVICIOS;
         }
 
 
         return $this;
-    } // setEmpleadocomisionComision()
+    } // setEmpleadocomisionComisionservicios()
+
+    /**
+     * Set the value of [empleadocomision_comisionproductos] column.
+     *
+     * @param  string $v new value
+     * @return Empleadocomision The current object (for fluent API support)
+     */
+    public function setEmpleadocomisionComisionproductos($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->empleadocomision_comisionproductos !== $v) {
+            $this->empleadocomision_comisionproductos = $v;
+            $this->modifiedColumns[] = EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONPRODUCTOS;
+        }
+
+
+        return $this;
+    } // setEmpleadocomisionComisionproductos()
+
+    /**
+     * Set the value of [empleadocomision_serviciosvendidos] column.
+     *
+     * @param  int $v new value
+     * @return Empleadocomision The current object (for fluent API support)
+     */
+    public function setEmpleadocomisionServiciosvendidos($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->empleadocomision_serviciosvendidos !== $v) {
+            $this->empleadocomision_serviciosvendidos = $v;
+            $this->modifiedColumns[] = EmpleadocomisionPeer::EMPLEADOCOMISION_SERVICIOSVENDIDOS;
+        }
+
+
+        return $this;
+    } // setEmpleadocomisionServiciosvendidos()
+
+    /**
+     * Set the value of [empleadocomision_productosvendidos] column.
+     *
+     * @param  int $v new value
+     * @return Empleadocomision The current object (for fluent API support)
+     */
+    public function setEmpleadocomisionProductosvendidos($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->empleadocomision_productosvendidos !== $v) {
+            $this->empleadocomision_productosvendidos = $v;
+            $this->modifiedColumns[] = EmpleadocomisionPeer::EMPLEADOCOMISION_PRODUCTOSVENDIDOS;
+        }
+
+
+        return $this;
+    } // setEmpleadocomisionProductosvendidos()
+
+    /**
+     * Set the value of [empleadocomision_acumulado] column.
+     *
+     * @param  string $v new value
+     * @return Empleadocomision The current object (for fluent API support)
+     */
+    public function setEmpleadocomisionAcumulado($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->empleadocomision_acumulado !== $v) {
+            $this->empleadocomision_acumulado = $v;
+            $this->modifiedColumns[] = EmpleadocomisionPeer::EMPLEADOCOMISION_ACUMULADO;
+        }
+
+
+        return $this;
+    } // setEmpleadocomisionAcumulado()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -322,9 +474,13 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
 
             $this->idempleadocomision = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idempledo = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->idvisitadetalle = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->idclinica = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->empleadocomision_fecha = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->empleadocomision_comision = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->empleadocomision_comisionservicios = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->empleadocomision_comisionproductos = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->empleadocomision_serviciosvendidos = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->empleadocomision_productosvendidos = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->empleadocomision_acumulado = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -334,7 +490,7 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = EmpleadocomisionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = EmpleadocomisionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Empleadocomision object", $e);
@@ -360,8 +516,8 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
         if ($this->aEmpleado !== null && $this->idempledo !== $this->aEmpleado->getIdempleado()) {
             $this->aEmpleado = null;
         }
-        if ($this->aVisitadetalle !== null && $this->idvisitadetalle !== $this->aVisitadetalle->getIdvisitadetalle()) {
-            $this->aVisitadetalle = null;
+        if ($this->aClinica !== null && $this->idclinica !== $this->aClinica->getIdclinica()) {
+            $this->aClinica = null;
         }
     } // ensureConsistency
 
@@ -402,8 +558,8 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aClinica = null;
             $this->aEmpleado = null;
-            $this->aVisitadetalle = null;
         } // if (deep)
     }
 
@@ -522,18 +678,18 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aClinica !== null) {
+                if ($this->aClinica->isModified() || $this->aClinica->isNew()) {
+                    $affectedRows += $this->aClinica->save($con);
+                }
+                $this->setClinica($this->aClinica);
+            }
+
             if ($this->aEmpleado !== null) {
                 if ($this->aEmpleado->isModified() || $this->aEmpleado->isNew()) {
                     $affectedRows += $this->aEmpleado->save($con);
                 }
                 $this->setEmpleado($this->aEmpleado);
-            }
-
-            if ($this->aVisitadetalle !== null) {
-                if ($this->aVisitadetalle->isModified() || $this->aVisitadetalle->isNew()) {
-                    $affectedRows += $this->aVisitadetalle->save($con);
-                }
-                $this->setVisitadetalle($this->aVisitadetalle);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -579,14 +735,26 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadocomisionPeer::IDEMPLEDO)) {
             $modifiedColumns[':p' . $index++]  = '`idempledo`';
         }
-        if ($this->isColumnModified(EmpleadocomisionPeer::IDVISITADETALLE)) {
-            $modifiedColumns[':p' . $index++]  = '`idvisitadetalle`';
+        if ($this->isColumnModified(EmpleadocomisionPeer::IDCLINICA)) {
+            $modifiedColumns[':p' . $index++]  = '`idclinica`';
         }
         if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_FECHA)) {
             $modifiedColumns[':p' . $index++]  = '`empleadocomision_fecha`';
         }
-        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISION)) {
-            $modifiedColumns[':p' . $index++]  = '`empleadocomision_comision`';
+        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONSERVICIOS)) {
+            $modifiedColumns[':p' . $index++]  = '`empleadocomision_comisionservicios`';
+        }
+        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONPRODUCTOS)) {
+            $modifiedColumns[':p' . $index++]  = '`empleadocomision_comisionproductos`';
+        }
+        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_SERVICIOSVENDIDOS)) {
+            $modifiedColumns[':p' . $index++]  = '`empleadocomision_serviciosvendidos`';
+        }
+        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_PRODUCTOSVENDIDOS)) {
+            $modifiedColumns[':p' . $index++]  = '`empleadocomision_productosvendidos`';
+        }
+        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_ACUMULADO)) {
+            $modifiedColumns[':p' . $index++]  = '`empleadocomision_acumulado`';
         }
 
         $sql = sprintf(
@@ -605,14 +773,26 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
                     case '`idempledo`':
                         $stmt->bindValue($identifier, $this->idempledo, PDO::PARAM_INT);
                         break;
-                    case '`idvisitadetalle`':
-                        $stmt->bindValue($identifier, $this->idvisitadetalle, PDO::PARAM_INT);
+                    case '`idclinica`':
+                        $stmt->bindValue($identifier, $this->idclinica, PDO::PARAM_INT);
                         break;
                     case '`empleadocomision_fecha`':
                         $stmt->bindValue($identifier, $this->empleadocomision_fecha, PDO::PARAM_STR);
                         break;
-                    case '`empleadocomision_comision`':
-                        $stmt->bindValue($identifier, $this->empleadocomision_comision, PDO::PARAM_STR);
+                    case '`empleadocomision_comisionservicios`':
+                        $stmt->bindValue($identifier, $this->empleadocomision_comisionservicios, PDO::PARAM_STR);
+                        break;
+                    case '`empleadocomision_comisionproductos`':
+                        $stmt->bindValue($identifier, $this->empleadocomision_comisionproductos, PDO::PARAM_STR);
+                        break;
+                    case '`empleadocomision_serviciosvendidos`':
+                        $stmt->bindValue($identifier, $this->empleadocomision_serviciosvendidos, PDO::PARAM_INT);
+                        break;
+                    case '`empleadocomision_productosvendidos`':
+                        $stmt->bindValue($identifier, $this->empleadocomision_productosvendidos, PDO::PARAM_INT);
+                        break;
+                    case '`empleadocomision_acumulado`':
+                        $stmt->bindValue($identifier, $this->empleadocomision_acumulado, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -713,15 +893,15 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aEmpleado !== null) {
-                if (!$this->aEmpleado->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aEmpleado->getValidationFailures());
+            if ($this->aClinica !== null) {
+                if (!$this->aClinica->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aClinica->getValidationFailures());
                 }
             }
 
-            if ($this->aVisitadetalle !== null) {
-                if (!$this->aVisitadetalle->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aVisitadetalle->getValidationFailures());
+            if ($this->aEmpleado !== null) {
+                if (!$this->aEmpleado->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aEmpleado->getValidationFailures());
                 }
             }
 
@@ -773,13 +953,25 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
                 return $this->getIdempledo();
                 break;
             case 2:
-                return $this->getIdvisitadetalle();
+                return $this->getIdclinica();
                 break;
             case 3:
                 return $this->getEmpleadocomisionFecha();
                 break;
             case 4:
-                return $this->getEmpleadocomisionComision();
+                return $this->getEmpleadocomisionComisionservicios();
+                break;
+            case 5:
+                return $this->getEmpleadocomisionComisionproductos();
+                break;
+            case 6:
+                return $this->getEmpleadocomisionServiciosvendidos();
+                break;
+            case 7:
+                return $this->getEmpleadocomisionProductosvendidos();
+                break;
+            case 8:
+                return $this->getEmpleadocomisionAcumulado();
                 break;
             default:
                 return null;
@@ -812,9 +1004,13 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getIdempleadocomision(),
             $keys[1] => $this->getIdempledo(),
-            $keys[2] => $this->getIdvisitadetalle(),
+            $keys[2] => $this->getIdclinica(),
             $keys[3] => $this->getEmpleadocomisionFecha(),
-            $keys[4] => $this->getEmpleadocomisionComision(),
+            $keys[4] => $this->getEmpleadocomisionComisionservicios(),
+            $keys[5] => $this->getEmpleadocomisionComisionproductos(),
+            $keys[6] => $this->getEmpleadocomisionServiciosvendidos(),
+            $keys[7] => $this->getEmpleadocomisionProductosvendidos(),
+            $keys[8] => $this->getEmpleadocomisionAcumulado(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -822,11 +1018,11 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aClinica) {
+                $result['Clinica'] = $this->aClinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aEmpleado) {
                 $result['Empleado'] = $this->aEmpleado->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aVisitadetalle) {
-                $result['Visitadetalle'] = $this->aVisitadetalle->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -869,13 +1065,25 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
                 $this->setIdempledo($value);
                 break;
             case 2:
-                $this->setIdvisitadetalle($value);
+                $this->setIdclinica($value);
                 break;
             case 3:
                 $this->setEmpleadocomisionFecha($value);
                 break;
             case 4:
-                $this->setEmpleadocomisionComision($value);
+                $this->setEmpleadocomisionComisionservicios($value);
+                break;
+            case 5:
+                $this->setEmpleadocomisionComisionproductos($value);
+                break;
+            case 6:
+                $this->setEmpleadocomisionServiciosvendidos($value);
+                break;
+            case 7:
+                $this->setEmpleadocomisionProductosvendidos($value);
+                break;
+            case 8:
+                $this->setEmpleadocomisionAcumulado($value);
                 break;
         } // switch()
     }
@@ -903,9 +1111,13 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setIdempleadocomision($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setIdempledo($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setIdvisitadetalle($arr[$keys[2]]);
+        if (array_key_exists($keys[2], $arr)) $this->setIdclinica($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setEmpleadocomisionFecha($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setEmpleadocomisionComision($arr[$keys[4]]);
+        if (array_key_exists($keys[4], $arr)) $this->setEmpleadocomisionComisionservicios($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setEmpleadocomisionComisionproductos($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setEmpleadocomisionServiciosvendidos($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setEmpleadocomisionProductosvendidos($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setEmpleadocomisionAcumulado($arr[$keys[8]]);
     }
 
     /**
@@ -919,9 +1131,13 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
 
         if ($this->isColumnModified(EmpleadocomisionPeer::IDEMPLEADOCOMISION)) $criteria->add(EmpleadocomisionPeer::IDEMPLEADOCOMISION, $this->idempleadocomision);
         if ($this->isColumnModified(EmpleadocomisionPeer::IDEMPLEDO)) $criteria->add(EmpleadocomisionPeer::IDEMPLEDO, $this->idempledo);
-        if ($this->isColumnModified(EmpleadocomisionPeer::IDVISITADETALLE)) $criteria->add(EmpleadocomisionPeer::IDVISITADETALLE, $this->idvisitadetalle);
+        if ($this->isColumnModified(EmpleadocomisionPeer::IDCLINICA)) $criteria->add(EmpleadocomisionPeer::IDCLINICA, $this->idclinica);
         if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_FECHA)) $criteria->add(EmpleadocomisionPeer::EMPLEADOCOMISION_FECHA, $this->empleadocomision_fecha);
-        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISION)) $criteria->add(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISION, $this->empleadocomision_comision);
+        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONSERVICIOS)) $criteria->add(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONSERVICIOS, $this->empleadocomision_comisionservicios);
+        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONPRODUCTOS)) $criteria->add(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONPRODUCTOS, $this->empleadocomision_comisionproductos);
+        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_SERVICIOSVENDIDOS)) $criteria->add(EmpleadocomisionPeer::EMPLEADOCOMISION_SERVICIOSVENDIDOS, $this->empleadocomision_serviciosvendidos);
+        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_PRODUCTOSVENDIDOS)) $criteria->add(EmpleadocomisionPeer::EMPLEADOCOMISION_PRODUCTOSVENDIDOS, $this->empleadocomision_productosvendidos);
+        if ($this->isColumnModified(EmpleadocomisionPeer::EMPLEADOCOMISION_ACUMULADO)) $criteria->add(EmpleadocomisionPeer::EMPLEADOCOMISION_ACUMULADO, $this->empleadocomision_acumulado);
 
         return $criteria;
     }
@@ -986,9 +1202,13 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setIdempledo($this->getIdempledo());
-        $copyObj->setIdvisitadetalle($this->getIdvisitadetalle());
+        $copyObj->setIdclinica($this->getIdclinica());
         $copyObj->setEmpleadocomisionFecha($this->getEmpleadocomisionFecha());
-        $copyObj->setEmpleadocomisionComision($this->getEmpleadocomisionComision());
+        $copyObj->setEmpleadocomisionComisionservicios($this->getEmpleadocomisionComisionservicios());
+        $copyObj->setEmpleadocomisionComisionproductos($this->getEmpleadocomisionComisionproductos());
+        $copyObj->setEmpleadocomisionServiciosvendidos($this->getEmpleadocomisionServiciosvendidos());
+        $copyObj->setEmpleadocomisionProductosvendidos($this->getEmpleadocomisionProductosvendidos());
+        $copyObj->setEmpleadocomisionAcumulado($this->getEmpleadocomisionAcumulado());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1048,6 +1268,58 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a Clinica object.
+     *
+     * @param                  Clinica $v
+     * @return Empleadocomision The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setClinica(Clinica $v = null)
+    {
+        if ($v === null) {
+            $this->setIdclinica(NULL);
+        } else {
+            $this->setIdclinica($v->getIdclinica());
+        }
+
+        $this->aClinica = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Clinica object, it will not be re-added.
+        if ($v !== null) {
+            $v->addEmpleadocomision($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Clinica object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Clinica The associated Clinica object.
+     * @throws PropelException
+     */
+    public function getClinica(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aClinica === null && ($this->idclinica !== null) && $doQuery) {
+            $this->aClinica = ClinicaQuery::create()->findPk($this->idclinica, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aClinica->addEmpleadocomisions($this);
+             */
+        }
+
+        return $this->aClinica;
+    }
+
+    /**
      * Declares an association between this object and a Empleado object.
      *
      * @param                  Empleado $v
@@ -1100,67 +1372,19 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a Visitadetalle object.
-     *
-     * @param                  Visitadetalle $v
-     * @return Empleadocomision The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setVisitadetalle(Visitadetalle $v = null)
-    {
-        if ($v === null) {
-            $this->setIdvisitadetalle(NULL);
-        } else {
-            $this->setIdvisitadetalle($v->getIdvisitadetalle());
-        }
-
-        $this->aVisitadetalle = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Visitadetalle object, it will not be re-added.
-        if ($v !== null) {
-            $v->addEmpleadocomision($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Visitadetalle object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Visitadetalle The associated Visitadetalle object.
-     * @throws PropelException
-     */
-    public function getVisitadetalle(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aVisitadetalle === null && ($this->idvisitadetalle !== null) && $doQuery) {
-            $this->aVisitadetalle = VisitadetalleQuery::create()->findPk($this->idvisitadetalle, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aVisitadetalle->addEmpleadocomisions($this);
-             */
-        }
-
-        return $this->aVisitadetalle;
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->idempleadocomision = null;
         $this->idempledo = null;
-        $this->idvisitadetalle = null;
+        $this->idclinica = null;
         $this->empleadocomision_fecha = null;
-        $this->empleadocomision_comision = null;
+        $this->empleadocomision_comisionservicios = null;
+        $this->empleadocomision_comisionproductos = null;
+        $this->empleadocomision_serviciosvendidos = null;
+        $this->empleadocomision_productosvendidos = null;
+        $this->empleadocomision_acumulado = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1183,18 +1407,18 @@ abstract class BaseEmpleadocomision extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aClinica instanceof Persistent) {
+              $this->aClinica->clearAllReferences($deep);
+            }
             if ($this->aEmpleado instanceof Persistent) {
               $this->aEmpleado->clearAllReferences($deep);
-            }
-            if ($this->aVisitadetalle instanceof Persistent) {
-              $this->aVisitadetalle->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aClinica = null;
         $this->aEmpleado = null;
-        $this->aVisitadetalle = null;
     }
 
     /**

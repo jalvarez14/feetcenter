@@ -61,7 +61,7 @@ class VisitadetalleTableMap extends TableMap
         $this->addRelation('Productoclinica', 'Productoclinica', RelationMap::MANY_TO_ONE, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Servicioclinica', 'Servicioclinica', RelationMap::MANY_TO_ONE, array('idservicioclinica' => 'idservicioclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Visita', 'Visita', RelationMap::MANY_TO_ONE, array('idvisita' => 'idvisita', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Empleadocomision', 'Empleadocomision', RelationMap::ONE_TO_MANY, array('idvisitadetalle' => 'idvisitadetalle', ), 'CASCADE', 'CASCADE', 'Empleadocomisions');
+        $this->addRelation('Pacientemembresiadetalle', 'Pacientemembresiadetalle', RelationMap::ONE_TO_MANY, array('idvisitadetalle' => 'idvisitadetalle', ), 'CASCADE', 'CASCADE', 'Pacientemembresiadetalles');
     } // buildRelations()
 
 } // VisitadetalleTableMap

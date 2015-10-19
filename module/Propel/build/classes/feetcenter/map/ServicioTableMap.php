@@ -49,6 +49,12 @@ class ServicioTableMap extends TableMap
   1 => 'cantidad',
 ));
         $this->addColumn('servicio_comision', 'ServicioComision', 'DECIMAL', false, 10, null);
+        $this->addColumn('servicio_dependencia', 'ServicioDependencia', 'CHAR', true, null, null);
+        $this->getColumn('servicio_dependencia', false)->setValueSet(array (
+  0 => 'ninguno',
+  1 => 'membresia',
+  2 => 'cupon',
+));
         // validators
     } // initialize()
 

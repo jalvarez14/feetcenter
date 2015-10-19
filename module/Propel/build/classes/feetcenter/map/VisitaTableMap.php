@@ -65,6 +65,7 @@ class VisitaTableMap extends TableMap
         $this->getColumn('visita_estatuspago', false)->setValueSet(array (
   0 => 'pagada',
   1 => 'no pagada',
+  2 => 'cancelada',
 ));
         $this->addColumn('visita_total', 'VisitaTotal', 'DECIMAL', false, 10, null);
         // validators

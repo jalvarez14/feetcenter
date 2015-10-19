@@ -24,13 +24,13 @@ abstract class BaseEmpleadocomisionPeer
     const TM_CLASS = 'EmpleadocomisionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the idempleadocomision field */
     const IDEMPLEADOCOMISION = 'empleadocomision.idempleadocomision';
@@ -38,14 +38,26 @@ abstract class BaseEmpleadocomisionPeer
     /** the column name for the idempledo field */
     const IDEMPLEDO = 'empleadocomision.idempledo';
 
-    /** the column name for the idvisitadetalle field */
-    const IDVISITADETALLE = 'empleadocomision.idvisitadetalle';
+    /** the column name for the idclinica field */
+    const IDCLINICA = 'empleadocomision.idclinica';
 
     /** the column name for the empleadocomision_fecha field */
     const EMPLEADOCOMISION_FECHA = 'empleadocomision.empleadocomision_fecha';
 
-    /** the column name for the empleadocomision_comision field */
-    const EMPLEADOCOMISION_COMISION = 'empleadocomision.empleadocomision_comision';
+    /** the column name for the empleadocomision_comisionservicios field */
+    const EMPLEADOCOMISION_COMISIONSERVICIOS = 'empleadocomision.empleadocomision_comisionservicios';
+
+    /** the column name for the empleadocomision_comisionproductos field */
+    const EMPLEADOCOMISION_COMISIONPRODUCTOS = 'empleadocomision.empleadocomision_comisionproductos';
+
+    /** the column name for the empleadocomision_serviciosvendidos field */
+    const EMPLEADOCOMISION_SERVICIOSVENDIDOS = 'empleadocomision.empleadocomision_serviciosvendidos';
+
+    /** the column name for the empleadocomision_productosvendidos field */
+    const EMPLEADOCOMISION_PRODUCTOSVENDIDOS = 'empleadocomision.empleadocomision_productosvendidos';
+
+    /** the column name for the empleadocomision_acumulado field */
+    const EMPLEADOCOMISION_ACUMULADO = 'empleadocomision.empleadocomision_acumulado';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -66,12 +78,12 @@ abstract class BaseEmpleadocomisionPeer
      * e.g. EmpleadocomisionPeer::$fieldNames[EmpleadocomisionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleadocomision', 'Idempledo', 'Idvisitadetalle', 'EmpleadocomisionFecha', 'EmpleadocomisionComision', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadocomision', 'idempledo', 'idvisitadetalle', 'empleadocomisionFecha', 'empleadocomisionComision', ),
-        BasePeer::TYPE_COLNAME => array (EmpleadocomisionPeer::IDEMPLEADOCOMISION, EmpleadocomisionPeer::IDEMPLEDO, EmpleadocomisionPeer::IDVISITADETALLE, EmpleadocomisionPeer::EMPLEADOCOMISION_FECHA, EmpleadocomisionPeer::EMPLEADOCOMISION_COMISION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOCOMISION', 'IDEMPLEDO', 'IDVISITADETALLE', 'EMPLEADOCOMISION_FECHA', 'EMPLEADOCOMISION_COMISION', ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleadocomision', 'idempledo', 'idvisitadetalle', 'empleadocomision_fecha', 'empleadocomision_comision', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleadocomision', 'Idempledo', 'Idclinica', 'EmpleadocomisionFecha', 'EmpleadocomisionComisionservicios', 'EmpleadocomisionComisionproductos', 'EmpleadocomisionServiciosvendidos', 'EmpleadocomisionProductosvendidos', 'EmpleadocomisionAcumulado', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadocomision', 'idempledo', 'idclinica', 'empleadocomisionFecha', 'empleadocomisionComisionservicios', 'empleadocomisionComisionproductos', 'empleadocomisionServiciosvendidos', 'empleadocomisionProductosvendidos', 'empleadocomisionAcumulado', ),
+        BasePeer::TYPE_COLNAME => array (EmpleadocomisionPeer::IDEMPLEADOCOMISION, EmpleadocomisionPeer::IDEMPLEDO, EmpleadocomisionPeer::IDCLINICA, EmpleadocomisionPeer::EMPLEADOCOMISION_FECHA, EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONSERVICIOS, EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONPRODUCTOS, EmpleadocomisionPeer::EMPLEADOCOMISION_SERVICIOSVENDIDOS, EmpleadocomisionPeer::EMPLEADOCOMISION_PRODUCTOSVENDIDOS, EmpleadocomisionPeer::EMPLEADOCOMISION_ACUMULADO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOCOMISION', 'IDEMPLEDO', 'IDCLINICA', 'EMPLEADOCOMISION_FECHA', 'EMPLEADOCOMISION_COMISIONSERVICIOS', 'EMPLEADOCOMISION_COMISIONPRODUCTOS', 'EMPLEADOCOMISION_SERVICIOSVENDIDOS', 'EMPLEADOCOMISION_PRODUCTOSVENDIDOS', 'EMPLEADOCOMISION_ACUMULADO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleadocomision', 'idempledo', 'idclinica', 'empleadocomision_fecha', 'empleadocomision_comisionservicios', 'empleadocomision_comisionproductos', 'empleadocomision_serviciosvendidos', 'empleadocomision_productosvendidos', 'empleadocomision_acumulado', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -81,12 +93,12 @@ abstract class BaseEmpleadocomisionPeer
      * e.g. EmpleadocomisionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleadocomision' => 0, 'Idempledo' => 1, 'Idvisitadetalle' => 2, 'EmpleadocomisionFecha' => 3, 'EmpleadocomisionComision' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadocomision' => 0, 'idempledo' => 1, 'idvisitadetalle' => 2, 'empleadocomisionFecha' => 3, 'empleadocomisionComision' => 4, ),
-        BasePeer::TYPE_COLNAME => array (EmpleadocomisionPeer::IDEMPLEADOCOMISION => 0, EmpleadocomisionPeer::IDEMPLEDO => 1, EmpleadocomisionPeer::IDVISITADETALLE => 2, EmpleadocomisionPeer::EMPLEADOCOMISION_FECHA => 3, EmpleadocomisionPeer::EMPLEADOCOMISION_COMISION => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOCOMISION' => 0, 'IDEMPLEDO' => 1, 'IDVISITADETALLE' => 2, 'EMPLEADOCOMISION_FECHA' => 3, 'EMPLEADOCOMISION_COMISION' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleadocomision' => 0, 'idempledo' => 1, 'idvisitadetalle' => 2, 'empleadocomision_fecha' => 3, 'empleadocomision_comision' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleadocomision' => 0, 'Idempledo' => 1, 'Idclinica' => 2, 'EmpleadocomisionFecha' => 3, 'EmpleadocomisionComisionservicios' => 4, 'EmpleadocomisionComisionproductos' => 5, 'EmpleadocomisionServiciosvendidos' => 6, 'EmpleadocomisionProductosvendidos' => 7, 'EmpleadocomisionAcumulado' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleadocomision' => 0, 'idempledo' => 1, 'idclinica' => 2, 'empleadocomisionFecha' => 3, 'empleadocomisionComisionservicios' => 4, 'empleadocomisionComisionproductos' => 5, 'empleadocomisionServiciosvendidos' => 6, 'empleadocomisionProductosvendidos' => 7, 'empleadocomisionAcumulado' => 8, ),
+        BasePeer::TYPE_COLNAME => array (EmpleadocomisionPeer::IDEMPLEADOCOMISION => 0, EmpleadocomisionPeer::IDEMPLEDO => 1, EmpleadocomisionPeer::IDCLINICA => 2, EmpleadocomisionPeer::EMPLEADOCOMISION_FECHA => 3, EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONSERVICIOS => 4, EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONPRODUCTOS => 5, EmpleadocomisionPeer::EMPLEADOCOMISION_SERVICIOSVENDIDOS => 6, EmpleadocomisionPeer::EMPLEADOCOMISION_PRODUCTOSVENDIDOS => 7, EmpleadocomisionPeer::EMPLEADOCOMISION_ACUMULADO => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADOCOMISION' => 0, 'IDEMPLEDO' => 1, 'IDCLINICA' => 2, 'EMPLEADOCOMISION_FECHA' => 3, 'EMPLEADOCOMISION_COMISIONSERVICIOS' => 4, 'EMPLEADOCOMISION_COMISIONPRODUCTOS' => 5, 'EMPLEADOCOMISION_SERVICIOSVENDIDOS' => 6, 'EMPLEADOCOMISION_PRODUCTOSVENDIDOS' => 7, 'EMPLEADOCOMISION_ACUMULADO' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleadocomision' => 0, 'idempledo' => 1, 'idclinica' => 2, 'empleadocomision_fecha' => 3, 'empleadocomision_comisionservicios' => 4, 'empleadocomision_comisionproductos' => 5, 'empleadocomision_serviciosvendidos' => 6, 'empleadocomision_productosvendidos' => 7, 'empleadocomision_acumulado' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -162,15 +174,23 @@ abstract class BaseEmpleadocomisionPeer
         if (null === $alias) {
             $criteria->addSelectColumn(EmpleadocomisionPeer::IDEMPLEADOCOMISION);
             $criteria->addSelectColumn(EmpleadocomisionPeer::IDEMPLEDO);
-            $criteria->addSelectColumn(EmpleadocomisionPeer::IDVISITADETALLE);
+            $criteria->addSelectColumn(EmpleadocomisionPeer::IDCLINICA);
             $criteria->addSelectColumn(EmpleadocomisionPeer::EMPLEADOCOMISION_FECHA);
-            $criteria->addSelectColumn(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISION);
+            $criteria->addSelectColumn(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONSERVICIOS);
+            $criteria->addSelectColumn(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONPRODUCTOS);
+            $criteria->addSelectColumn(EmpleadocomisionPeer::EMPLEADOCOMISION_SERVICIOSVENDIDOS);
+            $criteria->addSelectColumn(EmpleadocomisionPeer::EMPLEADOCOMISION_PRODUCTOSVENDIDOS);
+            $criteria->addSelectColumn(EmpleadocomisionPeer::EMPLEADOCOMISION_ACUMULADO);
         } else {
             $criteria->addSelectColumn($alias . '.idempleadocomision');
             $criteria->addSelectColumn($alias . '.idempledo');
-            $criteria->addSelectColumn($alias . '.idvisitadetalle');
+            $criteria->addSelectColumn($alias . '.idclinica');
             $criteria->addSelectColumn($alias . '.empleadocomision_fecha');
-            $criteria->addSelectColumn($alias . '.empleadocomision_comision');
+            $criteria->addSelectColumn($alias . '.empleadocomision_comisionservicios');
+            $criteria->addSelectColumn($alias . '.empleadocomision_comisionproductos');
+            $criteria->addSelectColumn($alias . '.empleadocomision_serviciosvendidos');
+            $criteria->addSelectColumn($alias . '.empleadocomision_productosvendidos');
+            $criteria->addSelectColumn($alias . '.empleadocomision_acumulado');
         }
     }
 
@@ -473,6 +493,57 @@ abstract class BaseEmpleadocomisionPeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related Clinica table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinClinica(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(EmpleadocomisionPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            EmpleadocomisionPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(EmpleadocomisionPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(EmpleadocomisionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(EmpleadocomisionPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining the related Empleado table
      *
      * @param      Criteria $criteria
@@ -524,53 +595,69 @@ abstract class BaseEmpleadocomisionPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related Visitadetalle table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * Selects a collection of Empleadocomision objects pre-filled with their Clinica objects.
+     * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
+     * @return array           Array of Empleadocomision objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
      */
-    public static function doCountJoinVisitadetalle(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinClinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
 
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(EmpleadocomisionPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EmpleadocomisionPeer::DATABASE_NAME);
         }
 
-        if (!$criteria->hasSelectClause()) {
-            EmpleadocomisionPeer::addSelectColumns($criteria);
-        }
+        EmpleadocomisionPeer::addSelectColumns($criteria);
+        $startcol = EmpleadocomisionPeer::NUM_HYDRATE_COLUMNS;
+        ClinicaPeer::addSelectColumns($criteria);
 
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+        $criteria->addJoin(EmpleadocomisionPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
-        // Set the correct dbName
-        $criteria->setDbName(EmpleadocomisionPeer::DATABASE_NAME);
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
 
-        if ($con === null) {
-            $con = Propel::getConnection(EmpleadocomisionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EmpleadocomisionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EmpleadocomisionPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
 
-        $criteria->addJoin(EmpleadocomisionPeer::IDVISITADETALLE, VisitadetallePeer::IDVISITADETALLE, $join_behavior);
+                $cls = EmpleadocomisionPeer::getOMClass();
 
-        $stmt = BasePeer::doCount($criteria, $con);
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EmpleadocomisionPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
 
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
+            $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Empleadocomision) to $obj2 (Clinica)
+                $obj2->addEmpleadocomision($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
         }
         $stmt->closeCursor();
 
-        return $count;
+        return $results;
     }
 
 
@@ -642,73 +729,6 @@ abstract class BaseEmpleadocomisionPeer
 
 
     /**
-     * Selects a collection of Empleadocomision objects pre-filled with their Visitadetalle objects.
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Empleadocomision objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinVisitadetalle(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(EmpleadocomisionPeer::DATABASE_NAME);
-        }
-
-        EmpleadocomisionPeer::addSelectColumns($criteria);
-        $startcol = EmpleadocomisionPeer::NUM_HYDRATE_COLUMNS;
-        VisitadetallePeer::addSelectColumns($criteria);
-
-        $criteria->addJoin(EmpleadocomisionPeer::IDVISITADETALLE, VisitadetallePeer::IDVISITADETALLE, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = EmpleadocomisionPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = EmpleadocomisionPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-
-                $cls = EmpleadocomisionPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                EmpleadocomisionPeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
-
-            $key2 = VisitadetallePeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = VisitadetallePeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = VisitadetallePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    VisitadetallePeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (Empleadocomision) to $obj2 (Visitadetalle)
-                $obj2->addEmpleadocomision($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
      * Returns the number of rows matching criteria, joining all related tables
      *
      * @param      Criteria $criteria
@@ -744,9 +764,9 @@ abstract class BaseEmpleadocomisionPeer
             $con = Propel::getConnection(EmpleadocomisionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(EmpleadocomisionPeer::IDEMPLEDO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+        $criteria->addJoin(EmpleadocomisionPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
-        $criteria->addJoin(EmpleadocomisionPeer::IDVISITADETALLE, VisitadetallePeer::IDVISITADETALLE, $join_behavior);
+        $criteria->addJoin(EmpleadocomisionPeer::IDEMPLEDO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -782,15 +802,15 @@ abstract class BaseEmpleadocomisionPeer
         EmpleadocomisionPeer::addSelectColumns($criteria);
         $startcol2 = EmpleadocomisionPeer::NUM_HYDRATE_COLUMNS;
 
-        EmpleadoPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+        ClinicaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
 
-        VisitadetallePeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + VisitadetallePeer::NUM_HYDRATE_COLUMNS;
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EmpleadocomisionPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
         $criteria->addJoin(EmpleadocomisionPeer::IDEMPLEDO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
-
-        $criteria->addJoin(EmpleadocomisionPeer::IDVISITADETALLE, VisitadetallePeer::IDVISITADETALLE, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -809,39 +829,39 @@ abstract class BaseEmpleadocomisionPeer
                 EmpleadocomisionPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-            // Add objects for joined Empleado rows
+            // Add objects for joined Clinica rows
 
-            $key2 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
             if ($key2 !== null) {
-                $obj2 = EmpleadoPeer::getInstanceFromPool($key2);
+                $obj2 = ClinicaPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = EmpleadoPeer::getOMClass();
+                    $cls = ClinicaPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    EmpleadoPeer::addInstanceToPool($obj2, $key2);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (Empleadocomision) to the collection in $obj2 (Empleado)
+                // Add the $obj1 (Empleadocomision) to the collection in $obj2 (Clinica)
                 $obj2->addEmpleadocomision($obj1);
             } // if joined row not null
 
-            // Add objects for joined Visitadetalle rows
+            // Add objects for joined Empleado rows
 
-            $key3 = VisitadetallePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            $key3 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
             if ($key3 !== null) {
-                $obj3 = VisitadetallePeer::getInstanceFromPool($key3);
+                $obj3 = EmpleadoPeer::getInstanceFromPool($key3);
                 if (!$obj3) {
 
-                    $cls = VisitadetallePeer::getOMClass();
+                    $cls = EmpleadoPeer::getOMClass();
 
                     $obj3 = new $cls();
                     $obj3->hydrate($row, $startcol3);
-                    VisitadetallePeer::addInstanceToPool($obj3, $key3);
+                    EmpleadoPeer::addInstanceToPool($obj3, $key3);
                 } // if obj3 loaded
 
-                // Add the $obj1 (Empleadocomision) to the collection in $obj3 (Visitadetalle)
+                // Add the $obj1 (Empleadocomision) to the collection in $obj3 (Empleado)
                 $obj3->addEmpleadocomision($obj1);
             } // if joined row not null
 
@@ -850,6 +870,57 @@ abstract class BaseEmpleadocomisionPeer
         $stmt->closeCursor();
 
         return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Clinica table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptClinica(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(EmpleadocomisionPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            EmpleadocomisionPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(EmpleadocomisionPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(EmpleadocomisionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(EmpleadocomisionPeer::IDEMPLEDO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
     }
 
 
@@ -889,7 +960,7 @@ abstract class BaseEmpleadocomisionPeer
             $con = Propel::getConnection(EmpleadocomisionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(EmpleadocomisionPeer::IDVISITADETALLE, VisitadetallePeer::IDVISITADETALLE, $join_behavior);
+        $criteria->addJoin(EmpleadocomisionPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -905,58 +976,7 @@ abstract class BaseEmpleadocomisionPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related Visitadetalle table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptVisitadetalle(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(EmpleadocomisionPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            EmpleadocomisionPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(EmpleadocomisionPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(EmpleadocomisionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(EmpleadocomisionPeer::IDEMPLEDO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Selects a collection of Empleadocomision objects pre-filled with all related objects except Empleado.
+     * Selects a collection of Empleadocomision objects pre-filled with all related objects except Clinica.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -965,81 +985,7 @@ abstract class BaseEmpleadocomisionPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptEmpleado(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(EmpleadocomisionPeer::DATABASE_NAME);
-        }
-
-        EmpleadocomisionPeer::addSelectColumns($criteria);
-        $startcol2 = EmpleadocomisionPeer::NUM_HYDRATE_COLUMNS;
-
-        VisitadetallePeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + VisitadetallePeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(EmpleadocomisionPeer::IDVISITADETALLE, VisitadetallePeer::IDVISITADETALLE, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = EmpleadocomisionPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = EmpleadocomisionPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = EmpleadocomisionPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                EmpleadocomisionPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Visitadetalle rows
-
-                $key2 = VisitadetallePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = VisitadetallePeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = VisitadetallePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    VisitadetallePeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Empleadocomision) to the collection in $obj2 (Visitadetalle)
-                $obj2->addEmpleadocomision($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Empleadocomision objects pre-filled with all related objects except Visitadetalle.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Empleadocomision objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptVisitadetalle(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptClinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1091,6 +1037,80 @@ abstract class BaseEmpleadocomisionPeer
                 } // if $obj2 already loaded
 
                 // Add the $obj1 (Empleadocomision) to the collection in $obj2 (Empleado)
+                $obj2->addEmpleadocomision($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Empleadocomision objects pre-filled with all related objects except Empleado.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Empleadocomision objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptEmpleado(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EmpleadocomisionPeer::DATABASE_NAME);
+        }
+
+        EmpleadocomisionPeer::addSelectColumns($criteria);
+        $startcol2 = EmpleadocomisionPeer::NUM_HYDRATE_COLUMNS;
+
+        ClinicaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EmpleadocomisionPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EmpleadocomisionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EmpleadocomisionPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = EmpleadocomisionPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EmpleadocomisionPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Clinica rows
+
+                $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Empleadocomision) to the collection in $obj2 (Clinica)
                 $obj2->addEmpleadocomision($obj1);
 
             } // if joined row is not null

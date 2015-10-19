@@ -13,6 +13,7 @@
  * @method ServicioQuery orderByServicioGeneracomision($order = Criteria::ASC) Order by the servicio_generacomision column
  * @method ServicioQuery orderByServicioTipocomision($order = Criteria::ASC) Order by the servicio_tipocomision column
  * @method ServicioQuery orderByServicioComision($order = Criteria::ASC) Order by the servicio_comision column
+ * @method ServicioQuery orderByServicioDependencia($order = Criteria::ASC) Order by the servicio_dependencia column
  *
  * @method ServicioQuery groupByIdservicio() Group by the idservicio column
  * @method ServicioQuery groupByServicioNombre() Group by the servicio_nombre column
@@ -21,6 +22,7 @@
  * @method ServicioQuery groupByServicioGeneracomision() Group by the servicio_generacomision column
  * @method ServicioQuery groupByServicioTipocomision() Group by the servicio_tipocomision column
  * @method ServicioQuery groupByServicioComision() Group by the servicio_comision column
+ * @method ServicioQuery groupByServicioDependencia() Group by the servicio_dependencia column
  *
  * @method ServicioQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ServicioQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -43,6 +45,7 @@
  * @method Servicio findOneByServicioGeneracomision(boolean $servicio_generacomision) Return the first Servicio filtered by the servicio_generacomision column
  * @method Servicio findOneByServicioTipocomision(string $servicio_tipocomision) Return the first Servicio filtered by the servicio_tipocomision column
  * @method Servicio findOneByServicioComision(string $servicio_comision) Return the first Servicio filtered by the servicio_comision column
+ * @method Servicio findOneByServicioDependencia(string $servicio_dependencia) Return the first Servicio filtered by the servicio_dependencia column
  *
  * @method array findByIdservicio(int $idservicio) Return Servicio objects filtered by the idservicio column
  * @method array findByServicioNombre(string $servicio_nombre) Return Servicio objects filtered by the servicio_nombre column
@@ -51,6 +54,7 @@
  * @method array findByServicioGeneracomision(boolean $servicio_generacomision) Return Servicio objects filtered by the servicio_generacomision column
  * @method array findByServicioTipocomision(string $servicio_tipocomision) Return Servicio objects filtered by the servicio_tipocomision column
  * @method array findByServicioComision(string $servicio_comision) Return Servicio objects filtered by the servicio_comision column
+ * @method array findByServicioDependencia(string $servicio_dependencia) Return Servicio objects filtered by the servicio_dependencia column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -158,7 +162,7 @@ abstract class BaseServicioQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idservicio`, `servicio_nombre`, `servicio_descripcion`, `servicio_generaingreso`, `servicio_generacomision`, `servicio_tipocomision`, `servicio_comision` FROM `servicio` WHERE `idservicio` = :p0';
+        $sql = 'SELECT `idservicio`, `servicio_nombre`, `servicio_descripcion`, `servicio_generaingreso`, `servicio_generacomision`, `servicio_tipocomision`, `servicio_comision`, `servicio_dependencia` FROM `servicio` WHERE `idservicio` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -470,6 +474,35 @@ abstract class BaseServicioQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ServicioPeer::SERVICIO_COMISION, $servicioComision, $comparison);
+    }
+
+    /**
+     * Filter the query on the servicio_dependencia column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByServicioDependencia('fooValue');   // WHERE servicio_dependencia = 'fooValue'
+     * $query->filterByServicioDependencia('%fooValue%'); // WHERE servicio_dependencia LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $servicioDependencia The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ServicioQuery The current query, for fluid interface
+     */
+    public function filterByServicioDependencia($servicioDependencia = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($servicioDependencia)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $servicioDependencia)) {
+                $servicioDependencia = str_replace('*', '%', $servicioDependencia);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ServicioPeer::SERVICIO_DEPENDENCIA, $servicioDependencia, $comparison);
     }
 
     /**

@@ -40,9 +40,9 @@
  * @method VisitadetalleQuery rightJoinVisita($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Visita relation
  * @method VisitadetalleQuery innerJoinVisita($relationAlias = null) Adds a INNER JOIN clause to the query using the Visita relation
  *
- * @method VisitadetalleQuery leftJoinEmpleadocomision($relationAlias = null) Adds a LEFT JOIN clause to the query using the Empleadocomision relation
- * @method VisitadetalleQuery rightJoinEmpleadocomision($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleadocomision relation
- * @method VisitadetalleQuery innerJoinEmpleadocomision($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleadocomision relation
+ * @method VisitadetalleQuery leftJoinPacientemembresiadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pacientemembresiadetalle relation
+ * @method VisitadetalleQuery rightJoinPacientemembresiadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pacientemembresiadetalle relation
+ * @method VisitadetalleQuery innerJoinPacientemembresiadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Pacientemembresiadetalle relation
  *
  * @method Visitadetalle findOne(PropelPDO $con = null) Return the first Visitadetalle matching the query
  * @method Visitadetalle findOneOrCreate(PropelPDO $con = null) Return the first Visitadetalle matching the query, or a new Visitadetalle object populated from the query conditions when no match is found
@@ -817,41 +817,41 @@ abstract class BaseVisitadetalleQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Empleadocomision object
+     * Filter the query by a related Pacientemembresiadetalle object
      *
-     * @param   Empleadocomision|PropelObjectCollection $empleadocomision  the related object to use as filter
+     * @param   Pacientemembresiadetalle|PropelObjectCollection $pacientemembresiadetalle  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 VisitadetalleQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByEmpleadocomision($empleadocomision, $comparison = null)
+    public function filterByPacientemembresiadetalle($pacientemembresiadetalle, $comparison = null)
     {
-        if ($empleadocomision instanceof Empleadocomision) {
+        if ($pacientemembresiadetalle instanceof Pacientemembresiadetalle) {
             return $this
-                ->addUsingAlias(VisitadetallePeer::IDVISITADETALLE, $empleadocomision->getIdvisitadetalle(), $comparison);
-        } elseif ($empleadocomision instanceof PropelObjectCollection) {
+                ->addUsingAlias(VisitadetallePeer::IDVISITADETALLE, $pacientemembresiadetalle->getIdvisitadetalle(), $comparison);
+        } elseif ($pacientemembresiadetalle instanceof PropelObjectCollection) {
             return $this
-                ->useEmpleadocomisionQuery()
-                ->filterByPrimaryKeys($empleadocomision->getPrimaryKeys())
+                ->usePacientemembresiadetalleQuery()
+                ->filterByPrimaryKeys($pacientemembresiadetalle->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByEmpleadocomision() only accepts arguments of type Empleadocomision or PropelCollection');
+            throw new PropelException('filterByPacientemembresiadetalle() only accepts arguments of type Pacientemembresiadetalle or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Empleadocomision relation
+     * Adds a JOIN clause to the query using the Pacientemembresiadetalle relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return VisitadetalleQuery The current query, for fluid interface
      */
-    public function joinEmpleadocomision($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPacientemembresiadetalle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Empleadocomision');
+        $relationMap = $tableMap->getRelation('Pacientemembresiadetalle');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -866,14 +866,14 @@ abstract class BaseVisitadetalleQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Empleadocomision');
+            $this->addJoinObject($join, 'Pacientemembresiadetalle');
         }
 
         return $this;
     }
 
     /**
-     * Use the Empleadocomision relation Empleadocomision object
+     * Use the Pacientemembresiadetalle relation Pacientemembresiadetalle object
      *
      * @see       useQuery()
      *
@@ -881,13 +881,13 @@ abstract class BaseVisitadetalleQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   EmpleadocomisionQuery A secondary query class using the current class as primary query
+     * @return   PacientemembresiadetalleQuery A secondary query class using the current class as primary query
      */
-    public function useEmpleadocomisionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePacientemembresiadetalleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinEmpleadocomision($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Empleadocomision', 'EmpleadocomisionQuery');
+            ->joinPacientemembresiadetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Pacientemembresiadetalle', 'PacientemembresiadetalleQuery');
     }
 
     /**

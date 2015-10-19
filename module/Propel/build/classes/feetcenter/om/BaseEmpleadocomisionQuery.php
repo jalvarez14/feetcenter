@@ -8,41 +8,57 @@
  *
  * @method EmpleadocomisionQuery orderByIdempleadocomision($order = Criteria::ASC) Order by the idempleadocomision column
  * @method EmpleadocomisionQuery orderByIdempledo($order = Criteria::ASC) Order by the idempledo column
- * @method EmpleadocomisionQuery orderByIdvisitadetalle($order = Criteria::ASC) Order by the idvisitadetalle column
+ * @method EmpleadocomisionQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
  * @method EmpleadocomisionQuery orderByEmpleadocomisionFecha($order = Criteria::ASC) Order by the empleadocomision_fecha column
- * @method EmpleadocomisionQuery orderByEmpleadocomisionComision($order = Criteria::ASC) Order by the empleadocomision_comision column
+ * @method EmpleadocomisionQuery orderByEmpleadocomisionComisionservicios($order = Criteria::ASC) Order by the empleadocomision_comisionservicios column
+ * @method EmpleadocomisionQuery orderByEmpleadocomisionComisionproductos($order = Criteria::ASC) Order by the empleadocomision_comisionproductos column
+ * @method EmpleadocomisionQuery orderByEmpleadocomisionServiciosvendidos($order = Criteria::ASC) Order by the empleadocomision_serviciosvendidos column
+ * @method EmpleadocomisionQuery orderByEmpleadocomisionProductosvendidos($order = Criteria::ASC) Order by the empleadocomision_productosvendidos column
+ * @method EmpleadocomisionQuery orderByEmpleadocomisionAcumulado($order = Criteria::ASC) Order by the empleadocomision_acumulado column
  *
  * @method EmpleadocomisionQuery groupByIdempleadocomision() Group by the idempleadocomision column
  * @method EmpleadocomisionQuery groupByIdempledo() Group by the idempledo column
- * @method EmpleadocomisionQuery groupByIdvisitadetalle() Group by the idvisitadetalle column
+ * @method EmpleadocomisionQuery groupByIdclinica() Group by the idclinica column
  * @method EmpleadocomisionQuery groupByEmpleadocomisionFecha() Group by the empleadocomision_fecha column
- * @method EmpleadocomisionQuery groupByEmpleadocomisionComision() Group by the empleadocomision_comision column
+ * @method EmpleadocomisionQuery groupByEmpleadocomisionComisionservicios() Group by the empleadocomision_comisionservicios column
+ * @method EmpleadocomisionQuery groupByEmpleadocomisionComisionproductos() Group by the empleadocomision_comisionproductos column
+ * @method EmpleadocomisionQuery groupByEmpleadocomisionServiciosvendidos() Group by the empleadocomision_serviciosvendidos column
+ * @method EmpleadocomisionQuery groupByEmpleadocomisionProductosvendidos() Group by the empleadocomision_productosvendidos column
+ * @method EmpleadocomisionQuery groupByEmpleadocomisionAcumulado() Group by the empleadocomision_acumulado column
  *
  * @method EmpleadocomisionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method EmpleadocomisionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method EmpleadocomisionQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method EmpleadocomisionQuery leftJoinClinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Clinica relation
+ * @method EmpleadocomisionQuery rightJoinClinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Clinica relation
+ * @method EmpleadocomisionQuery innerJoinClinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Clinica relation
+ *
  * @method EmpleadocomisionQuery leftJoinEmpleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Empleado relation
  * @method EmpleadocomisionQuery rightJoinEmpleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleado relation
  * @method EmpleadocomisionQuery innerJoinEmpleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleado relation
- *
- * @method EmpleadocomisionQuery leftJoinVisitadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Visitadetalle relation
- * @method EmpleadocomisionQuery rightJoinVisitadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Visitadetalle relation
- * @method EmpleadocomisionQuery innerJoinVisitadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Visitadetalle relation
  *
  * @method Empleadocomision findOne(PropelPDO $con = null) Return the first Empleadocomision matching the query
  * @method Empleadocomision findOneOrCreate(PropelPDO $con = null) Return the first Empleadocomision matching the query, or a new Empleadocomision object populated from the query conditions when no match is found
  *
  * @method Empleadocomision findOneByIdempledo(int $idempledo) Return the first Empleadocomision filtered by the idempledo column
- * @method Empleadocomision findOneByIdvisitadetalle(int $idvisitadetalle) Return the first Empleadocomision filtered by the idvisitadetalle column
+ * @method Empleadocomision findOneByIdclinica(int $idclinica) Return the first Empleadocomision filtered by the idclinica column
  * @method Empleadocomision findOneByEmpleadocomisionFecha(string $empleadocomision_fecha) Return the first Empleadocomision filtered by the empleadocomision_fecha column
- * @method Empleadocomision findOneByEmpleadocomisionComision(string $empleadocomision_comision) Return the first Empleadocomision filtered by the empleadocomision_comision column
+ * @method Empleadocomision findOneByEmpleadocomisionComisionservicios(string $empleadocomision_comisionservicios) Return the first Empleadocomision filtered by the empleadocomision_comisionservicios column
+ * @method Empleadocomision findOneByEmpleadocomisionComisionproductos(string $empleadocomision_comisionproductos) Return the first Empleadocomision filtered by the empleadocomision_comisionproductos column
+ * @method Empleadocomision findOneByEmpleadocomisionServiciosvendidos(int $empleadocomision_serviciosvendidos) Return the first Empleadocomision filtered by the empleadocomision_serviciosvendidos column
+ * @method Empleadocomision findOneByEmpleadocomisionProductosvendidos(int $empleadocomision_productosvendidos) Return the first Empleadocomision filtered by the empleadocomision_productosvendidos column
+ * @method Empleadocomision findOneByEmpleadocomisionAcumulado(string $empleadocomision_acumulado) Return the first Empleadocomision filtered by the empleadocomision_acumulado column
  *
  * @method array findByIdempleadocomision(int $idempleadocomision) Return Empleadocomision objects filtered by the idempleadocomision column
  * @method array findByIdempledo(int $idempledo) Return Empleadocomision objects filtered by the idempledo column
- * @method array findByIdvisitadetalle(int $idvisitadetalle) Return Empleadocomision objects filtered by the idvisitadetalle column
+ * @method array findByIdclinica(int $idclinica) Return Empleadocomision objects filtered by the idclinica column
  * @method array findByEmpleadocomisionFecha(string $empleadocomision_fecha) Return Empleadocomision objects filtered by the empleadocomision_fecha column
- * @method array findByEmpleadocomisionComision(string $empleadocomision_comision) Return Empleadocomision objects filtered by the empleadocomision_comision column
+ * @method array findByEmpleadocomisionComisionservicios(string $empleadocomision_comisionservicios) Return Empleadocomision objects filtered by the empleadocomision_comisionservicios column
+ * @method array findByEmpleadocomisionComisionproductos(string $empleadocomision_comisionproductos) Return Empleadocomision objects filtered by the empleadocomision_comisionproductos column
+ * @method array findByEmpleadocomisionServiciosvendidos(int $empleadocomision_serviciosvendidos) Return Empleadocomision objects filtered by the empleadocomision_serviciosvendidos column
+ * @method array findByEmpleadocomisionProductosvendidos(int $empleadocomision_productosvendidos) Return Empleadocomision objects filtered by the empleadocomision_productosvendidos column
+ * @method array findByEmpleadocomisionAcumulado(string $empleadocomision_acumulado) Return Empleadocomision objects filtered by the empleadocomision_acumulado column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -150,7 +166,7 @@ abstract class BaseEmpleadocomisionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idempleadocomision`, `idempledo`, `idvisitadetalle`, `empleadocomision_fecha`, `empleadocomision_comision` FROM `empleadocomision` WHERE `idempleadocomision` = :p0';
+        $sql = 'SELECT `idempleadocomision`, `idempledo`, `idclinica`, `empleadocomision_fecha`, `empleadocomision_comisionservicios`, `empleadocomision_comisionproductos`, `empleadocomision_serviciosvendidos`, `empleadocomision_productosvendidos`, `empleadocomision_acumulado` FROM `empleadocomision` WHERE `idempleadocomision` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -326,19 +342,19 @@ abstract class BaseEmpleadocomisionQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the idvisitadetalle column
+     * Filter the query on the idclinica column
      *
      * Example usage:
      * <code>
-     * $query->filterByIdvisitadetalle(1234); // WHERE idvisitadetalle = 1234
-     * $query->filterByIdvisitadetalle(array(12, 34)); // WHERE idvisitadetalle IN (12, 34)
-     * $query->filterByIdvisitadetalle(array('min' => 12)); // WHERE idvisitadetalle >= 12
-     * $query->filterByIdvisitadetalle(array('max' => 12)); // WHERE idvisitadetalle <= 12
+     * $query->filterByIdclinica(1234); // WHERE idclinica = 1234
+     * $query->filterByIdclinica(array(12, 34)); // WHERE idclinica IN (12, 34)
+     * $query->filterByIdclinica(array('min' => 12)); // WHERE idclinica >= 12
+     * $query->filterByIdclinica(array('max' => 12)); // WHERE idclinica <= 12
      * </code>
      *
-     * @see       filterByVisitadetalle()
+     * @see       filterByClinica()
      *
-     * @param     mixed $idvisitadetalle The value to use as filter.
+     * @param     mixed $idclinica The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -346,16 +362,16 @@ abstract class BaseEmpleadocomisionQuery extends ModelCriteria
      *
      * @return EmpleadocomisionQuery The current query, for fluid interface
      */
-    public function filterByIdvisitadetalle($idvisitadetalle = null, $comparison = null)
+    public function filterByIdclinica($idclinica = null, $comparison = null)
     {
-        if (is_array($idvisitadetalle)) {
+        if (is_array($idclinica)) {
             $useMinMax = false;
-            if (isset($idvisitadetalle['min'])) {
-                $this->addUsingAlias(EmpleadocomisionPeer::IDVISITADETALLE, $idvisitadetalle['min'], Criteria::GREATER_EQUAL);
+            if (isset($idclinica['min'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::IDCLINICA, $idclinica['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($idvisitadetalle['max'])) {
-                $this->addUsingAlias(EmpleadocomisionPeer::IDVISITADETALLE, $idvisitadetalle['max'], Criteria::LESS_EQUAL);
+            if (isset($idclinica['max'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::IDCLINICA, $idclinica['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -366,7 +382,7 @@ abstract class BaseEmpleadocomisionQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(EmpleadocomisionPeer::IDVISITADETALLE, $idvisitadetalle, $comparison);
+        return $this->addUsingAlias(EmpleadocomisionPeer::IDCLINICA, $idclinica, $comparison);
     }
 
     /**
@@ -413,17 +429,17 @@ abstract class BaseEmpleadocomisionQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the empleadocomision_comision column
+     * Filter the query on the empleadocomision_comisionservicios column
      *
      * Example usage:
      * <code>
-     * $query->filterByEmpleadocomisionComision(1234); // WHERE empleadocomision_comision = 1234
-     * $query->filterByEmpleadocomisionComision(array(12, 34)); // WHERE empleadocomision_comision IN (12, 34)
-     * $query->filterByEmpleadocomisionComision(array('min' => 12)); // WHERE empleadocomision_comision >= 12
-     * $query->filterByEmpleadocomisionComision(array('max' => 12)); // WHERE empleadocomision_comision <= 12
+     * $query->filterByEmpleadocomisionComisionservicios(1234); // WHERE empleadocomision_comisionservicios = 1234
+     * $query->filterByEmpleadocomisionComisionservicios(array(12, 34)); // WHERE empleadocomision_comisionservicios IN (12, 34)
+     * $query->filterByEmpleadocomisionComisionservicios(array('min' => 12)); // WHERE empleadocomision_comisionservicios >= 12
+     * $query->filterByEmpleadocomisionComisionservicios(array('max' => 12)); // WHERE empleadocomision_comisionservicios <= 12
      * </code>
      *
-     * @param     mixed $empleadocomisionComision The value to use as filter.
+     * @param     mixed $empleadocomisionComisionservicios The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -431,16 +447,16 @@ abstract class BaseEmpleadocomisionQuery extends ModelCriteria
      *
      * @return EmpleadocomisionQuery The current query, for fluid interface
      */
-    public function filterByEmpleadocomisionComision($empleadocomisionComision = null, $comparison = null)
+    public function filterByEmpleadocomisionComisionservicios($empleadocomisionComisionservicios = null, $comparison = null)
     {
-        if (is_array($empleadocomisionComision)) {
+        if (is_array($empleadocomisionComisionservicios)) {
             $useMinMax = false;
-            if (isset($empleadocomisionComision['min'])) {
-                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISION, $empleadocomisionComision['min'], Criteria::GREATER_EQUAL);
+            if (isset($empleadocomisionComisionservicios['min'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONSERVICIOS, $empleadocomisionComisionservicios['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($empleadocomisionComision['max'])) {
-                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISION, $empleadocomisionComision['max'], Criteria::LESS_EQUAL);
+            if (isset($empleadocomisionComisionservicios['max'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONSERVICIOS, $empleadocomisionComisionservicios['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -451,7 +467,251 @@ abstract class BaseEmpleadocomisionQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISION, $empleadocomisionComision, $comparison);
+        return $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONSERVICIOS, $empleadocomisionComisionservicios, $comparison);
+    }
+
+    /**
+     * Filter the query on the empleadocomision_comisionproductos column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmpleadocomisionComisionproductos(1234); // WHERE empleadocomision_comisionproductos = 1234
+     * $query->filterByEmpleadocomisionComisionproductos(array(12, 34)); // WHERE empleadocomision_comisionproductos IN (12, 34)
+     * $query->filterByEmpleadocomisionComisionproductos(array('min' => 12)); // WHERE empleadocomision_comisionproductos >= 12
+     * $query->filterByEmpleadocomisionComisionproductos(array('max' => 12)); // WHERE empleadocomision_comisionproductos <= 12
+     * </code>
+     *
+     * @param     mixed $empleadocomisionComisionproductos The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EmpleadocomisionQuery The current query, for fluid interface
+     */
+    public function filterByEmpleadocomisionComisionproductos($empleadocomisionComisionproductos = null, $comparison = null)
+    {
+        if (is_array($empleadocomisionComisionproductos)) {
+            $useMinMax = false;
+            if (isset($empleadocomisionComisionproductos['min'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONPRODUCTOS, $empleadocomisionComisionproductos['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($empleadocomisionComisionproductos['max'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONPRODUCTOS, $empleadocomisionComisionproductos['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_COMISIONPRODUCTOS, $empleadocomisionComisionproductos, $comparison);
+    }
+
+    /**
+     * Filter the query on the empleadocomision_serviciosvendidos column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmpleadocomisionServiciosvendidos(1234); // WHERE empleadocomision_serviciosvendidos = 1234
+     * $query->filterByEmpleadocomisionServiciosvendidos(array(12, 34)); // WHERE empleadocomision_serviciosvendidos IN (12, 34)
+     * $query->filterByEmpleadocomisionServiciosvendidos(array('min' => 12)); // WHERE empleadocomision_serviciosvendidos >= 12
+     * $query->filterByEmpleadocomisionServiciosvendidos(array('max' => 12)); // WHERE empleadocomision_serviciosvendidos <= 12
+     * </code>
+     *
+     * @param     mixed $empleadocomisionServiciosvendidos The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EmpleadocomisionQuery The current query, for fluid interface
+     */
+    public function filterByEmpleadocomisionServiciosvendidos($empleadocomisionServiciosvendidos = null, $comparison = null)
+    {
+        if (is_array($empleadocomisionServiciosvendidos)) {
+            $useMinMax = false;
+            if (isset($empleadocomisionServiciosvendidos['min'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_SERVICIOSVENDIDOS, $empleadocomisionServiciosvendidos['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($empleadocomisionServiciosvendidos['max'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_SERVICIOSVENDIDOS, $empleadocomisionServiciosvendidos['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_SERVICIOSVENDIDOS, $empleadocomisionServiciosvendidos, $comparison);
+    }
+
+    /**
+     * Filter the query on the empleadocomision_productosvendidos column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmpleadocomisionProductosvendidos(1234); // WHERE empleadocomision_productosvendidos = 1234
+     * $query->filterByEmpleadocomisionProductosvendidos(array(12, 34)); // WHERE empleadocomision_productosvendidos IN (12, 34)
+     * $query->filterByEmpleadocomisionProductosvendidos(array('min' => 12)); // WHERE empleadocomision_productosvendidos >= 12
+     * $query->filterByEmpleadocomisionProductosvendidos(array('max' => 12)); // WHERE empleadocomision_productosvendidos <= 12
+     * </code>
+     *
+     * @param     mixed $empleadocomisionProductosvendidos The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EmpleadocomisionQuery The current query, for fluid interface
+     */
+    public function filterByEmpleadocomisionProductosvendidos($empleadocomisionProductosvendidos = null, $comparison = null)
+    {
+        if (is_array($empleadocomisionProductosvendidos)) {
+            $useMinMax = false;
+            if (isset($empleadocomisionProductosvendidos['min'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_PRODUCTOSVENDIDOS, $empleadocomisionProductosvendidos['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($empleadocomisionProductosvendidos['max'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_PRODUCTOSVENDIDOS, $empleadocomisionProductosvendidos['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_PRODUCTOSVENDIDOS, $empleadocomisionProductosvendidos, $comparison);
+    }
+
+    /**
+     * Filter the query on the empleadocomision_acumulado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmpleadocomisionAcumulado(1234); // WHERE empleadocomision_acumulado = 1234
+     * $query->filterByEmpleadocomisionAcumulado(array(12, 34)); // WHERE empleadocomision_acumulado IN (12, 34)
+     * $query->filterByEmpleadocomisionAcumulado(array('min' => 12)); // WHERE empleadocomision_acumulado >= 12
+     * $query->filterByEmpleadocomisionAcumulado(array('max' => 12)); // WHERE empleadocomision_acumulado <= 12
+     * </code>
+     *
+     * @param     mixed $empleadocomisionAcumulado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EmpleadocomisionQuery The current query, for fluid interface
+     */
+    public function filterByEmpleadocomisionAcumulado($empleadocomisionAcumulado = null, $comparison = null)
+    {
+        if (is_array($empleadocomisionAcumulado)) {
+            $useMinMax = false;
+            if (isset($empleadocomisionAcumulado['min'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_ACUMULADO, $empleadocomisionAcumulado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($empleadocomisionAcumulado['max'])) {
+                $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_ACUMULADO, $empleadocomisionAcumulado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EmpleadocomisionPeer::EMPLEADOCOMISION_ACUMULADO, $empleadocomisionAcumulado, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Clinica object
+     *
+     * @param   Clinica|PropelObjectCollection $clinica The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadocomisionQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByClinica($clinica, $comparison = null)
+    {
+        if ($clinica instanceof Clinica) {
+            return $this
+                ->addUsingAlias(EmpleadocomisionPeer::IDCLINICA, $clinica->getIdclinica(), $comparison);
+        } elseif ($clinica instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(EmpleadocomisionPeer::IDCLINICA, $clinica->toKeyValue('PrimaryKey', 'Idclinica'), $comparison);
+        } else {
+            throw new PropelException('filterByClinica() only accepts arguments of type Clinica or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Clinica relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadocomisionQuery The current query, for fluid interface
+     */
+    public function joinClinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Clinica');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Clinica');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Clinica relation Clinica object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ClinicaQuery A secondary query class using the current class as primary query
+     */
+    public function useClinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinClinica($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Clinica', 'ClinicaQuery');
     }
 
     /**
@@ -528,82 +788,6 @@ abstract class BaseEmpleadocomisionQuery extends ModelCriteria
         return $this
             ->joinEmpleado($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Empleado', 'EmpleadoQuery');
-    }
-
-    /**
-     * Filter the query by a related Visitadetalle object
-     *
-     * @param   Visitadetalle|PropelObjectCollection $visitadetalle The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 EmpleadocomisionQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByVisitadetalle($visitadetalle, $comparison = null)
-    {
-        if ($visitadetalle instanceof Visitadetalle) {
-            return $this
-                ->addUsingAlias(EmpleadocomisionPeer::IDVISITADETALLE, $visitadetalle->getIdvisitadetalle(), $comparison);
-        } elseif ($visitadetalle instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(EmpleadocomisionPeer::IDVISITADETALLE, $visitadetalle->toKeyValue('PrimaryKey', 'Idvisitadetalle'), $comparison);
-        } else {
-            throw new PropelException('filterByVisitadetalle() only accepts arguments of type Visitadetalle or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Visitadetalle relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return EmpleadocomisionQuery The current query, for fluid interface
-     */
-    public function joinVisitadetalle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Visitadetalle');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Visitadetalle');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Visitadetalle relation Visitadetalle object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   VisitadetalleQuery A secondary query class using the current class as primary query
-     */
-    public function useVisitadetalleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinVisitadetalle($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Visitadetalle', 'VisitadetalleQuery');
     }
 
     /**

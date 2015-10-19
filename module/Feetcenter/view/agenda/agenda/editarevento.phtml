@@ -200,7 +200,6 @@
             </tr>
         </thead>
         <tbody>
-           
             <?php foreach ($visita->getVisitadetalles() as $key => $value) :?>
             <tr>
                 <?php if ($value->getIdproductoclinica() != NULL) :?>
@@ -281,7 +280,7 @@
                         </div>
                         <div class="unit-33">
                             <label>
-                                Hora <span class="req">*</span>
+                                Hora (Formato 24 horas)<span class="req">*</span>
                                 <input required name="visita_siguiente_hora" type="text" class="width-100">
                             </label>
                         </div>
@@ -308,14 +307,19 @@
                     <div id="pay_date_anticipado_input"class="units-row" style="margin-bottom: 0px;  display: none">
                         <div class="unit-100">
                             <label>
-                                <b>Cantidad</b> <span class="req">*</span>
-                                <input class="width-100" type="text"  name="pay_date_anticipado_cantidad">
+                                <b>Servicio</b> <span class="req">*</span>
+                                <select class="width-100" name="pay_date_anticipado_servicio">
+                                    <?php foreach($servicios as $servicio) :?> 
+                                     <option data-name="<?php echo $servicio['servicio_nombre']?>"  data-price="<?php echo $servicio['servicioclinica_precio']?>" data-type="servicio" value="<?php echo $servicio['idservicioclinica']?>"><?php echo $servicio['servicio_nombre']?></option>
+                                   <?php endforeach;?>
+                                </select>
                             </label>
                         </div>
                     </div>
                 </fieldset>
             </div>
         </div>
+       
         <div id="pay_details_container"class="units-row" style="margin-bottom: 0px; display: none">
             <div class="unit-100">
                 <fieldset>
@@ -323,6 +327,75 @@
                         Detalles pago
                     </legend>
                     <div class="units-row">
+                        <div class="unit-100">
+                             <table id="pay_details">
+                                <thead>
+                                    <tr>
+                                        <th>Cantidad</th>
+                                        <th>Servicio / Producto</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($visita->getVisitadetalles() as $key => $value) : ?>
+                                        <tr>
+                                            <?php if ($value->getIdproductoclinica() != NULL) : ?>
+                                        <input type="hidden" value="<?php echo $value->getIdproductoclinica() ?>" name="vistadetallepay[<?php echo $key ?>][id]">
+                                        <input type="hidden" value="producto" name="vistadetallepay[<?php echo $key ?>][type]">
+                                        <?php $name = $value->getProductoclinica()->getProducto()->getProductoNombre() ?>
+                                    <?php else : ?>
+                                        <input type="hidden" value="<?php echo $value->getIdservicioclinica() ?>" name="vistadetallepay[<?php echo $key ?>][id]">
+                                        <input type="hidden" value="servicio" name="vistadetallepay[<?php echo $key ?>][type]">
+                                        <?php $name = $value->getServicioclinica()->getServicio()->getServicioNombre() ?>
+                                    <?php endif; ?>
+                                    <input type="hidden" value="<?php echo $value->getVisitadetallePreciounitario() ?>" name="vistadetallepay[<?php echo $key ?>][price]">
+                                    <input type="hidden" value="<?php echo $value->getVisitadetalleCantidad() ?>" name="vistadetallepay[<?php echo $key ?>][cantidad]">
+                                    <input type="hidden" value="<?php echo $value->getVisitadetalleSubtotal() ?>" name="vistadetallepay[<?php echo $key ?>][subtotal]">
+                                    <td><?php echo (int) $value->getVisitadetalleCantidad() ?></td>
+                                    <td><?php echo $name ?></td>
+                                    <td class="visitadetalle_subtotal"><?php echo $value->getVisitadetalleSubtotal() ?></td>
+                                 </tr>
+                             <?php endforeach; ?>
+                             </tbody>
+                             <tfoot>
+                                 <tr>
+                                    <input name="visita_total" type="hidden" value="0">
+                                    <td colspan="2">Total</td>
+                                    <td id="total">$ 0</td>
+                                </tr>
+                             </tfoot>
+                             </table>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+         <div id="pay_method_container"class="units-row" style="margin-bottom: 0px; display: none">
+            <div class="unit-100">
+                <fieldset>
+                    <legend>
+                        Metodo de pago
+                    </legend>
+                    <div class="units-row">
+                        <div class="unit-60">
+                            <label class="forms-inline-list">
+                                <b>Estatus</b> <span class="req">*</span>
+                                <select class="width-100" name="visitapago_tipo[0][type]">
+                                    <option value="efectivo">Efectivo</option>
+                                    <option value="tarjeta">Tarjeta</option>
+                                    <option value="tarjeta de puntos">Tarjeta de puntos</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="unit-30">
+                            <label class="forms-inline-list">
+                                <b>Cantidad</b> <span class="req">*</span>
+                                <input required name="visitapago_tipo[0][cantidad]" type="text">
+                            </label>
+                        </div>
+                        <div class="unit-10">
+                            <button id="addMethodPay" class="btn btn-blue width-100" style="margin-top: 20px;">+</button>
+                        </div>
                     </div>
                 </fieldset>
             </div>

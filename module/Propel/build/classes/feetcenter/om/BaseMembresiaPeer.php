@@ -2,26 +2,26 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'clinica' table.
+ * Base static class for performing query and update operations on the 'membresia' table.
  *
  *
  *
  * @package propel.generator.feetcenter.om
  */
-abstract class BaseClinicaPeer
+abstract class BaseMembresiaPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'feetcenter';
 
     /** the table name for this class */
-    const TABLE_NAME = 'clinica';
+    const TABLE_NAME = 'membresia';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Clinica';
+    const OM_CLASS = 'Membresia';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'ClinicaTableMap';
+    const TM_CLASS = 'MembresiaTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 5;
@@ -32,29 +32,29 @@ abstract class BaseClinicaPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 5;
 
-    /** the column name for the idclinica field */
-    const IDCLINICA = 'clinica.idclinica';
+    /** the column name for the idmembresia field */
+    const IDMEMBRESIA = 'membresia.idmembresia';
 
-    /** the column name for the clinica_nombre field */
-    const CLINICA_NOMBRE = 'clinica.clinica_nombre';
+    /** the column name for the membresia_nombre field */
+    const MEMBRESIA_NOMBRE = 'membresia.membresia_nombre';
 
-    /** the column name for the clinica_direccion field */
-    const CLINICA_DIRECCION = 'clinica.clinica_direccion';
+    /** the column name for the membresia_descripcion field */
+    const MEMBRESIA_DESCRIPCION = 'membresia.membresia_descripcion';
 
-    /** the column name for the clinica_registropatronal field */
-    const CLINICA_REGISTROPATRONAL = 'clinica.clinica_registropatronal';
+    /** the column name for the membresia_servicios field */
+    const MEMBRESIA_SERVICIOS = 'membresia.membresia_servicios';
 
-    /** the column name for the clinica_telefono field */
-    const CLINICA_TELEFONO = 'clinica.clinica_telefono';
+    /** the column name for the membresia_cupones field */
+    const MEMBRESIA_CUPONES = 'membresia.membresia_cupones';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of Clinica objects.
+     * An identity map to hold any loaded instances of Membresia objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array Clinica[]
+     * @var        array Membresia[]
      */
     public static $instances = array();
 
@@ -63,14 +63,14 @@ abstract class BaseClinicaPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. ClinicaPeer::$fieldNames[ClinicaPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. MembresiaPeer::$fieldNames[MembresiaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idclinica', 'ClinicaNombre', 'ClinicaDireccion', 'ClinicaRegistropatronal', 'ClinicaTelefono', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idclinica', 'clinicaNombre', 'clinicaDireccion', 'clinicaRegistropatronal', 'clinicaTelefono', ),
-        BasePeer::TYPE_COLNAME => array (ClinicaPeer::IDCLINICA, ClinicaPeer::CLINICA_NOMBRE, ClinicaPeer::CLINICA_DIRECCION, ClinicaPeer::CLINICA_REGISTROPATRONAL, ClinicaPeer::CLINICA_TELEFONO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCLINICA', 'CLINICA_NOMBRE', 'CLINICA_DIRECCION', 'CLINICA_REGISTROPATRONAL', 'CLINICA_TELEFONO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idclinica', 'clinica_nombre', 'clinica_direccion', 'clinica_registropatronal', 'clinica_telefono', ),
+        BasePeer::TYPE_PHPNAME => array ('Idmembresia', 'MembresiaNombre', 'MembresiaDescripcion', 'MembresiaServicios', 'MembresiaCupones', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia', 'membresiaNombre', 'membresiaDescripcion', 'membresiaServicios', 'membresiaCupones', ),
+        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA, MembresiaPeer::MEMBRESIA_NOMBRE, MembresiaPeer::MEMBRESIA_DESCRIPCION, MembresiaPeer::MEMBRESIA_SERVICIOS, MembresiaPeer::MEMBRESIA_CUPONES, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA', 'MEMBRESIA_NOMBRE', 'MEMBRESIA_DESCRIPCION', 'MEMBRESIA_SERVICIOS', 'MEMBRESIA_CUPONES', ),
+        BasePeer::TYPE_FIELDNAME => array ('idmembresia', 'membresia_nombre', 'membresia_descripcion', 'membresia_servicios', 'membresia_cupones', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
@@ -78,14 +78,14 @@ abstract class BaseClinicaPeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. ClinicaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. MembresiaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idclinica' => 0, 'ClinicaNombre' => 1, 'ClinicaDireccion' => 2, 'ClinicaRegistropatronal' => 3, 'ClinicaTelefono' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idclinica' => 0, 'clinicaNombre' => 1, 'clinicaDireccion' => 2, 'clinicaRegistropatronal' => 3, 'clinicaTelefono' => 4, ),
-        BasePeer::TYPE_COLNAME => array (ClinicaPeer::IDCLINICA => 0, ClinicaPeer::CLINICA_NOMBRE => 1, ClinicaPeer::CLINICA_DIRECCION => 2, ClinicaPeer::CLINICA_REGISTROPATRONAL => 3, ClinicaPeer::CLINICA_TELEFONO => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCLINICA' => 0, 'CLINICA_NOMBRE' => 1, 'CLINICA_DIRECCION' => 2, 'CLINICA_REGISTROPATRONAL' => 3, 'CLINICA_TELEFONO' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('idclinica' => 0, 'clinica_nombre' => 1, 'clinica_direccion' => 2, 'clinica_registropatronal' => 3, 'clinica_telefono' => 4, ),
+        BasePeer::TYPE_PHPNAME => array ('Idmembresia' => 0, 'MembresiaNombre' => 1, 'MembresiaDescripcion' => 2, 'MembresiaServicios' => 3, 'MembresiaCupones' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia' => 0, 'membresiaNombre' => 1, 'membresiaDescripcion' => 2, 'membresiaServicios' => 3, 'membresiaCupones' => 4, ),
+        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA => 0, MembresiaPeer::MEMBRESIA_NOMBRE => 1, MembresiaPeer::MEMBRESIA_DESCRIPCION => 2, MembresiaPeer::MEMBRESIA_SERVICIOS => 3, MembresiaPeer::MEMBRESIA_CUPONES => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA' => 0, 'MEMBRESIA_NOMBRE' => 1, 'MEMBRESIA_DESCRIPCION' => 2, 'MEMBRESIA_SERVICIOS' => 3, 'MEMBRESIA_CUPONES' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('idmembresia' => 0, 'membresia_nombre' => 1, 'membresia_descripcion' => 2, 'membresia_servicios' => 3, 'membresia_cupones' => 4, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
@@ -101,10 +101,10 @@ abstract class BaseClinicaPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = ClinicaPeer::getFieldNames($toType);
-        $key = isset(ClinicaPeer::$fieldKeys[$fromType][$name]) ? ClinicaPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = MembresiaPeer::getFieldNames($toType);
+        $key = isset(MembresiaPeer::$fieldKeys[$fromType][$name]) ? MembresiaPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ClinicaPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(MembresiaPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -121,11 +121,11 @@ abstract class BaseClinicaPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, ClinicaPeer::$fieldNames)) {
+        if (!array_key_exists($type, MembresiaPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return ClinicaPeer::$fieldNames[$type];
+        return MembresiaPeer::$fieldNames[$type];
     }
 
     /**
@@ -137,12 +137,12 @@ abstract class BaseClinicaPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. ClinicaPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. MembresiaPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(ClinicaPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(MembresiaPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -160,17 +160,17 @@ abstract class BaseClinicaPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ClinicaPeer::IDCLINICA);
-            $criteria->addSelectColumn(ClinicaPeer::CLINICA_NOMBRE);
-            $criteria->addSelectColumn(ClinicaPeer::CLINICA_DIRECCION);
-            $criteria->addSelectColumn(ClinicaPeer::CLINICA_REGISTROPATRONAL);
-            $criteria->addSelectColumn(ClinicaPeer::CLINICA_TELEFONO);
+            $criteria->addSelectColumn(MembresiaPeer::IDMEMBRESIA);
+            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_NOMBRE);
+            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_DESCRIPCION);
+            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_SERVICIOS);
+            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_CUPONES);
         } else {
-            $criteria->addSelectColumn($alias . '.idclinica');
-            $criteria->addSelectColumn($alias . '.clinica_nombre');
-            $criteria->addSelectColumn($alias . '.clinica_direccion');
-            $criteria->addSelectColumn($alias . '.clinica_registropatronal');
-            $criteria->addSelectColumn($alias . '.clinica_telefono');
+            $criteria->addSelectColumn($alias . '.idmembresia');
+            $criteria->addSelectColumn($alias . '.membresia_nombre');
+            $criteria->addSelectColumn($alias . '.membresia_descripcion');
+            $criteria->addSelectColumn($alias . '.membresia_servicios');
+            $criteria->addSelectColumn($alias . '.membresia_cupones');
         }
     }
 
@@ -190,21 +190,21 @@ abstract class BaseClinicaPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ClinicaPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(MembresiaPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ClinicaPeer::addSelectColumns($criteria);
+            MembresiaPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(ClinicaPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(MembresiaPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(ClinicaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -223,7 +223,7 @@ abstract class BaseClinicaPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return Clinica
+     * @return Membresia
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -231,7 +231,7 @@ abstract class BaseClinicaPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = ClinicaPeer::doSelect($critcopy, $con);
+        $objects = MembresiaPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -249,7 +249,7 @@ abstract class BaseClinicaPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return ClinicaPeer::populateObjects(ClinicaPeer::doSelectStmt($criteria, $con));
+        return MembresiaPeer::populateObjects(MembresiaPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -267,16 +267,16 @@ abstract class BaseClinicaPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ClinicaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            ClinicaPeer::addSelectColumns($criteria);
+            MembresiaPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ClinicaPeer::DATABASE_NAME);
+        $criteria->setDbName(MembresiaPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -290,16 +290,16 @@ abstract class BaseClinicaPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param Clinica $obj A Clinica object.
+     * @param Membresia $obj A Membresia object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = (string) $obj->getIdclinica();
+                $key = (string) $obj->getIdmembresia();
             } // if key === null
-            ClinicaPeer::$instances[$key] = $obj;
+            MembresiaPeer::$instances[$key] = $obj;
         }
     }
 
@@ -311,7 +311,7 @@ abstract class BaseClinicaPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A Clinica object or a primary key value.
+     * @param      mixed $value A Membresia object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -319,17 +319,17 @@ abstract class BaseClinicaPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof Clinica) {
-                $key = (string) $value->getIdclinica();
+            if (is_object($value) && $value instanceof Membresia) {
+                $key = (string) $value->getIdmembresia();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Clinica object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Membresia object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(ClinicaPeer::$instances[$key]);
+            unset(MembresiaPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -340,14 +340,14 @@ abstract class BaseClinicaPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return Clinica Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return Membresia Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(ClinicaPeer::$instances[$key])) {
-                return ClinicaPeer::$instances[$key];
+            if (isset(MembresiaPeer::$instances[$key])) {
+                return MembresiaPeer::$instances[$key];
             }
         }
 
@@ -362,67 +362,22 @@ abstract class BaseClinicaPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (ClinicaPeer::$instances as $instance) {
+        foreach (MembresiaPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        ClinicaPeer::$instances = array();
+        MembresiaPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to clinica
+     * Method to invalidate the instance pool of all tables related to membresia
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in CancelacionventaclinicaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        CancelacionventaclinicaPeer::clearInstancePool();
-        // Invalidate objects in ClinicaempleadoPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ClinicaempleadoPeer::clearInstancePool();
-        // Invalidate objects in EgresoclinicaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        EgresoclinicaPeer::clearInstancePool();
-        // Invalidate objects in EmpleadocomisionPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        EmpleadocomisionPeer::clearInstancePool();
-        // Invalidate objects in EmpleadorecesoPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        EmpleadorecesoPeer::clearInstancePool();
-        // Invalidate objects in EmpleadoreportePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        EmpleadoreportePeer::clearInstancePool();
-        // Invalidate objects in EncargadoclinicaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        EncargadoclinicaPeer::clearInstancePool();
-        // Invalidate objects in InsumoclinicaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        InsumoclinicaPeer::clearInstancePool();
-        // Invalidate objects in PacientePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PacientePeer::clearInstancePool();
         // Invalidate objects in PacientemembresiaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PacientemembresiaPeer::clearInstancePool();
-        // Invalidate objects in PacienteseguimientoPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PacienteseguimientoPeer::clearInstancePool();
-        // Invalidate objects in ProductoclinicaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ProductoclinicaPeer::clearInstancePool();
-        // Invalidate objects in ServicioclinicaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ServicioclinicaPeer::clearInstancePool();
-        // Invalidate objects in TransferenciaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        TransferenciaPeer::clearInstancePool();
-        // Invalidate objects in TransferenciaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        TransferenciaPeer::clearInstancePool();
-        // Invalidate objects in VisitaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        VisitaPeer::clearInstancePool();
     }
 
     /**
@@ -472,11 +427,11 @@ abstract class BaseClinicaPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = ClinicaPeer::getOMClass();
+        $cls = MembresiaPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = ClinicaPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = ClinicaPeer::getInstanceFromPool($key))) {
+            $key = MembresiaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = MembresiaPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -485,7 +440,7 @@ abstract class BaseClinicaPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                ClinicaPeer::addInstanceToPool($obj, $key);
+                MembresiaPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -499,21 +454,21 @@ abstract class BaseClinicaPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (Clinica object, last column rank)
+     * @return array (Membresia object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = ClinicaPeer::getInstanceFromPool($key))) {
+        $key = MembresiaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = MembresiaPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + ClinicaPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + MembresiaPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = ClinicaPeer::OM_CLASS;
+            $cls = MembresiaPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            ClinicaPeer::addInstanceToPool($obj, $key);
+            MembresiaPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -528,7 +483,7 @@ abstract class BaseClinicaPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(ClinicaPeer::DATABASE_NAME)->getTable(ClinicaPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(MembresiaPeer::DATABASE_NAME)->getTable(MembresiaPeer::TABLE_NAME);
     }
 
     /**
@@ -536,9 +491,9 @@ abstract class BaseClinicaPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BaseClinicaPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BaseClinicaPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \ClinicaTableMap());
+      $dbMap = Propel::getDatabaseMap(BaseMembresiaPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BaseMembresiaPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \MembresiaTableMap());
       }
     }
 
@@ -550,13 +505,13 @@ abstract class BaseClinicaPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return ClinicaPeer::OM_CLASS;
+        return MembresiaPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a Clinica or Criteria object.
+     * Performs an INSERT on the database, given a Membresia or Criteria object.
      *
-     * @param      mixed $values Criteria or Clinica object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or Membresia object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -565,22 +520,22 @@ abstract class BaseClinicaPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ClinicaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from Clinica object
+            $criteria = $values->buildCriteria(); // build Criteria from Membresia object
         }
 
-        if ($criteria->containsKey(ClinicaPeer::IDCLINICA) && $criteria->keyContainsValue(ClinicaPeer::IDCLINICA) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ClinicaPeer::IDCLINICA.')');
+        if ($criteria->containsKey(MembresiaPeer::IDMEMBRESIA) && $criteria->keyContainsValue(MembresiaPeer::IDMEMBRESIA) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.MembresiaPeer::IDMEMBRESIA.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(ClinicaPeer::DATABASE_NAME);
+        $criteria->setDbName(MembresiaPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -597,9 +552,9 @@ abstract class BaseClinicaPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a Clinica or Criteria object.
+     * Performs an UPDATE on the database, given a Membresia or Criteria object.
      *
-     * @param      mixed $values Criteria or Clinica object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or Membresia object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -608,35 +563,35 @@ abstract class BaseClinicaPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ClinicaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(ClinicaPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(MembresiaPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(ClinicaPeer::IDCLINICA);
-            $value = $criteria->remove(ClinicaPeer::IDCLINICA);
+            $comparison = $criteria->getComparison(MembresiaPeer::IDMEMBRESIA);
+            $value = $criteria->remove(MembresiaPeer::IDMEMBRESIA);
             if ($value) {
-                $selectCriteria->add(ClinicaPeer::IDCLINICA, $value, $comparison);
+                $selectCriteria->add(MembresiaPeer::IDMEMBRESIA, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(ClinicaPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(MembresiaPeer::TABLE_NAME);
             }
 
-        } else { // $values is Clinica object
+        } else { // $values is Membresia object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(ClinicaPeer::DATABASE_NAME);
+        $criteria->setDbName(MembresiaPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the clinica table.
+     * Deletes all rows from the membresia table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -645,20 +600,20 @@ abstract class BaseClinicaPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ClinicaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += ClinicaPeer::doOnDeleteCascade(new Criteria(ClinicaPeer::DATABASE_NAME), $con);
-            $affectedRows += BasePeer::doDeleteAll(ClinicaPeer::TABLE_NAME, $con, ClinicaPeer::DATABASE_NAME);
+            $affectedRows += MembresiaPeer::doOnDeleteCascade(new Criteria(MembresiaPeer::DATABASE_NAME), $con);
+            $affectedRows += BasePeer::doDeleteAll(MembresiaPeer::TABLE_NAME, $con, MembresiaPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            ClinicaPeer::clearInstancePool();
-            ClinicaPeer::clearRelatedInstancePool();
+            MembresiaPeer::clearInstancePool();
+            MembresiaPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -669,9 +624,9 @@ abstract class BaseClinicaPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a Clinica or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Membresia or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or Clinica object or primary key or array of primary keys
+     * @param      mixed $values Criteria or Membresia object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -682,22 +637,22 @@ abstract class BaseClinicaPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(ClinicaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof Clinica) { // it's a model object
+        } elseif ($values instanceof Membresia) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ClinicaPeer::DATABASE_NAME);
-            $criteria->add(ClinicaPeer::IDCLINICA, (array) $values, Criteria::IN);
+            $criteria = new Criteria(MembresiaPeer::DATABASE_NAME);
+            $criteria->add(MembresiaPeer::IDMEMBRESIA, (array) $values, Criteria::IN);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ClinicaPeer::DATABASE_NAME);
+        $criteria->setDbName(MembresiaPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -708,23 +663,23 @@ abstract class BaseClinicaPeer
 
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
-            $affectedRows += ClinicaPeer::doOnDeleteCascade($c, $con);
+            $affectedRows += MembresiaPeer::doOnDeleteCascade($c, $con);
 
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
             if ($values instanceof Criteria) {
-                ClinicaPeer::clearInstancePool();
-            } elseif ($values instanceof Clinica) { // it's a model object
-                ClinicaPeer::removeInstanceFromPool($values);
+                MembresiaPeer::clearInstancePool();
+            } elseif ($values instanceof Membresia) { // it's a model object
+                MembresiaPeer::removeInstanceFromPool($values);
             } else { // it's a primary key, or an array of pks
                 foreach ((array) $values as $singleval) {
-                    ClinicaPeer::removeInstanceFromPool($singleval);
+                    MembresiaPeer::removeInstanceFromPool($singleval);
                 }
             }
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            ClinicaPeer::clearRelatedInstancePool();
+            MembresiaPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -753,118 +708,28 @@ abstract class BaseClinicaPeer
         $affectedRows = 0;
 
         // first find the objects that are implicated by the $criteria
-        $objects = ClinicaPeer::doSelect($criteria, $con);
+        $objects = MembresiaPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
-
-            // delete related Cancelacionventaclinica objects
-            $criteria = new Criteria(CancelacionventaclinicaPeer::DATABASE_NAME);
-
-            $criteria->add(CancelacionventaclinicaPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += CancelacionventaclinicaPeer::doDelete($criteria, $con);
-
-            // delete related Clinicaempleado objects
-            $criteria = new Criteria(ClinicaempleadoPeer::DATABASE_NAME);
-
-            $criteria->add(ClinicaempleadoPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += ClinicaempleadoPeer::doDelete($criteria, $con);
-
-            // delete related Egresoclinica objects
-            $criteria = new Criteria(EgresoclinicaPeer::DATABASE_NAME);
-
-            $criteria->add(EgresoclinicaPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += EgresoclinicaPeer::doDelete($criteria, $con);
-
-            // delete related Empleadocomision objects
-            $criteria = new Criteria(EmpleadocomisionPeer::DATABASE_NAME);
-
-            $criteria->add(EmpleadocomisionPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += EmpleadocomisionPeer::doDelete($criteria, $con);
-
-            // delete related Empleadoreceso objects
-            $criteria = new Criteria(EmpleadorecesoPeer::DATABASE_NAME);
-
-            $criteria->add(EmpleadorecesoPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += EmpleadorecesoPeer::doDelete($criteria, $con);
-
-            // delete related Empleadoreporte objects
-            $criteria = new Criteria(EmpleadoreportePeer::DATABASE_NAME);
-
-            $criteria->add(EmpleadoreportePeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += EmpleadoreportePeer::doDelete($criteria, $con);
-
-            // delete related Encargadoclinica objects
-            $criteria = new Criteria(EncargadoclinicaPeer::DATABASE_NAME);
-
-            $criteria->add(EncargadoclinicaPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += EncargadoclinicaPeer::doDelete($criteria, $con);
-
-            // delete related Insumoclinica objects
-            $criteria = new Criteria(InsumoclinicaPeer::DATABASE_NAME);
-
-            $criteria->add(InsumoclinicaPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += InsumoclinicaPeer::doDelete($criteria, $con);
-
-            // delete related Paciente objects
-            $criteria = new Criteria(PacientePeer::DATABASE_NAME);
-
-            $criteria->add(PacientePeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += PacientePeer::doDelete($criteria, $con);
 
             // delete related Pacientemembresia objects
             $criteria = new Criteria(PacientemembresiaPeer::DATABASE_NAME);
 
-            $criteria->add(PacientemembresiaPeer::IDCLINICA, $obj->getIdclinica());
+            $criteria->add(PacientemembresiaPeer::IDMEMBRESIA, $obj->getIdmembresia());
             $affectedRows += PacientemembresiaPeer::doDelete($criteria, $con);
-
-            // delete related Pacienteseguimiento objects
-            $criteria = new Criteria(PacienteseguimientoPeer::DATABASE_NAME);
-
-            $criteria->add(PacienteseguimientoPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += PacienteseguimientoPeer::doDelete($criteria, $con);
-
-            // delete related Productoclinica objects
-            $criteria = new Criteria(ProductoclinicaPeer::DATABASE_NAME);
-
-            $criteria->add(ProductoclinicaPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += ProductoclinicaPeer::doDelete($criteria, $con);
-
-            // delete related Servicioclinica objects
-            $criteria = new Criteria(ServicioclinicaPeer::DATABASE_NAME);
-
-            $criteria->add(ServicioclinicaPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += ServicioclinicaPeer::doDelete($criteria, $con);
-
-            // delete related Transferencia objects
-            $criteria = new Criteria(TransferenciaPeer::DATABASE_NAME);
-
-            $criteria->add(TransferenciaPeer::IDCLINICADESTINATARIA, $obj->getIdclinica());
-            $affectedRows += TransferenciaPeer::doDelete($criteria, $con);
-
-            // delete related Transferencia objects
-            $criteria = new Criteria(TransferenciaPeer::DATABASE_NAME);
-
-            $criteria->add(TransferenciaPeer::IDCLINICAREMITENTE, $obj->getIdclinica());
-            $affectedRows += TransferenciaPeer::doDelete($criteria, $con);
-
-            // delete related Visita objects
-            $criteria = new Criteria(VisitaPeer::DATABASE_NAME);
-
-            $criteria->add(VisitaPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += VisitaPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;
     }
 
     /**
-     * Validates all modified columns of given Clinica object.
+     * Validates all modified columns of given Membresia object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param Clinica $obj The object to validate.
+     * @param Membresia $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -874,8 +739,8 @@ abstract class BaseClinicaPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(ClinicaPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(ClinicaPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(MembresiaPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(MembresiaPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -891,7 +756,7 @@ abstract class BaseClinicaPeer
 
         }
 
-        return BasePeer::doValidate(ClinicaPeer::DATABASE_NAME, ClinicaPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(MembresiaPeer::DATABASE_NAME, MembresiaPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -899,23 +764,23 @@ abstract class BaseClinicaPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return Clinica
+     * @return Membresia
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = ClinicaPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = MembresiaPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ClinicaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(ClinicaPeer::DATABASE_NAME);
-        $criteria->add(ClinicaPeer::IDCLINICA, $pk);
+        $criteria = new Criteria(MembresiaPeer::DATABASE_NAME);
+        $criteria->add(MembresiaPeer::IDMEMBRESIA, $pk);
 
-        $v = ClinicaPeer::doSelect($criteria, $con);
+        $v = MembresiaPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -925,31 +790,31 @@ abstract class BaseClinicaPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return Clinica[]
+     * @return Membresia[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ClinicaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(ClinicaPeer::DATABASE_NAME);
-            $criteria->add(ClinicaPeer::IDCLINICA, $pks, Criteria::IN);
-            $objs = ClinicaPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(MembresiaPeer::DATABASE_NAME);
+            $criteria->add(MembresiaPeer::IDMEMBRESIA, $pks, Criteria::IN);
+            $objs = MembresiaPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BaseClinicaPeer
+} // BaseMembresiaPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseClinicaPeer::buildTableMap();
+BaseMembresiaPeer::buildTableMap();
 

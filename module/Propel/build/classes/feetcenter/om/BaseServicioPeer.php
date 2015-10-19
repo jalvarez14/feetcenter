@@ -24,13 +24,13 @@ abstract class BaseServicioPeer
     const TM_CLASS = 'ServicioTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the idservicio field */
     const IDSERVICIO = 'servicio.idservicio';
@@ -53,9 +53,17 @@ abstract class BaseServicioPeer
     /** the column name for the servicio_comision field */
     const SERVICIO_COMISION = 'servicio.servicio_comision';
 
+    /** the column name for the servicio_dependencia field */
+    const SERVICIO_DEPENDENCIA = 'servicio.servicio_dependencia';
+
     /** The enumerated values for the servicio_tipocomision field */
     const SERVICIO_TIPOCOMISION_PORCENTAJE = 'porcentaje';
     const SERVICIO_TIPOCOMISION_CANTIDAD = 'cantidad';
+
+    /** The enumerated values for the servicio_dependencia field */
+    const SERVICIO_DEPENDENCIA_NINGUNO = 'ninguno';
+    const SERVICIO_DEPENDENCIA_MEMBRESIA = 'membresia';
+    const SERVICIO_DEPENDENCIA_CUPON = 'cupon';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -76,12 +84,12 @@ abstract class BaseServicioPeer
      * e.g. ServicioPeer::$fieldNames[ServicioPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idservicio', 'ServicioNombre', 'ServicioDescripcion', 'ServicioGeneraingreso', 'ServicioGeneracomision', 'ServicioTipocomision', 'ServicioComision', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idservicio', 'servicioNombre', 'servicioDescripcion', 'servicioGeneraingreso', 'servicioGeneracomision', 'servicioTipocomision', 'servicioComision', ),
-        BasePeer::TYPE_COLNAME => array (ServicioPeer::IDSERVICIO, ServicioPeer::SERVICIO_NOMBRE, ServicioPeer::SERVICIO_DESCRIPCION, ServicioPeer::SERVICIO_GENERAINGRESO, ServicioPeer::SERVICIO_GENERACOMISION, ServicioPeer::SERVICIO_TIPOCOMISION, ServicioPeer::SERVICIO_COMISION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDSERVICIO', 'SERVICIO_NOMBRE', 'SERVICIO_DESCRIPCION', 'SERVICIO_GENERAINGRESO', 'SERVICIO_GENERACOMISION', 'SERVICIO_TIPOCOMISION', 'SERVICIO_COMISION', ),
-        BasePeer::TYPE_FIELDNAME => array ('idservicio', 'servicio_nombre', 'servicio_descripcion', 'servicio_generaingreso', 'servicio_generacomision', 'servicio_tipocomision', 'servicio_comision', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Idservicio', 'ServicioNombre', 'ServicioDescripcion', 'ServicioGeneraingreso', 'ServicioGeneracomision', 'ServicioTipocomision', 'ServicioComision', 'ServicioDependencia', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idservicio', 'servicioNombre', 'servicioDescripcion', 'servicioGeneraingreso', 'servicioGeneracomision', 'servicioTipocomision', 'servicioComision', 'servicioDependencia', ),
+        BasePeer::TYPE_COLNAME => array (ServicioPeer::IDSERVICIO, ServicioPeer::SERVICIO_NOMBRE, ServicioPeer::SERVICIO_DESCRIPCION, ServicioPeer::SERVICIO_GENERAINGRESO, ServicioPeer::SERVICIO_GENERACOMISION, ServicioPeer::SERVICIO_TIPOCOMISION, ServicioPeer::SERVICIO_COMISION, ServicioPeer::SERVICIO_DEPENDENCIA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDSERVICIO', 'SERVICIO_NOMBRE', 'SERVICIO_DESCRIPCION', 'SERVICIO_GENERAINGRESO', 'SERVICIO_GENERACOMISION', 'SERVICIO_TIPOCOMISION', 'SERVICIO_COMISION', 'SERVICIO_DEPENDENCIA', ),
+        BasePeer::TYPE_FIELDNAME => array ('idservicio', 'servicio_nombre', 'servicio_descripcion', 'servicio_generaingreso', 'servicio_generacomision', 'servicio_tipocomision', 'servicio_comision', 'servicio_dependencia', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -91,12 +99,12 @@ abstract class BaseServicioPeer
      * e.g. ServicioPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idservicio' => 0, 'ServicioNombre' => 1, 'ServicioDescripcion' => 2, 'ServicioGeneraingreso' => 3, 'ServicioGeneracomision' => 4, 'ServicioTipocomision' => 5, 'ServicioComision' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idservicio' => 0, 'servicioNombre' => 1, 'servicioDescripcion' => 2, 'servicioGeneraingreso' => 3, 'servicioGeneracomision' => 4, 'servicioTipocomision' => 5, 'servicioComision' => 6, ),
-        BasePeer::TYPE_COLNAME => array (ServicioPeer::IDSERVICIO => 0, ServicioPeer::SERVICIO_NOMBRE => 1, ServicioPeer::SERVICIO_DESCRIPCION => 2, ServicioPeer::SERVICIO_GENERAINGRESO => 3, ServicioPeer::SERVICIO_GENERACOMISION => 4, ServicioPeer::SERVICIO_TIPOCOMISION => 5, ServicioPeer::SERVICIO_COMISION => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDSERVICIO' => 0, 'SERVICIO_NOMBRE' => 1, 'SERVICIO_DESCRIPCION' => 2, 'SERVICIO_GENERAINGRESO' => 3, 'SERVICIO_GENERACOMISION' => 4, 'SERVICIO_TIPOCOMISION' => 5, 'SERVICIO_COMISION' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('idservicio' => 0, 'servicio_nombre' => 1, 'servicio_descripcion' => 2, 'servicio_generaingreso' => 3, 'servicio_generacomision' => 4, 'servicio_tipocomision' => 5, 'servicio_comision' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Idservicio' => 0, 'ServicioNombre' => 1, 'ServicioDescripcion' => 2, 'ServicioGeneraingreso' => 3, 'ServicioGeneracomision' => 4, 'ServicioTipocomision' => 5, 'ServicioComision' => 6, 'ServicioDependencia' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idservicio' => 0, 'servicioNombre' => 1, 'servicioDescripcion' => 2, 'servicioGeneraingreso' => 3, 'servicioGeneracomision' => 4, 'servicioTipocomision' => 5, 'servicioComision' => 6, 'servicioDependencia' => 7, ),
+        BasePeer::TYPE_COLNAME => array (ServicioPeer::IDSERVICIO => 0, ServicioPeer::SERVICIO_NOMBRE => 1, ServicioPeer::SERVICIO_DESCRIPCION => 2, ServicioPeer::SERVICIO_GENERAINGRESO => 3, ServicioPeer::SERVICIO_GENERACOMISION => 4, ServicioPeer::SERVICIO_TIPOCOMISION => 5, ServicioPeer::SERVICIO_COMISION => 6, ServicioPeer::SERVICIO_DEPENDENCIA => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDSERVICIO' => 0, 'SERVICIO_NOMBRE' => 1, 'SERVICIO_DESCRIPCION' => 2, 'SERVICIO_GENERAINGRESO' => 3, 'SERVICIO_GENERACOMISION' => 4, 'SERVICIO_TIPOCOMISION' => 5, 'SERVICIO_COMISION' => 6, 'SERVICIO_DEPENDENCIA' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('idservicio' => 0, 'servicio_nombre' => 1, 'servicio_descripcion' => 2, 'servicio_generaingreso' => 3, 'servicio_generacomision' => 4, 'servicio_tipocomision' => 5, 'servicio_comision' => 6, 'servicio_dependencia' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /** The enumerated values for this table */
@@ -104,6 +112,11 @@ abstract class BaseServicioPeer
         ServicioPeer::SERVICIO_TIPOCOMISION => array(
             ServicioPeer::SERVICIO_TIPOCOMISION_PORCENTAJE,
             ServicioPeer::SERVICIO_TIPOCOMISION_CANTIDAD,
+        ),
+        ServicioPeer::SERVICIO_DEPENDENCIA => array(
+            ServicioPeer::SERVICIO_DEPENDENCIA_NINGUNO,
+            ServicioPeer::SERVICIO_DEPENDENCIA_MEMBRESIA,
+            ServicioPeer::SERVICIO_DEPENDENCIA_CUPON,
         ),
     );
 
@@ -230,6 +243,7 @@ abstract class BaseServicioPeer
             $criteria->addSelectColumn(ServicioPeer::SERVICIO_GENERACOMISION);
             $criteria->addSelectColumn(ServicioPeer::SERVICIO_TIPOCOMISION);
             $criteria->addSelectColumn(ServicioPeer::SERVICIO_COMISION);
+            $criteria->addSelectColumn(ServicioPeer::SERVICIO_DEPENDENCIA);
         } else {
             $criteria->addSelectColumn($alias . '.idservicio');
             $criteria->addSelectColumn($alias . '.servicio_nombre');
@@ -238,6 +252,7 @@ abstract class BaseServicioPeer
             $criteria->addSelectColumn($alias . '.servicio_generacomision');
             $criteria->addSelectColumn($alias . '.servicio_tipocomision');
             $criteria->addSelectColumn($alias . '.servicio_comision');
+            $criteria->addSelectColumn($alias . '.servicio_dependencia');
         }
     }
 

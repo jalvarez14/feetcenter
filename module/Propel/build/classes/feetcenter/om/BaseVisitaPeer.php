@@ -84,6 +84,7 @@ abstract class BaseVisitaPeer
     /** The enumerated values for the visita_estatuspago field */
     const VISITA_ESTATUSPAGO_PAGADA = 'pagada';
     const VISITA_ESTATUSPAGO_NO_PAGADA = 'no pagada';
+    const VISITA_ESTATUSPAGO_CANCELADA = 'cancelada';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -145,6 +146,7 @@ abstract class BaseVisitaPeer
         VisitaPeer::VISITA_ESTATUSPAGO => array(
             VisitaPeer::VISITA_ESTATUSPAGO_PAGADA,
             VisitaPeer::VISITA_ESTATUSPAGO_NO_PAGADA,
+            VisitaPeer::VISITA_ESTATUSPAGO_CANCELADA,
         ),
     );
 

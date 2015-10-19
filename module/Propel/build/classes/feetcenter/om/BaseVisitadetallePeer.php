@@ -447,9 +447,9 @@ abstract class BaseVisitadetallePeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in EmpleadocomisionPeer instance pool,
+        // Invalidate objects in PacientemembresiadetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        EmpleadocomisionPeer::clearInstancePool();
+        PacientemembresiadetallePeer::clearInstancePool();
     }
 
     /**
@@ -1761,11 +1761,11 @@ abstract class BaseVisitadetallePeer
         foreach ($objects as $obj) {
 
 
-            // delete related Empleadocomision objects
-            $criteria = new Criteria(EmpleadocomisionPeer::DATABASE_NAME);
+            // delete related Pacientemembresiadetalle objects
+            $criteria = new Criteria(PacientemembresiadetallePeer::DATABASE_NAME);
 
-            $criteria->add(EmpleadocomisionPeer::IDVISITADETALLE, $obj->getIdvisitadetalle());
-            $affectedRows += EmpleadocomisionPeer::doDelete($criteria, $con);
+            $criteria->add(PacientemembresiadetallePeer::IDVISITADETALLE, $obj->getIdvisitadetalle());
+            $affectedRows += PacientemembresiadetallePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

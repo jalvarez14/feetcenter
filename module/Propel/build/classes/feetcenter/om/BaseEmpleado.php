@@ -4142,10 +4142,10 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Empleadocomision[] List of Empleadocomision objects
      */
-    public function getEmpleadocomisionsJoinVisitadetalle($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getEmpleadocomisionsJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = EmpleadocomisionQuery::create(null, $criteria);
-        $query->joinWith('Visitadetalle', $join_behavior);
+        $query->joinWith('Clinica', $join_behavior);
 
         return $this->getEmpleadocomisions($query, $con);
     }

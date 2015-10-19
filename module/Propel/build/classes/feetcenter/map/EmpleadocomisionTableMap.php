@@ -40,9 +40,13 @@ class EmpleadocomisionTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idempleadocomision', 'Idempleadocomision', 'INTEGER', true, null, null);
         $this->addForeignKey('idempledo', 'Idempledo', 'INTEGER', 'empleado', 'idempleado', true, null, null);
-        $this->addForeignKey('idvisitadetalle', 'Idvisitadetalle', 'INTEGER', 'visitadetalle', 'idvisitadetalle', true, null, null);
-        $this->addColumn('empleadocomision_fecha', 'EmpleadocomisionFecha', 'TIMESTAMP', true, null, null);
-        $this->addColumn('empleadocomision_comision', 'EmpleadocomisionComision', 'DECIMAL', true, 10, null);
+        $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
+        $this->addColumn('empleadocomision_fecha', 'EmpleadocomisionFecha', 'DATE', true, null, null);
+        $this->addColumn('empleadocomision_comisionservicios', 'EmpleadocomisionComisionservicios', 'DECIMAL', true, 10, null);
+        $this->addColumn('empleadocomision_comisionproductos', 'EmpleadocomisionComisionproductos', 'DECIMAL', true, 10, null);
+        $this->addColumn('empleadocomision_serviciosvendidos', 'EmpleadocomisionServiciosvendidos', 'INTEGER', true, null, null);
+        $this->addColumn('empleadocomision_productosvendidos', 'EmpleadocomisionProductosvendidos', 'INTEGER', true, null, null);
+        $this->addColumn('empleadocomision_acumulado', 'EmpleadocomisionAcumulado', 'DECIMAL', true, 10, null);
         // validators
     } // initialize()
 
@@ -51,8 +55,8 @@ class EmpleadocomisionTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Empleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempledo' => 'idempleado', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Visitadetalle', 'Visitadetalle', RelationMap::MANY_TO_ONE, array('idvisitadetalle' => 'idvisitadetalle', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
 } // EmpleadocomisionTableMap

@@ -219,7 +219,7 @@
 
             //Calculamos el total
             var total = 0;
-            $.each($container.find('table#visita_detalles tbody tr'),function(){
+            $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
                 var subtotal = accounting.unformat($(this).find('td').eq(3).text());
                 total += subtotal;
             });
@@ -270,7 +270,8 @@
 
                         //Calculamos el total
                         var total = 0;
-                        $.each($container.find('table#visita_detalles tbody tr'),function(){
+                        
+                        $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
                             var subtotal = accounting.unformat($(this).find('td').eq(3).text());
                             total += subtotal;
                         });
@@ -304,7 +305,7 @@
 
                     //Calculamos el total
                     var total = 0;
-                    $.each($container.find('table#visita_detalles tbody tr'),function(){
+                    $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
                         var subtotal = accounting.unformat($(this).find('td').eq(3).text());
                         total += subtotal;
                     });
@@ -438,7 +439,7 @@
             
             //Calculamos el total
             var total = 0;
-            $.each($container.find('table#visita_detalles tbody tr'),function(){
+            $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
                 var subtotal = accounting.unformat($(this).find('td').eq(3).text());
                 total += subtotal;
             });

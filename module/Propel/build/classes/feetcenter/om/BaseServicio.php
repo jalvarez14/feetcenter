@@ -72,6 +72,12 @@ abstract class BaseServicio extends BaseObject implements Persistent
     protected $servicio_comision;
 
     /**
+     * The value for the servicio_dependencia field.
+     * @var        string
+     */
+    protected $servicio_dependencia;
+
+    /**
      * @var        PropelObjectCollection|Servicioclinica[] Collection to store aggregation of Servicioclinica objects.
      */
     protected $collServicioclinicas;
@@ -190,6 +196,17 @@ abstract class BaseServicio extends BaseObject implements Persistent
     {
 
         return $this->servicio_comision;
+    }
+
+    /**
+     * Get the [servicio_dependencia] column value.
+     *
+     * @return string
+     */
+    public function getServicioDependencia()
+    {
+
+        return $this->servicio_dependencia;
     }
 
     /**
@@ -356,6 +373,27 @@ abstract class BaseServicio extends BaseObject implements Persistent
     } // setServicioComision()
 
     /**
+     * Set the value of [servicio_dependencia] column.
+     *
+     * @param  string $v new value
+     * @return Servicio The current object (for fluent API support)
+     */
+    public function setServicioDependencia($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->servicio_dependencia !== $v) {
+            $this->servicio_dependencia = $v;
+            $this->modifiedColumns[] = ServicioPeer::SERVICIO_DEPENDENCIA;
+        }
+
+
+        return $this;
+    } // setServicioDependencia()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -394,6 +432,7 @@ abstract class BaseServicio extends BaseObject implements Persistent
             $this->servicio_generacomision = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
             $this->servicio_tipocomision = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->servicio_comision = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->servicio_dependencia = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -403,7 +442,7 @@ abstract class BaseServicio extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = ServicioPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = ServicioPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Servicio object", $e);
@@ -674,6 +713,9 @@ abstract class BaseServicio extends BaseObject implements Persistent
         if ($this->isColumnModified(ServicioPeer::SERVICIO_COMISION)) {
             $modifiedColumns[':p' . $index++]  = '`servicio_comision`';
         }
+        if ($this->isColumnModified(ServicioPeer::SERVICIO_DEPENDENCIA)) {
+            $modifiedColumns[':p' . $index++]  = '`servicio_dependencia`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `servicio` (%s) VALUES (%s)',
@@ -705,6 +747,9 @@ abstract class BaseServicio extends BaseObject implements Persistent
                         break;
                     case '`servicio_comision`':
                         $stmt->bindValue($identifier, $this->servicio_comision, PDO::PARAM_STR);
+                        break;
+                    case '`servicio_dependencia`':
+                        $stmt->bindValue($identifier, $this->servicio_dependencia, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -877,6 +922,9 @@ abstract class BaseServicio extends BaseObject implements Persistent
             case 6:
                 return $this->getServicioComision();
                 break;
+            case 7:
+                return $this->getServicioDependencia();
+                break;
             default:
                 return null;
                 break;
@@ -913,6 +961,7 @@ abstract class BaseServicio extends BaseObject implements Persistent
             $keys[4] => $this->getServicioGeneracomision(),
             $keys[5] => $this->getServicioTipocomision(),
             $keys[6] => $this->getServicioComision(),
+            $keys[7] => $this->getServicioDependencia(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -981,6 +1030,9 @@ abstract class BaseServicio extends BaseObject implements Persistent
             case 6:
                 $this->setServicioComision($value);
                 break;
+            case 7:
+                $this->setServicioDependencia($value);
+                break;
         } // switch()
     }
 
@@ -1012,6 +1064,7 @@ abstract class BaseServicio extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setServicioGeneracomision($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setServicioTipocomision($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setServicioComision($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setServicioDependencia($arr[$keys[7]]);
     }
 
     /**
@@ -1030,6 +1083,7 @@ abstract class BaseServicio extends BaseObject implements Persistent
         if ($this->isColumnModified(ServicioPeer::SERVICIO_GENERACOMISION)) $criteria->add(ServicioPeer::SERVICIO_GENERACOMISION, $this->servicio_generacomision);
         if ($this->isColumnModified(ServicioPeer::SERVICIO_TIPOCOMISION)) $criteria->add(ServicioPeer::SERVICIO_TIPOCOMISION, $this->servicio_tipocomision);
         if ($this->isColumnModified(ServicioPeer::SERVICIO_COMISION)) $criteria->add(ServicioPeer::SERVICIO_COMISION, $this->servicio_comision);
+        if ($this->isColumnModified(ServicioPeer::SERVICIO_DEPENDENCIA)) $criteria->add(ServicioPeer::SERVICIO_DEPENDENCIA, $this->servicio_dependencia);
 
         return $criteria;
     }
@@ -1099,6 +1153,7 @@ abstract class BaseServicio extends BaseObject implements Persistent
         $copyObj->setServicioGeneracomision($this->getServicioGeneracomision());
         $copyObj->setServicioTipocomision($this->getServicioTipocomision());
         $copyObj->setServicioComision($this->getServicioComision());
+        $copyObj->setServicioDependencia($this->getServicioDependencia());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1700,6 +1755,7 @@ abstract class BaseServicio extends BaseObject implements Persistent
         $this->servicio_generacomision = null;
         $this->servicio_tipocomision = null;
         $this->servicio_comision = null;
+        $this->servicio_dependencia = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

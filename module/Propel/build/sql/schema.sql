@@ -302,20 +302,24 @@ CREATE TABLE `empleadocomision`
 (
     `idempleadocomision` INTEGER NOT NULL AUTO_INCREMENT,
     `idempledo` INTEGER NOT NULL,
-    `idvisitadetalle` INTEGER NOT NULL,
-    `empleadocomision_fecha` DATETIME NOT NULL,
-    `empleadocomision_comision` DECIMAL(10,2) NOT NULL,
+    `idclinica` INTEGER NOT NULL,
+    `empleadocomision_fecha` DATE NOT NULL,
+    `empleadocomision_comisionservicios` DECIMAL(10,2) NOT NULL,
+    `empleadocomision_comisionproductos` DECIMAL(10,2) NOT NULL,
+    `empleadocomision_serviciosvendidos` INTEGER NOT NULL,
+    `empleadocomision_productosvendidos` INTEGER NOT NULL,
+    `empleadocomision_acumulado` DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (`idempleadocomision`),
     INDEX `idempleado` (`idempledo`),
-    INDEX `idvisitadetalle` (`idvisitadetalle`),
+    INDEX `idclinica` (`idclinica`),
+    CONSTRAINT `idclinica_empleadocomision`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT `idempleado_empleadocomision`
         FOREIGN KEY (`idempledo`)
         REFERENCES `empleado` (`idempleado`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `idvisitadetalle_empleadocomision`
-        FOREIGN KEY (`idvisitadetalle`)
-        REFERENCES `visitadetalle` (`idvisitadetalle`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -586,6 +590,22 @@ CREATE TABLE `insumoclinica`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- membresia
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `membresia`;
+
+CREATE TABLE `membresia`
+(
+    `idmembresia` INTEGER NOT NULL AUTO_INCREMENT,
+    `membresia_nombre` VARCHAR(255) NOT NULL,
+    `membresia_descripcion` TEXT NOT NULL,
+    `membresia_servicios` DECIMAL(10,2) NOT NULL,
+    `membresia_cupones` DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (`idmembresia`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- paciente
 -- ---------------------------------------------------------------------
 
@@ -619,6 +639,71 @@ CREATE TABLE `paciente`
     CONSTRAINT `idempleado_paciente`
         FOREIGN KEY (`idempleado`)
         REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- pacientemembresia
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pacientemembresia`;
+
+CREATE TABLE `pacientemembresia`
+(
+    `idpacientemembresia` INTEGER NOT NULL AUTO_INCREMENT,
+    `idpaciente` INTEGER NOT NULL,
+    `idclinica` INTEGER NOT NULL,
+    `idmembresia` INTEGER NOT NULL,
+    `pacientemembresia_folio` INTEGER NOT NULL,
+    `pacientemembresia_fechainicio` DATETIME NOT NULL,
+    `pacientemembresia_serviciosdisponibles` INTEGER NOT NULL,
+    `pacientemembresia_cuponesdisponibles` INTEGER NOT NULL,
+    `pacientemembresia_estatus` enum('activa','terminada') NOT NULL,
+    PRIMARY KEY (`idpacientemembresia`),
+    INDEX `idmembresia` (`idmembresia`),
+    INDEX `idpaciente` (`idpaciente`),
+    INDEX `idclinica` (`idclinica`),
+    CONSTRAINT `idclinica_pacientemembresia`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idmembresia_pacientemembresia`
+        FOREIGN KEY (`idmembresia`)
+        REFERENCES `membresia` (`idmembresia`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idpaciente_pacientemembresia`
+        FOREIGN KEY (`idpaciente`)
+        REFERENCES `paciente` (`idpaciente`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- pacientemembresiadetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pacientemembresiadetalle`;
+
+CREATE TABLE `pacientemembresiadetalle`
+(
+    `idpacientemembresiadetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `idpacientemembresia` INTEGER NOT NULL,
+    `pacientemembresiadetalle_fecha` INTEGER NOT NULL,
+    `idvisitadetalle` INTEGER NOT NULL,
+    PRIMARY KEY (`idpacientemembresiadetalle`),
+    INDEX `idpacientemembresia` (`idpacientemembresia`),
+    INDEX `idvisitadetalle` (`idvisitadetalle`),
+    CONSTRAINT `idpacientemembresia_pacientemembresiadetalle`
+        FOREIGN KEY (`idpacientemembresia`)
+        REFERENCES `pacientemembresia` (`idpacientemembresia`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idvisitadetalle_pacientemembresiadetalle`
+        FOREIGN KEY (`idvisitadetalle`)
+        REFERENCES `visitadetalle` (`idvisitadetalle`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -808,6 +893,7 @@ CREATE TABLE `servicio`
     `servicio_generacomision` TINYINT(1) NOT NULL,
     `servicio_tipocomision` enum('porcentaje','cantidad'),
     `servicio_comision` DECIMAL(10,2),
+    `servicio_dependencia` enum('ninguno','membresia','cupon') NOT NULL,
     PRIMARY KEY (`idservicio`)
 ) ENGINE=InnoDB;
 
@@ -962,7 +1048,7 @@ CREATE TABLE `visita`
     `visita_fechainicio` DATETIME NOT NULL,
     `visita_fechafin` DATETIME NOT NULL,
     `visita_status` enum('por confirmar','confimada','cancelo','no se presento','reprogramda','en servicio','terminado') NOT NULL,
-    `visita_estatuspago` enum('pagada','no pagada'),
+    `visita_estatuspago` enum('pagada','no pagada','cancelada'),
     `visita_total` DECIMAL(10,2),
     PRIMARY KEY (`idvisita`),
     INDEX `idempleadocreador` (`idempleadocreador`),
