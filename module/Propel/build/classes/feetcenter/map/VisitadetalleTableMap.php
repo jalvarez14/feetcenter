@@ -42,10 +42,12 @@ class VisitadetalleTableMap extends TableMap
         $this->addForeignKey('idvisita', 'Idvisita', 'INTEGER', 'visita', 'idvisita', true, null, null);
         $this->addForeignKey('idproductoclinica', 'Idproductoclinica', 'INTEGER', 'productoclinica', 'idproductoclinica', false, null, null);
         $this->addForeignKey('idservicioclinica', 'Idservicioclinica', 'INTEGER', 'servicioclinica', 'idservicioclinica', false, null, null);
+        $this->addForeignKey('idmembresia', 'Idmembresia', 'INTEGER', 'membresia', 'idmembresia', false, null, null);
         $this->addColumn('visitadetalle_cargo', 'VisitadetalleCargo', 'CHAR', true, null, null);
         $this->getColumn('visitadetalle_cargo', false)->setValueSet(array (
   0 => 'producto',
   1 => 'servicio',
+  2 => 'membresia',
 ));
         $this->addColumn('visitadetalle_preciounitario', 'VisitadetallePreciounitario', 'DECIMAL', true, 10, null);
         $this->addColumn('visitadetalle_cantidad', 'VisitadetalleCantidad', 'DECIMAL', true, 10, null);
@@ -58,6 +60,7 @@ class VisitadetalleTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Membresia', 'Membresia', RelationMap::MANY_TO_ONE, array('idmembresia' => 'idmembresia', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Productoclinica', 'Productoclinica', RelationMap::MANY_TO_ONE, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Servicioclinica', 'Servicioclinica', RelationMap::MANY_TO_ONE, array('idservicioclinica' => 'idservicioclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Visita', 'Visita', RelationMap::MANY_TO_ONE, array('idvisita' => 'idvisita', ), 'CASCADE', 'CASCADE');

@@ -11,20 +11,38 @@
  * @method MembresiaQuery orderByMembresiaDescripcion($order = Criteria::ASC) Order by the membresia_descripcion column
  * @method MembresiaQuery orderByMembresiaServicios($order = Criteria::ASC) Order by the membresia_servicios column
  * @method MembresiaQuery orderByMembresiaCupones($order = Criteria::ASC) Order by the membresia_cupones column
+ * @method MembresiaQuery orderByServicioGeneraingreso($order = Criteria::ASC) Order by the servicio_generaingreso column
+ * @method MembresiaQuery orderByServicioGeneracomision($order = Criteria::ASC) Order by the servicio_generacomision column
+ * @method MembresiaQuery orderByServicioTipocomision($order = Criteria::ASC) Order by the servicio_tipocomision column
+ * @method MembresiaQuery orderByServicioComision($order = Criteria::ASC) Order by the servicio_comision column
+ * @method MembresiaQuery orderByMembresiaPrecio($order = Criteria::ASC) Order by the membresia_precio column
  *
  * @method MembresiaQuery groupByIdmembresia() Group by the idmembresia column
  * @method MembresiaQuery groupByMembresiaNombre() Group by the membresia_nombre column
  * @method MembresiaQuery groupByMembresiaDescripcion() Group by the membresia_descripcion column
  * @method MembresiaQuery groupByMembresiaServicios() Group by the membresia_servicios column
  * @method MembresiaQuery groupByMembresiaCupones() Group by the membresia_cupones column
+ * @method MembresiaQuery groupByServicioGeneraingreso() Group by the servicio_generaingreso column
+ * @method MembresiaQuery groupByServicioGeneracomision() Group by the servicio_generacomision column
+ * @method MembresiaQuery groupByServicioTipocomision() Group by the servicio_tipocomision column
+ * @method MembresiaQuery groupByServicioComision() Group by the servicio_comision column
+ * @method MembresiaQuery groupByMembresiaPrecio() Group by the membresia_precio column
  *
  * @method MembresiaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method MembresiaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method MembresiaQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method MembresiaQuery leftJoinMembresiaclinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Membresiaclinica relation
+ * @method MembresiaQuery rightJoinMembresiaclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Membresiaclinica relation
+ * @method MembresiaQuery innerJoinMembresiaclinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Membresiaclinica relation
+ *
  * @method MembresiaQuery leftJoinPacientemembresia($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pacientemembresia relation
  * @method MembresiaQuery rightJoinPacientemembresia($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pacientemembresia relation
  * @method MembresiaQuery innerJoinPacientemembresia($relationAlias = null) Adds a INNER JOIN clause to the query using the Pacientemembresia relation
+ *
+ * @method MembresiaQuery leftJoinVisitadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Visitadetalle relation
+ * @method MembresiaQuery rightJoinVisitadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Visitadetalle relation
+ * @method MembresiaQuery innerJoinVisitadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Visitadetalle relation
  *
  * @method Membresia findOne(PropelPDO $con = null) Return the first Membresia matching the query
  * @method Membresia findOneOrCreate(PropelPDO $con = null) Return the first Membresia matching the query, or a new Membresia object populated from the query conditions when no match is found
@@ -33,12 +51,22 @@
  * @method Membresia findOneByMembresiaDescripcion(string $membresia_descripcion) Return the first Membresia filtered by the membresia_descripcion column
  * @method Membresia findOneByMembresiaServicios(string $membresia_servicios) Return the first Membresia filtered by the membresia_servicios column
  * @method Membresia findOneByMembresiaCupones(string $membresia_cupones) Return the first Membresia filtered by the membresia_cupones column
+ * @method Membresia findOneByServicioGeneraingreso(boolean $servicio_generaingreso) Return the first Membresia filtered by the servicio_generaingreso column
+ * @method Membresia findOneByServicioGeneracomision(boolean $servicio_generacomision) Return the first Membresia filtered by the servicio_generacomision column
+ * @method Membresia findOneByServicioTipocomision(string $servicio_tipocomision) Return the first Membresia filtered by the servicio_tipocomision column
+ * @method Membresia findOneByServicioComision(string $servicio_comision) Return the first Membresia filtered by the servicio_comision column
+ * @method Membresia findOneByMembresiaPrecio(string $membresia_precio) Return the first Membresia filtered by the membresia_precio column
  *
  * @method array findByIdmembresia(int $idmembresia) Return Membresia objects filtered by the idmembresia column
  * @method array findByMembresiaNombre(string $membresia_nombre) Return Membresia objects filtered by the membresia_nombre column
  * @method array findByMembresiaDescripcion(string $membresia_descripcion) Return Membresia objects filtered by the membresia_descripcion column
  * @method array findByMembresiaServicios(string $membresia_servicios) Return Membresia objects filtered by the membresia_servicios column
  * @method array findByMembresiaCupones(string $membresia_cupones) Return Membresia objects filtered by the membresia_cupones column
+ * @method array findByServicioGeneraingreso(boolean $servicio_generaingreso) Return Membresia objects filtered by the servicio_generaingreso column
+ * @method array findByServicioGeneracomision(boolean $servicio_generacomision) Return Membresia objects filtered by the servicio_generacomision column
+ * @method array findByServicioTipocomision(string $servicio_tipocomision) Return Membresia objects filtered by the servicio_tipocomision column
+ * @method array findByServicioComision(string $servicio_comision) Return Membresia objects filtered by the servicio_comision column
+ * @method array findByMembresiaPrecio(string $membresia_precio) Return Membresia objects filtered by the membresia_precio column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -146,7 +174,7 @@ abstract class BaseMembresiaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idmembresia`, `membresia_nombre`, `membresia_descripcion`, `membresia_servicios`, `membresia_cupones` FROM `membresia` WHERE `idmembresia` = :p0';
+        $sql = 'SELECT `idmembresia`, `membresia_nombre`, `membresia_descripcion`, `membresia_servicios`, `membresia_cupones`, `servicio_generaingreso`, `servicio_generacomision`, `servicio_tipocomision`, `servicio_comision`, `membresia_precio` FROM `membresia` WHERE `idmembresia` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -420,6 +448,247 @@ abstract class BaseMembresiaQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the servicio_generaingreso column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByServicioGeneraingreso(true); // WHERE servicio_generaingreso = true
+     * $query->filterByServicioGeneraingreso('yes'); // WHERE servicio_generaingreso = true
+     * </code>
+     *
+     * @param     boolean|string $servicioGeneraingreso The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return MembresiaQuery The current query, for fluid interface
+     */
+    public function filterByServicioGeneraingreso($servicioGeneraingreso = null, $comparison = null)
+    {
+        if (is_string($servicioGeneraingreso)) {
+            $servicioGeneraingreso = in_array(strtolower($servicioGeneraingreso), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(MembresiaPeer::SERVICIO_GENERAINGRESO, $servicioGeneraingreso, $comparison);
+    }
+
+    /**
+     * Filter the query on the servicio_generacomision column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByServicioGeneracomision(true); // WHERE servicio_generacomision = true
+     * $query->filterByServicioGeneracomision('yes'); // WHERE servicio_generacomision = true
+     * </code>
+     *
+     * @param     boolean|string $servicioGeneracomision The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return MembresiaQuery The current query, for fluid interface
+     */
+    public function filterByServicioGeneracomision($servicioGeneracomision = null, $comparison = null)
+    {
+        if (is_string($servicioGeneracomision)) {
+            $servicioGeneracomision = in_array(strtolower($servicioGeneracomision), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(MembresiaPeer::SERVICIO_GENERACOMISION, $servicioGeneracomision, $comparison);
+    }
+
+    /**
+     * Filter the query on the servicio_tipocomision column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByServicioTipocomision('fooValue');   // WHERE servicio_tipocomision = 'fooValue'
+     * $query->filterByServicioTipocomision('%fooValue%'); // WHERE servicio_tipocomision LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $servicioTipocomision The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return MembresiaQuery The current query, for fluid interface
+     */
+    public function filterByServicioTipocomision($servicioTipocomision = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($servicioTipocomision)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $servicioTipocomision)) {
+                $servicioTipocomision = str_replace('*', '%', $servicioTipocomision);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(MembresiaPeer::SERVICIO_TIPOCOMISION, $servicioTipocomision, $comparison);
+    }
+
+    /**
+     * Filter the query on the servicio_comision column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByServicioComision(1234); // WHERE servicio_comision = 1234
+     * $query->filterByServicioComision(array(12, 34)); // WHERE servicio_comision IN (12, 34)
+     * $query->filterByServicioComision(array('min' => 12)); // WHERE servicio_comision >= 12
+     * $query->filterByServicioComision(array('max' => 12)); // WHERE servicio_comision <= 12
+     * </code>
+     *
+     * @param     mixed $servicioComision The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return MembresiaQuery The current query, for fluid interface
+     */
+    public function filterByServicioComision($servicioComision = null, $comparison = null)
+    {
+        if (is_array($servicioComision)) {
+            $useMinMax = false;
+            if (isset($servicioComision['min'])) {
+                $this->addUsingAlias(MembresiaPeer::SERVICIO_COMISION, $servicioComision['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($servicioComision['max'])) {
+                $this->addUsingAlias(MembresiaPeer::SERVICIO_COMISION, $servicioComision['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(MembresiaPeer::SERVICIO_COMISION, $servicioComision, $comparison);
+    }
+
+    /**
+     * Filter the query on the membresia_precio column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByMembresiaPrecio(1234); // WHERE membresia_precio = 1234
+     * $query->filterByMembresiaPrecio(array(12, 34)); // WHERE membresia_precio IN (12, 34)
+     * $query->filterByMembresiaPrecio(array('min' => 12)); // WHERE membresia_precio >= 12
+     * $query->filterByMembresiaPrecio(array('max' => 12)); // WHERE membresia_precio <= 12
+     * </code>
+     *
+     * @param     mixed $membresiaPrecio The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return MembresiaQuery The current query, for fluid interface
+     */
+    public function filterByMembresiaPrecio($membresiaPrecio = null, $comparison = null)
+    {
+        if (is_array($membresiaPrecio)) {
+            $useMinMax = false;
+            if (isset($membresiaPrecio['min'])) {
+                $this->addUsingAlias(MembresiaPeer::MEMBRESIA_PRECIO, $membresiaPrecio['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($membresiaPrecio['max'])) {
+                $this->addUsingAlias(MembresiaPeer::MEMBRESIA_PRECIO, $membresiaPrecio['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(MembresiaPeer::MEMBRESIA_PRECIO, $membresiaPrecio, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Membresiaclinica object
+     *
+     * @param   Membresiaclinica|PropelObjectCollection $membresiaclinica  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 MembresiaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByMembresiaclinica($membresiaclinica, $comparison = null)
+    {
+        if ($membresiaclinica instanceof Membresiaclinica) {
+            return $this
+                ->addUsingAlias(MembresiaPeer::IDMEMBRESIA, $membresiaclinica->getIdmembresia(), $comparison);
+        } elseif ($membresiaclinica instanceof PropelObjectCollection) {
+            return $this
+                ->useMembresiaclinicaQuery()
+                ->filterByPrimaryKeys($membresiaclinica->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByMembresiaclinica() only accepts arguments of type Membresiaclinica or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Membresiaclinica relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return MembresiaQuery The current query, for fluid interface
+     */
+    public function joinMembresiaclinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Membresiaclinica');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Membresiaclinica');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Membresiaclinica relation Membresiaclinica object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   MembresiaclinicaQuery A secondary query class using the current class as primary query
+     */
+    public function useMembresiaclinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinMembresiaclinica($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Membresiaclinica', 'MembresiaclinicaQuery');
+    }
+
+    /**
      * Filter the query by a related Pacientemembresia object
      *
      * @param   Pacientemembresia|PropelObjectCollection $pacientemembresia  the related object to use as filter
@@ -491,6 +760,80 @@ abstract class BaseMembresiaQuery extends ModelCriteria
         return $this
             ->joinPacientemembresia($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Pacientemembresia', 'PacientemembresiaQuery');
+    }
+
+    /**
+     * Filter the query by a related Visitadetalle object
+     *
+     * @param   Visitadetalle|PropelObjectCollection $visitadetalle  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 MembresiaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByVisitadetalle($visitadetalle, $comparison = null)
+    {
+        if ($visitadetalle instanceof Visitadetalle) {
+            return $this
+                ->addUsingAlias(MembresiaPeer::IDMEMBRESIA, $visitadetalle->getIdmembresia(), $comparison);
+        } elseif ($visitadetalle instanceof PropelObjectCollection) {
+            return $this
+                ->useVisitadetalleQuery()
+                ->filterByPrimaryKeys($visitadetalle->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByVisitadetalle() only accepts arguments of type Visitadetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Visitadetalle relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return MembresiaQuery The current query, for fluid interface
+     */
+    public function joinVisitadetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Visitadetalle');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Visitadetalle');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Visitadetalle relation Visitadetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   VisitadetalleQuery A secondary query class using the current class as primary query
+     */
+    public function useVisitadetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinVisitadetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Visitadetalle', 'VisitadetalleQuery');
     }
 
     /**

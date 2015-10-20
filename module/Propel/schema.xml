@@ -9,20 +9,6 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-  <table name="cancelacionventaclinica" phpName="Cancelacionventaclinica" idMethod="native">
-    <column name="idcancelacionventaclinica" phpName="Idcancelacionventaclinica" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
-    <column name="cancelacionventaclinica_cantidad" phpName="CancelacionventaclinicaCantidad" type="INTEGER" required="true"/>
-    <foreign-key foreignTable="clinica" name="idclinica_cancelacionventaclinica" onDelete="CASCADE" onUpdate="CASCADE">
-      <reference local="idclinica" foreign="idclinica"/>
-    </foreign-key>
-    <index name="idclinica">
-      <index-column name="idclinica"/>
-    </index>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
   <table name="clinica" phpName="Clinica" idMethod="native">
     <column name="idclinica" phpName="Idclinica" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="clinica_nombre" phpName="ClinicaNombre" type="VARCHAR" size="45" required="true"/>
@@ -128,9 +114,16 @@
   </table>
   <table name="configuracion" phpName="Configuracion" idMethod="native">
     <column name="idconfiguracion" phpName="Idconfiguracion" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="configuracion_nombre" phpName="ConfiguracionNombre" type="VARCHAR" size="45" required="false"/>
-    <column name="configuracion_valor" phpName="ConfiguracionValor" type="VARCHAR" size="45" required="false"/>
-    <column name="configuracion_valor2" phpName="ConfiguracionValor2" type="VARCHAR" size="45" required="false"/>
+    <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
+    <column name="configuracion_numerocancelaciones" phpName="ConfiguracionNumerocancelaciones" type="INTEGER" required="true"/>
+    <column name="configuracion_valormaximocancelacion" phpName="ConfiguracionValormaximocancelacion" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="configuracion_hastacuantosdias" phpName="ConfiguracionHastacuantosdias" type="INTEGER" required="false"/>
+    <foreign-key foreignTable="clinica" name="idclinica_configuracion" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <index name="idclinica">
+      <index-column name="idclinica"/>
+    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -455,6 +448,32 @@
     <column name="membresia_descripcion" phpName="MembresiaDescripcion" type="LONGVARCHAR" required="true"/>
     <column name="membresia_servicios" phpName="MembresiaServicios" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="membresia_cupones" phpName="MembresiaCupones" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="servicio_generaingreso" phpName="ServicioGeneraingreso" type="BOOLEAN" size="1" required="true"/>
+    <column name="servicio_generacomision" phpName="ServicioGeneracomision" type="BOOLEAN" size="1" required="true"/>
+    <column name="servicio_tipocomision" phpName="ServicioTipocomision" type="CHAR" sqlType="enum('porcentaje','cantidad')" required="false"/>
+    <column name="servicio_comision" phpName="ServicioComision" type="DECIMAL" size="10" scale="2" required="false"/>
+    <column name="membresia_precio" phpName="MembresiaPrecio" type="DECIMAL" size="10" scale="2" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="membresiaclinica" phpName="Membresiaclinica" idMethod="native">
+    <column name="idmembresiaclinica" phpName="Idmembresiaclinica" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idmembresia" phpName="Idmembresia" type="INTEGER" required="true"/>
+    <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
+    <column name="membresiaclinica_precio" phpName="MembresiaclinicaPrecio" type="DECIMAL" size="10" scale="2" required="true"/>
+    <foreign-key foreignTable="clinica" name="idclinica_membresiaclinica" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <foreign-key foreignTable="membresia" name="idmembresia_membresiaclinica" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idmembresia" foreign="idmembresia"/>
+    </foreign-key>
+    <index name="idmembresia">
+      <index-column name="idmembresia"/>
+    </index>
+    <index name="idclinica">
+      <index-column name="idclinica"/>
+    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -840,10 +859,14 @@
     <column name="idvisita" phpName="Idvisita" type="INTEGER" required="true"/>
     <column name="idproductoclinica" phpName="Idproductoclinica" type="INTEGER" required="false"/>
     <column name="idservicioclinica" phpName="Idservicioclinica" type="INTEGER" required="false"/>
-    <column name="visitadetalle_cargo" phpName="VisitadetalleCargo" type="CHAR" sqlType="enum('producto','servicio')" required="true"/>
+    <column name="idmembresia" phpName="Idmembresia" type="INTEGER" required="false"/>
+    <column name="visitadetalle_cargo" phpName="VisitadetalleCargo" type="CHAR" sqlType="enum('producto','servicio','membresia')" required="true"/>
     <column name="visitadetalle_preciounitario" phpName="VisitadetallePreciounitario" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="visitadetalle_cantidad" phpName="VisitadetalleCantidad" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="visitadetalle_subtotal" phpName="VisitadetalleSubtotal" type="DECIMAL" size="10" scale="2" required="true"/>
+    <foreign-key foreignTable="membresia" name="idmembresia_visitadetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idmembresia" foreign="idmembresia"/>
+    </foreign-key>
     <foreign-key foreignTable="productoclinica" name="idproductoclinica_visitadetalle" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idproductoclinica" foreign="idproductoclinica"/>
     </foreign-key>
@@ -861,6 +884,9 @@
     </index>
     <index name="idvisita">
       <index-column name="idvisita"/>
+    </index>
+    <index name="idmembresia_visitadetalle">
+      <index-column name="idmembresia"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>

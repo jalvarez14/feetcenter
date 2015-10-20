@@ -51,14 +51,15 @@ class ClinicaTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Cancelacionventaclinica', 'Cancelacionventaclinica', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Cancelacionventaclinicas');
         $this->addRelation('Clinicaempleado', 'Clinicaempleado', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Clinicaempleados');
+        $this->addRelation('Configuracion', 'Configuracion', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Configuracions');
         $this->addRelation('Egresoclinica', 'Egresoclinica', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Egresoclinicas');
         $this->addRelation('Empleadocomision', 'Empleadocomision', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Empleadocomisions');
         $this->addRelation('Empleadoreceso', 'Empleadoreceso', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Empleadorecesos');
         $this->addRelation('Empleadoreporte', 'Empleadoreporte', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Empleadoreportes');
         $this->addRelation('Encargadoclinica', 'Encargadoclinica', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Encargadoclinicas');
         $this->addRelation('Insumoclinica', 'Insumoclinica', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Insumoclinicas');
+        $this->addRelation('Membresiaclinica', 'Membresiaclinica', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Membresiaclinicas');
         $this->addRelation('Paciente', 'Paciente', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Pacientes');
         $this->addRelation('Pacientemembresia', 'Pacientemembresia', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Pacientemembresias');
         $this->addRelation('Pacienteseguimiento', 'Pacienteseguimiento', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Pacienteseguimientos');

@@ -54,6 +54,12 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
     protected $idservicioclinica;
 
     /**
+     * The value for the idmembresia field.
+     * @var        int
+     */
+    protected $idmembresia;
+
+    /**
      * The value for the visitadetalle_cargo field.
      * @var        string
      */
@@ -76,6 +82,11 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
      * @var        string
      */
     protected $visitadetalle_subtotal;
+
+    /**
+     * @var        Membresia
+     */
+    protected $aMembresia;
 
     /**
      * @var        Productoclinica
@@ -166,6 +177,17 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
     {
 
         return $this->idservicioclinica;
+    }
+
+    /**
+     * Get the [idmembresia] column value.
+     *
+     * @return int
+     */
+    public function getIdmembresia()
+    {
+
+        return $this->idmembresia;
     }
 
     /**
@@ -309,6 +331,31 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
     } // setIdservicioclinica()
 
     /**
+     * Set the value of [idmembresia] column.
+     *
+     * @param  int $v new value
+     * @return Visitadetalle The current object (for fluent API support)
+     */
+    public function setIdmembresia($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idmembresia !== $v) {
+            $this->idmembresia = $v;
+            $this->modifiedColumns[] = VisitadetallePeer::IDMEMBRESIA;
+        }
+
+        if ($this->aMembresia !== null && $this->aMembresia->getIdmembresia() !== $v) {
+            $this->aMembresia = null;
+        }
+
+
+        return $this;
+    } // setIdmembresia()
+
+    /**
      * Set the value of [visitadetalle_cargo] column.
      *
      * @param  string $v new value
@@ -428,10 +475,11 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
             $this->idvisita = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->idproductoclinica = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->idservicioclinica = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->visitadetalle_cargo = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->visitadetalle_preciounitario = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->visitadetalle_cantidad = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->visitadetalle_subtotal = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->idmembresia = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->visitadetalle_cargo = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->visitadetalle_preciounitario = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->visitadetalle_cantidad = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->visitadetalle_subtotal = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -441,7 +489,7 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 8; // 8 = VisitadetallePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = VisitadetallePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Visitadetalle object", $e);
@@ -472,6 +520,9 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
         }
         if ($this->aServicioclinica !== null && $this->idservicioclinica !== $this->aServicioclinica->getIdservicioclinica()) {
             $this->aServicioclinica = null;
+        }
+        if ($this->aMembresia !== null && $this->idmembresia !== $this->aMembresia->getIdmembresia()) {
+            $this->aMembresia = null;
         }
     } // ensureConsistency
 
@@ -512,6 +563,7 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aMembresia = null;
             $this->aProductoclinica = null;
             $this->aServicioclinica = null;
             $this->aVisita = null;
@@ -635,6 +687,13 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aMembresia !== null) {
+                if ($this->aMembresia->isModified() || $this->aMembresia->isNew()) {
+                    $affectedRows += $this->aMembresia->save($con);
+                }
+                $this->setMembresia($this->aMembresia);
+            }
+
             if ($this->aProductoclinica !== null) {
                 if ($this->aProductoclinica->isModified() || $this->aProductoclinica->isNew()) {
                     $affectedRows += $this->aProductoclinica->save($con);
@@ -722,6 +781,9 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitadetallePeer::IDSERVICIOCLINICA)) {
             $modifiedColumns[':p' . $index++]  = '`idservicioclinica`';
         }
+        if ($this->isColumnModified(VisitadetallePeer::IDMEMBRESIA)) {
+            $modifiedColumns[':p' . $index++]  = '`idmembresia`';
+        }
         if ($this->isColumnModified(VisitadetallePeer::VISITADETALLE_CARGO)) {
             $modifiedColumns[':p' . $index++]  = '`visitadetalle_cargo`';
         }
@@ -756,6 +818,9 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
                         break;
                     case '`idservicioclinica`':
                         $stmt->bindValue($identifier, $this->idservicioclinica, PDO::PARAM_INT);
+                        break;
+                    case '`idmembresia`':
+                        $stmt->bindValue($identifier, $this->idmembresia, PDO::PARAM_INT);
                         break;
                     case '`visitadetalle_cargo`':
                         $stmt->bindValue($identifier, $this->visitadetalle_cargo, PDO::PARAM_STR);
@@ -868,6 +933,12 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aMembresia !== null) {
+                if (!$this->aMembresia->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aMembresia->getValidationFailures());
+                }
+            }
+
             if ($this->aProductoclinica !== null) {
                 if (!$this->aProductoclinica->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aProductoclinica->getValidationFailures());
@@ -948,15 +1019,18 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
                 return $this->getIdservicioclinica();
                 break;
             case 4:
-                return $this->getVisitadetalleCargo();
+                return $this->getIdmembresia();
                 break;
             case 5:
-                return $this->getVisitadetallePreciounitario();
+                return $this->getVisitadetalleCargo();
                 break;
             case 6:
-                return $this->getVisitadetalleCantidad();
+                return $this->getVisitadetallePreciounitario();
                 break;
             case 7:
+                return $this->getVisitadetalleCantidad();
+                break;
+            case 8:
                 return $this->getVisitadetalleSubtotal();
                 break;
             default:
@@ -992,10 +1066,11 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
             $keys[1] => $this->getIdvisita(),
             $keys[2] => $this->getIdproductoclinica(),
             $keys[3] => $this->getIdservicioclinica(),
-            $keys[4] => $this->getVisitadetalleCargo(),
-            $keys[5] => $this->getVisitadetallePreciounitario(),
-            $keys[6] => $this->getVisitadetalleCantidad(),
-            $keys[7] => $this->getVisitadetalleSubtotal(),
+            $keys[4] => $this->getIdmembresia(),
+            $keys[5] => $this->getVisitadetalleCargo(),
+            $keys[6] => $this->getVisitadetallePreciounitario(),
+            $keys[7] => $this->getVisitadetalleCantidad(),
+            $keys[8] => $this->getVisitadetalleSubtotal(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1003,6 +1078,9 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aMembresia) {
+                $result['Membresia'] = $this->aMembresia->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aProductoclinica) {
                 $result['Productoclinica'] = $this->aProductoclinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1062,15 +1140,18 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
                 $this->setIdservicioclinica($value);
                 break;
             case 4:
-                $this->setVisitadetalleCargo($value);
+                $this->setIdmembresia($value);
                 break;
             case 5:
-                $this->setVisitadetallePreciounitario($value);
+                $this->setVisitadetalleCargo($value);
                 break;
             case 6:
-                $this->setVisitadetalleCantidad($value);
+                $this->setVisitadetallePreciounitario($value);
                 break;
             case 7:
+                $this->setVisitadetalleCantidad($value);
+                break;
+            case 8:
                 $this->setVisitadetalleSubtotal($value);
                 break;
         } // switch()
@@ -1101,10 +1182,11 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setIdvisita($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setIdproductoclinica($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setIdservicioclinica($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setVisitadetalleCargo($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setVisitadetallePreciounitario($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setVisitadetalleCantidad($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setVisitadetalleSubtotal($arr[$keys[7]]);
+        if (array_key_exists($keys[4], $arr)) $this->setIdmembresia($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setVisitadetalleCargo($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setVisitadetallePreciounitario($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setVisitadetalleCantidad($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setVisitadetalleSubtotal($arr[$keys[8]]);
     }
 
     /**
@@ -1120,6 +1202,7 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitadetallePeer::IDVISITA)) $criteria->add(VisitadetallePeer::IDVISITA, $this->idvisita);
         if ($this->isColumnModified(VisitadetallePeer::IDPRODUCTOCLINICA)) $criteria->add(VisitadetallePeer::IDPRODUCTOCLINICA, $this->idproductoclinica);
         if ($this->isColumnModified(VisitadetallePeer::IDSERVICIOCLINICA)) $criteria->add(VisitadetallePeer::IDSERVICIOCLINICA, $this->idservicioclinica);
+        if ($this->isColumnModified(VisitadetallePeer::IDMEMBRESIA)) $criteria->add(VisitadetallePeer::IDMEMBRESIA, $this->idmembresia);
         if ($this->isColumnModified(VisitadetallePeer::VISITADETALLE_CARGO)) $criteria->add(VisitadetallePeer::VISITADETALLE_CARGO, $this->visitadetalle_cargo);
         if ($this->isColumnModified(VisitadetallePeer::VISITADETALLE_PRECIOUNITARIO)) $criteria->add(VisitadetallePeer::VISITADETALLE_PRECIOUNITARIO, $this->visitadetalle_preciounitario);
         if ($this->isColumnModified(VisitadetallePeer::VISITADETALLE_CANTIDAD)) $criteria->add(VisitadetallePeer::VISITADETALLE_CANTIDAD, $this->visitadetalle_cantidad);
@@ -1190,6 +1273,7 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
         $copyObj->setIdvisita($this->getIdvisita());
         $copyObj->setIdproductoclinica($this->getIdproductoclinica());
         $copyObj->setIdservicioclinica($this->getIdservicioclinica());
+        $copyObj->setIdmembresia($this->getIdmembresia());
         $copyObj->setVisitadetalleCargo($this->getVisitadetalleCargo());
         $copyObj->setVisitadetallePreciounitario($this->getVisitadetallePreciounitario());
         $copyObj->setVisitadetalleCantidad($this->getVisitadetalleCantidad());
@@ -1256,6 +1340,58 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a Membresia object.
+     *
+     * @param                  Membresia $v
+     * @return Visitadetalle The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setMembresia(Membresia $v = null)
+    {
+        if ($v === null) {
+            $this->setIdmembresia(NULL);
+        } else {
+            $this->setIdmembresia($v->getIdmembresia());
+        }
+
+        $this->aMembresia = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Membresia object, it will not be re-added.
+        if ($v !== null) {
+            $v->addVisitadetalle($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Membresia object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Membresia The associated Membresia object.
+     * @throws PropelException
+     */
+    public function getMembresia(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aMembresia === null && ($this->idmembresia !== null) && $doQuery) {
+            $this->aMembresia = MembresiaQuery::create()->findPk($this->idmembresia, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aMembresia->addVisitadetalles($this);
+             */
+        }
+
+        return $this->aMembresia;
     }
 
     /**
@@ -1689,6 +1825,7 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
         $this->idvisita = null;
         $this->idproductoclinica = null;
         $this->idservicioclinica = null;
+        $this->idmembresia = null;
         $this->visitadetalle_cargo = null;
         $this->visitadetalle_preciounitario = null;
         $this->visitadetalle_cantidad = null;
@@ -1720,6 +1857,9 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->aMembresia instanceof Persistent) {
+              $this->aMembresia->clearAllReferences($deep);
+            }
             if ($this->aProductoclinica instanceof Persistent) {
               $this->aProductoclinica->clearAllReferences($deep);
             }
@@ -1737,6 +1877,7 @@ abstract class BaseVisitadetalle extends BaseObject implements Persistent
             $this->collPacientemembresiadetalles->clearIterator();
         }
         $this->collPacientemembresiadetalles = null;
+        $this->aMembresia = null;
         $this->aProductoclinica = null;
         $this->aServicioclinica = null;
         $this->aVisita = null;

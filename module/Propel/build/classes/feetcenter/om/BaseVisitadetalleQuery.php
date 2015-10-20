@@ -10,6 +10,7 @@
  * @method VisitadetalleQuery orderByIdvisita($order = Criteria::ASC) Order by the idvisita column
  * @method VisitadetalleQuery orderByIdproductoclinica($order = Criteria::ASC) Order by the idproductoclinica column
  * @method VisitadetalleQuery orderByIdservicioclinica($order = Criteria::ASC) Order by the idservicioclinica column
+ * @method VisitadetalleQuery orderByIdmembresia($order = Criteria::ASC) Order by the idmembresia column
  * @method VisitadetalleQuery orderByVisitadetalleCargo($order = Criteria::ASC) Order by the visitadetalle_cargo column
  * @method VisitadetalleQuery orderByVisitadetallePreciounitario($order = Criteria::ASC) Order by the visitadetalle_preciounitario column
  * @method VisitadetalleQuery orderByVisitadetalleCantidad($order = Criteria::ASC) Order by the visitadetalle_cantidad column
@@ -19,6 +20,7 @@
  * @method VisitadetalleQuery groupByIdvisita() Group by the idvisita column
  * @method VisitadetalleQuery groupByIdproductoclinica() Group by the idproductoclinica column
  * @method VisitadetalleQuery groupByIdservicioclinica() Group by the idservicioclinica column
+ * @method VisitadetalleQuery groupByIdmembresia() Group by the idmembresia column
  * @method VisitadetalleQuery groupByVisitadetalleCargo() Group by the visitadetalle_cargo column
  * @method VisitadetalleQuery groupByVisitadetallePreciounitario() Group by the visitadetalle_preciounitario column
  * @method VisitadetalleQuery groupByVisitadetalleCantidad() Group by the visitadetalle_cantidad column
@@ -27,6 +29,10 @@
  * @method VisitadetalleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method VisitadetalleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method VisitadetalleQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method VisitadetalleQuery leftJoinMembresia($relationAlias = null) Adds a LEFT JOIN clause to the query using the Membresia relation
+ * @method VisitadetalleQuery rightJoinMembresia($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Membresia relation
+ * @method VisitadetalleQuery innerJoinMembresia($relationAlias = null) Adds a INNER JOIN clause to the query using the Membresia relation
  *
  * @method VisitadetalleQuery leftJoinProductoclinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productoclinica relation
  * @method VisitadetalleQuery rightJoinProductoclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productoclinica relation
@@ -50,6 +56,7 @@
  * @method Visitadetalle findOneByIdvisita(int $idvisita) Return the first Visitadetalle filtered by the idvisita column
  * @method Visitadetalle findOneByIdproductoclinica(int $idproductoclinica) Return the first Visitadetalle filtered by the idproductoclinica column
  * @method Visitadetalle findOneByIdservicioclinica(int $idservicioclinica) Return the first Visitadetalle filtered by the idservicioclinica column
+ * @method Visitadetalle findOneByIdmembresia(int $idmembresia) Return the first Visitadetalle filtered by the idmembresia column
  * @method Visitadetalle findOneByVisitadetalleCargo(string $visitadetalle_cargo) Return the first Visitadetalle filtered by the visitadetalle_cargo column
  * @method Visitadetalle findOneByVisitadetallePreciounitario(string $visitadetalle_preciounitario) Return the first Visitadetalle filtered by the visitadetalle_preciounitario column
  * @method Visitadetalle findOneByVisitadetalleCantidad(string $visitadetalle_cantidad) Return the first Visitadetalle filtered by the visitadetalle_cantidad column
@@ -59,6 +66,7 @@
  * @method array findByIdvisita(int $idvisita) Return Visitadetalle objects filtered by the idvisita column
  * @method array findByIdproductoclinica(int $idproductoclinica) Return Visitadetalle objects filtered by the idproductoclinica column
  * @method array findByIdservicioclinica(int $idservicioclinica) Return Visitadetalle objects filtered by the idservicioclinica column
+ * @method array findByIdmembresia(int $idmembresia) Return Visitadetalle objects filtered by the idmembresia column
  * @method array findByVisitadetalleCargo(string $visitadetalle_cargo) Return Visitadetalle objects filtered by the visitadetalle_cargo column
  * @method array findByVisitadetallePreciounitario(string $visitadetalle_preciounitario) Return Visitadetalle objects filtered by the visitadetalle_preciounitario column
  * @method array findByVisitadetalleCantidad(string $visitadetalle_cantidad) Return Visitadetalle objects filtered by the visitadetalle_cantidad column
@@ -170,7 +178,7 @@ abstract class BaseVisitadetalleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idvisitadetalle`, `idvisita`, `idproductoclinica`, `idservicioclinica`, `visitadetalle_cargo`, `visitadetalle_preciounitario`, `visitadetalle_cantidad`, `visitadetalle_subtotal` FROM `visitadetalle` WHERE `idvisitadetalle` = :p0';
+        $sql = 'SELECT `idvisitadetalle`, `idvisita`, `idproductoclinica`, `idservicioclinica`, `idmembresia`, `visitadetalle_cargo`, `visitadetalle_preciounitario`, `visitadetalle_cantidad`, `visitadetalle_subtotal` FROM `visitadetalle` WHERE `idvisitadetalle` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -434,6 +442,50 @@ abstract class BaseVisitadetalleQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the idmembresia column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdmembresia(1234); // WHERE idmembresia = 1234
+     * $query->filterByIdmembresia(array(12, 34)); // WHERE idmembresia IN (12, 34)
+     * $query->filterByIdmembresia(array('min' => 12)); // WHERE idmembresia >= 12
+     * $query->filterByIdmembresia(array('max' => 12)); // WHERE idmembresia <= 12
+     * </code>
+     *
+     * @see       filterByMembresia()
+     *
+     * @param     mixed $idmembresia The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitadetalleQuery The current query, for fluid interface
+     */
+    public function filterByIdmembresia($idmembresia = null, $comparison = null)
+    {
+        if (is_array($idmembresia)) {
+            $useMinMax = false;
+            if (isset($idmembresia['min'])) {
+                $this->addUsingAlias(VisitadetallePeer::IDMEMBRESIA, $idmembresia['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idmembresia['max'])) {
+                $this->addUsingAlias(VisitadetallePeer::IDMEMBRESIA, $idmembresia['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VisitadetallePeer::IDMEMBRESIA, $idmembresia, $comparison);
+    }
+
+    /**
      * Filter the query on the visitadetalle_cargo column
      *
      * Example usage:
@@ -586,6 +638,82 @@ abstract class BaseVisitadetalleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(VisitadetallePeer::VISITADETALLE_SUBTOTAL, $visitadetalleSubtotal, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Membresia object
+     *
+     * @param   Membresia|PropelObjectCollection $membresia The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 VisitadetalleQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByMembresia($membresia, $comparison = null)
+    {
+        if ($membresia instanceof Membresia) {
+            return $this
+                ->addUsingAlias(VisitadetallePeer::IDMEMBRESIA, $membresia->getIdmembresia(), $comparison);
+        } elseif ($membresia instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(VisitadetallePeer::IDMEMBRESIA, $membresia->toKeyValue('PrimaryKey', 'Idmembresia'), $comparison);
+        } else {
+            throw new PropelException('filterByMembresia() only accepts arguments of type Membresia or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Membresia relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return VisitadetalleQuery The current query, for fluid interface
+     */
+    public function joinMembresia($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Membresia');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Membresia');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Membresia relation Membresia object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   MembresiaQuery A secondary query class using the current class as primary query
+     */
+    public function useMembresiaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinMembresia($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Membresia', 'MembresiaQuery');
     }
 
     /**

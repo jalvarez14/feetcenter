@@ -7,30 +7,38 @@
  *
  *
  * @method ConfiguracionQuery orderByIdconfiguracion($order = Criteria::ASC) Order by the idconfiguracion column
- * @method ConfiguracionQuery orderByConfiguracionNombre($order = Criteria::ASC) Order by the configuracion_nombre column
- * @method ConfiguracionQuery orderByConfiguracionValor($order = Criteria::ASC) Order by the configuracion_valor column
- * @method ConfiguracionQuery orderByConfiguracionValor2($order = Criteria::ASC) Order by the configuracion_valor2 column
+ * @method ConfiguracionQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
+ * @method ConfiguracionQuery orderByConfiguracionNumerocancelaciones($order = Criteria::ASC) Order by the configuracion_numerocancelaciones column
+ * @method ConfiguracionQuery orderByConfiguracionValormaximocancelacion($order = Criteria::ASC) Order by the configuracion_valormaximocancelacion column
+ * @method ConfiguracionQuery orderByConfiguracionHastacuantosdias($order = Criteria::ASC) Order by the configuracion_hastacuantosdias column
  *
  * @method ConfiguracionQuery groupByIdconfiguracion() Group by the idconfiguracion column
- * @method ConfiguracionQuery groupByConfiguracionNombre() Group by the configuracion_nombre column
- * @method ConfiguracionQuery groupByConfiguracionValor() Group by the configuracion_valor column
- * @method ConfiguracionQuery groupByConfiguracionValor2() Group by the configuracion_valor2 column
+ * @method ConfiguracionQuery groupByIdclinica() Group by the idclinica column
+ * @method ConfiguracionQuery groupByConfiguracionNumerocancelaciones() Group by the configuracion_numerocancelaciones column
+ * @method ConfiguracionQuery groupByConfiguracionValormaximocancelacion() Group by the configuracion_valormaximocancelacion column
+ * @method ConfiguracionQuery groupByConfiguracionHastacuantosdias() Group by the configuracion_hastacuantosdias column
  *
  * @method ConfiguracionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ConfiguracionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method ConfiguracionQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method ConfiguracionQuery leftJoinClinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Clinica relation
+ * @method ConfiguracionQuery rightJoinClinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Clinica relation
+ * @method ConfiguracionQuery innerJoinClinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Clinica relation
+ *
  * @method Configuracion findOne(PropelPDO $con = null) Return the first Configuracion matching the query
  * @method Configuracion findOneOrCreate(PropelPDO $con = null) Return the first Configuracion matching the query, or a new Configuracion object populated from the query conditions when no match is found
  *
- * @method Configuracion findOneByConfiguracionNombre(string $configuracion_nombre) Return the first Configuracion filtered by the configuracion_nombre column
- * @method Configuracion findOneByConfiguracionValor(string $configuracion_valor) Return the first Configuracion filtered by the configuracion_valor column
- * @method Configuracion findOneByConfiguracionValor2(string $configuracion_valor2) Return the first Configuracion filtered by the configuracion_valor2 column
+ * @method Configuracion findOneByIdclinica(int $idclinica) Return the first Configuracion filtered by the idclinica column
+ * @method Configuracion findOneByConfiguracionNumerocancelaciones(int $configuracion_numerocancelaciones) Return the first Configuracion filtered by the configuracion_numerocancelaciones column
+ * @method Configuracion findOneByConfiguracionValormaximocancelacion(string $configuracion_valormaximocancelacion) Return the first Configuracion filtered by the configuracion_valormaximocancelacion column
+ * @method Configuracion findOneByConfiguracionHastacuantosdias(int $configuracion_hastacuantosdias) Return the first Configuracion filtered by the configuracion_hastacuantosdias column
  *
  * @method array findByIdconfiguracion(int $idconfiguracion) Return Configuracion objects filtered by the idconfiguracion column
- * @method array findByConfiguracionNombre(string $configuracion_nombre) Return Configuracion objects filtered by the configuracion_nombre column
- * @method array findByConfiguracionValor(string $configuracion_valor) Return Configuracion objects filtered by the configuracion_valor column
- * @method array findByConfiguracionValor2(string $configuracion_valor2) Return Configuracion objects filtered by the configuracion_valor2 column
+ * @method array findByIdclinica(int $idclinica) Return Configuracion objects filtered by the idclinica column
+ * @method array findByConfiguracionNumerocancelaciones(int $configuracion_numerocancelaciones) Return Configuracion objects filtered by the configuracion_numerocancelaciones column
+ * @method array findByConfiguracionValormaximocancelacion(string $configuracion_valormaximocancelacion) Return Configuracion objects filtered by the configuracion_valormaximocancelacion column
+ * @method array findByConfiguracionHastacuantosdias(int $configuracion_hastacuantosdias) Return Configuracion objects filtered by the configuracion_hastacuantosdias column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -138,7 +146,7 @@ abstract class BaseConfiguracionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idconfiguracion`, `configuracion_nombre`, `configuracion_valor`, `configuracion_valor2` FROM `configuracion` WHERE `idconfiguracion` = :p0';
+        $sql = 'SELECT `idconfiguracion`, `idclinica`, `configuracion_numerocancelaciones`, `configuracion_valormaximocancelacion`, `configuracion_hastacuantosdias` FROM `configuracion` WHERE `idconfiguracion` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -270,90 +278,249 @@ abstract class BaseConfiguracionQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the configuracion_nombre column
+     * Filter the query on the idclinica column
      *
      * Example usage:
      * <code>
-     * $query->filterByConfiguracionNombre('fooValue');   // WHERE configuracion_nombre = 'fooValue'
-     * $query->filterByConfiguracionNombre('%fooValue%'); // WHERE configuracion_nombre LIKE '%fooValue%'
+     * $query->filterByIdclinica(1234); // WHERE idclinica = 1234
+     * $query->filterByIdclinica(array(12, 34)); // WHERE idclinica IN (12, 34)
+     * $query->filterByIdclinica(array('min' => 12)); // WHERE idclinica >= 12
+     * $query->filterByIdclinica(array('max' => 12)); // WHERE idclinica <= 12
      * </code>
      *
-     * @param     string $configuracionNombre The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @see       filterByClinica()
+     *
+     * @param     mixed $idclinica The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ConfiguracionQuery The current query, for fluid interface
      */
-    public function filterByConfiguracionNombre($configuracionNombre = null, $comparison = null)
+    public function filterByIdclinica($idclinica = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($configuracionNombre)) {
+        if (is_array($idclinica)) {
+            $useMinMax = false;
+            if (isset($idclinica['min'])) {
+                $this->addUsingAlias(ConfiguracionPeer::IDCLINICA, $idclinica['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idclinica['max'])) {
+                $this->addUsingAlias(ConfiguracionPeer::IDCLINICA, $idclinica['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $configuracionNombre)) {
-                $configuracionNombre = str_replace('*', '%', $configuracionNombre);
-                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_NOMBRE, $configuracionNombre, $comparison);
+        return $this->addUsingAlias(ConfiguracionPeer::IDCLINICA, $idclinica, $comparison);
     }
 
     /**
-     * Filter the query on the configuracion_valor column
+     * Filter the query on the configuracion_numerocancelaciones column
      *
      * Example usage:
      * <code>
-     * $query->filterByConfiguracionValor('fooValue');   // WHERE configuracion_valor = 'fooValue'
-     * $query->filterByConfiguracionValor('%fooValue%'); // WHERE configuracion_valor LIKE '%fooValue%'
+     * $query->filterByConfiguracionNumerocancelaciones(1234); // WHERE configuracion_numerocancelaciones = 1234
+     * $query->filterByConfiguracionNumerocancelaciones(array(12, 34)); // WHERE configuracion_numerocancelaciones IN (12, 34)
+     * $query->filterByConfiguracionNumerocancelaciones(array('min' => 12)); // WHERE configuracion_numerocancelaciones >= 12
+     * $query->filterByConfiguracionNumerocancelaciones(array('max' => 12)); // WHERE configuracion_numerocancelaciones <= 12
      * </code>
      *
-     * @param     string $configuracionValor The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     mixed $configuracionNumerocancelaciones The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ConfiguracionQuery The current query, for fluid interface
      */
-    public function filterByConfiguracionValor($configuracionValor = null, $comparison = null)
+    public function filterByConfiguracionNumerocancelaciones($configuracionNumerocancelaciones = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($configuracionValor)) {
+        if (is_array($configuracionNumerocancelaciones)) {
+            $useMinMax = false;
+            if (isset($configuracionNumerocancelaciones['min'])) {
+                $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_NUMEROCANCELACIONES, $configuracionNumerocancelaciones['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($configuracionNumerocancelaciones['max'])) {
+                $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_NUMEROCANCELACIONES, $configuracionNumerocancelaciones['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $configuracionValor)) {
-                $configuracionValor = str_replace('*', '%', $configuracionValor);
-                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_VALOR, $configuracionValor, $comparison);
+        return $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_NUMEROCANCELACIONES, $configuracionNumerocancelaciones, $comparison);
     }
 
     /**
-     * Filter the query on the configuracion_valor2 column
+     * Filter the query on the configuracion_valormaximocancelacion column
      *
      * Example usage:
      * <code>
-     * $query->filterByConfiguracionValor2('fooValue');   // WHERE configuracion_valor2 = 'fooValue'
-     * $query->filterByConfiguracionValor2('%fooValue%'); // WHERE configuracion_valor2 LIKE '%fooValue%'
+     * $query->filterByConfiguracionValormaximocancelacion(1234); // WHERE configuracion_valormaximocancelacion = 1234
+     * $query->filterByConfiguracionValormaximocancelacion(array(12, 34)); // WHERE configuracion_valormaximocancelacion IN (12, 34)
+     * $query->filterByConfiguracionValormaximocancelacion(array('min' => 12)); // WHERE configuracion_valormaximocancelacion >= 12
+     * $query->filterByConfiguracionValormaximocancelacion(array('max' => 12)); // WHERE configuracion_valormaximocancelacion <= 12
      * </code>
      *
-     * @param     string $configuracionValor2 The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     mixed $configuracionValormaximocancelacion The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ConfiguracionQuery The current query, for fluid interface
      */
-    public function filterByConfiguracionValor2($configuracionValor2 = null, $comparison = null)
+    public function filterByConfiguracionValormaximocancelacion($configuracionValormaximocancelacion = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($configuracionValor2)) {
+        if (is_array($configuracionValormaximocancelacion)) {
+            $useMinMax = false;
+            if (isset($configuracionValormaximocancelacion['min'])) {
+                $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_VALORMAXIMOCANCELACION, $configuracionValormaximocancelacion['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($configuracionValormaximocancelacion['max'])) {
+                $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_VALORMAXIMOCANCELACION, $configuracionValormaximocancelacion['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $configuracionValor2)) {
-                $configuracionValor2 = str_replace('*', '%', $configuracionValor2);
-                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_VALOR2, $configuracionValor2, $comparison);
+        return $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_VALORMAXIMOCANCELACION, $configuracionValormaximocancelacion, $comparison);
+    }
+
+    /**
+     * Filter the query on the configuracion_hastacuantosdias column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByConfiguracionHastacuantosdias(1234); // WHERE configuracion_hastacuantosdias = 1234
+     * $query->filterByConfiguracionHastacuantosdias(array(12, 34)); // WHERE configuracion_hastacuantosdias IN (12, 34)
+     * $query->filterByConfiguracionHastacuantosdias(array('min' => 12)); // WHERE configuracion_hastacuantosdias >= 12
+     * $query->filterByConfiguracionHastacuantosdias(array('max' => 12)); // WHERE configuracion_hastacuantosdias <= 12
+     * </code>
+     *
+     * @param     mixed $configuracionHastacuantosdias The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ConfiguracionQuery The current query, for fluid interface
+     */
+    public function filterByConfiguracionHastacuantosdias($configuracionHastacuantosdias = null, $comparison = null)
+    {
+        if (is_array($configuracionHastacuantosdias)) {
+            $useMinMax = false;
+            if (isset($configuracionHastacuantosdias['min'])) {
+                $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_HASTACUANTOSDIAS, $configuracionHastacuantosdias['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($configuracionHastacuantosdias['max'])) {
+                $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_HASTACUANTOSDIAS, $configuracionHastacuantosdias['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_HASTACUANTOSDIAS, $configuracionHastacuantosdias, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Clinica object
+     *
+     * @param   Clinica|PropelObjectCollection $clinica The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ConfiguracionQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByClinica($clinica, $comparison = null)
+    {
+        if ($clinica instanceof Clinica) {
+            return $this
+                ->addUsingAlias(ConfiguracionPeer::IDCLINICA, $clinica->getIdclinica(), $comparison);
+        } elseif ($clinica instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(ConfiguracionPeer::IDCLINICA, $clinica->toKeyValue('PrimaryKey', 'Idclinica'), $comparison);
+        } else {
+            throw new PropelException('filterByClinica() only accepts arguments of type Clinica or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Clinica relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ConfiguracionQuery The current query, for fluid interface
+     */
+    public function joinClinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Clinica');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Clinica');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Clinica relation Clinica object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ClinicaQuery A secondary query class using the current class as primary query
+     */
+    public function useClinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinClinica($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Clinica', 'ClinicaQuery');
     }
 
     /**

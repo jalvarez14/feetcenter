@@ -24,13 +24,13 @@ abstract class BaseVisitadetallePeer
     const TM_CLASS = 'VisitadetalleTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the idvisitadetalle field */
     const IDVISITADETALLE = 'visitadetalle.idvisitadetalle';
@@ -43,6 +43,9 @@ abstract class BaseVisitadetallePeer
 
     /** the column name for the idservicioclinica field */
     const IDSERVICIOCLINICA = 'visitadetalle.idservicioclinica';
+
+    /** the column name for the idmembresia field */
+    const IDMEMBRESIA = 'visitadetalle.idmembresia';
 
     /** the column name for the visitadetalle_cargo field */
     const VISITADETALLE_CARGO = 'visitadetalle.visitadetalle_cargo';
@@ -59,6 +62,7 @@ abstract class BaseVisitadetallePeer
     /** The enumerated values for the visitadetalle_cargo field */
     const VISITADETALLE_CARGO_PRODUCTO = 'producto';
     const VISITADETALLE_CARGO_SERVICIO = 'servicio';
+    const VISITADETALLE_CARGO_MEMBRESIA = 'membresia';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -79,12 +83,12 @@ abstract class BaseVisitadetallePeer
      * e.g. VisitadetallePeer::$fieldNames[VisitadetallePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idvisitadetalle', 'Idvisita', 'Idproductoclinica', 'Idservicioclinica', 'VisitadetalleCargo', 'VisitadetallePreciounitario', 'VisitadetalleCantidad', 'VisitadetalleSubtotal', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisitadetalle', 'idvisita', 'idproductoclinica', 'idservicioclinica', 'visitadetalleCargo', 'visitadetallePreciounitario', 'visitadetalleCantidad', 'visitadetalleSubtotal', ),
-        BasePeer::TYPE_COLNAME => array (VisitadetallePeer::IDVISITADETALLE, VisitadetallePeer::IDVISITA, VisitadetallePeer::IDPRODUCTOCLINICA, VisitadetallePeer::IDSERVICIOCLINICA, VisitadetallePeer::VISITADETALLE_CARGO, VisitadetallePeer::VISITADETALLE_PRECIOUNITARIO, VisitadetallePeer::VISITADETALLE_CANTIDAD, VisitadetallePeer::VISITADETALLE_SUBTOTAL, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITADETALLE', 'IDVISITA', 'IDPRODUCTOCLINICA', 'IDSERVICIOCLINICA', 'VISITADETALLE_CARGO', 'VISITADETALLE_PRECIOUNITARIO', 'VISITADETALLE_CANTIDAD', 'VISITADETALLE_SUBTOTAL', ),
-        BasePeer::TYPE_FIELDNAME => array ('idvisitadetalle', 'idvisita', 'idproductoclinica', 'idservicioclinica', 'visitadetalle_cargo', 'visitadetalle_preciounitario', 'visitadetalle_cantidad', 'visitadetalle_subtotal', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Idvisitadetalle', 'Idvisita', 'Idproductoclinica', 'Idservicioclinica', 'Idmembresia', 'VisitadetalleCargo', 'VisitadetallePreciounitario', 'VisitadetalleCantidad', 'VisitadetalleSubtotal', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisitadetalle', 'idvisita', 'idproductoclinica', 'idservicioclinica', 'idmembresia', 'visitadetalleCargo', 'visitadetallePreciounitario', 'visitadetalleCantidad', 'visitadetalleSubtotal', ),
+        BasePeer::TYPE_COLNAME => array (VisitadetallePeer::IDVISITADETALLE, VisitadetallePeer::IDVISITA, VisitadetallePeer::IDPRODUCTOCLINICA, VisitadetallePeer::IDSERVICIOCLINICA, VisitadetallePeer::IDMEMBRESIA, VisitadetallePeer::VISITADETALLE_CARGO, VisitadetallePeer::VISITADETALLE_PRECIOUNITARIO, VisitadetallePeer::VISITADETALLE_CANTIDAD, VisitadetallePeer::VISITADETALLE_SUBTOTAL, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITADETALLE', 'IDVISITA', 'IDPRODUCTOCLINICA', 'IDSERVICIOCLINICA', 'IDMEMBRESIA', 'VISITADETALLE_CARGO', 'VISITADETALLE_PRECIOUNITARIO', 'VISITADETALLE_CANTIDAD', 'VISITADETALLE_SUBTOTAL', ),
+        BasePeer::TYPE_FIELDNAME => array ('idvisitadetalle', 'idvisita', 'idproductoclinica', 'idservicioclinica', 'idmembresia', 'visitadetalle_cargo', 'visitadetalle_preciounitario', 'visitadetalle_cantidad', 'visitadetalle_subtotal', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -94,12 +98,12 @@ abstract class BaseVisitadetallePeer
      * e.g. VisitadetallePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idvisitadetalle' => 0, 'Idvisita' => 1, 'Idproductoclinica' => 2, 'Idservicioclinica' => 3, 'VisitadetalleCargo' => 4, 'VisitadetallePreciounitario' => 5, 'VisitadetalleCantidad' => 6, 'VisitadetalleSubtotal' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisitadetalle' => 0, 'idvisita' => 1, 'idproductoclinica' => 2, 'idservicioclinica' => 3, 'visitadetalleCargo' => 4, 'visitadetallePreciounitario' => 5, 'visitadetalleCantidad' => 6, 'visitadetalleSubtotal' => 7, ),
-        BasePeer::TYPE_COLNAME => array (VisitadetallePeer::IDVISITADETALLE => 0, VisitadetallePeer::IDVISITA => 1, VisitadetallePeer::IDPRODUCTOCLINICA => 2, VisitadetallePeer::IDSERVICIOCLINICA => 3, VisitadetallePeer::VISITADETALLE_CARGO => 4, VisitadetallePeer::VISITADETALLE_PRECIOUNITARIO => 5, VisitadetallePeer::VISITADETALLE_CANTIDAD => 6, VisitadetallePeer::VISITADETALLE_SUBTOTAL => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITADETALLE' => 0, 'IDVISITA' => 1, 'IDPRODUCTOCLINICA' => 2, 'IDSERVICIOCLINICA' => 3, 'VISITADETALLE_CARGO' => 4, 'VISITADETALLE_PRECIOUNITARIO' => 5, 'VISITADETALLE_CANTIDAD' => 6, 'VISITADETALLE_SUBTOTAL' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('idvisitadetalle' => 0, 'idvisita' => 1, 'idproductoclinica' => 2, 'idservicioclinica' => 3, 'visitadetalle_cargo' => 4, 'visitadetalle_preciounitario' => 5, 'visitadetalle_cantidad' => 6, 'visitadetalle_subtotal' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Idvisitadetalle' => 0, 'Idvisita' => 1, 'Idproductoclinica' => 2, 'Idservicioclinica' => 3, 'Idmembresia' => 4, 'VisitadetalleCargo' => 5, 'VisitadetallePreciounitario' => 6, 'VisitadetalleCantidad' => 7, 'VisitadetalleSubtotal' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisitadetalle' => 0, 'idvisita' => 1, 'idproductoclinica' => 2, 'idservicioclinica' => 3, 'idmembresia' => 4, 'visitadetalleCargo' => 5, 'visitadetallePreciounitario' => 6, 'visitadetalleCantidad' => 7, 'visitadetalleSubtotal' => 8, ),
+        BasePeer::TYPE_COLNAME => array (VisitadetallePeer::IDVISITADETALLE => 0, VisitadetallePeer::IDVISITA => 1, VisitadetallePeer::IDPRODUCTOCLINICA => 2, VisitadetallePeer::IDSERVICIOCLINICA => 3, VisitadetallePeer::IDMEMBRESIA => 4, VisitadetallePeer::VISITADETALLE_CARGO => 5, VisitadetallePeer::VISITADETALLE_PRECIOUNITARIO => 6, VisitadetallePeer::VISITADETALLE_CANTIDAD => 7, VisitadetallePeer::VISITADETALLE_SUBTOTAL => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITADETALLE' => 0, 'IDVISITA' => 1, 'IDPRODUCTOCLINICA' => 2, 'IDSERVICIOCLINICA' => 3, 'IDMEMBRESIA' => 4, 'VISITADETALLE_CARGO' => 5, 'VISITADETALLE_PRECIOUNITARIO' => 6, 'VISITADETALLE_CANTIDAD' => 7, 'VISITADETALLE_SUBTOTAL' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('idvisitadetalle' => 0, 'idvisita' => 1, 'idproductoclinica' => 2, 'idservicioclinica' => 3, 'idmembresia' => 4, 'visitadetalle_cargo' => 5, 'visitadetalle_preciounitario' => 6, 'visitadetalle_cantidad' => 7, 'visitadetalle_subtotal' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /** The enumerated values for this table */
@@ -107,6 +111,7 @@ abstract class BaseVisitadetallePeer
         VisitadetallePeer::VISITADETALLE_CARGO => array(
             VisitadetallePeer::VISITADETALLE_CARGO_PRODUCTO,
             VisitadetallePeer::VISITADETALLE_CARGO_SERVICIO,
+            VisitadetallePeer::VISITADETALLE_CARGO_MEMBRESIA,
         ),
     );
 
@@ -230,6 +235,7 @@ abstract class BaseVisitadetallePeer
             $criteria->addSelectColumn(VisitadetallePeer::IDVISITA);
             $criteria->addSelectColumn(VisitadetallePeer::IDPRODUCTOCLINICA);
             $criteria->addSelectColumn(VisitadetallePeer::IDSERVICIOCLINICA);
+            $criteria->addSelectColumn(VisitadetallePeer::IDMEMBRESIA);
             $criteria->addSelectColumn(VisitadetallePeer::VISITADETALLE_CARGO);
             $criteria->addSelectColumn(VisitadetallePeer::VISITADETALLE_PRECIOUNITARIO);
             $criteria->addSelectColumn(VisitadetallePeer::VISITADETALLE_CANTIDAD);
@@ -239,6 +245,7 @@ abstract class BaseVisitadetallePeer
             $criteria->addSelectColumn($alias . '.idvisita');
             $criteria->addSelectColumn($alias . '.idproductoclinica');
             $criteria->addSelectColumn($alias . '.idservicioclinica');
+            $criteria->addSelectColumn($alias . '.idmembresia');
             $criteria->addSelectColumn($alias . '.visitadetalle_cargo');
             $criteria->addSelectColumn($alias . '.visitadetalle_preciounitario');
             $criteria->addSelectColumn($alias . '.visitadetalle_cantidad');
@@ -548,6 +555,57 @@ abstract class BaseVisitadetallePeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related Membresia table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinMembresia(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(VisitadetallePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            VisitadetallePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(VisitadetallePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(VisitadetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(VisitadetallePeer::IDMEMBRESIA, MembresiaPeer::IDMEMBRESIA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining the related Productoclinica table
      *
      * @param      Criteria $criteria
@@ -697,6 +755,73 @@ abstract class BaseVisitadetallePeer
         $stmt->closeCursor();
 
         return $count;
+    }
+
+
+    /**
+     * Selects a collection of Visitadetalle objects pre-filled with their Membresia objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Visitadetalle objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinMembresia(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(VisitadetallePeer::DATABASE_NAME);
+        }
+
+        VisitadetallePeer::addSelectColumns($criteria);
+        $startcol = VisitadetallePeer::NUM_HYDRATE_COLUMNS;
+        MembresiaPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(VisitadetallePeer::IDMEMBRESIA, MembresiaPeer::IDMEMBRESIA, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = VisitadetallePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = VisitadetallePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = VisitadetallePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                VisitadetallePeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = MembresiaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = MembresiaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = MembresiaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    MembresiaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Visitadetalle) to $obj2 (Membresia)
+                $obj2->addVisitadetalle($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
 
@@ -937,6 +1062,8 @@ abstract class BaseVisitadetallePeer
             $con = Propel::getConnection(VisitadetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
+        $criteria->addJoin(VisitadetallePeer::IDMEMBRESIA, MembresiaPeer::IDMEMBRESIA, $join_behavior);
+
         $criteria->addJoin(VisitadetallePeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
 
         $criteria->addJoin(VisitadetallePeer::IDSERVICIOCLINICA, ServicioclinicaPeer::IDSERVICIOCLINICA, $join_behavior);
@@ -977,14 +1104,19 @@ abstract class BaseVisitadetallePeer
         VisitadetallePeer::addSelectColumns($criteria);
         $startcol2 = VisitadetallePeer::NUM_HYDRATE_COLUMNS;
 
+        MembresiaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + MembresiaPeer::NUM_HYDRATE_COLUMNS;
+
         ProductoclinicaPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + ProductoclinicaPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + ProductoclinicaPeer::NUM_HYDRATE_COLUMNS;
 
         ServicioclinicaPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + ServicioclinicaPeer::NUM_HYDRATE_COLUMNS;
+        $startcol5 = $startcol4 + ServicioclinicaPeer::NUM_HYDRATE_COLUMNS;
 
         VisitaPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + VisitaPeer::NUM_HYDRATE_COLUMNS;
+        $startcol6 = $startcol5 + VisitaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(VisitadetallePeer::IDMEMBRESIA, MembresiaPeer::IDMEMBRESIA, $join_behavior);
 
         $criteria->addJoin(VisitadetallePeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
 
@@ -1009,58 +1141,76 @@ abstract class BaseVisitadetallePeer
                 VisitadetallePeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-            // Add objects for joined Productoclinica rows
+            // Add objects for joined Membresia rows
 
-            $key2 = ProductoclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            $key2 = MembresiaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
             if ($key2 !== null) {
-                $obj2 = ProductoclinicaPeer::getInstanceFromPool($key2);
+                $obj2 = MembresiaPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = ProductoclinicaPeer::getOMClass();
+                    $cls = MembresiaPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    ProductoclinicaPeer::addInstanceToPool($obj2, $key2);
+                    MembresiaPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (Visitadetalle) to the collection in $obj2 (Productoclinica)
+                // Add the $obj1 (Visitadetalle) to the collection in $obj2 (Membresia)
                 $obj2->addVisitadetalle($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Productoclinica rows
+
+            $key3 = ProductoclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = ProductoclinicaPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = ProductoclinicaPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ProductoclinicaPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj3 (Productoclinica)
+                $obj3->addVisitadetalle($obj1);
             } // if joined row not null
 
             // Add objects for joined Servicioclinica rows
 
-            $key3 = ServicioclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-            if ($key3 !== null) {
-                $obj3 = ServicioclinicaPeer::getInstanceFromPool($key3);
-                if (!$obj3) {
+            $key4 = ServicioclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+            if ($key4 !== null) {
+                $obj4 = ServicioclinicaPeer::getInstanceFromPool($key4);
+                if (!$obj4) {
 
                     $cls = ServicioclinicaPeer::getOMClass();
 
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    ServicioclinicaPeer::addInstanceToPool($obj3, $key3);
-                } // if obj3 loaded
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    ServicioclinicaPeer::addInstanceToPool($obj4, $key4);
+                } // if obj4 loaded
 
-                // Add the $obj1 (Visitadetalle) to the collection in $obj3 (Servicioclinica)
-                $obj3->addVisitadetalle($obj1);
+                // Add the $obj1 (Visitadetalle) to the collection in $obj4 (Servicioclinica)
+                $obj4->addVisitadetalle($obj1);
             } // if joined row not null
 
             // Add objects for joined Visita rows
 
-            $key4 = VisitaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-            if ($key4 !== null) {
-                $obj4 = VisitaPeer::getInstanceFromPool($key4);
-                if (!$obj4) {
+            $key5 = VisitaPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+            if ($key5 !== null) {
+                $obj5 = VisitaPeer::getInstanceFromPool($key5);
+                if (!$obj5) {
 
                     $cls = VisitaPeer::getOMClass();
 
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    VisitaPeer::addInstanceToPool($obj4, $key4);
-                } // if obj4 loaded
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    VisitaPeer::addInstanceToPool($obj5, $key5);
+                } // if obj5 loaded
 
-                // Add the $obj1 (Visitadetalle) to the collection in $obj4 (Visita)
-                $obj4->addVisitadetalle($obj1);
+                // Add the $obj1 (Visitadetalle) to the collection in $obj5 (Visita)
+                $obj5->addVisitadetalle($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -1068,6 +1218,61 @@ abstract class BaseVisitadetallePeer
         $stmt->closeCursor();
 
         return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Membresia table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptMembresia(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(VisitadetallePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            VisitadetallePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(VisitadetallePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(VisitadetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(VisitadetallePeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
+
+        $criteria->addJoin(VisitadetallePeer::IDSERVICIOCLINICA, ServicioclinicaPeer::IDSERVICIOCLINICA, $join_behavior);
+
+        $criteria->addJoin(VisitadetallePeer::IDVISITA, VisitaPeer::IDVISITA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
     }
 
 
@@ -1106,6 +1311,8 @@ abstract class BaseVisitadetallePeer
         if ($con === null) {
             $con = Propel::getConnection(VisitadetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
+
+        $criteria->addJoin(VisitadetallePeer::IDMEMBRESIA, MembresiaPeer::IDMEMBRESIA, $join_behavior);
 
         $criteria->addJoin(VisitadetallePeer::IDSERVICIOCLINICA, ServicioclinicaPeer::IDSERVICIOCLINICA, $join_behavior);
 
@@ -1160,6 +1367,8 @@ abstract class BaseVisitadetallePeer
             $con = Propel::getConnection(VisitadetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
+        $criteria->addJoin(VisitadetallePeer::IDMEMBRESIA, MembresiaPeer::IDMEMBRESIA, $join_behavior);
+
         $criteria->addJoin(VisitadetallePeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
 
         $criteria->addJoin(VisitadetallePeer::IDVISITA, VisitaPeer::IDVISITA, $join_behavior);
@@ -1213,6 +1422,8 @@ abstract class BaseVisitadetallePeer
             $con = Propel::getConnection(VisitadetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
+        $criteria->addJoin(VisitadetallePeer::IDMEMBRESIA, MembresiaPeer::IDMEMBRESIA, $join_behavior);
+
         $criteria->addJoin(VisitadetallePeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
 
         $criteria->addJoin(VisitadetallePeer::IDSERVICIOCLINICA, ServicioclinicaPeer::IDSERVICIOCLINICA, $join_behavior);
@@ -1231,7 +1442,7 @@ abstract class BaseVisitadetallePeer
 
 
     /**
-     * Selects a collection of Visitadetalle objects pre-filled with all related objects except Productoclinica.
+     * Selects a collection of Visitadetalle objects pre-filled with all related objects except Membresia.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1240,203 +1451,7 @@ abstract class BaseVisitadetallePeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptProductoclinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(VisitadetallePeer::DATABASE_NAME);
-        }
-
-        VisitadetallePeer::addSelectColumns($criteria);
-        $startcol2 = VisitadetallePeer::NUM_HYDRATE_COLUMNS;
-
-        ServicioclinicaPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + ServicioclinicaPeer::NUM_HYDRATE_COLUMNS;
-
-        VisitaPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + VisitaPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(VisitadetallePeer::IDSERVICIOCLINICA, ServicioclinicaPeer::IDSERVICIOCLINICA, $join_behavior);
-
-        $criteria->addJoin(VisitadetallePeer::IDVISITA, VisitaPeer::IDVISITA, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = VisitadetallePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = VisitadetallePeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = VisitadetallePeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                VisitadetallePeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Servicioclinica rows
-
-                $key2 = ServicioclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = ServicioclinicaPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = ServicioclinicaPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    ServicioclinicaPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Visitadetalle) to the collection in $obj2 (Servicioclinica)
-                $obj2->addVisitadetalle($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Visita rows
-
-                $key3 = VisitaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = VisitaPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = VisitaPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    VisitaPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (Visitadetalle) to the collection in $obj3 (Visita)
-                $obj3->addVisitadetalle($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Visitadetalle objects pre-filled with all related objects except Servicioclinica.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Visitadetalle objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptServicioclinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(VisitadetallePeer::DATABASE_NAME);
-        }
-
-        VisitadetallePeer::addSelectColumns($criteria);
-        $startcol2 = VisitadetallePeer::NUM_HYDRATE_COLUMNS;
-
-        ProductoclinicaPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + ProductoclinicaPeer::NUM_HYDRATE_COLUMNS;
-
-        VisitaPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + VisitaPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(VisitadetallePeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
-
-        $criteria->addJoin(VisitadetallePeer::IDVISITA, VisitaPeer::IDVISITA, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = VisitadetallePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = VisitadetallePeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = VisitadetallePeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                VisitadetallePeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Productoclinica rows
-
-                $key2 = ProductoclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = ProductoclinicaPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = ProductoclinicaPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    ProductoclinicaPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Visitadetalle) to the collection in $obj2 (Productoclinica)
-                $obj2->addVisitadetalle($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Visita rows
-
-                $key3 = VisitaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = VisitaPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = VisitaPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    VisitaPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (Visitadetalle) to the collection in $obj3 (Visita)
-                $obj3->addVisitadetalle($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Visitadetalle objects pre-filled with all related objects except Visita.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Visitadetalle objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptVisita(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptMembresia(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1456,9 +1471,14 @@ abstract class BaseVisitadetallePeer
         ServicioclinicaPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + ServicioclinicaPeer::NUM_HYDRATE_COLUMNS;
 
+        VisitaPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + VisitaPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(VisitadetallePeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
 
         $criteria->addJoin(VisitadetallePeer::IDSERVICIOCLINICA, ServicioclinicaPeer::IDSERVICIOCLINICA, $join_behavior);
+
+        $criteria->addJoin(VisitadetallePeer::IDVISITA, VisitaPeer::IDVISITA, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1513,6 +1533,391 @@ abstract class BaseVisitadetallePeer
 
                 // Add the $obj1 (Visitadetalle) to the collection in $obj3 (Servicioclinica)
                 $obj3->addVisitadetalle($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Visita rows
+
+                $key4 = VisitaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = VisitaPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = VisitaPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    VisitaPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj4 (Visita)
+                $obj4->addVisitadetalle($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Visitadetalle objects pre-filled with all related objects except Productoclinica.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Visitadetalle objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptProductoclinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(VisitadetallePeer::DATABASE_NAME);
+        }
+
+        VisitadetallePeer::addSelectColumns($criteria);
+        $startcol2 = VisitadetallePeer::NUM_HYDRATE_COLUMNS;
+
+        MembresiaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + MembresiaPeer::NUM_HYDRATE_COLUMNS;
+
+        ServicioclinicaPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ServicioclinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        VisitaPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + VisitaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(VisitadetallePeer::IDMEMBRESIA, MembresiaPeer::IDMEMBRESIA, $join_behavior);
+
+        $criteria->addJoin(VisitadetallePeer::IDSERVICIOCLINICA, ServicioclinicaPeer::IDSERVICIOCLINICA, $join_behavior);
+
+        $criteria->addJoin(VisitadetallePeer::IDVISITA, VisitaPeer::IDVISITA, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = VisitadetallePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = VisitadetallePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = VisitadetallePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                VisitadetallePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Membresia rows
+
+                $key2 = MembresiaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = MembresiaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = MembresiaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    MembresiaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj2 (Membresia)
+                $obj2->addVisitadetalle($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Servicioclinica rows
+
+                $key3 = ServicioclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ServicioclinicaPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ServicioclinicaPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ServicioclinicaPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj3 (Servicioclinica)
+                $obj3->addVisitadetalle($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Visita rows
+
+                $key4 = VisitaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = VisitaPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = VisitaPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    VisitaPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj4 (Visita)
+                $obj4->addVisitadetalle($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Visitadetalle objects pre-filled with all related objects except Servicioclinica.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Visitadetalle objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptServicioclinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(VisitadetallePeer::DATABASE_NAME);
+        }
+
+        VisitadetallePeer::addSelectColumns($criteria);
+        $startcol2 = VisitadetallePeer::NUM_HYDRATE_COLUMNS;
+
+        MembresiaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + MembresiaPeer::NUM_HYDRATE_COLUMNS;
+
+        ProductoclinicaPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ProductoclinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        VisitaPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + VisitaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(VisitadetallePeer::IDMEMBRESIA, MembresiaPeer::IDMEMBRESIA, $join_behavior);
+
+        $criteria->addJoin(VisitadetallePeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
+
+        $criteria->addJoin(VisitadetallePeer::IDVISITA, VisitaPeer::IDVISITA, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = VisitadetallePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = VisitadetallePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = VisitadetallePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                VisitadetallePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Membresia rows
+
+                $key2 = MembresiaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = MembresiaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = MembresiaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    MembresiaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj2 (Membresia)
+                $obj2->addVisitadetalle($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Productoclinica rows
+
+                $key3 = ProductoclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ProductoclinicaPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ProductoclinicaPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ProductoclinicaPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj3 (Productoclinica)
+                $obj3->addVisitadetalle($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Visita rows
+
+                $key4 = VisitaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = VisitaPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = VisitaPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    VisitaPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj4 (Visita)
+                $obj4->addVisitadetalle($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Visitadetalle objects pre-filled with all related objects except Visita.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Visitadetalle objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptVisita(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(VisitadetallePeer::DATABASE_NAME);
+        }
+
+        VisitadetallePeer::addSelectColumns($criteria);
+        $startcol2 = VisitadetallePeer::NUM_HYDRATE_COLUMNS;
+
+        MembresiaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + MembresiaPeer::NUM_HYDRATE_COLUMNS;
+
+        ProductoclinicaPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ProductoclinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        ServicioclinicaPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + ServicioclinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(VisitadetallePeer::IDMEMBRESIA, MembresiaPeer::IDMEMBRESIA, $join_behavior);
+
+        $criteria->addJoin(VisitadetallePeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
+
+        $criteria->addJoin(VisitadetallePeer::IDSERVICIOCLINICA, ServicioclinicaPeer::IDSERVICIOCLINICA, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = VisitadetallePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = VisitadetallePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = VisitadetallePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                VisitadetallePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Membresia rows
+
+                $key2 = MembresiaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = MembresiaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = MembresiaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    MembresiaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj2 (Membresia)
+                $obj2->addVisitadetalle($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Productoclinica rows
+
+                $key3 = ProductoclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ProductoclinicaPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ProductoclinicaPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ProductoclinicaPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj3 (Productoclinica)
+                $obj3->addVisitadetalle($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Servicioclinica rows
+
+                $key4 = ServicioclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = ServicioclinicaPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = ServicioclinicaPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    ServicioclinicaPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (Visitadetalle) to the collection in $obj4 (Servicioclinica)
+                $obj4->addVisitadetalle($obj1);
 
             } // if joined row is not null
 

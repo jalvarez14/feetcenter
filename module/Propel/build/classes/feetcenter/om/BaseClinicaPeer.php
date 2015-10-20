@@ -375,12 +375,12 @@ abstract class BaseClinicaPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in CancelacionventaclinicaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        CancelacionventaclinicaPeer::clearInstancePool();
         // Invalidate objects in ClinicaempleadoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ClinicaempleadoPeer::clearInstancePool();
+        // Invalidate objects in ConfiguracionPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ConfiguracionPeer::clearInstancePool();
         // Invalidate objects in EgresoclinicaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         EgresoclinicaPeer::clearInstancePool();
@@ -399,6 +399,9 @@ abstract class BaseClinicaPeer
         // Invalidate objects in InsumoclinicaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         InsumoclinicaPeer::clearInstancePool();
+        // Invalidate objects in MembresiaclinicaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        MembresiaclinicaPeer::clearInstancePool();
         // Invalidate objects in PacientePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PacientePeer::clearInstancePool();
@@ -757,17 +760,17 @@ abstract class BaseClinicaPeer
         foreach ($objects as $obj) {
 
 
-            // delete related Cancelacionventaclinica objects
-            $criteria = new Criteria(CancelacionventaclinicaPeer::DATABASE_NAME);
-
-            $criteria->add(CancelacionventaclinicaPeer::IDCLINICA, $obj->getIdclinica());
-            $affectedRows += CancelacionventaclinicaPeer::doDelete($criteria, $con);
-
             // delete related Clinicaempleado objects
             $criteria = new Criteria(ClinicaempleadoPeer::DATABASE_NAME);
 
             $criteria->add(ClinicaempleadoPeer::IDCLINICA, $obj->getIdclinica());
             $affectedRows += ClinicaempleadoPeer::doDelete($criteria, $con);
+
+            // delete related Configuracion objects
+            $criteria = new Criteria(ConfiguracionPeer::DATABASE_NAME);
+
+            $criteria->add(ConfiguracionPeer::IDCLINICA, $obj->getIdclinica());
+            $affectedRows += ConfiguracionPeer::doDelete($criteria, $con);
 
             // delete related Egresoclinica objects
             $criteria = new Criteria(EgresoclinicaPeer::DATABASE_NAME);
@@ -804,6 +807,12 @@ abstract class BaseClinicaPeer
 
             $criteria->add(InsumoclinicaPeer::IDCLINICA, $obj->getIdclinica());
             $affectedRows += InsumoclinicaPeer::doDelete($criteria, $con);
+
+            // delete related Membresiaclinica objects
+            $criteria = new Criteria(MembresiaclinicaPeer::DATABASE_NAME);
+
+            $criteria->add(MembresiaclinicaPeer::IDCLINICA, $obj->getIdclinica());
+            $affectedRows += MembresiaclinicaPeer::doDelete($criteria, $con);
 
             // delete related Paciente objects
             $criteria = new Criteria(PacientePeer::DATABASE_NAME);

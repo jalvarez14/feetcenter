@@ -24,13 +24,13 @@ abstract class BaseMembresiaPeer
     const TM_CLASS = 'MembresiaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the idmembresia field */
     const IDMEMBRESIA = 'membresia.idmembresia';
@@ -46,6 +46,25 @@ abstract class BaseMembresiaPeer
 
     /** the column name for the membresia_cupones field */
     const MEMBRESIA_CUPONES = 'membresia.membresia_cupones';
+
+    /** the column name for the servicio_generaingreso field */
+    const SERVICIO_GENERAINGRESO = 'membresia.servicio_generaingreso';
+
+    /** the column name for the servicio_generacomision field */
+    const SERVICIO_GENERACOMISION = 'membresia.servicio_generacomision';
+
+    /** the column name for the servicio_tipocomision field */
+    const SERVICIO_TIPOCOMISION = 'membresia.servicio_tipocomision';
+
+    /** the column name for the servicio_comision field */
+    const SERVICIO_COMISION = 'membresia.servicio_comision';
+
+    /** the column name for the membresia_precio field */
+    const MEMBRESIA_PRECIO = 'membresia.membresia_precio';
+
+    /** The enumerated values for the servicio_tipocomision field */
+    const SERVICIO_TIPOCOMISION_PORCENTAJE = 'porcentaje';
+    const SERVICIO_TIPOCOMISION_CANTIDAD = 'cantidad';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -66,12 +85,12 @@ abstract class BaseMembresiaPeer
      * e.g. MembresiaPeer::$fieldNames[MembresiaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idmembresia', 'MembresiaNombre', 'MembresiaDescripcion', 'MembresiaServicios', 'MembresiaCupones', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia', 'membresiaNombre', 'membresiaDescripcion', 'membresiaServicios', 'membresiaCupones', ),
-        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA, MembresiaPeer::MEMBRESIA_NOMBRE, MembresiaPeer::MEMBRESIA_DESCRIPCION, MembresiaPeer::MEMBRESIA_SERVICIOS, MembresiaPeer::MEMBRESIA_CUPONES, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA', 'MEMBRESIA_NOMBRE', 'MEMBRESIA_DESCRIPCION', 'MEMBRESIA_SERVICIOS', 'MEMBRESIA_CUPONES', ),
-        BasePeer::TYPE_FIELDNAME => array ('idmembresia', 'membresia_nombre', 'membresia_descripcion', 'membresia_servicios', 'membresia_cupones', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Idmembresia', 'MembresiaNombre', 'MembresiaDescripcion', 'MembresiaServicios', 'MembresiaCupones', 'ServicioGeneraingreso', 'ServicioGeneracomision', 'ServicioTipocomision', 'ServicioComision', 'MembresiaPrecio', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia', 'membresiaNombre', 'membresiaDescripcion', 'membresiaServicios', 'membresiaCupones', 'servicioGeneraingreso', 'servicioGeneracomision', 'servicioTipocomision', 'servicioComision', 'membresiaPrecio', ),
+        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA, MembresiaPeer::MEMBRESIA_NOMBRE, MembresiaPeer::MEMBRESIA_DESCRIPCION, MembresiaPeer::MEMBRESIA_SERVICIOS, MembresiaPeer::MEMBRESIA_CUPONES, MembresiaPeer::SERVICIO_GENERAINGRESO, MembresiaPeer::SERVICIO_GENERACOMISION, MembresiaPeer::SERVICIO_TIPOCOMISION, MembresiaPeer::SERVICIO_COMISION, MembresiaPeer::MEMBRESIA_PRECIO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA', 'MEMBRESIA_NOMBRE', 'MEMBRESIA_DESCRIPCION', 'MEMBRESIA_SERVICIOS', 'MEMBRESIA_CUPONES', 'SERVICIO_GENERAINGRESO', 'SERVICIO_GENERACOMISION', 'SERVICIO_TIPOCOMISION', 'SERVICIO_COMISION', 'MEMBRESIA_PRECIO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idmembresia', 'membresia_nombre', 'membresia_descripcion', 'membresia_servicios', 'membresia_cupones', 'servicio_generaingreso', 'servicio_generacomision', 'servicio_tipocomision', 'servicio_comision', 'membresia_precio', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -81,12 +100,20 @@ abstract class BaseMembresiaPeer
      * e.g. MembresiaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idmembresia' => 0, 'MembresiaNombre' => 1, 'MembresiaDescripcion' => 2, 'MembresiaServicios' => 3, 'MembresiaCupones' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia' => 0, 'membresiaNombre' => 1, 'membresiaDescripcion' => 2, 'membresiaServicios' => 3, 'membresiaCupones' => 4, ),
-        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA => 0, MembresiaPeer::MEMBRESIA_NOMBRE => 1, MembresiaPeer::MEMBRESIA_DESCRIPCION => 2, MembresiaPeer::MEMBRESIA_SERVICIOS => 3, MembresiaPeer::MEMBRESIA_CUPONES => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA' => 0, 'MEMBRESIA_NOMBRE' => 1, 'MEMBRESIA_DESCRIPCION' => 2, 'MEMBRESIA_SERVICIOS' => 3, 'MEMBRESIA_CUPONES' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('idmembresia' => 0, 'membresia_nombre' => 1, 'membresia_descripcion' => 2, 'membresia_servicios' => 3, 'membresia_cupones' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Idmembresia' => 0, 'MembresiaNombre' => 1, 'MembresiaDescripcion' => 2, 'MembresiaServicios' => 3, 'MembresiaCupones' => 4, 'ServicioGeneraingreso' => 5, 'ServicioGeneracomision' => 6, 'ServicioTipocomision' => 7, 'ServicioComision' => 8, 'MembresiaPrecio' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia' => 0, 'membresiaNombre' => 1, 'membresiaDescripcion' => 2, 'membresiaServicios' => 3, 'membresiaCupones' => 4, 'servicioGeneraingreso' => 5, 'servicioGeneracomision' => 6, 'servicioTipocomision' => 7, 'servicioComision' => 8, 'membresiaPrecio' => 9, ),
+        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA => 0, MembresiaPeer::MEMBRESIA_NOMBRE => 1, MembresiaPeer::MEMBRESIA_DESCRIPCION => 2, MembresiaPeer::MEMBRESIA_SERVICIOS => 3, MembresiaPeer::MEMBRESIA_CUPONES => 4, MembresiaPeer::SERVICIO_GENERAINGRESO => 5, MembresiaPeer::SERVICIO_GENERACOMISION => 6, MembresiaPeer::SERVICIO_TIPOCOMISION => 7, MembresiaPeer::SERVICIO_COMISION => 8, MembresiaPeer::MEMBRESIA_PRECIO => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA' => 0, 'MEMBRESIA_NOMBRE' => 1, 'MEMBRESIA_DESCRIPCION' => 2, 'MEMBRESIA_SERVICIOS' => 3, 'MEMBRESIA_CUPONES' => 4, 'SERVICIO_GENERAINGRESO' => 5, 'SERVICIO_GENERACOMISION' => 6, 'SERVICIO_TIPOCOMISION' => 7, 'SERVICIO_COMISION' => 8, 'MEMBRESIA_PRECIO' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('idmembresia' => 0, 'membresia_nombre' => 1, 'membresia_descripcion' => 2, 'membresia_servicios' => 3, 'membresia_cupones' => 4, 'servicio_generaingreso' => 5, 'servicio_generacomision' => 6, 'servicio_tipocomision' => 7, 'servicio_comision' => 8, 'membresia_precio' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+    );
+
+    /** The enumerated values for this table */
+    protected static $enumValueSets = array(
+        MembresiaPeer::SERVICIO_TIPOCOMISION => array(
+            MembresiaPeer::SERVICIO_TIPOCOMISION_PORCENTAJE,
+            MembresiaPeer::SERVICIO_TIPOCOMISION_CANTIDAD,
+        ),
     );
 
     /**
@@ -129,6 +156,51 @@ abstract class BaseMembresiaPeer
     }
 
     /**
+     * Gets the list of values for all ENUM columns
+     * @return array
+     */
+    public static function getValueSets()
+    {
+      return MembresiaPeer::$enumValueSets;
+    }
+
+    /**
+     * Gets the list of values for an ENUM column
+     *
+     * @param string $colname The ENUM column name.
+     *
+     * @return array list of possible values for the column
+     */
+    public static function getValueSet($colname)
+    {
+        $valueSets = MembresiaPeer::getValueSets();
+
+        if (!isset($valueSets[$colname])) {
+            throw new PropelException(sprintf('Column "%s" has no ValueSet.', $colname));
+        }
+
+        return $valueSets[$colname];
+    }
+
+    /**
+     * Gets the SQL value for the ENUM column value
+     *
+     * @param string $colname ENUM column name.
+     * @param string $enumVal ENUM value.
+     *
+     * @return int SQL value
+     */
+    public static function getSqlValueForEnum($colname, $enumVal)
+    {
+        $values = MembresiaPeer::getValueSet($colname);
+        if (!in_array($enumVal, $values)) {
+            throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $colname));
+        }
+
+        return array_search($enumVal, $values);
+    }
+
+    /**
      * Convenience method which changes table.column to alias.column.
      *
      * Using this method you can maintain SQL abstraction while using column aliases.
@@ -165,12 +237,22 @@ abstract class BaseMembresiaPeer
             $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_DESCRIPCION);
             $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_SERVICIOS);
             $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_CUPONES);
+            $criteria->addSelectColumn(MembresiaPeer::SERVICIO_GENERAINGRESO);
+            $criteria->addSelectColumn(MembresiaPeer::SERVICIO_GENERACOMISION);
+            $criteria->addSelectColumn(MembresiaPeer::SERVICIO_TIPOCOMISION);
+            $criteria->addSelectColumn(MembresiaPeer::SERVICIO_COMISION);
+            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_PRECIO);
         } else {
             $criteria->addSelectColumn($alias . '.idmembresia');
             $criteria->addSelectColumn($alias . '.membresia_nombre');
             $criteria->addSelectColumn($alias . '.membresia_descripcion');
             $criteria->addSelectColumn($alias . '.membresia_servicios');
             $criteria->addSelectColumn($alias . '.membresia_cupones');
+            $criteria->addSelectColumn($alias . '.servicio_generaingreso');
+            $criteria->addSelectColumn($alias . '.servicio_generacomision');
+            $criteria->addSelectColumn($alias . '.servicio_tipocomision');
+            $criteria->addSelectColumn($alias . '.servicio_comision');
+            $criteria->addSelectColumn($alias . '.membresia_precio');
         }
     }
 
@@ -375,9 +457,15 @@ abstract class BaseMembresiaPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in MembresiaclinicaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        MembresiaclinicaPeer::clearInstancePool();
         // Invalidate objects in PacientemembresiaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PacientemembresiaPeer::clearInstancePool();
+        // Invalidate objects in VisitadetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        VisitadetallePeer::clearInstancePool();
     }
 
     /**
@@ -712,11 +800,23 @@ abstract class BaseMembresiaPeer
         foreach ($objects as $obj) {
 
 
+            // delete related Membresiaclinica objects
+            $criteria = new Criteria(MembresiaclinicaPeer::DATABASE_NAME);
+
+            $criteria->add(MembresiaclinicaPeer::IDMEMBRESIA, $obj->getIdmembresia());
+            $affectedRows += MembresiaclinicaPeer::doDelete($criteria, $con);
+
             // delete related Pacientemembresia objects
             $criteria = new Criteria(PacientemembresiaPeer::DATABASE_NAME);
 
             $criteria->add(PacientemembresiaPeer::IDMEMBRESIA, $obj->getIdmembresia());
             $affectedRows += PacientemembresiaPeer::doDelete($criteria, $con);
+
+            // delete related Visitadetalle objects
+            $criteria = new Criteria(VisitadetallePeer::DATABASE_NAME);
+
+            $criteria->add(VisitadetallePeer::IDMEMBRESIA, $obj->getIdmembresia());
+            $affectedRows += VisitadetallePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

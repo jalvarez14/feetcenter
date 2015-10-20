@@ -2117,6 +2117,31 @@ abstract class BaseVisita extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Visitadetalle[] List of Visitadetalle objects
      */
+    public function getVisitadetallesJoinMembresia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VisitadetalleQuery::create(null, $criteria);
+        $query->joinWith('Membresia', $join_behavior);
+
+        return $this->getVisitadetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Visita is new, it will return
+     * an empty collection; or if this Visita has previously
+     * been saved, it will retrieve related Visitadetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Visita.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Visitadetalle[] List of Visitadetalle objects
+     */
     public function getVisitadetallesJoinProductoclinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = VisitadetalleQuery::create(null, $criteria);

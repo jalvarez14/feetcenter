@@ -24,25 +24,28 @@ abstract class BaseConfiguracionPeer
     const TM_CLASS = 'ConfiguracionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the idconfiguracion field */
     const IDCONFIGURACION = 'configuracion.idconfiguracion';
 
-    /** the column name for the configuracion_nombre field */
-    const CONFIGURACION_NOMBRE = 'configuracion.configuracion_nombre';
+    /** the column name for the idclinica field */
+    const IDCLINICA = 'configuracion.idclinica';
 
-    /** the column name for the configuracion_valor field */
-    const CONFIGURACION_VALOR = 'configuracion.configuracion_valor';
+    /** the column name for the configuracion_numerocancelaciones field */
+    const CONFIGURACION_NUMEROCANCELACIONES = 'configuracion.configuracion_numerocancelaciones';
 
-    /** the column name for the configuracion_valor2 field */
-    const CONFIGURACION_VALOR2 = 'configuracion.configuracion_valor2';
+    /** the column name for the configuracion_valormaximocancelacion field */
+    const CONFIGURACION_VALORMAXIMOCANCELACION = 'configuracion.configuracion_valormaximocancelacion';
+
+    /** the column name for the configuracion_hastacuantosdias field */
+    const CONFIGURACION_HASTACUANTOSDIAS = 'configuracion.configuracion_hastacuantosdias';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -63,12 +66,12 @@ abstract class BaseConfiguracionPeer
      * e.g. ConfiguracionPeer::$fieldNames[ConfiguracionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idconfiguracion', 'ConfiguracionNombre', 'ConfiguracionValor', 'ConfiguracionValor2', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idconfiguracion', 'configuracionNombre', 'configuracionValor', 'configuracionValor2', ),
-        BasePeer::TYPE_COLNAME => array (ConfiguracionPeer::IDCONFIGURACION, ConfiguracionPeer::CONFIGURACION_NOMBRE, ConfiguracionPeer::CONFIGURACION_VALOR, ConfiguracionPeer::CONFIGURACION_VALOR2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCONFIGURACION', 'CONFIGURACION_NOMBRE', 'CONFIGURACION_VALOR', 'CONFIGURACION_VALOR2', ),
-        BasePeer::TYPE_FIELDNAME => array ('idconfiguracion', 'configuracion_nombre', 'configuracion_valor', 'configuracion_valor2', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Idconfiguracion', 'Idclinica', 'ConfiguracionNumerocancelaciones', 'ConfiguracionValormaximocancelacion', 'ConfiguracionHastacuantosdias', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idconfiguracion', 'idclinica', 'configuracionNumerocancelaciones', 'configuracionValormaximocancelacion', 'configuracionHastacuantosdias', ),
+        BasePeer::TYPE_COLNAME => array (ConfiguracionPeer::IDCONFIGURACION, ConfiguracionPeer::IDCLINICA, ConfiguracionPeer::CONFIGURACION_NUMEROCANCELACIONES, ConfiguracionPeer::CONFIGURACION_VALORMAXIMOCANCELACION, ConfiguracionPeer::CONFIGURACION_HASTACUANTOSDIAS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCONFIGURACION', 'IDCLINICA', 'CONFIGURACION_NUMEROCANCELACIONES', 'CONFIGURACION_VALORMAXIMOCANCELACION', 'CONFIGURACION_HASTACUANTOSDIAS', ),
+        BasePeer::TYPE_FIELDNAME => array ('idconfiguracion', 'idclinica', 'configuracion_numerocancelaciones', 'configuracion_valormaximocancelacion', 'configuracion_hastacuantosdias', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -78,12 +81,12 @@ abstract class BaseConfiguracionPeer
      * e.g. ConfiguracionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idconfiguracion' => 0, 'ConfiguracionNombre' => 1, 'ConfiguracionValor' => 2, 'ConfiguracionValor2' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idconfiguracion' => 0, 'configuracionNombre' => 1, 'configuracionValor' => 2, 'configuracionValor2' => 3, ),
-        BasePeer::TYPE_COLNAME => array (ConfiguracionPeer::IDCONFIGURACION => 0, ConfiguracionPeer::CONFIGURACION_NOMBRE => 1, ConfiguracionPeer::CONFIGURACION_VALOR => 2, ConfiguracionPeer::CONFIGURACION_VALOR2 => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCONFIGURACION' => 0, 'CONFIGURACION_NOMBRE' => 1, 'CONFIGURACION_VALOR' => 2, 'CONFIGURACION_VALOR2' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('idconfiguracion' => 0, 'configuracion_nombre' => 1, 'configuracion_valor' => 2, 'configuracion_valor2' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Idconfiguracion' => 0, 'Idclinica' => 1, 'ConfiguracionNumerocancelaciones' => 2, 'ConfiguracionValormaximocancelacion' => 3, 'ConfiguracionHastacuantosdias' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idconfiguracion' => 0, 'idclinica' => 1, 'configuracionNumerocancelaciones' => 2, 'configuracionValormaximocancelacion' => 3, 'configuracionHastacuantosdias' => 4, ),
+        BasePeer::TYPE_COLNAME => array (ConfiguracionPeer::IDCONFIGURACION => 0, ConfiguracionPeer::IDCLINICA => 1, ConfiguracionPeer::CONFIGURACION_NUMEROCANCELACIONES => 2, ConfiguracionPeer::CONFIGURACION_VALORMAXIMOCANCELACION => 3, ConfiguracionPeer::CONFIGURACION_HASTACUANTOSDIAS => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCONFIGURACION' => 0, 'IDCLINICA' => 1, 'CONFIGURACION_NUMEROCANCELACIONES' => 2, 'CONFIGURACION_VALORMAXIMOCANCELACION' => 3, 'CONFIGURACION_HASTACUANTOSDIAS' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('idconfiguracion' => 0, 'idclinica' => 1, 'configuracion_numerocancelaciones' => 2, 'configuracion_valormaximocancelacion' => 3, 'configuracion_hastacuantosdias' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -158,14 +161,16 @@ abstract class BaseConfiguracionPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(ConfiguracionPeer::IDCONFIGURACION);
-            $criteria->addSelectColumn(ConfiguracionPeer::CONFIGURACION_NOMBRE);
-            $criteria->addSelectColumn(ConfiguracionPeer::CONFIGURACION_VALOR);
-            $criteria->addSelectColumn(ConfiguracionPeer::CONFIGURACION_VALOR2);
+            $criteria->addSelectColumn(ConfiguracionPeer::IDCLINICA);
+            $criteria->addSelectColumn(ConfiguracionPeer::CONFIGURACION_NUMEROCANCELACIONES);
+            $criteria->addSelectColumn(ConfiguracionPeer::CONFIGURACION_VALORMAXIMOCANCELACION);
+            $criteria->addSelectColumn(ConfiguracionPeer::CONFIGURACION_HASTACUANTOSDIAS);
         } else {
             $criteria->addSelectColumn($alias . '.idconfiguracion');
-            $criteria->addSelectColumn($alias . '.configuracion_nombre');
-            $criteria->addSelectColumn($alias . '.configuracion_valor');
-            $criteria->addSelectColumn($alias . '.configuracion_valor2');
+            $criteria->addSelectColumn($alias . '.idclinica');
+            $criteria->addSelectColumn($alias . '.configuracion_numerocancelaciones');
+            $criteria->addSelectColumn($alias . '.configuracion_valormaximocancelacion');
+            $criteria->addSelectColumn($alias . '.configuracion_hastacuantosdias');
         }
     }
 
@@ -464,6 +469,244 @@ abstract class BaseConfiguracionPeer
         }
 
         return array($obj, $col);
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Clinica table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinClinica(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ConfiguracionPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            ConfiguracionPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(ConfiguracionPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(ConfiguracionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(ConfiguracionPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Configuracion objects pre-filled with their Clinica objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Configuracion objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinClinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ConfiguracionPeer::DATABASE_NAME);
+        }
+
+        ConfiguracionPeer::addSelectColumns($criteria);
+        $startcol = ConfiguracionPeer::NUM_HYDRATE_COLUMNS;
+        ClinicaPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(ConfiguracionPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ConfiguracionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ConfiguracionPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = ConfiguracionPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ConfiguracionPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Configuracion) to $obj2 (Clinica)
+                $obj2->addConfiguracion($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining all related tables
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ConfiguracionPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            ConfiguracionPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(ConfiguracionPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(ConfiguracionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(ConfiguracionPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+    /**
+     * Selects a collection of Configuracion objects pre-filled with all related objects.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Configuracion objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ConfiguracionPeer::DATABASE_NAME);
+        }
+
+        ConfiguracionPeer::addSelectColumns($criteria);
+        $startcol2 = ConfiguracionPeer::NUM_HYDRATE_COLUMNS;
+
+        ClinicaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(ConfiguracionPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ConfiguracionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ConfiguracionPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = ConfiguracionPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ConfiguracionPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+            // Add objects for joined Clinica rows
+
+            $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (Configuracion) to the collection in $obj2 (Clinica)
+                $obj2->addConfiguracion($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
     /**

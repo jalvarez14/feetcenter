@@ -18,26 +18,6 @@ CREATE TABLE `canalcomunicacion`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- cancelacionventaclinica
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `cancelacionventaclinica`;
-
-CREATE TABLE `cancelacionventaclinica`
-(
-    `idcancelacionventaclinica` INTEGER NOT NULL AUTO_INCREMENT,
-    `idclinica` INTEGER NOT NULL,
-    `cancelacionventaclinica_cantidad` INTEGER NOT NULL,
-    PRIMARY KEY (`idcancelacionventaclinica`),
-    INDEX `idclinica` (`idclinica`),
-    CONSTRAINT `idclinica_cancelacionventaclinica`
-        FOREIGN KEY (`idclinica`)
-        REFERENCES `clinica` (`idclinica`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
 -- clinica
 -- ---------------------------------------------------------------------
 
@@ -185,10 +165,17 @@ DROP TABLE IF EXISTS `configuracion`;
 CREATE TABLE `configuracion`
 (
     `idconfiguracion` INTEGER NOT NULL AUTO_INCREMENT,
-    `configuracion_nombre` VARCHAR(45),
-    `configuracion_valor` VARCHAR(45),
-    `configuracion_valor2` VARCHAR(45),
-    PRIMARY KEY (`idconfiguracion`)
+    `idclinica` INTEGER NOT NULL,
+    `configuracion_numerocancelaciones` INTEGER NOT NULL,
+    `configuracion_valormaximocancelacion` DECIMAL(10,2) NOT NULL,
+    `configuracion_hastacuantosdias` INTEGER,
+    PRIMARY KEY (`idconfiguracion`),
+    INDEX `idclinica` (`idclinica`),
+    CONSTRAINT `idclinica_configuracion`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -602,7 +589,39 @@ CREATE TABLE `membresia`
     `membresia_descripcion` TEXT NOT NULL,
     `membresia_servicios` DECIMAL(10,2) NOT NULL,
     `membresia_cupones` DECIMAL(10,2) NOT NULL,
+    `servicio_generaingreso` TINYINT(1) NOT NULL,
+    `servicio_generacomision` TINYINT(1) NOT NULL,
+    `servicio_tipocomision` enum('porcentaje','cantidad'),
+    `servicio_comision` DECIMAL(10,2),
+    `membresia_precio` DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (`idmembresia`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- membresiaclinica
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `membresiaclinica`;
+
+CREATE TABLE `membresiaclinica`
+(
+    `idmembresiaclinica` INTEGER NOT NULL AUTO_INCREMENT,
+    `idmembresia` INTEGER NOT NULL,
+    `idclinica` INTEGER NOT NULL,
+    `membresiaclinica_precio` DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (`idmembresiaclinica`),
+    INDEX `idmembresia` (`idmembresia`),
+    INDEX `idclinica` (`idclinica`),
+    CONSTRAINT `idclinica_membresiaclinica`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idmembresia_membresiaclinica`
+        FOREIGN KEY (`idmembresia`)
+        REFERENCES `membresia` (`idmembresia`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1089,7 +1108,8 @@ CREATE TABLE `visitadetalle`
     `idvisita` INTEGER NOT NULL,
     `idproductoclinica` INTEGER,
     `idservicioclinica` INTEGER,
-    `visitadetalle_cargo` enum('producto','servicio') NOT NULL,
+    `idmembresia` INTEGER,
+    `visitadetalle_cargo` enum('producto','servicio','membresia') NOT NULL,
     `visitadetalle_preciounitario` DECIMAL(10,2) NOT NULL,
     `visitadetalle_cantidad` DECIMAL(10,2) NOT NULL,
     `visitadetalle_subtotal` DECIMAL(10,2) NOT NULL,
@@ -1097,6 +1117,12 @@ CREATE TABLE `visitadetalle`
     INDEX `idproductoclinica` (`idproductoclinica`),
     INDEX `idservicioclinica` (`idservicioclinica`),
     INDEX `idvisita` (`idvisita`),
+    INDEX `idmembresia_visitadetalle` (`idmembresia`),
+    CONSTRAINT `idmembresia_visitadetalle`
+        FOREIGN KEY (`idmembresia`)
+        REFERENCES `membresia` (`idmembresia`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT `idproductoclinica_visitadetalle`
         FOREIGN KEY (`idproductoclinica`)
         REFERENCES `productoclinica` (`idproductoclinica`)

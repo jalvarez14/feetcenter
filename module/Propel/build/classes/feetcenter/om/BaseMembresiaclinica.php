@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'servicioclinica' table.
+ * Base class that represents a row from the 'membresiaclinica' table.
  *
  *
  *
  * @package    propel.generator.feetcenter.om
  */
-abstract class BaseServicioclinica extends BaseObject implements Persistent
+abstract class BaseMembresiaclinica extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'ServicioclinicaPeer';
+    const PEER = 'MembresiaclinicaPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        ServicioclinicaPeer
+     * @var        MembresiaclinicaPeer
      */
     protected static $peer;
 
@@ -30,16 +30,16 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
-     * The value for the idservicioclinica field.
+     * The value for the idmembresiaclinica field.
      * @var        int
      */
-    protected $idservicioclinica;
+    protected $idmembresiaclinica;
 
     /**
-     * The value for the idservicio field.
+     * The value for the idmembresia field.
      * @var        int
      */
-    protected $idservicio;
+    protected $idmembresia;
 
     /**
      * The value for the idclinica field.
@@ -48,10 +48,10 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     protected $idclinica;
 
     /**
-     * The value for the servicioclinica_precio field.
+     * The value for the membresiaclinica_precio field.
      * @var        string
      */
-    protected $servicioclinica_precio;
+    protected $membresiaclinica_precio;
 
     /**
      * @var        Clinica
@@ -59,15 +59,9 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     protected $aClinica;
 
     /**
-     * @var        Servicio
+     * @var        Membresia
      */
-    protected $aServicio;
-
-    /**
-     * @var        PropelObjectCollection|Visitadetalle[] Collection to store aggregation of Visitadetalle objects.
-     */
-    protected $collVisitadetalles;
-    protected $collVisitadetallesPartial;
+    protected $aMembresia;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -90,31 +84,25 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $visitadetallesScheduledForDeletion = null;
-
-    /**
-     * Get the [idservicioclinica] column value.
+     * Get the [idmembresiaclinica] column value.
      *
      * @return int
      */
-    public function getIdservicioclinica()
+    public function getIdmembresiaclinica()
     {
 
-        return $this->idservicioclinica;
+        return $this->idmembresiaclinica;
     }
 
     /**
-     * Get the [idservicio] column value.
+     * Get the [idmembresia] column value.
      *
      * @return int
      */
-    public function getIdservicio()
+    public function getIdmembresia()
     {
 
-        return $this->idservicio;
+        return $this->idmembresia;
     }
 
     /**
@@ -129,67 +117,67 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [servicioclinica_precio] column value.
+     * Get the [membresiaclinica_precio] column value.
      *
      * @return string
      */
-    public function getServicioclinicaPrecio()
+    public function getMembresiaclinicaPrecio()
     {
 
-        return $this->servicioclinica_precio;
+        return $this->membresiaclinica_precio;
     }
 
     /**
-     * Set the value of [idservicioclinica] column.
+     * Set the value of [idmembresiaclinica] column.
      *
      * @param  int $v new value
-     * @return Servicioclinica The current object (for fluent API support)
+     * @return Membresiaclinica The current object (for fluent API support)
      */
-    public function setIdservicioclinica($v)
+    public function setIdmembresiaclinica($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idservicioclinica !== $v) {
-            $this->idservicioclinica = $v;
-            $this->modifiedColumns[] = ServicioclinicaPeer::IDSERVICIOCLINICA;
+        if ($this->idmembresiaclinica !== $v) {
+            $this->idmembresiaclinica = $v;
+            $this->modifiedColumns[] = MembresiaclinicaPeer::IDMEMBRESIACLINICA;
         }
 
 
         return $this;
-    } // setIdservicioclinica()
+    } // setIdmembresiaclinica()
 
     /**
-     * Set the value of [idservicio] column.
+     * Set the value of [idmembresia] column.
      *
      * @param  int $v new value
-     * @return Servicioclinica The current object (for fluent API support)
+     * @return Membresiaclinica The current object (for fluent API support)
      */
-    public function setIdservicio($v)
+    public function setIdmembresia($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idservicio !== $v) {
-            $this->idservicio = $v;
-            $this->modifiedColumns[] = ServicioclinicaPeer::IDSERVICIO;
+        if ($this->idmembresia !== $v) {
+            $this->idmembresia = $v;
+            $this->modifiedColumns[] = MembresiaclinicaPeer::IDMEMBRESIA;
         }
 
-        if ($this->aServicio !== null && $this->aServicio->getIdservicio() !== $v) {
-            $this->aServicio = null;
+        if ($this->aMembresia !== null && $this->aMembresia->getIdmembresia() !== $v) {
+            $this->aMembresia = null;
         }
 
 
         return $this;
-    } // setIdservicio()
+    } // setIdmembresia()
 
     /**
      * Set the value of [idclinica] column.
      *
      * @param  int $v new value
-     * @return Servicioclinica The current object (for fluent API support)
+     * @return Membresiaclinica The current object (for fluent API support)
      */
     public function setIdclinica($v)
     {
@@ -199,7 +187,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
 
         if ($this->idclinica !== $v) {
             $this->idclinica = $v;
-            $this->modifiedColumns[] = ServicioclinicaPeer::IDCLINICA;
+            $this->modifiedColumns[] = MembresiaclinicaPeer::IDCLINICA;
         }
 
         if ($this->aClinica !== null && $this->aClinica->getIdclinica() !== $v) {
@@ -211,25 +199,25 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     } // setIdclinica()
 
     /**
-     * Set the value of [servicioclinica_precio] column.
+     * Set the value of [membresiaclinica_precio] column.
      *
      * @param  string $v new value
-     * @return Servicioclinica The current object (for fluent API support)
+     * @return Membresiaclinica The current object (for fluent API support)
      */
-    public function setServicioclinicaPrecio($v)
+    public function setMembresiaclinicaPrecio($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->servicioclinica_precio !== $v) {
-            $this->servicioclinica_precio = $v;
-            $this->modifiedColumns[] = ServicioclinicaPeer::SERVICIOCLINICA_PRECIO;
+        if ($this->membresiaclinica_precio !== $v) {
+            $this->membresiaclinica_precio = $v;
+            $this->modifiedColumns[] = MembresiaclinicaPeer::MEMBRESIACLINICA_PRECIO;
         }
 
 
         return $this;
-    } // setServicioclinicaPrecio()
+    } // setMembresiaclinicaPrecio()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -263,10 +251,10 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     {
         try {
 
-            $this->idservicioclinica = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->idservicio = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->idmembresiaclinica = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->idmembresia = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->idclinica = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->servicioclinica_precio = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->membresiaclinica_precio = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -276,10 +264,10 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = ServicioclinicaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = MembresiaclinicaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Servicioclinica object", $e);
+            throw new PropelException("Error populating Membresiaclinica object", $e);
         }
     }
 
@@ -299,8 +287,8 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aServicio !== null && $this->idservicio !== $this->aServicio->getIdservicio()) {
-            $this->aServicio = null;
+        if ($this->aMembresia !== null && $this->idmembresia !== $this->aMembresia->getIdmembresia()) {
+            $this->aMembresia = null;
         }
         if ($this->aClinica !== null && $this->idclinica !== $this->aClinica->getIdclinica()) {
             $this->aClinica = null;
@@ -328,13 +316,13 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ServicioclinicaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(MembresiaclinicaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = ServicioclinicaPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = MembresiaclinicaPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -345,9 +333,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aClinica = null;
-            $this->aServicio = null;
-            $this->collVisitadetalles = null;
-
+            $this->aMembresia = null;
         } // if (deep)
     }
 
@@ -368,12 +354,12 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ServicioclinicaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(MembresiaclinicaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ServicioclinicaQuery::create()
+            $deleteQuery = MembresiaclinicaQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -411,7 +397,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ServicioclinicaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(MembresiaclinicaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -431,7 +417,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ServicioclinicaPeer::addInstanceToPool($this);
+                MembresiaclinicaPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -473,11 +459,11 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
                 $this->setClinica($this->aClinica);
             }
 
-            if ($this->aServicio !== null) {
-                if ($this->aServicio->isModified() || $this->aServicio->isNew()) {
-                    $affectedRows += $this->aServicio->save($con);
+            if ($this->aMembresia !== null) {
+                if ($this->aMembresia->isModified() || $this->aMembresia->isNew()) {
+                    $affectedRows += $this->aMembresia->save($con);
                 }
-                $this->setServicio($this->aServicio);
+                $this->setMembresia($this->aMembresia);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -489,23 +475,6 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->visitadetallesScheduledForDeletion !== null) {
-                if (!$this->visitadetallesScheduledForDeletion->isEmpty()) {
-                    VisitadetalleQuery::create()
-                        ->filterByPrimaryKeys($this->visitadetallesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->visitadetallesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collVisitadetalles !== null) {
-                foreach ($this->collVisitadetalles as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -528,27 +497,27 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = ServicioclinicaPeer::IDSERVICIOCLINICA;
-        if (null !== $this->idservicioclinica) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ServicioclinicaPeer::IDSERVICIOCLINICA . ')');
+        $this->modifiedColumns[] = MembresiaclinicaPeer::IDMEMBRESIACLINICA;
+        if (null !== $this->idmembresiaclinica) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . MembresiaclinicaPeer::IDMEMBRESIACLINICA . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ServicioclinicaPeer::IDSERVICIOCLINICA)) {
-            $modifiedColumns[':p' . $index++]  = '`idservicioclinica`';
+        if ($this->isColumnModified(MembresiaclinicaPeer::IDMEMBRESIACLINICA)) {
+            $modifiedColumns[':p' . $index++]  = '`idmembresiaclinica`';
         }
-        if ($this->isColumnModified(ServicioclinicaPeer::IDSERVICIO)) {
-            $modifiedColumns[':p' . $index++]  = '`idservicio`';
+        if ($this->isColumnModified(MembresiaclinicaPeer::IDMEMBRESIA)) {
+            $modifiedColumns[':p' . $index++]  = '`idmembresia`';
         }
-        if ($this->isColumnModified(ServicioclinicaPeer::IDCLINICA)) {
+        if ($this->isColumnModified(MembresiaclinicaPeer::IDCLINICA)) {
             $modifiedColumns[':p' . $index++]  = '`idclinica`';
         }
-        if ($this->isColumnModified(ServicioclinicaPeer::SERVICIOCLINICA_PRECIO)) {
-            $modifiedColumns[':p' . $index++]  = '`servicioclinica_precio`';
+        if ($this->isColumnModified(MembresiaclinicaPeer::MEMBRESIACLINICA_PRECIO)) {
+            $modifiedColumns[':p' . $index++]  = '`membresiaclinica_precio`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `servicioclinica` (%s) VALUES (%s)',
+            'INSERT INTO `membresiaclinica` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -557,17 +526,17 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`idservicioclinica`':
-                        $stmt->bindValue($identifier, $this->idservicioclinica, PDO::PARAM_INT);
+                    case '`idmembresiaclinica`':
+                        $stmt->bindValue($identifier, $this->idmembresiaclinica, PDO::PARAM_INT);
                         break;
-                    case '`idservicio`':
-                        $stmt->bindValue($identifier, $this->idservicio, PDO::PARAM_INT);
+                    case '`idmembresia`':
+                        $stmt->bindValue($identifier, $this->idmembresia, PDO::PARAM_INT);
                         break;
                     case '`idclinica`':
                         $stmt->bindValue($identifier, $this->idclinica, PDO::PARAM_INT);
                         break;
-                    case '`servicioclinica_precio`':
-                        $stmt->bindValue($identifier, $this->servicioclinica_precio, PDO::PARAM_STR);
+                    case '`membresiaclinica_precio`':
+                        $stmt->bindValue($identifier, $this->membresiaclinica_precio, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -582,7 +551,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', $e);
         }
-        $this->setIdservicioclinica($pk);
+        $this->setIdmembresiaclinica($pk);
 
         $this->setNew(false);
     }
@@ -674,25 +643,17 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->aServicio !== null) {
-                if (!$this->aServicio->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aServicio->getValidationFailures());
+            if ($this->aMembresia !== null) {
+                if (!$this->aMembresia->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aMembresia->getValidationFailures());
                 }
             }
 
 
-            if (($retval = ServicioclinicaPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = MembresiaclinicaPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
-
-                if ($this->collVisitadetalles !== null) {
-                    foreach ($this->collVisitadetalles as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
 
 
             $this->alreadyInValidation = false;
@@ -713,7 +674,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = ServicioclinicaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = MembresiaclinicaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -730,16 +691,16 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getIdservicioclinica();
+                return $this->getIdmembresiaclinica();
                 break;
             case 1:
-                return $this->getIdservicio();
+                return $this->getIdmembresia();
                 break;
             case 2:
                 return $this->getIdclinica();
                 break;
             case 3:
-                return $this->getServicioclinicaPrecio();
+                return $this->getMembresiaclinicaPrecio();
                 break;
             default:
                 return null;
@@ -764,16 +725,16 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Servicioclinica'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['Membresiaclinica'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Servicioclinica'][$this->getPrimaryKey()] = true;
-        $keys = ServicioclinicaPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['Membresiaclinica'][$this->getPrimaryKey()] = true;
+        $keys = MembresiaclinicaPeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getIdservicioclinica(),
-            $keys[1] => $this->getIdservicio(),
+            $keys[0] => $this->getIdmembresiaclinica(),
+            $keys[1] => $this->getIdmembresia(),
             $keys[2] => $this->getIdclinica(),
-            $keys[3] => $this->getServicioclinicaPrecio(),
+            $keys[3] => $this->getMembresiaclinicaPrecio(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -784,11 +745,8 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
             if (null !== $this->aClinica) {
                 $result['Clinica'] = $this->aClinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aServicio) {
-                $result['Servicio'] = $this->aServicio->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collVisitadetalles) {
-                $result['Visitadetalles'] = $this->collVisitadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->aMembresia) {
+                $result['Membresia'] = $this->aMembresia->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -808,7 +766,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = ServicioclinicaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = MembresiaclinicaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -825,16 +783,16 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setIdservicioclinica($value);
+                $this->setIdmembresiaclinica($value);
                 break;
             case 1:
-                $this->setIdservicio($value);
+                $this->setIdmembresia($value);
                 break;
             case 2:
                 $this->setIdclinica($value);
                 break;
             case 3:
-                $this->setServicioclinicaPrecio($value);
+                $this->setMembresiaclinicaPrecio($value);
                 break;
         } // switch()
     }
@@ -858,12 +816,12 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = ServicioclinicaPeer::getFieldNames($keyType);
+        $keys = MembresiaclinicaPeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setIdservicioclinica($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setIdservicio($arr[$keys[1]]);
+        if (array_key_exists($keys[0], $arr)) $this->setIdmembresiaclinica($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setIdmembresia($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setIdclinica($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setServicioclinicaPrecio($arr[$keys[3]]);
+        if (array_key_exists($keys[3], $arr)) $this->setMembresiaclinicaPrecio($arr[$keys[3]]);
     }
 
     /**
@@ -873,12 +831,12 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ServicioclinicaPeer::DATABASE_NAME);
+        $criteria = new Criteria(MembresiaclinicaPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(ServicioclinicaPeer::IDSERVICIOCLINICA)) $criteria->add(ServicioclinicaPeer::IDSERVICIOCLINICA, $this->idservicioclinica);
-        if ($this->isColumnModified(ServicioclinicaPeer::IDSERVICIO)) $criteria->add(ServicioclinicaPeer::IDSERVICIO, $this->idservicio);
-        if ($this->isColumnModified(ServicioclinicaPeer::IDCLINICA)) $criteria->add(ServicioclinicaPeer::IDCLINICA, $this->idclinica);
-        if ($this->isColumnModified(ServicioclinicaPeer::SERVICIOCLINICA_PRECIO)) $criteria->add(ServicioclinicaPeer::SERVICIOCLINICA_PRECIO, $this->servicioclinica_precio);
+        if ($this->isColumnModified(MembresiaclinicaPeer::IDMEMBRESIACLINICA)) $criteria->add(MembresiaclinicaPeer::IDMEMBRESIACLINICA, $this->idmembresiaclinica);
+        if ($this->isColumnModified(MembresiaclinicaPeer::IDMEMBRESIA)) $criteria->add(MembresiaclinicaPeer::IDMEMBRESIA, $this->idmembresia);
+        if ($this->isColumnModified(MembresiaclinicaPeer::IDCLINICA)) $criteria->add(MembresiaclinicaPeer::IDCLINICA, $this->idclinica);
+        if ($this->isColumnModified(MembresiaclinicaPeer::MEMBRESIACLINICA_PRECIO)) $criteria->add(MembresiaclinicaPeer::MEMBRESIACLINICA_PRECIO, $this->membresiaclinica_precio);
 
         return $criteria;
     }
@@ -893,8 +851,8 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(ServicioclinicaPeer::DATABASE_NAME);
-        $criteria->add(ServicioclinicaPeer::IDSERVICIOCLINICA, $this->idservicioclinica);
+        $criteria = new Criteria(MembresiaclinicaPeer::DATABASE_NAME);
+        $criteria->add(MembresiaclinicaPeer::IDMEMBRESIACLINICA, $this->idmembresiaclinica);
 
         return $criteria;
     }
@@ -905,18 +863,18 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      */
     public function getPrimaryKey()
     {
-        return $this->getIdservicioclinica();
+        return $this->getIdmembresiaclinica();
     }
 
     /**
-     * Generic method to set the primary key (idservicioclinica column).
+     * Generic method to set the primary key (idmembresiaclinica column).
      *
      * @param  int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setIdservicioclinica($key);
+        $this->setIdmembresiaclinica($key);
     }
 
     /**
@@ -926,7 +884,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return null === $this->getIdservicioclinica();
+        return null === $this->getIdmembresiaclinica();
     }
 
     /**
@@ -935,16 +893,16 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Servicioclinica (or compatible) type.
+     * @param object $copyObj An object of Membresiaclinica (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setIdservicio($this->getIdservicio());
+        $copyObj->setIdmembresia($this->getIdmembresia());
         $copyObj->setIdclinica($this->getIdclinica());
-        $copyObj->setServicioclinicaPrecio($this->getServicioclinicaPrecio());
+        $copyObj->setMembresiaclinicaPrecio($this->getMembresiaclinicaPrecio());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -953,19 +911,13 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getVisitadetalles() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addVisitadetalle($relObj->copy($deepCopy));
-                }
-            }
-
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
 
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setIdservicioclinica(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setIdmembresiaclinica(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -978,7 +930,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Servicioclinica Clone of current object.
+     * @return Membresiaclinica Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -998,12 +950,12 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return ServicioclinicaPeer
+     * @return MembresiaclinicaPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new ServicioclinicaPeer();
+            self::$peer = new MembresiaclinicaPeer();
         }
 
         return self::$peer;
@@ -1013,7 +965,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      * Declares an association between this object and a Clinica object.
      *
      * @param                  Clinica $v
-     * @return Servicioclinica The current object (for fluent API support)
+     * @return Membresiaclinica The current object (for fluent API support)
      * @throws PropelException
      */
     public function setClinica(Clinica $v = null)
@@ -1029,7 +981,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the Clinica object, it will not be re-added.
         if ($v !== null) {
-            $v->addServicioclinica($this);
+            $v->addMembresiaclinica($this);
         }
 
 
@@ -1054,7 +1006,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aClinica->addServicioclinicas($this);
+                $this->aClinica->addMembresiaclinicas($this);
              */
         }
 
@@ -1062,26 +1014,26 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a Servicio object.
+     * Declares an association between this object and a Membresia object.
      *
-     * @param                  Servicio $v
-     * @return Servicioclinica The current object (for fluent API support)
+     * @param                  Membresia $v
+     * @return Membresiaclinica The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setServicio(Servicio $v = null)
+    public function setMembresia(Membresia $v = null)
     {
         if ($v === null) {
-            $this->setIdservicio(NULL);
+            $this->setIdmembresia(NULL);
         } else {
-            $this->setIdservicio($v->getIdservicio());
+            $this->setIdmembresia($v->getIdmembresia());
         }
 
-        $this->aServicio = $v;
+        $this->aMembresia = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Servicio object, it will not be re-added.
+        // If this object has already been added to the Membresia object, it will not be re-added.
         if ($v !== null) {
-            $v->addServicioclinica($this);
+            $v->addMembresiaclinica($this);
         }
 
 
@@ -1090,343 +1042,27 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated Servicio object
+     * Get the associated Membresia object
      *
      * @param PropelPDO $con Optional Connection object.
      * @param $doQuery Executes a query to get the object if required
-     * @return Servicio The associated Servicio object.
+     * @return Membresia The associated Membresia object.
      * @throws PropelException
      */
-    public function getServicio(PropelPDO $con = null, $doQuery = true)
+    public function getMembresia(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aServicio === null && ($this->idservicio !== null) && $doQuery) {
-            $this->aServicio = ServicioQuery::create()->findPk($this->idservicio, $con);
+        if ($this->aMembresia === null && ($this->idmembresia !== null) && $doQuery) {
+            $this->aMembresia = MembresiaQuery::create()->findPk($this->idmembresia, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aServicio->addServicioclinicas($this);
+                $this->aMembresia->addMembresiaclinicas($this);
              */
         }
 
-        return $this->aServicio;
-    }
-
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('Visitadetalle' == $relationName) {
-            $this->initVisitadetalles();
-        }
-    }
-
-    /**
-     * Clears out the collVisitadetalles collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Servicioclinica The current object (for fluent API support)
-     * @see        addVisitadetalles()
-     */
-    public function clearVisitadetalles()
-    {
-        $this->collVisitadetalles = null; // important to set this to null since that means it is uninitialized
-        $this->collVisitadetallesPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collVisitadetalles collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialVisitadetalles($v = true)
-    {
-        $this->collVisitadetallesPartial = $v;
-    }
-
-    /**
-     * Initializes the collVisitadetalles collection.
-     *
-     * By default this just sets the collVisitadetalles collection to an empty array (like clearcollVisitadetalles());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initVisitadetalles($overrideExisting = true)
-    {
-        if (null !== $this->collVisitadetalles && !$overrideExisting) {
-            return;
-        }
-        $this->collVisitadetalles = new PropelObjectCollection();
-        $this->collVisitadetalles->setModel('Visitadetalle');
-    }
-
-    /**
-     * Gets an array of Visitadetalle objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Servicioclinica is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Visitadetalle[] List of Visitadetalle objects
-     * @throws PropelException
-     */
-    public function getVisitadetalles($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collVisitadetallesPartial && !$this->isNew();
-        if (null === $this->collVisitadetalles || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collVisitadetalles) {
-                // return empty collection
-                $this->initVisitadetalles();
-            } else {
-                $collVisitadetalles = VisitadetalleQuery::create(null, $criteria)
-                    ->filterByServicioclinica($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collVisitadetallesPartial && count($collVisitadetalles)) {
-                      $this->initVisitadetalles(false);
-
-                      foreach ($collVisitadetalles as $obj) {
-                        if (false == $this->collVisitadetalles->contains($obj)) {
-                          $this->collVisitadetalles->append($obj);
-                        }
-                      }
-
-                      $this->collVisitadetallesPartial = true;
-                    }
-
-                    $collVisitadetalles->getInternalIterator()->rewind();
-
-                    return $collVisitadetalles;
-                }
-
-                if ($partial && $this->collVisitadetalles) {
-                    foreach ($this->collVisitadetalles as $obj) {
-                        if ($obj->isNew()) {
-                            $collVisitadetalles[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collVisitadetalles = $collVisitadetalles;
-                $this->collVisitadetallesPartial = false;
-            }
-        }
-
-        return $this->collVisitadetalles;
-    }
-
-    /**
-     * Sets a collection of Visitadetalle objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $visitadetalles A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Servicioclinica The current object (for fluent API support)
-     */
-    public function setVisitadetalles(PropelCollection $visitadetalles, PropelPDO $con = null)
-    {
-        $visitadetallesToDelete = $this->getVisitadetalles(new Criteria(), $con)->diff($visitadetalles);
-
-
-        $this->visitadetallesScheduledForDeletion = $visitadetallesToDelete;
-
-        foreach ($visitadetallesToDelete as $visitadetalleRemoved) {
-            $visitadetalleRemoved->setServicioclinica(null);
-        }
-
-        $this->collVisitadetalles = null;
-        foreach ($visitadetalles as $visitadetalle) {
-            $this->addVisitadetalle($visitadetalle);
-        }
-
-        $this->collVisitadetalles = $visitadetalles;
-        $this->collVisitadetallesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Visitadetalle objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Visitadetalle objects.
-     * @throws PropelException
-     */
-    public function countVisitadetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collVisitadetallesPartial && !$this->isNew();
-        if (null === $this->collVisitadetalles || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collVisitadetalles) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getVisitadetalles());
-            }
-            $query = VisitadetalleQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByServicioclinica($this)
-                ->count($con);
-        }
-
-        return count($this->collVisitadetalles);
-    }
-
-    /**
-     * Method called to associate a Visitadetalle object to this object
-     * through the Visitadetalle foreign key attribute.
-     *
-     * @param    Visitadetalle $l Visitadetalle
-     * @return Servicioclinica The current object (for fluent API support)
-     */
-    public function addVisitadetalle(Visitadetalle $l)
-    {
-        if ($this->collVisitadetalles === null) {
-            $this->initVisitadetalles();
-            $this->collVisitadetallesPartial = true;
-        }
-
-        if (!in_array($l, $this->collVisitadetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddVisitadetalle($l);
-
-            if ($this->visitadetallesScheduledForDeletion and $this->visitadetallesScheduledForDeletion->contains($l)) {
-                $this->visitadetallesScheduledForDeletion->remove($this->visitadetallesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Visitadetalle $visitadetalle The visitadetalle object to add.
-     */
-    protected function doAddVisitadetalle($visitadetalle)
-    {
-        $this->collVisitadetalles[]= $visitadetalle;
-        $visitadetalle->setServicioclinica($this);
-    }
-
-    /**
-     * @param	Visitadetalle $visitadetalle The visitadetalle object to remove.
-     * @return Servicioclinica The current object (for fluent API support)
-     */
-    public function removeVisitadetalle($visitadetalle)
-    {
-        if ($this->getVisitadetalles()->contains($visitadetalle)) {
-            $this->collVisitadetalles->remove($this->collVisitadetalles->search($visitadetalle));
-            if (null === $this->visitadetallesScheduledForDeletion) {
-                $this->visitadetallesScheduledForDeletion = clone $this->collVisitadetalles;
-                $this->visitadetallesScheduledForDeletion->clear();
-            }
-            $this->visitadetallesScheduledForDeletion[]= $visitadetalle;
-            $visitadetalle->setServicioclinica(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Servicioclinica is new, it will return
-     * an empty collection; or if this Servicioclinica has previously
-     * been saved, it will retrieve related Visitadetalles from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Servicioclinica.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Visitadetalle[] List of Visitadetalle objects
-     */
-    public function getVisitadetallesJoinMembresia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = VisitadetalleQuery::create(null, $criteria);
-        $query->joinWith('Membresia', $join_behavior);
-
-        return $this->getVisitadetalles($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Servicioclinica is new, it will return
-     * an empty collection; or if this Servicioclinica has previously
-     * been saved, it will retrieve related Visitadetalles from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Servicioclinica.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Visitadetalle[] List of Visitadetalle objects
-     */
-    public function getVisitadetallesJoinProductoclinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = VisitadetalleQuery::create(null, $criteria);
-        $query->joinWith('Productoclinica', $join_behavior);
-
-        return $this->getVisitadetalles($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Servicioclinica is new, it will return
-     * an empty collection; or if this Servicioclinica has previously
-     * been saved, it will retrieve related Visitadetalles from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Servicioclinica.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Visitadetalle[] List of Visitadetalle objects
-     */
-    public function getVisitadetallesJoinVisita($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = VisitadetalleQuery::create(null, $criteria);
-        $query->joinWith('Visita', $join_behavior);
-
-        return $this->getVisitadetalles($query, $con);
+        return $this->aMembresia;
     }
 
     /**
@@ -1434,10 +1070,10 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      */
     public function clear()
     {
-        $this->idservicioclinica = null;
-        $this->idservicio = null;
+        $this->idmembresiaclinica = null;
+        $this->idmembresia = null;
         $this->idclinica = null;
-        $this->servicioclinica_precio = null;
+        $this->membresiaclinica_precio = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1460,27 +1096,18 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collVisitadetalles) {
-                foreach ($this->collVisitadetalles as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->aClinica instanceof Persistent) {
               $this->aClinica->clearAllReferences($deep);
             }
-            if ($this->aServicio instanceof Persistent) {
-              $this->aServicio->clearAllReferences($deep);
+            if ($this->aMembresia instanceof Persistent) {
+              $this->aMembresia->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collVisitadetalles instanceof PropelCollection) {
-            $this->collVisitadetalles->clearIterator();
-        }
-        $this->collVisitadetalles = null;
         $this->aClinica = null;
-        $this->aServicio = null;
+        $this->aMembresia = null;
     }
 
     /**
@@ -1490,7 +1117,7 @@ abstract class BaseServicioclinica extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ServicioclinicaPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(MembresiaclinicaPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

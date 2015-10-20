@@ -36,22 +36,33 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
     protected $idconfiguracion;
 
     /**
-     * The value for the configuracion_nombre field.
-     * @var        string
+     * The value for the idclinica field.
+     * @var        int
      */
-    protected $configuracion_nombre;
+    protected $idclinica;
 
     /**
-     * The value for the configuracion_valor field.
-     * @var        string
+     * The value for the configuracion_numerocancelaciones field.
+     * @var        int
      */
-    protected $configuracion_valor;
+    protected $configuracion_numerocancelaciones;
 
     /**
-     * The value for the configuracion_valor2 field.
+     * The value for the configuracion_valormaximocancelacion field.
      * @var        string
      */
-    protected $configuracion_valor2;
+    protected $configuracion_valormaximocancelacion;
+
+    /**
+     * The value for the configuracion_hastacuantosdias field.
+     * @var        int
+     */
+    protected $configuracion_hastacuantosdias;
+
+    /**
+     * @var        Clinica
+     */
+    protected $aClinica;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -85,36 +96,47 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [configuracion_nombre] column value.
+     * Get the [idclinica] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getConfiguracionNombre()
+    public function getIdclinica()
     {
 
-        return $this->configuracion_nombre;
+        return $this->idclinica;
     }
 
     /**
-     * Get the [configuracion_valor] column value.
+     * Get the [configuracion_numerocancelaciones] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getConfiguracionValor()
+    public function getConfiguracionNumerocancelaciones()
     {
 
-        return $this->configuracion_valor;
+        return $this->configuracion_numerocancelaciones;
     }
 
     /**
-     * Get the [configuracion_valor2] column value.
+     * Get the [configuracion_valormaximocancelacion] column value.
      *
      * @return string
      */
-    public function getConfiguracionValor2()
+    public function getConfiguracionValormaximocancelacion()
     {
 
-        return $this->configuracion_valor2;
+        return $this->configuracion_valormaximocancelacion;
+    }
+
+    /**
+     * Get the [configuracion_hastacuantosdias] column value.
+     *
+     * @return int
+     */
+    public function getConfiguracionHastacuantosdias()
+    {
+
+        return $this->configuracion_hastacuantosdias;
     }
 
     /**
@@ -139,67 +161,92 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
     } // setIdconfiguracion()
 
     /**
-     * Set the value of [configuracion_nombre] column.
+     * Set the value of [idclinica] column.
      *
-     * @param  string $v new value
+     * @param  int $v new value
      * @return Configuracion The current object (for fluent API support)
      */
-    public function setConfiguracionNombre($v)
+    public function setIdclinica($v)
     {
-        if ($v !== null) {
-            $v = (string) $v;
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
         }
 
-        if ($this->configuracion_nombre !== $v) {
-            $this->configuracion_nombre = $v;
-            $this->modifiedColumns[] = ConfiguracionPeer::CONFIGURACION_NOMBRE;
+        if ($this->idclinica !== $v) {
+            $this->idclinica = $v;
+            $this->modifiedColumns[] = ConfiguracionPeer::IDCLINICA;
+        }
+
+        if ($this->aClinica !== null && $this->aClinica->getIdclinica() !== $v) {
+            $this->aClinica = null;
         }
 
 
         return $this;
-    } // setConfiguracionNombre()
+    } // setIdclinica()
 
     /**
-     * Set the value of [configuracion_valor] column.
+     * Set the value of [configuracion_numerocancelaciones] column.
      *
-     * @param  string $v new value
+     * @param  int $v new value
      * @return Configuracion The current object (for fluent API support)
      */
-    public function setConfiguracionValor($v)
+    public function setConfiguracionNumerocancelaciones($v)
     {
-        if ($v !== null) {
-            $v = (string) $v;
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
         }
 
-        if ($this->configuracion_valor !== $v) {
-            $this->configuracion_valor = $v;
-            $this->modifiedColumns[] = ConfiguracionPeer::CONFIGURACION_VALOR;
+        if ($this->configuracion_numerocancelaciones !== $v) {
+            $this->configuracion_numerocancelaciones = $v;
+            $this->modifiedColumns[] = ConfiguracionPeer::CONFIGURACION_NUMEROCANCELACIONES;
         }
 
 
         return $this;
-    } // setConfiguracionValor()
+    } // setConfiguracionNumerocancelaciones()
 
     /**
-     * Set the value of [configuracion_valor2] column.
+     * Set the value of [configuracion_valormaximocancelacion] column.
      *
      * @param  string $v new value
      * @return Configuracion The current object (for fluent API support)
      */
-    public function setConfiguracionValor2($v)
+    public function setConfiguracionValormaximocancelacion($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->configuracion_valor2 !== $v) {
-            $this->configuracion_valor2 = $v;
-            $this->modifiedColumns[] = ConfiguracionPeer::CONFIGURACION_VALOR2;
+        if ($this->configuracion_valormaximocancelacion !== $v) {
+            $this->configuracion_valormaximocancelacion = $v;
+            $this->modifiedColumns[] = ConfiguracionPeer::CONFIGURACION_VALORMAXIMOCANCELACION;
         }
 
 
         return $this;
-    } // setConfiguracionValor2()
+    } // setConfiguracionValormaximocancelacion()
+
+    /**
+     * Set the value of [configuracion_hastacuantosdias] column.
+     *
+     * @param  int $v new value
+     * @return Configuracion The current object (for fluent API support)
+     */
+    public function setConfiguracionHastacuantosdias($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->configuracion_hastacuantosdias !== $v) {
+            $this->configuracion_hastacuantosdias = $v;
+            $this->modifiedColumns[] = ConfiguracionPeer::CONFIGURACION_HASTACUANTOSDIAS;
+        }
+
+
+        return $this;
+    } // setConfiguracionHastacuantosdias()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -234,9 +281,10 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         try {
 
             $this->idconfiguracion = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->configuracion_nombre = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->configuracion_valor = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->configuracion_valor2 = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->idclinica = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->configuracion_numerocancelaciones = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->configuracion_valormaximocancelacion = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->configuracion_hastacuantosdias = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -246,7 +294,7 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = ConfiguracionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = ConfiguracionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Configuracion object", $e);
@@ -269,6 +317,9 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aClinica !== null && $this->idclinica !== $this->aClinica->getIdclinica()) {
+            $this->aClinica = null;
+        }
     } // ensureConsistency
 
     /**
@@ -308,6 +359,7 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aClinica = null;
         } // if (deep)
     }
 
@@ -421,6 +473,18 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aClinica !== null) {
+                if ($this->aClinica->isModified() || $this->aClinica->isNew()) {
+                    $affectedRows += $this->aClinica->save($con);
+                }
+                $this->setClinica($this->aClinica);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -461,14 +525,17 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         if ($this->isColumnModified(ConfiguracionPeer::IDCONFIGURACION)) {
             $modifiedColumns[':p' . $index++]  = '`idconfiguracion`';
         }
-        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_NOMBRE)) {
-            $modifiedColumns[':p' . $index++]  = '`configuracion_nombre`';
+        if ($this->isColumnModified(ConfiguracionPeer::IDCLINICA)) {
+            $modifiedColumns[':p' . $index++]  = '`idclinica`';
         }
-        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_VALOR)) {
-            $modifiedColumns[':p' . $index++]  = '`configuracion_valor`';
+        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_NUMEROCANCELACIONES)) {
+            $modifiedColumns[':p' . $index++]  = '`configuracion_numerocancelaciones`';
         }
-        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_VALOR2)) {
-            $modifiedColumns[':p' . $index++]  = '`configuracion_valor2`';
+        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_VALORMAXIMOCANCELACION)) {
+            $modifiedColumns[':p' . $index++]  = '`configuracion_valormaximocancelacion`';
+        }
+        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_HASTACUANTOSDIAS)) {
+            $modifiedColumns[':p' . $index++]  = '`configuracion_hastacuantosdias`';
         }
 
         $sql = sprintf(
@@ -484,14 +551,17 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
                     case '`idconfiguracion`':
                         $stmt->bindValue($identifier, $this->idconfiguracion, PDO::PARAM_INT);
                         break;
-                    case '`configuracion_nombre`':
-                        $stmt->bindValue($identifier, $this->configuracion_nombre, PDO::PARAM_STR);
+                    case '`idclinica`':
+                        $stmt->bindValue($identifier, $this->idclinica, PDO::PARAM_INT);
                         break;
-                    case '`configuracion_valor`':
-                        $stmt->bindValue($identifier, $this->configuracion_valor, PDO::PARAM_STR);
+                    case '`configuracion_numerocancelaciones`':
+                        $stmt->bindValue($identifier, $this->configuracion_numerocancelaciones, PDO::PARAM_INT);
                         break;
-                    case '`configuracion_valor2`':
-                        $stmt->bindValue($identifier, $this->configuracion_valor2, PDO::PARAM_STR);
+                    case '`configuracion_valormaximocancelacion`':
+                        $stmt->bindValue($identifier, $this->configuracion_valormaximocancelacion, PDO::PARAM_STR);
+                        break;
+                    case '`configuracion_hastacuantosdias`':
+                        $stmt->bindValue($identifier, $this->configuracion_hastacuantosdias, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -587,6 +657,18 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
             $failureMap = array();
 
 
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aClinica !== null) {
+                if (!$this->aClinica->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aClinica->getValidationFailures());
+                }
+            }
+
+
             if (($retval = ConfiguracionPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
@@ -631,13 +713,16 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
                 return $this->getIdconfiguracion();
                 break;
             case 1:
-                return $this->getConfiguracionNombre();
+                return $this->getIdclinica();
                 break;
             case 2:
-                return $this->getConfiguracionValor();
+                return $this->getConfiguracionNumerocancelaciones();
                 break;
             case 3:
-                return $this->getConfiguracionValor2();
+                return $this->getConfiguracionValormaximocancelacion();
+                break;
+            case 4:
+                return $this->getConfiguracionHastacuantosdias();
                 break;
             default:
                 return null;
@@ -656,10 +741,11 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['Configuracion'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -668,15 +754,21 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         $keys = ConfiguracionPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getIdconfiguracion(),
-            $keys[1] => $this->getConfiguracionNombre(),
-            $keys[2] => $this->getConfiguracionValor(),
-            $keys[3] => $this->getConfiguracionValor2(),
+            $keys[1] => $this->getIdclinica(),
+            $keys[2] => $this->getConfiguracionNumerocancelaciones(),
+            $keys[3] => $this->getConfiguracionValormaximocancelacion(),
+            $keys[4] => $this->getConfiguracionHastacuantosdias(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aClinica) {
+                $result['Clinica'] = $this->aClinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -714,13 +806,16 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
                 $this->setIdconfiguracion($value);
                 break;
             case 1:
-                $this->setConfiguracionNombre($value);
+                $this->setIdclinica($value);
                 break;
             case 2:
-                $this->setConfiguracionValor($value);
+                $this->setConfiguracionNumerocancelaciones($value);
                 break;
             case 3:
-                $this->setConfiguracionValor2($value);
+                $this->setConfiguracionValormaximocancelacion($value);
+                break;
+            case 4:
+                $this->setConfiguracionHastacuantosdias($value);
                 break;
         } // switch()
     }
@@ -747,9 +842,10 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         $keys = ConfiguracionPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setIdconfiguracion($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setConfiguracionNombre($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setConfiguracionValor($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setConfiguracionValor2($arr[$keys[3]]);
+        if (array_key_exists($keys[1], $arr)) $this->setIdclinica($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setConfiguracionNumerocancelaciones($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setConfiguracionValormaximocancelacion($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setConfiguracionHastacuantosdias($arr[$keys[4]]);
     }
 
     /**
@@ -762,9 +858,10 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         $criteria = new Criteria(ConfiguracionPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(ConfiguracionPeer::IDCONFIGURACION)) $criteria->add(ConfiguracionPeer::IDCONFIGURACION, $this->idconfiguracion);
-        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_NOMBRE)) $criteria->add(ConfiguracionPeer::CONFIGURACION_NOMBRE, $this->configuracion_nombre);
-        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_VALOR)) $criteria->add(ConfiguracionPeer::CONFIGURACION_VALOR, $this->configuracion_valor);
-        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_VALOR2)) $criteria->add(ConfiguracionPeer::CONFIGURACION_VALOR2, $this->configuracion_valor2);
+        if ($this->isColumnModified(ConfiguracionPeer::IDCLINICA)) $criteria->add(ConfiguracionPeer::IDCLINICA, $this->idclinica);
+        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_NUMEROCANCELACIONES)) $criteria->add(ConfiguracionPeer::CONFIGURACION_NUMEROCANCELACIONES, $this->configuracion_numerocancelaciones);
+        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_VALORMAXIMOCANCELACION)) $criteria->add(ConfiguracionPeer::CONFIGURACION_VALORMAXIMOCANCELACION, $this->configuracion_valormaximocancelacion);
+        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_HASTACUANTOSDIAS)) $criteria->add(ConfiguracionPeer::CONFIGURACION_HASTACUANTOSDIAS, $this->configuracion_hastacuantosdias);
 
         return $criteria;
     }
@@ -828,9 +925,22 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setConfiguracionNombre($this->getConfiguracionNombre());
-        $copyObj->setConfiguracionValor($this->getConfiguracionValor());
-        $copyObj->setConfiguracionValor2($this->getConfiguracionValor2());
+        $copyObj->setIdclinica($this->getIdclinica());
+        $copyObj->setConfiguracionNumerocancelaciones($this->getConfiguracionNumerocancelaciones());
+        $copyObj->setConfiguracionValormaximocancelacion($this->getConfiguracionValormaximocancelacion());
+        $copyObj->setConfiguracionHastacuantosdias($this->getConfiguracionHastacuantosdias());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdconfiguracion(NULL); // this is a auto-increment column, so set to default value
@@ -878,14 +988,67 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a Clinica object.
+     *
+     * @param                  Clinica $v
+     * @return Configuracion The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setClinica(Clinica $v = null)
+    {
+        if ($v === null) {
+            $this->setIdclinica(NULL);
+        } else {
+            $this->setIdclinica($v->getIdclinica());
+        }
+
+        $this->aClinica = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Clinica object, it will not be re-added.
+        if ($v !== null) {
+            $v->addConfiguracion($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Clinica object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Clinica The associated Clinica object.
+     * @throws PropelException
+     */
+    public function getClinica(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aClinica === null && ($this->idclinica !== null) && $doQuery) {
+            $this->aClinica = ClinicaQuery::create()->findPk($this->idclinica, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aClinica->addConfiguracions($this);
+             */
+        }
+
+        return $this->aClinica;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->idconfiguracion = null;
-        $this->configuracion_nombre = null;
-        $this->configuracion_valor = null;
-        $this->configuracion_valor2 = null;
+        $this->idclinica = null;
+        $this->configuracion_numerocancelaciones = null;
+        $this->configuracion_valormaximocancelacion = null;
+        $this->configuracion_hastacuantosdias = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -908,10 +1071,14 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aClinica instanceof Persistent) {
+              $this->aClinica->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aClinica = null;
     }
 
     /**

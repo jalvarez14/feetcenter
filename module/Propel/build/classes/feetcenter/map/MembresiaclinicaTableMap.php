@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'configuracion' table.
+ * This class defines the structure of the 'membresiaclinica' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.feetcenter.map
  */
-class ConfiguracionTableMap extends TableMap
+class MembresiaclinicaTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'feetcenter.map.ConfiguracionTableMap';
+    const CLASS_NAME = 'feetcenter.map.MembresiaclinicaTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,17 +32,16 @@ class ConfiguracionTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('configuracion');
-        $this->setPhpName('Configuracion');
-        $this->setClassname('Configuracion');
+        $this->setName('membresiaclinica');
+        $this->setPhpName('Membresiaclinica');
+        $this->setClassname('Membresiaclinica');
         $this->setPackage('feetcenter');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('idconfiguracion', 'Idconfiguracion', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('idmembresiaclinica', 'Idmembresiaclinica', 'INTEGER', true, null, null);
+        $this->addForeignKey('idmembresia', 'Idmembresia', 'INTEGER', 'membresia', 'idmembresia', true, null, null);
         $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
-        $this->addColumn('configuracion_numerocancelaciones', 'ConfiguracionNumerocancelaciones', 'INTEGER', true, null, null);
-        $this->addColumn('configuracion_valormaximocancelacion', 'ConfiguracionValormaximocancelacion', 'DECIMAL', true, 10, null);
-        $this->addColumn('configuracion_hastacuantosdias', 'ConfiguracionHastacuantosdias', 'INTEGER', false, null, null);
+        $this->addColumn('membresiaclinica_precio', 'MembresiaclinicaPrecio', 'DECIMAL', true, 10, null);
         // validators
     } // initialize()
 
@@ -52,6 +51,7 @@ class ConfiguracionTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Membresia', 'Membresia', RelationMap::MANY_TO_ONE, array('idmembresia' => 'idmembresia', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
-} // ConfiguracionTableMap
+} // MembresiaclinicaTableMap
