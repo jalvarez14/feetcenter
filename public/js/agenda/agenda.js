@@ -416,11 +416,12 @@
                 eventDrop:function(event, delta, revertFunc, jsEvent, ui, view ) {
                      var viewName = view.name;
                      switch (viewName) {
-                         case 'resourceDay':
+                              case 'resourceDay':
                         {
+                            var n = moment();
+                            var d = event.start.diff(n,'minutes');
                             
-                            
-                            if(!isOverlapping(event)){
+                            if(!isOverlapping(event) && d > 0){
                                 if(event.className[0]!='receso'){
                                     //La peticion ajax
                                     $.ajax({
