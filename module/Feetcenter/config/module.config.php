@@ -28,6 +28,17 @@ return array(
                         ),
                         
                     ),
+                    'membresias' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/membresias[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Membresia',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
                     'clinica' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -482,6 +493,7 @@ return array(
             'Catalogos\Controller\Servicio' => 'Catalogos\Controller\ServicioController',
             'Catalogos\Controller\Empleado' => 'Catalogos\Controller\EmpleadoController',
             'Catalogos\Controller\Incidencia' => 'Catalogos\Controller\IncidenciaController',
+            'Catalogos\Controller\Membresia' => 'Catalogos\Controller\MembresiaController',
             //Compras
             'Compras\Controller\Compras' => 'Compras\Controller\ComprasController',
             //Login

@@ -128,6 +128,17 @@ class ClinicaController extends AbstractActionController
                                      ->save();
                 }
                 
+                //Membresias
+                $membresias = \MembresiaQuery::create()->find();
+                $membresia = new \Membresia();
+                foreach ($membresias as $membresia){
+                    $membresia_clinica = new \Membresiaclinica();
+                    $membresia_clinica->setIdmembresia($membresia->getIdmembresia())
+                                      ->setIdclinica($entity->getIdclinica())
+                                      ->setMembresiaclinicaPrecio(0)
+                                      ->save();
+                }
+                
                
                 //Deespues de guardar nuestra clinica guardamos nuestros encargados y empleados
                 if(isset($post_data['clinica_encargado']) && !empty($post_data['clinica_encargado'])){

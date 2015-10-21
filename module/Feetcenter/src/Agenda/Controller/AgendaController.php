@@ -121,9 +121,7 @@ class AgendaController extends AbstractActionController
         $recesos = \EmpleadorecesoQuery::create()->filterByIdclinica($idclinica)->filterByEmpleadorecesoInicio(array('min' => $dia.' 00:00:00', 'max' => $dia. ' 23:59:59'))->find();
         return $this->response->setContent(json_encode($recesos->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
     }
-    
-    
-    
+
     public function nuevorecesoAction(){
         $sesion = new \Shared\Session\AouthSession();
         $request = $this->getRequest();
@@ -191,7 +189,7 @@ class AgendaController extends AbstractActionController
              
              $idvisita = $this->params()->fromQuery('idvisita');
              $entity = \VisitaQuery::create()->findPk($idvisita);
-             
+           
              //Instanciamos nuestro formulario
              $form = new \Agenda\Form\EventoForm($entity->getIdempleadocreador(), $entity->getIdclinica(), $entity->getIdempleado(), $entity->getVisitaCreadaen(), $entity->getVisitaFechainicio(), $entity->getVisitaFechafin());
              $form->get('idvisita')->setValue($entity->getIdvisita());
@@ -274,8 +272,7 @@ class AgendaController extends AbstractActionController
 
             //Catalogo de servicio
             $servicios = \ServicioclinicaQuery::create()->joinServicio()->withColumn('servicio_nombre')->filterByIdclinica($entity->getIdclinica())->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
-            
-            
+
             $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($entity->getIdclinica())->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
             
             //El paciente
@@ -293,6 +290,7 @@ class AgendaController extends AbstractActionController
                 $clinica_nombre = $cliniva->getClinicaNombre();
                 $paciente_array['relacionados'][$key]['clinica_nombre'] = $clinica_nombre;
             }
+           
 
             $viewModel = new ViewModel();
             $viewModel->setVariables(array(
@@ -338,6 +336,17 @@ class AgendaController extends AbstractActionController
                                   ->setVisitadetalleCantidad($detalle['cantidad'])
                                   ->setVisitadetalleSubtotal($detalle['subtotal']);
                     
+                     
+                    if($detalle['type'] == 'producto'){
+                        $visitadetalle->setIdproductoclinica($detalle['id']);
+
+                    }else if($detalle['type'] == 'servicio'){
+                        $visitadetalle->setIdservicioclinica($detalle['id']);
+                    }else{
+                        $visitadetalle->setIdmembresia($detalle['id']);
+                    }
+                    
+                    $visitadetalle->save();
 //                    if($detalle['type'] == 'producto'){
 //                        $visitadetalle->setIdproductoclinica($detalle['id']);
 //                        //Comisiones
@@ -401,7 +410,7 @@ class AgendaController extends AbstractActionController
 //                        }
 //                    }
                    
-                   $visitadetalle->save();
+                  
 
                 }
   

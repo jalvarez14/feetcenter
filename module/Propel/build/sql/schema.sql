@@ -449,6 +449,8 @@ CREATE TABLE `faltante`
     `faltante_hora` TIME NOT NULL,
     `faltante_cantidad` DECIMAL(10,2),
     `faltante_comentario` TEXT,
+    `faltante_comprobante` TEXT,
+    `faltante_comprobantefirmado` TEXT,
     PRIMARY KEY (`idfaltante`),
     INDEX `idempleadogenerador` (`idempleadogenerador`),
     INDEX `idempleadodeudor` (`idempleadodeudor`),

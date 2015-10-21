@@ -664,7 +664,15 @@
                                                         form_data.append('visita_fechainicio',fechainicio);
                                                         
                                                         fechainicio = moment(fechainicio,"YYYY-MM-DD HH:mm");
+                                                        
+                                                        var n = moment();
+                                                        var d = fechainicio.diff(n,'minutes');
 
+                                                        if(d < 0){
+                                                            alert('No es posible crear una cita en una fecha/hora anterior a la actual!');
+                                                            return;
+                                                        }
+                                                        
                                                         var fechafin = fechainicio.add(30, 'm'); //dureacion por default 30 minutos
                                                         fechafin = moment(fechafin.format('YYYY-MM-DD HH:mm'));
                                                         form_data.append('visita_fechafin',fechafin.format('YYYY-MM-DD HH:mm'));

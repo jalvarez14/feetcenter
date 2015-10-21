@@ -40,6 +40,8 @@
     <?php echo $this->formHidden($form->get('visita_creadaen')); ?>
     <?php echo $this->formHidden($form->get('visita_fechainicio')); ?>
     <?php echo $this->formHidden($form->get('visita_fechafin')); ?>
+    
+   
     <div class="units-row" style="margin-bottom: 0px;">
         <?php 
             echo $this->form()->openTag($form); 
@@ -190,6 +192,7 @@
             <button id="addProduct" class="btn btn-blue width-100">Agregar</button>
         </div>
     </div>
+ 
     <table id="visita_detalles">
         <thead>
             <tr>
@@ -201,6 +204,7 @@
         </thead>
         <tbody>
             <?php foreach ($visita->getVisitadetalles() as $key => $value) :?>
+            
             <tr>
                 <?php if ($value->getIdproductoclinica() != NULL) :?>
                     <input type="hidden" value="<?php echo $value->getIdproductoclinica()?>" name="vistadetalle[<?php echo $key?>][id]">
@@ -328,6 +332,7 @@
                     </legend>
                     <div class="units-row">
                         <div class="unit-100">
+                            
                              <table id="pay_details">
                                 <thead>
                                     <tr>

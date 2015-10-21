@@ -84,6 +84,18 @@ abstract class BaseFaltante extends BaseObject implements Persistent
     protected $faltante_comentario;
 
     /**
+     * The value for the faltante_comprobante field.
+     * @var        string
+     */
+    protected $faltante_comprobante;
+
+    /**
+     * The value for the faltante_comprobantefirmado field.
+     * @var        string
+     */
+    protected $faltante_comprobantefirmado;
+
+    /**
      * @var        Empleado
      */
     protected $aEmpleadoRelatedByIdempleadodeudor;
@@ -295,6 +307,28 @@ abstract class BaseFaltante extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [faltante_comprobante] column value.
+     *
+     * @return string
+     */
+    public function getFaltanteComprobante()
+    {
+
+        return $this->faltante_comprobante;
+    }
+
+    /**
+     * Get the [faltante_comprobantefirmado] column value.
+     *
+     * @return string
+     */
+    public function getFaltanteComprobantefirmado()
+    {
+
+        return $this->faltante_comprobantefirmado;
+    }
+
+    /**
      * Set the value of [idfaltante] column.
      *
      * @param  int $v new value
@@ -498,6 +532,48 @@ abstract class BaseFaltante extends BaseObject implements Persistent
     } // setFaltanteComentario()
 
     /**
+     * Set the value of [faltante_comprobante] column.
+     *
+     * @param  string $v new value
+     * @return Faltante The current object (for fluent API support)
+     */
+    public function setFaltanteComprobante($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->faltante_comprobante !== $v) {
+            $this->faltante_comprobante = $v;
+            $this->modifiedColumns[] = FaltantePeer::FALTANTE_COMPROBANTE;
+        }
+
+
+        return $this;
+    } // setFaltanteComprobante()
+
+    /**
+     * Set the value of [faltante_comprobantefirmado] column.
+     *
+     * @param  string $v new value
+     * @return Faltante The current object (for fluent API support)
+     */
+    public function setFaltanteComprobantefirmado($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->faltante_comprobantefirmado !== $v) {
+            $this->faltante_comprobantefirmado = $v;
+            $this->modifiedColumns[] = FaltantePeer::FALTANTE_COMPROBANTEFIRMADO;
+        }
+
+
+        return $this;
+    } // setFaltanteComprobantefirmado()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -538,6 +614,8 @@ abstract class BaseFaltante extends BaseObject implements Persistent
             $this->faltante_hora = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->faltante_cantidad = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->faltante_comentario = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->faltante_comprobante = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->faltante_comprobantefirmado = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -547,7 +625,7 @@ abstract class BaseFaltante extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 9; // 9 = FaltantePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 11; // 11 = FaltantePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Faltante object", $e);
@@ -813,6 +891,12 @@ abstract class BaseFaltante extends BaseObject implements Persistent
         if ($this->isColumnModified(FaltantePeer::FALTANTE_COMENTARIO)) {
             $modifiedColumns[':p' . $index++]  = '`faltante_comentario`';
         }
+        if ($this->isColumnModified(FaltantePeer::FALTANTE_COMPROBANTE)) {
+            $modifiedColumns[':p' . $index++]  = '`faltante_comprobante`';
+        }
+        if ($this->isColumnModified(FaltantePeer::FALTANTE_COMPROBANTEFIRMADO)) {
+            $modifiedColumns[':p' . $index++]  = '`faltante_comprobantefirmado`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `faltante` (%s) VALUES (%s)',
@@ -850,6 +934,12 @@ abstract class BaseFaltante extends BaseObject implements Persistent
                         break;
                     case '`faltante_comentario`':
                         $stmt->bindValue($identifier, $this->faltante_comentario, PDO::PARAM_STR);
+                        break;
+                    case '`faltante_comprobante`':
+                        $stmt->bindValue($identifier, $this->faltante_comprobante, PDO::PARAM_STR);
+                        break;
+                    case '`faltante_comprobantefirmado`':
+                        $stmt->bindValue($identifier, $this->faltante_comprobantefirmado, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1030,6 +1120,12 @@ abstract class BaseFaltante extends BaseObject implements Persistent
             case 8:
                 return $this->getFaltanteComentario();
                 break;
+            case 9:
+                return $this->getFaltanteComprobante();
+                break;
+            case 10:
+                return $this->getFaltanteComprobantefirmado();
+                break;
             default:
                 return null;
                 break;
@@ -1068,6 +1164,8 @@ abstract class BaseFaltante extends BaseObject implements Persistent
             $keys[6] => $this->getFaltanteHora(),
             $keys[7] => $this->getFaltanteCantidad(),
             $keys[8] => $this->getFaltanteComentario(),
+            $keys[9] => $this->getFaltanteComprobante(),
+            $keys[10] => $this->getFaltanteComprobantefirmado(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1142,6 +1240,12 @@ abstract class BaseFaltante extends BaseObject implements Persistent
             case 8:
                 $this->setFaltanteComentario($value);
                 break;
+            case 9:
+                $this->setFaltanteComprobante($value);
+                break;
+            case 10:
+                $this->setFaltanteComprobantefirmado($value);
+                break;
         } // switch()
     }
 
@@ -1175,6 +1279,8 @@ abstract class BaseFaltante extends BaseObject implements Persistent
         if (array_key_exists($keys[6], $arr)) $this->setFaltanteHora($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setFaltanteCantidad($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setFaltanteComentario($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setFaltanteComprobante($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setFaltanteComprobantefirmado($arr[$keys[10]]);
     }
 
     /**
@@ -1195,6 +1301,8 @@ abstract class BaseFaltante extends BaseObject implements Persistent
         if ($this->isColumnModified(FaltantePeer::FALTANTE_HORA)) $criteria->add(FaltantePeer::FALTANTE_HORA, $this->faltante_hora);
         if ($this->isColumnModified(FaltantePeer::FALTANTE_CANTIDAD)) $criteria->add(FaltantePeer::FALTANTE_CANTIDAD, $this->faltante_cantidad);
         if ($this->isColumnModified(FaltantePeer::FALTANTE_COMENTARIO)) $criteria->add(FaltantePeer::FALTANTE_COMENTARIO, $this->faltante_comentario);
+        if ($this->isColumnModified(FaltantePeer::FALTANTE_COMPROBANTE)) $criteria->add(FaltantePeer::FALTANTE_COMPROBANTE, $this->faltante_comprobante);
+        if ($this->isColumnModified(FaltantePeer::FALTANTE_COMPROBANTEFIRMADO)) $criteria->add(FaltantePeer::FALTANTE_COMPROBANTEFIRMADO, $this->faltante_comprobantefirmado);
 
         return $criteria;
     }
@@ -1266,6 +1374,8 @@ abstract class BaseFaltante extends BaseObject implements Persistent
         $copyObj->setFaltanteHora($this->getFaltanteHora());
         $copyObj->setFaltanteCantidad($this->getFaltanteCantidad());
         $copyObj->setFaltanteComentario($this->getFaltanteComentario());
+        $copyObj->setFaltanteComprobante($this->getFaltanteComprobante());
+        $copyObj->setFaltanteComprobantefirmado($this->getFaltanteComprobantefirmado());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1442,6 +1552,8 @@ abstract class BaseFaltante extends BaseObject implements Persistent
         $this->faltante_hora = null;
         $this->faltante_cantidad = null;
         $this->faltante_comentario = null;
+        $this->faltante_comprobante = null;
+        $this->faltante_comprobantefirmado = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

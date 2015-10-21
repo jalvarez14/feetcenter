@@ -24,13 +24,13 @@ abstract class BaseFaltantePeer
     const TM_CLASS = 'FaltanteTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 11;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 11;
 
     /** the column name for the idfaltante field */
     const IDFALTANTE = 'faltante.idfaltante';
@@ -59,6 +59,12 @@ abstract class BaseFaltantePeer
     /** the column name for the faltante_comentario field */
     const FALTANTE_COMENTARIO = 'faltante.faltante_comentario';
 
+    /** the column name for the faltante_comprobante field */
+    const FALTANTE_COMPROBANTE = 'faltante.faltante_comprobante';
+
+    /** the column name for the faltante_comprobantefirmado field */
+    const FALTANTE_COMPROBANTEFIRMADO = 'faltante.faltante_comprobantefirmado';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -78,12 +84,12 @@ abstract class BaseFaltantePeer
      * e.g. FaltantePeer::$fieldNames[FaltantePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idfaltante', 'Idclinica', 'Idempleadogenerador', 'Idempleadodeudor', 'FaltanteCreadaen', 'FaltanteFecha', 'FaltanteHora', 'FaltanteCantidad', 'FaltanteComentario', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idfaltante', 'idclinica', 'idempleadogenerador', 'idempleadodeudor', 'faltanteCreadaen', 'faltanteFecha', 'faltanteHora', 'faltanteCantidad', 'faltanteComentario', ),
-        BasePeer::TYPE_COLNAME => array (FaltantePeer::IDFALTANTE, FaltantePeer::IDCLINICA, FaltantePeer::IDEMPLEADOGENERADOR, FaltantePeer::IDEMPLEADODEUDOR, FaltantePeer::FALTANTE_CREADAEN, FaltantePeer::FALTANTE_FECHA, FaltantePeer::FALTANTE_HORA, FaltantePeer::FALTANTE_CANTIDAD, FaltantePeer::FALTANTE_COMENTARIO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDFALTANTE', 'IDCLINICA', 'IDEMPLEADOGENERADOR', 'IDEMPLEADODEUDOR', 'FALTANTE_CREADAEN', 'FALTANTE_FECHA', 'FALTANTE_HORA', 'FALTANTE_CANTIDAD', 'FALTANTE_COMENTARIO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idfaltante', 'idclinica', 'idempleadogenerador', 'idempleadodeudor', 'faltante_creadaen', 'faltante_fecha', 'faltante_hora', 'faltante_cantidad', 'faltante_comentario', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idfaltante', 'Idclinica', 'Idempleadogenerador', 'Idempleadodeudor', 'FaltanteCreadaen', 'FaltanteFecha', 'FaltanteHora', 'FaltanteCantidad', 'FaltanteComentario', 'FaltanteComprobante', 'FaltanteComprobantefirmado', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idfaltante', 'idclinica', 'idempleadogenerador', 'idempleadodeudor', 'faltanteCreadaen', 'faltanteFecha', 'faltanteHora', 'faltanteCantidad', 'faltanteComentario', 'faltanteComprobante', 'faltanteComprobantefirmado', ),
+        BasePeer::TYPE_COLNAME => array (FaltantePeer::IDFALTANTE, FaltantePeer::IDCLINICA, FaltantePeer::IDEMPLEADOGENERADOR, FaltantePeer::IDEMPLEADODEUDOR, FaltantePeer::FALTANTE_CREADAEN, FaltantePeer::FALTANTE_FECHA, FaltantePeer::FALTANTE_HORA, FaltantePeer::FALTANTE_CANTIDAD, FaltantePeer::FALTANTE_COMENTARIO, FaltantePeer::FALTANTE_COMPROBANTE, FaltantePeer::FALTANTE_COMPROBANTEFIRMADO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDFALTANTE', 'IDCLINICA', 'IDEMPLEADOGENERADOR', 'IDEMPLEADODEUDOR', 'FALTANTE_CREADAEN', 'FALTANTE_FECHA', 'FALTANTE_HORA', 'FALTANTE_CANTIDAD', 'FALTANTE_COMENTARIO', 'FALTANTE_COMPROBANTE', 'FALTANTE_COMPROBANTEFIRMADO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idfaltante', 'idclinica', 'idempleadogenerador', 'idempleadodeudor', 'faltante_creadaen', 'faltante_fecha', 'faltante_hora', 'faltante_cantidad', 'faltante_comentario', 'faltante_comprobante', 'faltante_comprobantefirmado', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -93,12 +99,12 @@ abstract class BaseFaltantePeer
      * e.g. FaltantePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idfaltante' => 0, 'Idclinica' => 1, 'Idempleadogenerador' => 2, 'Idempleadodeudor' => 3, 'FaltanteCreadaen' => 4, 'FaltanteFecha' => 5, 'FaltanteHora' => 6, 'FaltanteCantidad' => 7, 'FaltanteComentario' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idfaltante' => 0, 'idclinica' => 1, 'idempleadogenerador' => 2, 'idempleadodeudor' => 3, 'faltanteCreadaen' => 4, 'faltanteFecha' => 5, 'faltanteHora' => 6, 'faltanteCantidad' => 7, 'faltanteComentario' => 8, ),
-        BasePeer::TYPE_COLNAME => array (FaltantePeer::IDFALTANTE => 0, FaltantePeer::IDCLINICA => 1, FaltantePeer::IDEMPLEADOGENERADOR => 2, FaltantePeer::IDEMPLEADODEUDOR => 3, FaltantePeer::FALTANTE_CREADAEN => 4, FaltantePeer::FALTANTE_FECHA => 5, FaltantePeer::FALTANTE_HORA => 6, FaltantePeer::FALTANTE_CANTIDAD => 7, FaltantePeer::FALTANTE_COMENTARIO => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDFALTANTE' => 0, 'IDCLINICA' => 1, 'IDEMPLEADOGENERADOR' => 2, 'IDEMPLEADODEUDOR' => 3, 'FALTANTE_CREADAEN' => 4, 'FALTANTE_FECHA' => 5, 'FALTANTE_HORA' => 6, 'FALTANTE_CANTIDAD' => 7, 'FALTANTE_COMENTARIO' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('idfaltante' => 0, 'idclinica' => 1, 'idempleadogenerador' => 2, 'idempleadodeudor' => 3, 'faltante_creadaen' => 4, 'faltante_fecha' => 5, 'faltante_hora' => 6, 'faltante_cantidad' => 7, 'faltante_comentario' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idfaltante' => 0, 'Idclinica' => 1, 'Idempleadogenerador' => 2, 'Idempleadodeudor' => 3, 'FaltanteCreadaen' => 4, 'FaltanteFecha' => 5, 'FaltanteHora' => 6, 'FaltanteCantidad' => 7, 'FaltanteComentario' => 8, 'FaltanteComprobante' => 9, 'FaltanteComprobantefirmado' => 10, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idfaltante' => 0, 'idclinica' => 1, 'idempleadogenerador' => 2, 'idempleadodeudor' => 3, 'faltanteCreadaen' => 4, 'faltanteFecha' => 5, 'faltanteHora' => 6, 'faltanteCantidad' => 7, 'faltanteComentario' => 8, 'faltanteComprobante' => 9, 'faltanteComprobantefirmado' => 10, ),
+        BasePeer::TYPE_COLNAME => array (FaltantePeer::IDFALTANTE => 0, FaltantePeer::IDCLINICA => 1, FaltantePeer::IDEMPLEADOGENERADOR => 2, FaltantePeer::IDEMPLEADODEUDOR => 3, FaltantePeer::FALTANTE_CREADAEN => 4, FaltantePeer::FALTANTE_FECHA => 5, FaltantePeer::FALTANTE_HORA => 6, FaltantePeer::FALTANTE_CANTIDAD => 7, FaltantePeer::FALTANTE_COMENTARIO => 8, FaltantePeer::FALTANTE_COMPROBANTE => 9, FaltantePeer::FALTANTE_COMPROBANTEFIRMADO => 10, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDFALTANTE' => 0, 'IDCLINICA' => 1, 'IDEMPLEADOGENERADOR' => 2, 'IDEMPLEADODEUDOR' => 3, 'FALTANTE_CREADAEN' => 4, 'FALTANTE_FECHA' => 5, 'FALTANTE_HORA' => 6, 'FALTANTE_CANTIDAD' => 7, 'FALTANTE_COMENTARIO' => 8, 'FALTANTE_COMPROBANTE' => 9, 'FALTANTE_COMPROBANTEFIRMADO' => 10, ),
+        BasePeer::TYPE_FIELDNAME => array ('idfaltante' => 0, 'idclinica' => 1, 'idempleadogenerador' => 2, 'idempleadodeudor' => 3, 'faltante_creadaen' => 4, 'faltante_fecha' => 5, 'faltante_hora' => 6, 'faltante_cantidad' => 7, 'faltante_comentario' => 8, 'faltante_comprobante' => 9, 'faltante_comprobantefirmado' => 10, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -181,6 +187,8 @@ abstract class BaseFaltantePeer
             $criteria->addSelectColumn(FaltantePeer::FALTANTE_HORA);
             $criteria->addSelectColumn(FaltantePeer::FALTANTE_CANTIDAD);
             $criteria->addSelectColumn(FaltantePeer::FALTANTE_COMENTARIO);
+            $criteria->addSelectColumn(FaltantePeer::FALTANTE_COMPROBANTE);
+            $criteria->addSelectColumn(FaltantePeer::FALTANTE_COMPROBANTEFIRMADO);
         } else {
             $criteria->addSelectColumn($alias . '.idfaltante');
             $criteria->addSelectColumn($alias . '.idclinica');
@@ -191,6 +199,8 @@ abstract class BaseFaltantePeer
             $criteria->addSelectColumn($alias . '.faltante_hora');
             $criteria->addSelectColumn($alias . '.faltante_cantidad');
             $criteria->addSelectColumn($alias . '.faltante_comentario');
+            $criteria->addSelectColumn($alias . '.faltante_comprobante');
+            $criteria->addSelectColumn($alias . '.faltante_comprobantefirmado');
         }
     }
 

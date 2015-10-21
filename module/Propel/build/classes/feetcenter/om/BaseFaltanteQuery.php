@@ -15,6 +15,8 @@
  * @method FaltanteQuery orderByFaltanteHora($order = Criteria::ASC) Order by the faltante_hora column
  * @method FaltanteQuery orderByFaltanteCantidad($order = Criteria::ASC) Order by the faltante_cantidad column
  * @method FaltanteQuery orderByFaltanteComentario($order = Criteria::ASC) Order by the faltante_comentario column
+ * @method FaltanteQuery orderByFaltanteComprobante($order = Criteria::ASC) Order by the faltante_comprobante column
+ * @method FaltanteQuery orderByFaltanteComprobantefirmado($order = Criteria::ASC) Order by the faltante_comprobantefirmado column
  *
  * @method FaltanteQuery groupByIdfaltante() Group by the idfaltante column
  * @method FaltanteQuery groupByIdclinica() Group by the idclinica column
@@ -25,6 +27,8 @@
  * @method FaltanteQuery groupByFaltanteHora() Group by the faltante_hora column
  * @method FaltanteQuery groupByFaltanteCantidad() Group by the faltante_cantidad column
  * @method FaltanteQuery groupByFaltanteComentario() Group by the faltante_comentario column
+ * @method FaltanteQuery groupByFaltanteComprobante() Group by the faltante_comprobante column
+ * @method FaltanteQuery groupByFaltanteComprobantefirmado() Group by the faltante_comprobantefirmado column
  *
  * @method FaltanteQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method FaltanteQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -49,6 +53,8 @@
  * @method Faltante findOneByFaltanteHora(string $faltante_hora) Return the first Faltante filtered by the faltante_hora column
  * @method Faltante findOneByFaltanteCantidad(string $faltante_cantidad) Return the first Faltante filtered by the faltante_cantidad column
  * @method Faltante findOneByFaltanteComentario(string $faltante_comentario) Return the first Faltante filtered by the faltante_comentario column
+ * @method Faltante findOneByFaltanteComprobante(string $faltante_comprobante) Return the first Faltante filtered by the faltante_comprobante column
+ * @method Faltante findOneByFaltanteComprobantefirmado(string $faltante_comprobantefirmado) Return the first Faltante filtered by the faltante_comprobantefirmado column
  *
  * @method array findByIdfaltante(int $idfaltante) Return Faltante objects filtered by the idfaltante column
  * @method array findByIdclinica(int $idclinica) Return Faltante objects filtered by the idclinica column
@@ -59,6 +65,8 @@
  * @method array findByFaltanteHora(string $faltante_hora) Return Faltante objects filtered by the faltante_hora column
  * @method array findByFaltanteCantidad(string $faltante_cantidad) Return Faltante objects filtered by the faltante_cantidad column
  * @method array findByFaltanteComentario(string $faltante_comentario) Return Faltante objects filtered by the faltante_comentario column
+ * @method array findByFaltanteComprobante(string $faltante_comprobante) Return Faltante objects filtered by the faltante_comprobante column
+ * @method array findByFaltanteComprobantefirmado(string $faltante_comprobantefirmado) Return Faltante objects filtered by the faltante_comprobantefirmado column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -166,7 +174,7 @@ abstract class BaseFaltanteQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idfaltante`, `idclinica`, `idempleadogenerador`, `idempleadodeudor`, `faltante_creadaen`, `faltante_fecha`, `faltante_hora`, `faltante_cantidad`, `faltante_comentario` FROM `faltante` WHERE `idfaltante` = :p0';
+        $sql = 'SELECT `idfaltante`, `idclinica`, `idempleadogenerador`, `idempleadodeudor`, `faltante_creadaen`, `faltante_fecha`, `faltante_hora`, `faltante_cantidad`, `faltante_comentario`, `faltante_comprobante`, `faltante_comprobantefirmado` FROM `faltante` WHERE `idfaltante` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -625,6 +633,64 @@ abstract class BaseFaltanteQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(FaltantePeer::FALTANTE_COMENTARIO, $faltanteComentario, $comparison);
+    }
+
+    /**
+     * Filter the query on the faltante_comprobante column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFaltanteComprobante('fooValue');   // WHERE faltante_comprobante = 'fooValue'
+     * $query->filterByFaltanteComprobante('%fooValue%'); // WHERE faltante_comprobante LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $faltanteComprobante The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return FaltanteQuery The current query, for fluid interface
+     */
+    public function filterByFaltanteComprobante($faltanteComprobante = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($faltanteComprobante)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $faltanteComprobante)) {
+                $faltanteComprobante = str_replace('*', '%', $faltanteComprobante);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(FaltantePeer::FALTANTE_COMPROBANTE, $faltanteComprobante, $comparison);
+    }
+
+    /**
+     * Filter the query on the faltante_comprobantefirmado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFaltanteComprobantefirmado('fooValue');   // WHERE faltante_comprobantefirmado = 'fooValue'
+     * $query->filterByFaltanteComprobantefirmado('%fooValue%'); // WHERE faltante_comprobantefirmado LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $faltanteComprobantefirmado The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return FaltanteQuery The current query, for fluid interface
+     */
+    public function filterByFaltanteComprobantefirmado($faltanteComprobantefirmado = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($faltanteComprobantefirmado)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $faltanteComprobantefirmado)) {
+                $faltanteComprobantefirmado = str_replace('*', '%', $faltanteComprobantefirmado);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(FaltantePeer::FALTANTE_COMPROBANTEFIRMADO, $faltanteComprobantefirmado, $comparison);
     }
 
     /**

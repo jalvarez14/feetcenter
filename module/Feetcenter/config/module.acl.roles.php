@@ -13,6 +13,7 @@ return array(
             'catalogos/empleado',
             'catalogos/concepto',
             'catalogos/incidencia',
+            'catalogos/membresias',
             //Compras
             'compras',
             //Login
@@ -102,6 +103,7 @@ return array(
             'catalogos/empleado',
             'catalogos/concepto',
             'catalogos/incidencia',
+            'catalogos/membresias',
             //Compras
             'compras',
             
@@ -135,6 +137,7 @@ return array(
             'catalogos/servicio',
             'catalogos/empleado',
             'catalogos/concepto',
+            'catalogos/membresias',
             //Compras
             'compras',
             //Inventarios

@@ -47,6 +47,8 @@ class FaltanteTableMap extends TableMap
         $this->addColumn('faltante_hora', 'FaltanteHora', 'TIME', true, null, null);
         $this->addColumn('faltante_cantidad', 'FaltanteCantidad', 'DECIMAL', false, 10, null);
         $this->addColumn('faltante_comentario', 'FaltanteComentario', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('faltante_comprobante', 'FaltanteComprobante', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('faltante_comprobantefirmado', 'FaltanteComprobantefirmado', 'LONGVARCHAR', false, null, null);
         // validators
     } // initialize()
 
