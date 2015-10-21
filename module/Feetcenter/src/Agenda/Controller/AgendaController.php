@@ -338,68 +338,68 @@ class AgendaController extends AbstractActionController
                                   ->setVisitadetalleCantidad($detalle['cantidad'])
                                   ->setVisitadetalleSubtotal($detalle['subtotal']);
                     
-                    if($detalle['type'] == 'producto'){
-                        $visitadetalle->setIdproductoclinica($detalle['id']);
-                        //Comisiones
-                        
-                        
-                        
-                        
-                    }else{
-                        $visitadetalle->setIdservicioclinica($detalle['id']);
-                        //Comisiones
-                        $servicioclinica = \ServicioclinicaQuery::create()->findPk($detalle['id']);
-                       
-                        if($servicioclinica->getServicio()->getServicioGeneracomision()){
-                            $fecha = new \DateTime();
-                            //Verificamos si ya tiene un registro del dia en cursos
-                            if(\EmpleadocomisionQuery::create()->filterByIdempledo($post_data['idempleado'])->filterByEmpleadocomisionFecha($fecha->format('y-m-d'))->exists()){
-                                $registro = \EmpleadocomisionQuery::create()->filterByIdempledo($post_data['idempleado'])->filterByEmpleadocomisionFecha($fecha->format('y-m-d'))->findOne();
-                                
-                                $vendidos = $registro->getEmpleadocomisionServiciosvendidos();
-                                $new_vendidos = $vendidos + $detalle['cantidad'];
-                                $registro->setEmpleadocomisionServiciosvendidos($new_vendidos);
-                                
-                                $tipo = $servicioclinica->getServicio()->getServicioTipocomision();
-                                if($tipo == 'cantidad'){
-                                    $comision = $servicioclinica->getServicio()->getServicioComision() * $detalle['cantidad'];
-                                }else{
-                                    $comision = ($servicioclinica->getServicio()->getServicioComision() / 100) * $servicioclinica->getServicioclinicaPrecio();
-                                }
-                                $comision_current = $registro->getEmpleadocomisionComisionservicios();
-                                $new_comision = $comision_current + $comision;
-                                $registro->setEmpleadocomisionComisionservicios($new_comision);
-                                
-                                $acumulado_current = $registro->getEmpleadocomisionAcumulado();
-                                $acumulado_new = $acumulado_current + $comision;
-                                $registro->setEmpleadocomisionAcumulado($acumulado_new);
-                                $registro->save();
-                                
-                                
-                            }else{
-                                //Creamos un primer registro del dia
-                                $empleado_comision = new \Empleadocomision();
-                                $empleado_comision->setIdempledo($post_data['idempleado'])
-                                                  ->setIdclinica($post_data['idclinica'])
-                                                  ->setEmpleadocomisionFecha($fecha->format('Y-m-d'))
-                                                  ->setEmpleadocomisionServiciosvendidos($detalle['cantidad']);
-                                
-                                $tipo = $servicioclinica->getServicio()->getServicioTipocomision();
-                                if($tipo == 'cantidad'){
-                                    $comision = $servicioclinica->getServicio()->getServicioComision() * $detalle['cantidad'];
-                                }else{
-                                    $comision = ($servicioclinica->getServicio()->getServicioComision() / 100) * $servicioclinica->getServicioclinicaPrecio();
-                                }
-                                
-                                $empleado_comision->setEmpleadocomisionComisionservicios($comision)
-                                                  ->setEmpleadocomisionAcumulado($comision);
-                                
-                                $empleado_comision->save();
-                                 
-                            }
-                           
-                        }
-                    }
+//                    if($detalle['type'] == 'producto'){
+//                        $visitadetalle->setIdproductoclinica($detalle['id']);
+//                        //Comisiones
+//                        
+//                        
+//                        
+//                        
+//                    }else{
+//                        $visitadetalle->setIdservicioclinica($detalle['id']);
+//                        //Comisiones
+//                        $servicioclinica = \ServicioclinicaQuery::create()->findPk($detalle['id']);
+//                       
+//                        if($servicioclinica->getServicio()->getServicioGeneracomision()){
+//                            $fecha = new \DateTime();
+//                            //Verificamos si ya tiene un registro del dia en cursos
+//                            if(\EmpleadocomisionQuery::create()->filterByIdempledo($post_data['idempleado'])->filterByEmpleadocomisionFecha($fecha->format('y-m-d'))->exists()){
+//                                $registro = \EmpleadocomisionQuery::create()->filterByIdempledo($post_data['idempleado'])->filterByEmpleadocomisionFecha($fecha->format('y-m-d'))->findOne();
+//                                
+//                                $vendidos = $registro->getEmpleadocomisionServiciosvendidos();
+//                                $new_vendidos = $vendidos + $detalle['cantidad'];
+//                                $registro->setEmpleadocomisionServiciosvendidos($new_vendidos);
+//                                
+//                                $tipo = $servicioclinica->getServicio()->getServicioTipocomision();
+//                                if($tipo == 'cantidad'){
+//                                    $comision = $servicioclinica->getServicio()->getServicioComision() * $detalle['cantidad'];
+//                                }else{
+//                                    $comision = ($servicioclinica->getServicio()->getServicioComision() / 100) * $servicioclinica->getServicioclinicaPrecio();
+//                                }
+//                                $comision_current = $registro->getEmpleadocomisionComisionservicios();
+//                                $new_comision = $comision_current + $comision;
+//                                $registro->setEmpleadocomisionComisionservicios($new_comision);
+//                                
+//                                $acumulado_current = $registro->getEmpleadocomisionAcumulado();
+//                                $acumulado_new = $acumulado_current + $comision;
+//                                $registro->setEmpleadocomisionAcumulado($acumulado_new);
+//                                $registro->save();
+//                                
+//                                
+//                            }else{
+//                                //Creamos un primer registro del dia
+//                                $empleado_comision = new \Empleadocomision();
+//                                $empleado_comision->setIdempledo($post_data['idempleado'])
+//                                                  ->setIdclinica($post_data['idclinica'])
+//                                                  ->setEmpleadocomisionFecha($fecha->format('Y-m-d'))
+//                                                  ->setEmpleadocomisionServiciosvendidos($detalle['cantidad']);
+//                                
+//                                $tipo = $servicioclinica->getServicio()->getServicioTipocomision();
+//                                if($tipo == 'cantidad'){
+//                                    $comision = $servicioclinica->getServicio()->getServicioComision() * $detalle['cantidad'];
+//                                }else{
+//                                    $comision = ($servicioclinica->getServicio()->getServicioComision() / 100) * $servicioclinica->getServicioclinicaPrecio();
+//                                }
+//                                
+//                                $empleado_comision->setEmpleadocomisionComisionservicios($comision)
+//                                                  ->setEmpleadocomisionAcumulado($comision);
+//                                
+//                                $empleado_comision->save();
+//                                 
+//                            }
+//                           
+//                        }
+//                    }
                    
                    $visitadetalle->save();
 
