@@ -39,7 +39,7 @@ class ServicioController extends AbstractActionController
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-
+            
             foreach ($post_data as $k => $v){
                 if(empty($v) && $v!="0" && $v!="1"){
                     unset($post_data[$k]);
@@ -49,7 +49,7 @@ class ServicioController extends AbstractActionController
             
             //Le ponemos los datos a nuestro formulario
             $form->setData($post_data);
-      
+            
             
             //Validamos nuestro formulario
             if ($form->isValid()) {
@@ -67,7 +67,7 @@ class ServicioController extends AbstractActionController
                     $entity->setServicioTipocomision($post_data['servicio_tipocomision']);
                     $entity->setServicioComision($post_data['servicio_comision']);
                 }
-                
+               
                 //Guardamos en nuestra base de datos
                 $entity->save();
                 

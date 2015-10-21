@@ -30,6 +30,23 @@ class ServicioForm extends Form
             ),
         ));
         
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Radio',
+            'name' => 'servicio_dependencia',
+            'options' => array(
+                'value_options' => array(
+                    'ninguno'   => 'Ninguno',
+                    'membresia' => 'Membresia',
+                    'cupon'     => 'Cupon',
+                ),
+                
+            ),
+            'attributes' => array(
+                'value' => 'ninguno',
+            ),
+            
+        ));
+        
 
         $this->add(array(
             'name' => 'servicio_comision',

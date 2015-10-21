@@ -25,6 +25,17 @@
     </div>
     <div class="units-row">
         <div class="unit-100">
+            <label>
+                Dependencia <span class="req">*</span>
+            </label>
+            <ul class="forms-inline-list">
+                <?php echo $this->formRadio($form->get('servicio_dependencia')); ?>
+            </ul>
+            
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
             <fieldset>
                 <legend>Ingresos y comisiones</legend>
                 <div class="units-row">

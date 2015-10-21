@@ -165,3 +165,10 @@ table.dataTable tbody tr.warning{
     width: 216px;
     max-width: 215px;
 }
+
+.forms-inline-list label{
+        display: inline;
+    }
+.forms-inline-list label:not(:first-child){
+    padding-left: 10px;
+}

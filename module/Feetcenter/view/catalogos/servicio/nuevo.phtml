@@ -1,3 +1,4 @@
+
 <div id="servicio_container">
     <h1>Nuevo servicio</h1>
     <?php 
@@ -21,6 +22,17 @@
                 Descripción <span class="req">*</span>
                 <?php echo $this->formTextarea($form->get('servicio_descripcion')); ?>
             </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Dependencia <span class="req">*</span>
+            </label>
+            <ul class="forms-inline-list">
+                <?php echo $this->formRadio($form->get('servicio_dependencia')); ?>
+            </ul>
+            
         </div>
     </div>
     <div class="units-row">
