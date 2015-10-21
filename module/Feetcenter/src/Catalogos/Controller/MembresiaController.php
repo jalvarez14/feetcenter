@@ -36,19 +36,17 @@ class MembresiaController extends AbstractActionController
         if ($request->isPost()){
             
             $post_data = $request->getPost();
-              
+            
             foreach ($post_data as $k => $v){
                 if(empty($v)){
                     unset($post_data[$k]);
                 }
             }
-            
+             
             //Le ponemos los datos a nuestro formulario
             $form->setData($post_data);
             
-            //Validamos nuestro formulario
-            if ($form->isValid()) {
-                
+
                 $entity = new \Membresia();
             
                 foreach($post_data as $key => $value){
@@ -56,9 +54,11 @@ class MembresiaController extends AbstractActionController
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
                 }
-                
+                 
                 //Guardamos en nuestra base de datos
                 $entity->save();
+      
+                
                 
                 //Lo registramos en la sucursal matriz
                 $clinicas = \ClinicaQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
@@ -76,7 +76,7 @@ class MembresiaController extends AbstractActionController
                 //Redireccionamos a nuestro list
                 return $this->redirect()->toRoute('catalogos/membresias');
 
-            }
+            
         }
         return new ViewModel(array(
             'form' => $form,

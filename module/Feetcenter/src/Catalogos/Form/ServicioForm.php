@@ -36,7 +36,7 @@ class ServicioForm extends Form
             'options' => array(
                 'value_options' => array(
                     'ninguno'   => 'Ninguno',
-                    'membresia' => 'Membresia',
+                    'membresia' => 'Membresía',
                     'cupon'     => 'Cupon',
                 ),
                 
