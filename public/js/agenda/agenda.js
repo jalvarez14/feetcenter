@@ -567,27 +567,31 @@
                                          payMethodContainer.find('input,button,select').prop('disabled',false);
                                          payMethodContainer.find('input').numeric();
                                          //Eventos method pay
-                                         payMethodContainer.find('#addMethodPay').on('click',function(){
+                                         payMethodContainer.find('#addMethodPay').on('click',newMethodPay);
                                              
-                                             var count = payMethodContainer.find('div.units-row').length;
-                                             var row = payMethodContainer.find('div.units-row').eq(0).clone();
-                                             //renombramos formulario
-                                             row.find('select').attr('name','visitapago_tipo['+count+'][type]');
-                                             row.find('input').attr('name','visitapago_tipo['+count+'][cantidad]');
-                                             row.find('input').numeric();
-                                             var total = payDetailsContainer.find('input[name=visita_total]').val();
-                                             var res = parseFloat(total) - parseFloat(row.find('input').val());
-                                             
-                                             row.find('input').val(res);
-                                             
-                                             row.find('button').after('<a href="javascript:void(0)">Eliminar</a>');
-                                             row.find('button').remove();
-                                             row.find('a').parent().css('margin-top','27px');
-                                             row.find('a').on('click',function(){
-                                                $(this).closest('div.units-row').remove();
-                                             });
-                                             payMethodContainer.find('fieldset').prepend(row);
-                                         });
+//                                             var count = payMethodContainer.find('div.units-row').length;
+//                                             var row = payMethodContainer.find('div.units-row').eq(0).clone();
+//
+//                                             payMethodContainer.find('div.units-row').last().find('button').after('<a href="javascript:void(0)">Eliminar</a>');
+//                                             var button = payMethodContainer.find('div.units-row').last().find('button');
+//                                             
+//                                             //renombramos formulario
+//                                             row.find('select').attr('name','visitapago_tipo['+count+'][type]');
+//                                             row.find('input').attr('name','visitapago_tipo['+count+'][cantidad]');
+//                                             row.find('input').numeric();
+//                                             var total = payDetailsContainer.find('input[name=visita_total]').val();
+//                                             var res = parseFloat(total) - parseFloat(row.find('input').val());
+//                                             
+//                                             row.find('input').val(res);
+//                                             
+//                                             //row.find('button').after('<a href="javascript:void(0)">Eliminar</a>');
+//                                             //row.find('button').remove();
+//                                             row.find('a').parent().css('margin-top','27px');
+//                                             row.find('a').on('click',function(){
+//                                                $(this).closest('div.units-row').remove();
+//                                             });
+//                                             payMethodContainer.find('fieldset').prepend(row);
+                                  
                                          
                                          
                                          pagarAction.prop('disabled',true);
@@ -853,6 +857,20 @@
                     
                 }
              });
+        }
+        
+        function newMethodPay(){
+            var fieldsetContainer = $(this).closest('fieldset');
+            var newRow = $(this).closest('div.units-row').clone();
+            newRow.find('input').val(0);
+            newRow.find('button').on('click',newMethodPay);
+            var eliminar = $('<a href="javascript:void(0)">Eliminar</a>');
+            eliminar.on('click',function(){
+                $(this).closest('div.units-row').remove();
+            });
+            $(this).after(eliminar).parent().css('margin-top','27px');
+            $(this).remove();
+            fieldsetContainer.prepend(newRow);
         }
         
         function pay(modal){
