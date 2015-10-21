@@ -586,7 +586,7 @@
                                              row.find('a').on('click',function(){
                                                 $(this).closest('div.units-row').remove();
                                              });
-                                             payMethodContainer.find('fieldset').append(row);
+                                             payMethodContainer.find('fieldset').prepend(row);
                                          });
                                          
                                          
