@@ -623,6 +623,9 @@
                                                     min: new Date(),
                                                     selectYears: 25,
                                                 });
+                                                dateContainer.find('input[name=visita_siguiente_fecha]').on('change',function(){
+                                                    $(this).hide();
+                                                });
                                                 /*El componente de hota*/
                                                 dateContainer.find('input[name=visita_siguiente_hora]').timepicker({
                                                             minuteStep: 1,
