@@ -89,10 +89,10 @@
             </label>
         </div>
         <div class="unit-33">
-            <label>
-                Fecha de nacimiento
-                <?php echo $this->formText($form->get('paciente_fechanacimiento')); ?>
+            <label style="margin-bottom: 0px">
+                Fecha de nacimiento              
             </label>
+             <?php echo $this->formText($form->get('paciente_fechanacimiento')); ?>
         </div>
     </div>
     <div class="units-row">
@@ -134,20 +134,20 @@
 
     //Inicializamos los campos de fecha
     $('input[name=paciente_fechanacimiento]').pickadate({
-        monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
-        monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
-        weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
-        weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
-        today: 'hoy',
-        clear: 'borrar',
-        close: 'cerrar',
-        firstDay: 1,
-        format: 'd !de mmmm !de yyyy',
-        formatSubmit: 'yyyy/mm/dd',
-        selectYears: true,
-        selectMonths: true,
-        selectYears: 25,
-    });
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                //selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+            });
     
     var grupoFrom = $('#clinica_container').grupos();
     grupoFrom.form();

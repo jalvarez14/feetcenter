@@ -142,7 +142,7 @@
                 firstDay: 1,
                 format: 'd !de mmmm !de yyyy',
                 formatSubmit: 'yyyy/mm/dd',
-                selectYears: true,
+                //selectYears: true,
                 selectMonths: true,
                 selectYears: 25,
             });
@@ -158,7 +158,7 @@
                 firstDay: 1,
                 format: 'd !de mmmm !de yyyy',
                 formatSubmit: 'yyyy/mm/dd',
-                selectYears: true,
+                //selectYears: true,
                 selectMonths: true,
                 selectYears: 25,
             });

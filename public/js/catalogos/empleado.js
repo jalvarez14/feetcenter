@@ -111,10 +111,11 @@
                 firstDay: 1,
                 format: 'd !de mmmm !de yyyy',
                 formatSubmit: 'yyyy/mm/dd',
-                selectYears: true,
+                //selectYears: true,
                 selectMonths: true,
                 selectYears: 25,
             });
+
             
             //la foto del empleado
             $container.find('img#empleado_foto').on('click',function(){

@@ -9,10 +9,10 @@
     ?>
     <div class="units-row">
         <div class="unit-33">
-            <label>
+            <label style="margin-bottom: 0px">
                 Fecha <span class="req">*</span>
-                <?php echo $this->formText($form->get('empleadoreporte_fechasuceso')); ?>
             </label>
+            <?php echo $this->formText($form->get('empleadoreporte_fechasuceso')); ?>
         </div>
         <div class="unit-33">
             <label>
@@ -50,20 +50,20 @@
 <script>
 
     $('input[name=empleadoreporte_fechasuceso]').pickadate({
-        monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
-        monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
-        weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
-        weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
-        today: 'hoy',
-        clear: 'borrar',
-        close: 'cerrar',
-        firstDay: 1,
-        format: 'd !de mmmm !de yyyy',
-        formatSubmit: 'yyyy/mm/dd',
-        selectYears: true,
-        selectMonths: true,
-        selectYears: 25,
-    });
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                //selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+            });
             
 
 </script>

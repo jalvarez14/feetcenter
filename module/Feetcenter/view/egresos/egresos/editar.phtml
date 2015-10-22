@@ -9,10 +9,11 @@
     ?>
     <div class="units-row">
         <div class="unit-50">
-            <label>
+            <label style="margin-bottom: 0px">
                 Fecha <span class="req">*</span>
-                <?php echo $this->formText($form->get('egresoclinica_fechaegreso')); ?>
+                
             </label>
+            <?php echo $this->formText($form->get('egresoclinica_fechaegreso')); ?>
         </div>
         <div class="unit-50">
             <label>
@@ -76,20 +77,20 @@
     $('input[name=egresoclinica_cantidad],input[name=egresoclinica_iva]').numeric();
     
     $('input[name=egresoclinica_fechaegreso]').pickadate({
-        monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
-        monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
-        weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
-        weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
-        today: 'hoy',
-        clear: 'borrar',
-        close: 'cerrar',
-        firstDay: 1,
-        format: 'd !de mmmm !de yyyy',
-        formatSubmit: 'yyyy/mm/dd',
-        selectYears: true,
-        selectMonths: true,
-        selectYears: 25,
-    });
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                //selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+            });
     
     
     //El comprobante

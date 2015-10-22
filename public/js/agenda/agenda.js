@@ -584,7 +584,7 @@
                                                 dateContainer.find('[btn-action=submit_visita_siguiente]').unbind();
                                                 dateContainer.slideDown();
                                                 /*Inicializamos nuestros calendarios*/
-                                                dateContainer.find('input[name=visita_siguiente_fecha]').pickadate({
+                                                 var pickdate = dateContainer.find('input[name=visita_siguiente_fecha]').pickadate({
                                                     monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
                                                     monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
                                                     weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
@@ -600,9 +600,7 @@
                                                     min: new Date(),
                                                     selectYears: 25,
                                                 });
-                                                dateContainer.find('input[name=visita_siguiente_fecha]').on('change',function(){
-                                                    $(this).hide();
-                                                });
+                                                
                                                 /*El componente de hota*/
                                                 dateContainer.find('input[name=visita_siguiente_hora]').timepicker({
                                                             minuteStep: 1,

@@ -339,7 +339,7 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
              * Close the picker
              */
             close: function( giveFocus ) {
-
+              
                 // If we need to give focus, do it before changing states.
                 if ( giveFocus ) {
                     if ( SETTINGS.editable ) {
@@ -355,22 +355,22 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
                         }, 0 )
                     }
                 }
-
+                 
                 // Remove the “active” class.
                 $ELEMENT.removeClass( CLASSES.active )
                 aria( ELEMENT, 'expanded', false )
-
+                
                 // * A Firefox bug, when `html` has `overflow:hidden`, results in
                 //   killing transitions :(. So remove the “opened” state on the next tick.
                 //   Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=625289
+                
                 setTimeout( function() {
-
-                    // Remove the “opened” and “focused” class from the picker root.
+                   // Remove the “opened” and “focused” class from the picker root.
                     P.$root.removeClass( CLASSES.opened + ' ' + CLASSES.focused )
                     aria( P.$root[0], 'hidden', true )
 
                 }, 0 )
-
+                 
                 // If it’s already closed, do nothing more.
                 if ( !STATE.open ) return P
 
