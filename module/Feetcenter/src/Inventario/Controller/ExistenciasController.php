@@ -97,7 +97,7 @@ class ExistenciasController extends AbstractActionController
             }else if($post_data['type'] == 'producto'){
                 
                 $producto_clinica = \ProductoclinicaQuery::create()->findPk($post_data['id']);
-                
+               
                 //Cremoa una nueva compra
                 $compra = new \Compra();
                 $compra->setIdProveedor(1) // Corresponde al proveedor feetcenter

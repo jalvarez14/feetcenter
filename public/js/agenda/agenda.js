@@ -566,34 +566,11 @@
                                          payMethodContainer.find('input,button,select').css('cursor','auto');
                                          payMethodContainer.find('input,button,select').prop('disabled',false);
                                          payMethodContainer.find('input').numeric();
+                                         payDetailsContainer.find('input').prop('disabled',false);
+                                         payDetailsContainer.find('input').css('cursor','auto');
                                          //Eventos method pay
                                          payMethodContainer.find('#addMethodPay').on('click',newMethodPay);
-                                             
-//                                             var count = payMethodContainer.find('div.units-row').length;
-//                                             var row = payMethodContainer.find('div.units-row').eq(0).clone();
-//
-//                                             payMethodContainer.find('div.units-row').last().find('button').after('<a href="javascript:void(0)">Eliminar</a>');
-//                                             var button = payMethodContainer.find('div.units-row').last().find('button');
-//                                             
-//                                             //renombramos formulario
-//                                             row.find('select').attr('name','visitapago_tipo['+count+'][type]');
-//                                             row.find('input').attr('name','visitapago_tipo['+count+'][cantidad]');
-//                                             row.find('input').numeric();
-//                                             var total = payDetailsContainer.find('input[name=visita_total]').val();
-//                                             var res = parseFloat(total) - parseFloat(row.find('input').val());
-//                                             
-//                                             row.find('input').val(res);
-//                                             
-//                                             //row.find('button').after('<a href="javascript:void(0)">Eliminar</a>');
-//                                             //row.find('button').remove();
-//                                             row.find('a').parent().css('margin-top','27px');
-//                                             row.find('a').on('click',function(){
-//                                                $(this).closest('div.units-row').remove();
-//                                             });
-//                                             payMethodContainer.find('fieldset').prepend(row);
-                                  
-                                         
-                                         
+
                                          pagarAction.prop('disabled',true);
                                          guardarAction.prop('disabled',true);
                                          modalEventContainer.children(':not(:last-child)').hide();
@@ -705,10 +682,11 @@
                                                                                  
                                                                              }else{
                                                                                  dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideUp();
-                                                                                pagarAction.prop('disabled',false);
+                                                                                 pagarAction.prop('disabled',false);
                                                                              }
                                                                              pagarAction.unbind();
                                                                              pagarAction.on('click', $.proxy(function(){
+                                                                             
                                                                                pagarAction.text('Pagar');
                                                                                pagarAction.prop('disabled',true);
                                                                                dateContainer.hide();
@@ -716,7 +694,7 @@
                                                                                payDetailsContainer.slideDown();
                                                                                if(anticipado == 'si'){
                                                                                      pagarAction.text('Pagar');
-                                                                                    pagarAction.unbind();
+                                                                                     pagarAction.unbind();
                                                                                      var itemCount = payDetailsContainer.find('tbody tr').length;
                                                                                      var selected = dateContainer.find('select[name=pay_date_anticipado_servicio] option:selected');
                                                                                      
@@ -732,6 +710,9 @@
                                                                                     tr.append(inputs);
                                                                                     tr.append('<td>1</td>');
                                                                                     tr.append('<td>'+item+'</td>');
+                                                                                    if(payDetailsContainer.find('th').length == 4){
+                                                                                        tr.append('<td></td>');
+                                                                                    }
                                                                                     tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
 
                                                                                     payDetailsContainer.find('table#pay_details tbody').append(tr);
@@ -739,7 +720,8 @@
                                                                                     //Calculamos el total
                                                                                     var total = 0;
                                                                                     $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
-                                                                                        var subtotal = accounting.unformat($(this).find('td').eq(2).text());
+                                                                                        var subtotal = accounting.unformat($(this).find('td').last().text());
+                                                                                       
                                                                                         total += subtotal;
                                                                                     });
                                                                                     payDetailsContainer.find('input[name=visita_total]').val(total);
@@ -752,12 +734,15 @@
                                                                                     }));
                                                                                      
                                                                                }else{
+                                                                                   
                                                                                    pagarAction.text('Pagar');
                                                                                    payDetailsContainer.slideDown();
+                                                                                   
                                                                                    //Calculamos el total
                                                                                     var total = 0;
                                                                                     $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
-                                                                                        var subtotal = accounting.unformat($(this).find('td').eq(2).text());
+                                                                                        var subtotal = accounting.unformat($(this).find('td').last().text());
+                                
                                                                                         total += subtotal;
                                                                                     });
                                                                                     payDetailsContainer.find('input[name=visita_total]').val(total);
@@ -781,12 +766,13 @@
                                                     }
                                                 });
                                              }else{
-                                                  
+                                                
                                                  dateContainer.slideUp();
                                                  pagarAction.prop('disabled',false);
                                                  pagarAction.unbind();
                                                  pagarAction.on('click', $.proxy(function(){
-                                                    pagarAction.text('Pagar');
+                                                     
+                                                     pagarAction.text('Pagar');
                                                      pagarAction.unbind();
                                                      dateContainer.hide();
                                                      nextDateContainer.hide();
@@ -794,7 +780,7 @@
                                                      //Calculamos el total
                                                     var total = 0;
                                                     $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
-                                                        var subtotal = accounting.unformat($(this).find('td').eq(2).text());
+                                                        var subtotal = accounting.unformat($(this).find('td').last().text());
                                                         total += subtotal;
                                                     });
                                                     payDetailsContainer.find('input[name=visita_total]').val(total);
@@ -884,11 +870,11 @@
         function pay(modal){
 
             var payMethodContainer = modal.$modalBody.find('#pay_container');
+            var detailsContainer = modal.$modalBody.find('#pay_details_container');
             var empty = false;
-            
-          
+
             payMethodContainer.find('input[required]').removeClass('input-error');
-             payMethodContainer.find('span.error').remove();
+            payMethodContainer.find('span.error').remove();
             $.each(payMethodContainer.find('#pay_method_container input[required]'),function(){
                 if($(this).val() == ""){
                     empty = true;
@@ -898,6 +884,15 @@
                 }
             });
             
+            detailsContainer.find('input[required]').removeClass('input-error');
+            detailsContainer.find('span.error').remove();
+            $.each(detailsContainer.find('input[required]'),function(){
+                if($(this).val() == ""){
+                    empty = true;
+                    $(this).addClass('input-error');
+                }
+            });
+
             if(!empty){
                 var total = parseFloat(payMethodContainer.find('input[name=visita_total]').val());
                 var sum = 0;

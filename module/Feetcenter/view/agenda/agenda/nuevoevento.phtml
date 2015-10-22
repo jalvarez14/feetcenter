@@ -30,6 +30,10 @@
     #modal_event_container select{
         height: 29px;
     }
+    
+    a:focus, a:hover{
+        color: white;
+    }
 </style>
 <div id="modal_event_container">
     <?php echo $this->formHidden($form->get('idpaciente')); ?>
@@ -184,6 +188,11 @@
                     <optgroup label="Servicios">
                          <?php foreach ($servicios as $servicio) :?>
                             <option data-name="<?php echo $servicio['servicio_nombre']?>"  data-price="<?php echo $servicio['servicioclinica_precio']?>" data-type="servicio" value="<?php echo $servicio['idservicioclinica']?>"><?php echo $servicio['servicio_nombre']?></option>
+                        <?php endforeach;?>
+                    </optgroup>
+                    <optgroup label="Membresías">
+                         <?php foreach ($membresias as $membresia) :?>
+                            <option data-name="<?php echo $membresia['membresia_nombre']?>"  data-price="<?php echo $membresia['membresia_precio']?>" data-type="membresia" value="<?php echo $membresia['idmembresia']?>"><?php echo $membresia['membresia_nombre']?></option>
                         <?php endforeach;?>
                     </optgroup>
                 </select>
