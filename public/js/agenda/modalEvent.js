@@ -195,7 +195,7 @@
            $('#visitadetalle_tipo option[data-existencias]').filter(function(){
                $(this).append(' (Existencias: ' + $(this).attr('data-existencias') + ')');
                if($(this).attr('data-existencias') == 0){
-                   $(this).prop('disabled',true);
+                   $(this).hide();
                }
            });
            
