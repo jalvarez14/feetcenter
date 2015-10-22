@@ -195,14 +195,14 @@
            $('#visitadetalle_tipo option[data-existencias]').filter(function(){
                $(this).append(' (Existencias: ' + $(this).attr('data-existencias') + ')');
                if($(this).attr('data-existencias') == 0){
-                   $(this).prop('disabled',true);
+                   $(this).hide();
                }
            });
            
            $.each($container.find('tbody tr'),function(){
                 var type = $(this).find('input[name*=type]').val();
                 var id = $(this).find('input[name*=id]').val();
-                $container.find('select#visitadetalle_tipo option[data-type='+type+'][value='+id+']').hide();
+                $container.find('select#visitadetalle_tipo option[data-type='+type+'][value="'+id+'"]').hide();
                
            });
            
@@ -326,6 +326,7 @@
         plugin.init = function(){
             
             settings = plugin.settings = $.extend({}, defaults, options);
+            
             
             //Inicializamos al autocomplete
             $container.find('input[name=paciente_autocomplete]').tokenInput('/findpacientes',{

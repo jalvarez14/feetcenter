@@ -171,8 +171,10 @@ class AgendaController extends AbstractActionController
                     
                     if($detalle['type'] == 'producto'){
                         $visitadetalle->setIdproductoclinica($detalle['id']);
-                    }else{
+                    }else if($detalle['type'] == 'servicio'){
                         $visitadetalle->setIdservicioclinica($detalle['id']);
+                    }else{
+                        $visitadetalle->setIdmembresia($detalle['id']);
                     }
                     
                     $visitadetalle->save();
@@ -272,7 +274,10 @@ class AgendaController extends AbstractActionController
 
             //Catalogo de servicio
             $servicios = \ServicioclinicaQuery::create()->joinServicio()->withColumn('servicio_nombre')->filterByIdclinica($entity->getIdclinica())->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
-
+            
+             //Catalogo de membresias
+            $membresias = \MembresiaQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            
             $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($entity->getIdclinica())->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
             
             //El paciente
@@ -290,7 +295,6 @@ class AgendaController extends AbstractActionController
                 $clinica_nombre = $cliniva->getClinicaNombre();
                 $paciente_array['relacionados'][$key]['clinica_nombre'] = $clinica_nombre;
             }
-           
 
             $viewModel = new ViewModel();
             $viewModel->setVariables(array(
@@ -300,6 +304,7 @@ class AgendaController extends AbstractActionController
                 'servicios' => $servicios,
                 'paciente' => json_encode($paciente_array),
                 'empleados' => $empleados,
+                'membresias' => $membresias,
             ));
             $viewModel->setTerminal(true);
             return $viewModel;
@@ -314,7 +319,7 @@ class AgendaController extends AbstractActionController
           if($request->isPost()){
               
               $post_data = $request->getPost();
-              
+               
               //Actualizamos la visita
               $visita = \VisitaQuery::create()->findPk($post_data['idvisita']);
               $visita->setVisitaStatus('terminado')
@@ -338,12 +343,36 @@ class AgendaController extends AbstractActionController
                     
                      
                     if($detalle['type'] == 'producto'){
+                       
                         $visitadetalle->setIdproductoclinica($detalle['id']);
-
+                        
+                        //Restamos el producto del inventario
+                        $producto_clinica = \ProductoclinicaQuery::create()->findPk($detalle['id']);
+                        $current_stock = $producto_clinica->getProductoclinicaExistencia();
+                        $new_stock = $current_stock - $detalle['cantidad'];
+                       
+                        //Actualizamos inventario
+                        $producto_clinica->setProductoclinicaExistencia($new_stock);
+                        $producto_clinica->save();
+                        
                     }else if($detalle['type'] == 'servicio'){
                         $visitadetalle->setIdservicioclinica($detalle['id']);
                     }else{
                         $visitadetalle->setIdmembresia($detalle['id']);
+                        //Asignamos la membresia al paciente
+                        $membresia_paciente = new \Pacientemembresia();
+                        $membresia_paciente->setIdpaciente($post_data['idpaciente'])
+                                           ->setIdclinica($post_data['idclinica'])
+                                           ->setIdmembresia($detalle['id']);
+                        
+                        //Instanciamos nuestra membresia para obtener su informacion
+                        $membresia = \MembresiaQuery::create()->findPk($detalle['id']);
+                        
+                        $membresia_paciente->setPacientemembresiaServiciosdisponibles($membresia->getMembresiaServicios())
+                                           ->setPacientemembresiaCuponesdisponibles($membresia->getMembresiaCupones())
+                                           ->setPacientemembresiaEstatus('activa')
+                                           ->setPacientemembresiaFechainicio(new \DateTime())
+                                           ->save();
                     }
                     
                     $visitadetalle->save();
@@ -443,7 +472,7 @@ class AgendaController extends AbstractActionController
         
         if($request->isPost()){
             $post_data = $request->getPost();
-
+           
             foreach ($post_data as $k => $v){
                 if(empty($v)){
                     unset($post_data[$k]);
@@ -473,8 +502,10 @@ class AgendaController extends AbstractActionController
                     
                     if($detalle['type'] == 'producto'){
                         $visitadetalle->setIdproductoclinica($detalle['id']);
-                    }else{
+                    }elseif($detalle['type'] == 'servicio'){
                         $visitadetalle->setIdservicioclinica($detalle['id']);
+                    }else{
+                        $visitadetalle->setIdmembresia($detalle['id']);
                     }
                     
                     $visitadetalle->save();
@@ -526,6 +557,11 @@ class AgendaController extends AbstractActionController
             //Catalogo de servicio
             $servicios = \ServicioclinicaQuery::create()->joinServicio()->withColumn('servicio_nombre')->filterByIdclinica($idclinica)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
             
+            //Catalogo de membresias
+            $membresias = \MembresiaQuery::create()->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            
+            
+            
             $viewModel = new ViewModel();
             $viewModel->setVariables(array(
                 'form' => $form,
@@ -533,6 +569,7 @@ class AgendaController extends AbstractActionController
                 'fecha' => $visita_fecha,
                 'productos' => $productos,
                 'servicios' => $servicios,
+                'membresias' => $membresias
             ));
             $viewModel->setTerminal(true);
             return $viewModel;
@@ -734,6 +771,7 @@ class AgendaController extends AbstractActionController
             return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
         }
     }
+    
     public function resizerecesoAction(){
         $request = $this->getRequest();
         if($request->isPost()){
