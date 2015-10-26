@@ -739,6 +739,9 @@
                                                                                    pagarAction.text('Pagar');
                                                                                    payDetailsContainer.slideDown();
                                                                                    
+                                                                                   payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
+                                                                                   
+                                                                                   
                                                                                    //Calculamos el total
                                                                                     var total = 0;
                                                                                     $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
@@ -748,6 +751,8 @@
                                                                                     });
                                                                                     payDetailsContainer.find('input[name=visita_total]').val(total);
                                                                                     payDetailsContainer.find('#total').text(accounting.formatMoney(total));
+                                                                                    
+                                                                                    
                                                                                     
                                                                                     payMethodContainer.find('input').val(total);
                                                                                     payMethodContainer.slideDown();
@@ -789,8 +794,10 @@
                                                                                     
                                                     payMethodContainer.find('input').val(total);
                                                     
-                                                     payDetailsContainer.slideDown();
-                                                     payMethodContainer.slideDown();
+                                                    payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
+                                                    
+                                                    payDetailsContainer.slideDown();
+                                                    payMethodContainer.slideDown();
                                                      
                                                      pagarAction.on('click', $.proxy(function(){
                                                          
@@ -938,6 +945,29 @@
             $('#calendar').fullCalendar('unselect');
         }
         
+        function valdarFolio(){
+            
+            $(this).removeClass('input-error');
+            
+            var folio = $(this).val();
+            var $folioInpit  = $(this);
+            
+            
+            $.ajax({
+                url:'/validarnuevofolio',
+                data:{folio:folio},
+                dataType:'json',
+                success:function(data){
+                    if(!data.response){
+                         $folioInpit.val('');
+                         $folioInpit.addClass('input-error');
+                         alert(data.msg);
+                    }
+                }
+            });
+            
+        }
+        
         function isOverlapping(event){
              
             // "calendar" on line below should ref the element on which fc has been called 
@@ -951,7 +981,6 @@
             return false;
         }
 
-       
        /*
         * Public methods
         */

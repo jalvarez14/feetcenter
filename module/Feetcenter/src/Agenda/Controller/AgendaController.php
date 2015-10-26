@@ -15,6 +15,20 @@ use Zend\View\Model\ViewModel;
 class AgendaController extends AbstractActionController
 {
     
+    public function validarnuevofolioAction(){
+        
+        
+        if($this->params()->fromQuery('folio')){
+            $folio = $this->params()->fromQuery('folio');
+           
+            if(\PacientemembresiaQuery::create()->filterByPacientemembresiaFolio($folio)->exists()){
+                return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'Folio en uso')));
+            }
+            
+             return $this->getResponse()->setContent(json_encode(array('response' => true)));
+            
+        }
+    }
     
     public function validarmembresiaAction(){
         

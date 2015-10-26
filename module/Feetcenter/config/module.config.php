@@ -454,7 +454,7 @@ return array(
                         'action'        => 'index',
                     ),
                     'constraints' => array(
-                        'action' => 'validarmembresia|getserviciosbymembresia|pagar|quickaddvisita|editarevento|getpedicuristasbyclinica|gethorariosbyclinica|geteventosbyclinica|getrecesosbyclinica|nuevoreceso|nuevoreceso|nuevoevento|findpacientes|quickaddpaciente|quickupdaterelacionados|dropevent|dropreceso|resizereceso|resizeevent',
+                        'action' => 'validarnuevofolio|validarmembresia|getserviciosbymembresia|pagar|quickaddvisita|editarevento|getpedicuristasbyclinica|gethorariosbyclinica|geteventosbyclinica|getrecesosbyclinica|nuevoreceso|nuevoreceso|nuevoevento|findpacientes|quickaddpaciente|quickupdaterelacionados|dropevent|dropreceso|resizereceso|resizeevent',
                     ),
                 ),
             ),
