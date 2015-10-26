@@ -655,7 +655,7 @@
                                                         fechafin = moment(fechafin.format('YYYY-MM-DD HH:mm'));
                                                         form_data.append('visita_fechafin',fechafin.format('YYYY-MM-DD HH:mm'));
                                                             
-                                                            //Hacemos nuestra peticion ajax
+                                                            //Hacemos nuestra peticion ajax (quickaddvisita)
                                                             $.ajax({
                                                                 url:'/quickaddvisita',
                                                                 method:'POST',

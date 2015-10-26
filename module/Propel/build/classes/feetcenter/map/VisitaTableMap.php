@@ -68,6 +68,7 @@ class VisitaTableMap extends TableMap
   2 => 'cancelada',
 ));
         $this->addColumn('visita_total', 'VisitaTotal', 'DECIMAL', false, 10, null);
+        $this->addColumn('visita_nota', 'VisitaNota', 'LONGVARCHAR', false, null, null);
         // validators
     } // initialize()
 

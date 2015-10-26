@@ -32,12 +32,12 @@
  * @method Pacientemembresiadetalle findOneOrCreate(PropelPDO $con = null) Return the first Pacientemembresiadetalle matching the query, or a new Pacientemembresiadetalle object populated from the query conditions when no match is found
  *
  * @method Pacientemembresiadetalle findOneByIdpacientemembresia(int $idpacientemembresia) Return the first Pacientemembresiadetalle filtered by the idpacientemembresia column
- * @method Pacientemembresiadetalle findOneByPacientemembresiadetalleFecha(int $pacientemembresiadetalle_fecha) Return the first Pacientemembresiadetalle filtered by the pacientemembresiadetalle_fecha column
+ * @method Pacientemembresiadetalle findOneByPacientemembresiadetalleFecha(string $pacientemembresiadetalle_fecha) Return the first Pacientemembresiadetalle filtered by the pacientemembresiadetalle_fecha column
  * @method Pacientemembresiadetalle findOneByIdvisitadetalle(int $idvisitadetalle) Return the first Pacientemembresiadetalle filtered by the idvisitadetalle column
  *
  * @method array findByIdpacientemembresiadetalle(int $idpacientemembresiadetalle) Return Pacientemembresiadetalle objects filtered by the idpacientemembresiadetalle column
  * @method array findByIdpacientemembresia(int $idpacientemembresia) Return Pacientemembresiadetalle objects filtered by the idpacientemembresia column
- * @method array findByPacientemembresiadetalleFecha(int $pacientemembresiadetalle_fecha) Return Pacientemembresiadetalle objects filtered by the pacientemembresiadetalle_fecha column
+ * @method array findByPacientemembresiadetalleFecha(string $pacientemembresiadetalle_fecha) Return Pacientemembresiadetalle objects filtered by the pacientemembresiadetalle_fecha column
  * @method array findByIdvisitadetalle(int $idvisitadetalle) Return Pacientemembresiadetalle objects filtered by the idvisitadetalle column
  *
  * @package    propel.generator.feetcenter.om
@@ -326,13 +326,14 @@ abstract class BasePacientemembresiadetalleQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByPacientemembresiadetalleFecha(1234); // WHERE pacientemembresiadetalle_fecha = 1234
-     * $query->filterByPacientemembresiadetalleFecha(array(12, 34)); // WHERE pacientemembresiadetalle_fecha IN (12, 34)
-     * $query->filterByPacientemembresiadetalleFecha(array('min' => 12)); // WHERE pacientemembresiadetalle_fecha >= 12
-     * $query->filterByPacientemembresiadetalleFecha(array('max' => 12)); // WHERE pacientemembresiadetalle_fecha <= 12
+     * $query->filterByPacientemembresiadetalleFecha('2011-03-14'); // WHERE pacientemembresiadetalle_fecha = '2011-03-14'
+     * $query->filterByPacientemembresiadetalleFecha('now'); // WHERE pacientemembresiadetalle_fecha = '2011-03-14'
+     * $query->filterByPacientemembresiadetalleFecha(array('max' => 'yesterday')); // WHERE pacientemembresiadetalle_fecha < '2011-03-13'
      * </code>
      *
      * @param     mixed $pacientemembresiadetalleFecha The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.

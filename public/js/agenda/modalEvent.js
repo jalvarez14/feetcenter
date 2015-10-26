@@ -192,19 +192,27 @@
        }
        
        var formatoCatalogo = function(){
+            $('#visitadetalle_tipo span').remove(); 
            $('#visitadetalle_tipo option[data-existencias]').filter(function(){
-               $(this).append(' (Existencias: ' + $(this).attr('data-existencias') + ')');
+               $(this).append('<span> (Existencias: ' + $(this).attr('data-existencias') + ')</span>');
                if($(this).attr('data-existencias') == 0){
-                   $(this).hide();
+                   $(this).prop('disabled',true);
                }
            });
            
-           $.each($container.find('tbody tr'),function(){
+           $('#visitadetalle_tipo option[data-available]').filter(function(){
+               if($(this).attr('data-available') == 0){
+                   $(this).prop('disabled',true);
+                   $(this).append('<span> (Sin insumos disponibles)</span>');
+               }
+           });
+           
+           $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
                 var type = $(this).find('input[name*=type]').val();
                 var id = $(this).find('input[name*=id]').val();
-                $container.find('select#visitadetalle_tipo option[data-type='+type+'][value="'+id+'"]').hide();
-               
+                $('select#visitadetalle_tipo option[data-type='+type+'][value='+id+']').addClass('hide');
            });
+           
            
        }
        
@@ -214,8 +222,12 @@
            var row = $(this).closest('tr');
            var id = row.find('input[name*=id]').val();
            var type = row.find('input[name*=type]').val();
-           $container.find('#visitadetalle_tipo option[data-type='+type+'][value='+id+']').show();
+           $container.find('#visitadetalle_tipo option[data-type='+type+'][value='+id+']').removeClass('hide');
            row.remove();
+           
+           if($('#visita_container table#visita_detalles tbody input[name*=type][value=membresia]').length == 0){
+               $container.find('option[data-dependencia=membresia]').remove();
+           }
 
             //Calculamos el total
             var total = 0;
@@ -227,7 +239,7 @@
            $container.find('#total').text(accounting.formatMoney(total));
            
        }
-       
+        
        var addProduct = function(){
            var itemCount = $container.find('table#visita_detalles tbody tr').length;
            
@@ -248,6 +260,7 @@
                var selected = $('#visitadetalle_tipo option:selected');
                var item = selected.attr('data-name');
                var type = selected.attr('data-type');
+
                if(type == 'producto'){
                    var existencias = selected.attr('data-existencias');
                    if(cantidad<=existencias){
@@ -279,20 +292,134 @@
                         $container.find('#total').text(accounting.formatMoney(total));
 
 
-                        selected.hide();
+                        selected.addClass('hide');
                         $('#addproduct_container input,#addproduct_container select').val('');
                    }else{
                        $container.find('input[name=visitadetalle_cantidad]').addClass('input-error');
                        alert('La cantidad debe de ser menor o igual al numero de existencias');
                    }
+               }else if(type == 'servicio'){
+
+                    var data_dependencia = selected.attr('data-dependencia');
+                    if(data_dependencia == 'membresia'){
+                        var error = false;
+                        var serviciosdisponibles = parseInt($container.find('#pacientemembresia_serviciosdisponibles').text());
+                        if(cantidad > serviciosdisponibles){
+                          error = true;
+                          alert('Sin servicios disponibles en la membresia');
+                        }
+                    }
+                    if(data_dependencia == 'cupon'){
+                        var error = false;
+                        var folio = prompt("Folio de la membresia");
+                        if(folio !== null){
+                            //La peticion ajax
+                            $.ajax({
+                                url:'/validarmembresia',
+                                data:{folio:folio,cantidad:cantidad},
+                                dataType:'json',
+                                success:function (data){
+                                   if(data.response){
+                                        var id = selected.val();
+                                        var price = selected.attr('data-price');
+                                        var subtotal = parseInt(cantidad) * parseInt(price);
+                                        var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'"><input type="hidden" name="vistadetalle['+itemCount+'][idpacientemembresia]" value="'+data.idpacientemembresia+'">');
+                                        var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
+                                        opciones.find('a').on('click',deleteProduct);
+
+                                        //Nuestra row
+                                        var tr = $('<tr>');
+                                        tr.append(inputs);
+                                        tr.append('<td>'+cantidad+'</td>');
+                                        tr.append('<td>'+item+'</td>');
+                                        tr.append(opciones);
+                                        tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+                                        $container.find('table#visita_detalles tbody').append(tr);
+
+                                        //Calculamos el total
+                                        var total = 0;
+                                        $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
+                                            var subtotal = accounting.unformat($(this).find('td').eq(3).text());
+                                            total += subtotal;
+                                        });
+                                        $container.find('input[name=visita_total]').val(total);
+                                        $container.find('#total').text(accounting.formatMoney(total));
+
+
+                                        selected.addClass('hide');
+                                        $('#addproduct_container input,#addproduct_container select').val('');
+                                   }else{
+                                        error = true;
+                                        alert(data.msg);
+                                        
+                                   }
+                                }
+                            });
+                        }else{
+                            error = true;
+                        }
+                    }
+                    
+                    if(data_dependencia != 'cupon'){
+                    
+                        var id = selected.val();
+                        var price = selected.attr('data-price');
+                        var subtotal = parseInt(cantidad) * parseInt(price);
+                        var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'">');
+                        var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
+                        opciones.find('a').on('click',deleteProduct);
+
+                        //Nuestra row
+                        var tr = $('<tr>');
+                        tr.append(inputs);
+                        tr.append('<td>'+cantidad+'</td>');
+                        tr.append('<td>'+item+'</td>');
+                        tr.append(opciones);
+                        tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+                        $container.find('table#visita_detalles tbody').append(tr);
+
+                        //Calculamos el total
+                        var total = 0;
+                        $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
+                            var subtotal = accounting.unformat($(this).find('td').eq(3).text());
+                            total += subtotal;
+                        });
+                        $container.find('input[name=visita_total]').val(total);
+                        $container.find('#total').text(accounting.formatMoney(total));
+
+
+                        selected.addClass('hide');
+                        $('#addproduct_container input,#addproduct_container select').val('');
+                    }
                }else{
+                   var idmembresia = selected.val();
+                   var idclinica = container.find('input[name=idclinica]').val();
+                   //Obtenemos los servicios de la membresia seleccionada y los insertamos en nuestro select de productos/servicios
+                   
+                   $('select#visitadetalle_tipo option[data-dependencia=membresia]').remove();
+                   
+                   $.ajax({
+                      dataType:'json',
+                      url:'/getserviciosbymembresia',
+                      data:{idmembresia:idmembresia,idclinica:idclinica},
+                      success:function(data){
+       
+                        var $opt_servicios = $('select#visitadetalle_tipo optgroup[label=Servicios]');
+                        $.each(data,function(){
+                            var $option = $('<option>',{'data-dependencia':'membresia','data-available':this.disponible,'data-name':this.servicio_nombre, 'data-price':this.servicioclinica_precio,'data-type':'servicio','value':this.idservicioclinica}).text(this.servicio_nombre);
+
+                            $opt_servicios.append($option);
+                        });
+                        formatoCatalogo();
+                      }
+                   });
+                   
                     var id = selected.val();
                     var price = selected.attr('data-price');
                     var subtotal = parseInt(cantidad) * parseInt(price);
                     var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'">');
                     var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
                     opciones.find('a').on('click',deleteProduct);
-
 
                     //Nuestra row
                     var tr = $('<tr>');
@@ -313,9 +440,11 @@
                     $container.find('#total').text(accounting.formatMoney(total));
 
 
-                    selected.hide();
+                    selected.addClass('hide');
                     $('#addproduct_container input,#addproduct_container select').val('');
+
                }
+               
 
            }
        }
@@ -326,8 +455,9 @@
         plugin.init = function(){
             
             settings = plugin.settings = $.extend({}, defaults, options);
-            
-            
+                    
+            formatoCatalogo(); //Damos formato al catalogo 
+
             //Inicializamos al autocomplete
             $container.find('input[name=paciente_autocomplete]').tokenInput('/findpacientes',{
                 //propertyToSearch: 'paciente_nombre',
@@ -336,12 +466,40 @@
                 searchingText: "Buscando...",
                 tokenLimit:1,
                 onAdd:function(item){
+
                     $container.find('input[name=idpaciente]').val(item.id);
                     $container.find('#visita_total').text(item.visita_total);
                     $container.find('#visita_ultima').text(item.visita_ultima);
                     $container.find('button[btn-action=open_relacionados_container]').removeClass('btn-disabled');
                     $container.find('button[btn-action=open_relacionados_container]').prop('disabled',false);
                     showRelacionados(item.relacionados);
+                    
+                    if(item.membresia != null){
+                        $container.find('#membresia_nombre').text(item.membresia.membresia_nombre);
+                        $container.find('#pacientemembresia_serviciosdisponibles').text(item.membresia.pacientemembresia_serviciosdisponibles);
+                        $container.find('#pacientemembresia_cuponesdisponibles').text(item.membresia.pacientemembresia_cuponesdisponibles);
+                        $container.find('#paciente_membresia_container').slideDown();
+                        
+                        $('select#visitadetalle_tipo option[data-dependencia=membresia]').remove();
+
+                        $.ajax({
+                            dataType: 'json',
+                            url: '/getserviciosbymembresia',
+                            data: {idmembresia: 1, idclinica: 2},
+                            success: function (data) {
+
+                                var $opt_servicios = $('select#visitadetalle_tipo optgroup[label=Servicios]');
+                                $.each(data, function () {
+                                    var $option = $('<option>', {'data-dependencia': 'membresia', 'data-available': this.disponible, 'data-name': this.servicio_nombre, 'data-price': this.servicioclinica_precio, 'data-type': 'servicio', 'value': this.idservicioclinica}).text(this.servicio_nombre);
+
+                                    $opt_servicios.append($option);
+                                });
+                                formatoCatalogo();
+                            }
+                        });
+
+                    }
+                    
                 },
                 onDelete:function(item){
                     $container.find('input[name=idpaciente]').val('');
@@ -351,6 +509,8 @@
                     $container.find('button[btn-action=open_relacionados_container]').prop('disabled',true);
                     $container.find('#relacionados_container tbody tr').remove();
                     closeRelacionadosContainer();
+                    
+                    $container.find('#paciente_membresia_container').slideUp();
                 }
             });
             
@@ -424,7 +584,7 @@
             $container.find('[btn-action=submit_relacionados]').on('click',submitRelacionados);
             
             //El evento de agregar productos servicios
-            formatoCatalogo(); //Damos formato al catalogo 
+            
             $container.find('input[name=visitadetalle_cantidad]').numeric();
             $container.find('#addProduct').on('click',addProduct);
             
@@ -453,8 +613,10 @@
                  if(settings.paciente.paciente_telefono != null){
                      telefono = settings.paciente.paciente_telefono;
                  }
-                 $container.find('input[name=paciente_autocomplete]').tokenInput('add',{id:settings.paciente.idpaciente,visita_total:settings.paciente.visita_total,visita_ultima:settings.paciente.visita_ultima,relacionados:settings.paciente.relacionados,name:settings.paciente.paciente_nombre + ' - Celular: ' + settings.paciente.paciente_celular + ' - Telefono: ' + telefono });
+                 $container.find('input[name=paciente_autocomplete]').tokenInput('add',{id:settings.paciente.idpaciente,visita_total:settings.paciente.visita_total,visita_ultima:settings.paciente.visita_ultima,relacionados:settings.paciente.relacionados,name:settings.paciente.paciente_nombre + ' - Celular: ' + settings.paciente.paciente_celular + ' - Telefono: ' + telefono,membresia:settings.paciente.membresia});
             }
+            
+           
 
         }
 

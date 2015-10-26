@@ -40,7 +40,7 @@ class PacientemembresiadetalleTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idpacientemembresiadetalle', 'Idpacientemembresiadetalle', 'INTEGER', true, null, null);
         $this->addForeignKey('idpacientemembresia', 'Idpacientemembresia', 'INTEGER', 'pacientemembresia', 'idpacientemembresia', true, null, null);
-        $this->addColumn('pacientemembresiadetalle_fecha', 'PacientemembresiadetalleFecha', 'INTEGER', true, null, null);
+        $this->addColumn('pacientemembresiadetalle_fecha', 'PacientemembresiadetalleFecha', 'DATE', true, null, null);
         $this->addForeignKey('idvisitadetalle', 'Idvisitadetalle', 'INTEGER', 'visitadetalle', 'idvisitadetalle', true, null, null);
         // validators
     } // initialize()

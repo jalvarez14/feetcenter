@@ -102,6 +102,12 @@ abstract class BaseVisita extends BaseObject implements Persistent
     protected $visita_total;
 
     /**
+     * The value for the visita_nota field.
+     * @var        string
+     */
+    protected $visita_nota;
+
+    /**
      * @var        Clinica
      */
     protected $aClinica;
@@ -385,6 +391,17 @@ abstract class BaseVisita extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [visita_nota] column value.
+     *
+     * @return string
+     */
+    public function getVisitaNota()
+    {
+
+        return $this->visita_nota;
+    }
+
+    /**
      * Set the value of [idvisita] column.
      *
      * @param  int $v new value
@@ -659,6 +676,27 @@ abstract class BaseVisita extends BaseObject implements Persistent
     } // setVisitaTotal()
 
     /**
+     * Set the value of [visita_nota] column.
+     *
+     * @param  string $v new value
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitaNota($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->visita_nota !== $v) {
+            $this->visita_nota = $v;
+            $this->modifiedColumns[] = VisitaPeer::VISITA_NOTA;
+        }
+
+
+        return $this;
+    } // setVisitaNota()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -702,6 +740,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $this->visita_status = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->visita_estatuspago = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->visita_total = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->visita_nota = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -711,7 +750,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 12; // 12 = VisitaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = VisitaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Visita object", $e);
@@ -1046,6 +1085,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_TOTAL)) {
             $modifiedColumns[':p' . $index++]  = '`visita_total`';
         }
+        if ($this->isColumnModified(VisitaPeer::VISITA_NOTA)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_nota`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `visita` (%s) VALUES (%s)',
@@ -1092,6 +1134,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
                         break;
                     case '`visita_total`':
                         $stmt->bindValue($identifier, $this->visita_total, PDO::PARAM_STR);
+                        break;
+                    case '`visita_nota`':
+                        $stmt->bindValue($identifier, $this->visita_nota, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1309,6 +1354,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
             case 11:
                 return $this->getVisitaTotal();
                 break;
+            case 12:
+                return $this->getVisitaNota();
+                break;
             default:
                 return null;
                 break;
@@ -1350,6 +1398,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $keys[9] => $this->getVisitaStatus(),
             $keys[10] => $this->getVisitaEstatuspago(),
             $keys[11] => $this->getVisitaTotal(),
+            $keys[12] => $this->getVisitaNota(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1445,6 +1494,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
             case 11:
                 $this->setVisitaTotal($value);
                 break;
+            case 12:
+                $this->setVisitaNota($value);
+                break;
         } // switch()
     }
 
@@ -1481,6 +1533,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if (array_key_exists($keys[9], $arr)) $this->setVisitaStatus($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setVisitaEstatuspago($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setVisitaTotal($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setVisitaNota($arr[$keys[12]]);
     }
 
     /**
@@ -1504,6 +1557,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_STATUS)) $criteria->add(VisitaPeer::VISITA_STATUS, $this->visita_status);
         if ($this->isColumnModified(VisitaPeer::VISITA_ESTATUSPAGO)) $criteria->add(VisitaPeer::VISITA_ESTATUSPAGO, $this->visita_estatuspago);
         if ($this->isColumnModified(VisitaPeer::VISITA_TOTAL)) $criteria->add(VisitaPeer::VISITA_TOTAL, $this->visita_total);
+        if ($this->isColumnModified(VisitaPeer::VISITA_NOTA)) $criteria->add(VisitaPeer::VISITA_NOTA, $this->visita_nota);
 
         return $criteria;
     }
@@ -1578,6 +1632,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $copyObj->setVisitaStatus($this->getVisitaStatus());
         $copyObj->setVisitaEstatuspago($this->getVisitaEstatuspago());
         $copyObj->setVisitaTotal($this->getVisitaTotal());
+        $copyObj->setVisitaNota($this->getVisitaNota());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2417,6 +2472,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $this->visita_status = null;
         $this->visita_estatuspago = null;
         $this->visita_total = null;
+        $this->visita_nota = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

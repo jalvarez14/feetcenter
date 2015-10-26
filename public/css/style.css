@@ -172,3 +172,39 @@ table.dataTable tbody tr.warning{
 .forms-inline-list > label:not(:first-child){
     padding-left: 10px;
 }
+
+.nuevo_paciente_close{
+        position: absolute;
+        right: 8px;
+        top: -8px;
+        color: #bbb;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 300;
+    }
+    
+    .nuevo_paciente_close:hover{
+        color: #000;
+    }
+    
+    .relacionados_close{
+        position: absolute;
+        right: 8px;
+        top: -8px;
+        color: #bbb;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 300;
+    }
+    
+    .relacionados_close:hover{
+        color: #000;
+    }
+    
+    #modal_event_container select{
+        height: 29px;
+    }
+    
+
+ 
+    

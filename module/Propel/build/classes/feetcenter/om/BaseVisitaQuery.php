@@ -18,6 +18,7 @@
  * @method VisitaQuery orderByVisitaStatus($order = Criteria::ASC) Order by the visita_status column
  * @method VisitaQuery orderByVisitaEstatuspago($order = Criteria::ASC) Order by the visita_estatuspago column
  * @method VisitaQuery orderByVisitaTotal($order = Criteria::ASC) Order by the visita_total column
+ * @method VisitaQuery orderByVisitaNota($order = Criteria::ASC) Order by the visita_nota column
  *
  * @method VisitaQuery groupByIdvisita() Group by the idvisita column
  * @method VisitaQuery groupByIdempleado() Group by the idempleado column
@@ -31,6 +32,7 @@
  * @method VisitaQuery groupByVisitaStatus() Group by the visita_status column
  * @method VisitaQuery groupByVisitaEstatuspago() Group by the visita_estatuspago column
  * @method VisitaQuery groupByVisitaTotal() Group by the visita_total column
+ * @method VisitaQuery groupByVisitaNota() Group by the visita_nota column
  *
  * @method VisitaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method VisitaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -74,6 +76,7 @@
  * @method Visita findOneByVisitaStatus(string $visita_status) Return the first Visita filtered by the visita_status column
  * @method Visita findOneByVisitaEstatuspago(string $visita_estatuspago) Return the first Visita filtered by the visita_estatuspago column
  * @method Visita findOneByVisitaTotal(string $visita_total) Return the first Visita filtered by the visita_total column
+ * @method Visita findOneByVisitaNota(string $visita_nota) Return the first Visita filtered by the visita_nota column
  *
  * @method array findByIdvisita(int $idvisita) Return Visita objects filtered by the idvisita column
  * @method array findByIdempleado(int $idempleado) Return Visita objects filtered by the idempleado column
@@ -87,6 +90,7 @@
  * @method array findByVisitaStatus(string $visita_status) Return Visita objects filtered by the visita_status column
  * @method array findByVisitaEstatuspago(string $visita_estatuspago) Return Visita objects filtered by the visita_estatuspago column
  * @method array findByVisitaTotal(string $visita_total) Return Visita objects filtered by the visita_total column
+ * @method array findByVisitaNota(string $visita_nota) Return Visita objects filtered by the visita_nota column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -194,7 +198,7 @@ abstract class BaseVisitaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total` FROM `visita` WHERE `idvisita` = :p0';
+        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total`, `visita_nota` FROM `visita` WHERE `idvisita` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -757,6 +761,35 @@ abstract class BaseVisitaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(VisitaPeer::VISITA_TOTAL, $visitaTotal, $comparison);
+    }
+
+    /**
+     * Filter the query on the visita_nota column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaNota('fooValue');   // WHERE visita_nota = 'fooValue'
+     * $query->filterByVisitaNota('%fooValue%'); // WHERE visita_nota LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $visitaNota The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaNota($visitaNota = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($visitaNota)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $visitaNota)) {
+                $visitaNota = str_replace('*', '%', $visitaNota);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_NOTA, $visitaNota, $comparison);
     }
 
     /**

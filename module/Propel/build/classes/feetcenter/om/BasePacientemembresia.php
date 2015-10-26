@@ -55,7 +55,7 @@ abstract class BasePacientemembresia extends BaseObject implements Persistent
 
     /**
      * The value for the pacientemembresia_folio field.
-     * @var        int
+     * @var        string
      */
     protected $pacientemembresia_folio;
 
@@ -177,7 +177,7 @@ abstract class BasePacientemembresia extends BaseObject implements Persistent
     /**
      * Get the [pacientemembresia_folio] column value.
      *
-     * @return int
+     * @return string
      */
     public function getPacientemembresiaFolio()
     {
@@ -357,13 +357,13 @@ abstract class BasePacientemembresia extends BaseObject implements Persistent
     /**
      * Set the value of [pacientemembresia_folio] column.
      *
-     * @param  int $v new value
+     * @param  string $v new value
      * @return Pacientemembresia The current object (for fluent API support)
      */
     public function setPacientemembresiaFolio($v)
     {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
+        if ($v !== null) {
+            $v = (string) $v;
         }
 
         if ($this->pacientemembresia_folio !== $v) {
@@ -497,7 +497,7 @@ abstract class BasePacientemembresia extends BaseObject implements Persistent
             $this->idpaciente = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->idclinica = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->idmembresia = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->pacientemembresia_folio = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->pacientemembresia_folio = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->pacientemembresia_fechainicio = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->pacientemembresia_serviciosdisponibles = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
             $this->pacientemembresia_cuponesdisponibles = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
@@ -831,7 +831,7 @@ abstract class BasePacientemembresia extends BaseObject implements Persistent
                         $stmt->bindValue($identifier, $this->idmembresia, PDO::PARAM_INT);
                         break;
                     case '`pacientemembresia_folio`':
-                        $stmt->bindValue($identifier, $this->pacientemembresia_folio, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->pacientemembresia_folio, PDO::PARAM_STR);
                         break;
                     case '`pacientemembresia_fechainicio`':
                         $stmt->bindValue($identifier, $this->pacientemembresia_fechainicio, PDO::PARAM_STR);

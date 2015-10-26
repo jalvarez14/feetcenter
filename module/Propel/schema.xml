@@ -517,7 +517,7 @@
     <column name="idpaciente" phpName="Idpaciente" type="INTEGER" required="true"/>
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
     <column name="idmembresia" phpName="Idmembresia" type="INTEGER" required="true"/>
-    <column name="pacientemembresia_folio" phpName="PacientemembresiaFolio" type="INTEGER" required="true"/>
+    <column name="pacientemembresia_folio" phpName="PacientemembresiaFolio" type="VARCHAR" size="255" required="true"/>
     <column name="pacientemembresia_fechainicio" phpName="PacientemembresiaFechainicio" type="TIMESTAMP" required="true"/>
     <column name="pacientemembresia_serviciosdisponibles" phpName="PacientemembresiaServiciosdisponibles" type="INTEGER" required="true"/>
     <column name="pacientemembresia_cuponesdisponibles" phpName="PacientemembresiaCuponesdisponibles" type="INTEGER" required="true"/>
@@ -547,7 +547,7 @@
   <table name="pacientemembresiadetalle" phpName="Pacientemembresiadetalle" idMethod="native">
     <column name="idpacientemembresiadetalle" phpName="Idpacientemembresiadetalle" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idpacientemembresia" phpName="Idpacientemembresia" type="INTEGER" required="true"/>
-    <column name="pacientemembresiadetalle_fecha" phpName="PacientemembresiadetalleFecha" type="INTEGER" required="true"/>
+    <column name="pacientemembresiadetalle_fecha" phpName="PacientemembresiadetalleFecha" type="DATE" required="true"/>
     <column name="idvisitadetalle" phpName="Idvisitadetalle" type="INTEGER" required="true"/>
     <foreign-key foreignTable="pacientemembresia" name="idpacientemembresia_pacientemembresiadetalle" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idpacientemembresia" foreign="idpacientemembresia"/>
@@ -828,6 +828,7 @@
     <column name="visita_status" phpName="VisitaStatus" type="CHAR" sqlType="enum('por confirmar','confimada','cancelo','no se presento','reprogramda','en servicio','terminado')" required="true"/>
     <column name="visita_estatuspago" phpName="VisitaEstatuspago" type="CHAR" sqlType="enum('pagada','no pagada','cancelada')" required="false"/>
     <column name="visita_total" phpName="VisitaTotal" type="DECIMAL" size="10" scale="2" required="false"/>
+    <column name="visita_nota" phpName="VisitaNota" type="LONGVARCHAR" required="false"/>
     <foreign-key foreignTable="clinica" name="idclinica_visita" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
     </foreign-key>

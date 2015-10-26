@@ -52,7 +52,7 @@
  * @method Pacientemembresia findOneByIdpaciente(int $idpaciente) Return the first Pacientemembresia filtered by the idpaciente column
  * @method Pacientemembresia findOneByIdclinica(int $idclinica) Return the first Pacientemembresia filtered by the idclinica column
  * @method Pacientemembresia findOneByIdmembresia(int $idmembresia) Return the first Pacientemembresia filtered by the idmembresia column
- * @method Pacientemembresia findOneByPacientemembresiaFolio(int $pacientemembresia_folio) Return the first Pacientemembresia filtered by the pacientemembresia_folio column
+ * @method Pacientemembresia findOneByPacientemembresiaFolio(string $pacientemembresia_folio) Return the first Pacientemembresia filtered by the pacientemembresia_folio column
  * @method Pacientemembresia findOneByPacientemembresiaFechainicio(string $pacientemembresia_fechainicio) Return the first Pacientemembresia filtered by the pacientemembresia_fechainicio column
  * @method Pacientemembresia findOneByPacientemembresiaServiciosdisponibles(int $pacientemembresia_serviciosdisponibles) Return the first Pacientemembresia filtered by the pacientemembresia_serviciosdisponibles column
  * @method Pacientemembresia findOneByPacientemembresiaCuponesdisponibles(int $pacientemembresia_cuponesdisponibles) Return the first Pacientemembresia filtered by the pacientemembresia_cuponesdisponibles column
@@ -62,7 +62,7 @@
  * @method array findByIdpaciente(int $idpaciente) Return Pacientemembresia objects filtered by the idpaciente column
  * @method array findByIdclinica(int $idclinica) Return Pacientemembresia objects filtered by the idclinica column
  * @method array findByIdmembresia(int $idmembresia) Return Pacientemembresia objects filtered by the idmembresia column
- * @method array findByPacientemembresiaFolio(int $pacientemembresia_folio) Return Pacientemembresia objects filtered by the pacientemembresia_folio column
+ * @method array findByPacientemembresiaFolio(string $pacientemembresia_folio) Return Pacientemembresia objects filtered by the pacientemembresia_folio column
  * @method array findByPacientemembresiaFechainicio(string $pacientemembresia_fechainicio) Return Pacientemembresia objects filtered by the pacientemembresia_fechainicio column
  * @method array findByPacientemembresiaServiciosdisponibles(int $pacientemembresia_serviciosdisponibles) Return Pacientemembresia objects filtered by the pacientemembresia_serviciosdisponibles column
  * @method array findByPacientemembresiaCuponesdisponibles(int $pacientemembresia_cuponesdisponibles) Return Pacientemembresia objects filtered by the pacientemembresia_cuponesdisponibles column
@@ -442,37 +442,24 @@ abstract class BasePacientemembresiaQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByPacientemembresiaFolio(1234); // WHERE pacientemembresia_folio = 1234
-     * $query->filterByPacientemembresiaFolio(array(12, 34)); // WHERE pacientemembresia_folio IN (12, 34)
-     * $query->filterByPacientemembresiaFolio(array('min' => 12)); // WHERE pacientemembresia_folio >= 12
-     * $query->filterByPacientemembresiaFolio(array('max' => 12)); // WHERE pacientemembresia_folio <= 12
+     * $query->filterByPacientemembresiaFolio('fooValue');   // WHERE pacientemembresia_folio = 'fooValue'
+     * $query->filterByPacientemembresiaFolio('%fooValue%'); // WHERE pacientemembresia_folio LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $pacientemembresiaFolio The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $pacientemembresiaFolio The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return PacientemembresiaQuery The current query, for fluid interface
      */
     public function filterByPacientemembresiaFolio($pacientemembresiaFolio = null, $comparison = null)
     {
-        if (is_array($pacientemembresiaFolio)) {
-            $useMinMax = false;
-            if (isset($pacientemembresiaFolio['min'])) {
-                $this->addUsingAlias(PacientemembresiaPeer::PACIENTEMEMBRESIA_FOLIO, $pacientemembresiaFolio['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($pacientemembresiaFolio['max'])) {
-                $this->addUsingAlias(PacientemembresiaPeer::PACIENTEMEMBRESIA_FOLIO, $pacientemembresiaFolio['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($pacientemembresiaFolio)) {
                 $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $pacientemembresiaFolio)) {
+                $pacientemembresiaFolio = str_replace('*', '%', $pacientemembresiaFolio);
+                $comparison = Criteria::LIKE;
             }
         }
 

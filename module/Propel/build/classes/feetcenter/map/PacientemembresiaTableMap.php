@@ -42,7 +42,7 @@ class PacientemembresiaTableMap extends TableMap
         $this->addForeignKey('idpaciente', 'Idpaciente', 'INTEGER', 'paciente', 'idpaciente', true, null, null);
         $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
         $this->addForeignKey('idmembresia', 'Idmembresia', 'INTEGER', 'membresia', 'idmembresia', true, null, null);
-        $this->addColumn('pacientemembresia_folio', 'PacientemembresiaFolio', 'INTEGER', true, null, null);
+        $this->addColumn('pacientemembresia_folio', 'PacientemembresiaFolio', 'VARCHAR', true, 255, null);
         $this->addColumn('pacientemembresia_fechainicio', 'PacientemembresiaFechainicio', 'TIMESTAMP', true, null, null);
         $this->addColumn('pacientemembresia_serviciosdisponibles', 'PacientemembresiaServiciosdisponibles', 'INTEGER', true, null, null);
         $this->addColumn('pacientemembresia_cuponesdisponibles', 'PacientemembresiaCuponesdisponibles', 'INTEGER', true, null, null);
