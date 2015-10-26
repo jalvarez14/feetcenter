@@ -205,6 +205,10 @@ table.dataTable tbody tr.warning{
         height: 29px;
     }
     
+    a.btn:focus, a.btn:hover{
+        color: white;
+    }
+    
 
  
     

@@ -730,8 +730,11 @@
                                                                                     
                                                                                     payMethodContainer.find('input').val(total);
                                                                                     payMethodContainer.slideDown();
+                                                                                    
                                                                                     pagarAction.on('click', $.proxy(function(){
+                            
                                                                                         pay($modal);
+                                                                                   
                                                                                     }));
                                                                                      
                                                                                }else{
@@ -739,8 +742,8 @@
                                                                                    pagarAction.text('Pagar');
                                                                                    payDetailsContainer.slideDown();
                                                                                    
-                                                                                   payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
                                                                                    
+                                                                                   payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
                                                                                    
                                                                                    //Calculamos el total
                                                                                     var total = 0;
@@ -761,7 +764,10 @@
                                                                                pagarAction.unbind();
                                                                                pagarAction.prop('disabled',false);
                                                                                pagarAction.on('click', $.proxy(function(){
-                                                                                   pay($modal);
+                                  
+                                                                                       pay($modal);
+                                                                                   
+
                                                                                }));
                                                                                
                                                                              }));
@@ -800,8 +806,17 @@
                                                     payMethodContainer.slideDown();
                                                      
                                                      pagarAction.on('click', $.proxy(function(){
-                                                         
-                                                         pay($modal);
+                                                        setTimeout(function(){
+                                                            if(typeof settings.folio_valido != 'undefined'){
+
+                                                                if(settings.folio_valido){
+                                                                    pay($modal);
+                                                                }
+                                                            }else{
+                                                                pay($modal);
+                                                            }
+                                                        },100);
+                                                        
                                                      }));
                                                  }));
                                                  
@@ -957,11 +972,15 @@
                 url:'/validarnuevofolio',
                 data:{folio:folio},
                 dataType:'json',
+                async:false,
                 success:function(data){
                     if(!data.response){
                          $folioInpit.val('');
                          $folioInpit.addClass('input-error');
                          alert(data.msg);
+                         settings.folio_valido = false;
+                    }else{
+                        settings.folio_valido = true;
                     }
                 }
             });
