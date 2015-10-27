@@ -387,6 +387,9 @@ class AgendaController extends AbstractActionController
                 $servicio_array = $servicio->toArray(\BasePeer::TYPE_FIELDNAME);
                 $servicio_array['disponible'] = $disponible;
                 $servicio_array['servicio_dependencia'] = $servicio->getServicio()->getServicioDependencia();
+                if(!$servicio->getServicio()->getServicioGeneraingreso()){
+                    $servicio_array['servicioclinica_precio'] = 0;
+                }
                 $servicios_array[] = $servicio_array;
             }
             
@@ -441,7 +444,7 @@ class AgendaController extends AbstractActionController
           if($request->isPost()){
               
               $post_data = $request->getPost();
-          
+              
               //Actualizamos la visita
               $visita = \VisitaQuery::create()->findPk($post_data['idvisita']);
               $visita->setVisitaStatus('terminado')
@@ -452,6 +455,29 @@ class AgendaController extends AbstractActionController
               
               //Actualizamos lo detalles de la visita
               $visita->getVisitadetalles()->delete();
+              
+              /*
+               * COMISIONES
+               */
+              
+              $now = new \DateTime();
+              $empleado = \EmpleadoQuery::create()->findpk($post_data['idempleado']);
+              
+              //Validamos si existe un registro del dia en curso del empleado
+              if(\EmpleadocomisionQuery::create()->filterByIdempledo($empleado->getIdempleado())->filterByEmpleadocomisionFecha($now->format('Y-m-d'))->exists()){
+                  $empleado_comision = \EmpleadocomisionQuery::create()->filterByIdempledo($empleado->getIdempleado())->filterByEmpleadocomisionFecha($now->format('Y-m-d'))->findOne();
+              }else{
+                  $empleado_comision = new \Empleadocomision();
+                  $empleado_comision->setIdempledo($empleado->getIdempleado())
+                                    ->setIdclinica($post_data['idclinica'])
+                                    ->setEmpleadocomisionFecha($now)
+                                    ->setEmpleadocomisionComisionproductos(0)
+                                    ->setEmpleadocomisionComisionservicios(0)
+                                    ->setEmpleadocomisionProductosvendidos(0)
+                                    ->setEmpleadocomisionServiciosvendidos(0)
+                                    ->setEmpleadocomisionAcumulado(0)
+                                    ->save();
+              }
 
               if(isset($post_data['vistadetallepay'])){
                 foreach ($post_data['vistadetallepay'] as $detalle){
@@ -470,6 +496,7 @@ class AgendaController extends AbstractActionController
                         
                         //Restamos el producto del inventario
                         $producto_clinica = \ProductoclinicaQuery::create()->findPk($detalle['id']);
+                        $producto = $producto_clinica->getProducto();
                         $current_stock = $producto_clinica->getProductoclinicaExistencia();
                         $new_stock = $current_stock - $detalle['cantidad'];
                        
@@ -477,6 +504,106 @@ class AgendaController extends AbstractActionController
                         $producto_clinica->setProductoclinicaExistencia($new_stock);
                         $producto_clinica->save();
                         
+                        /*
+                         * COMISIONES
+                         */
+                         
+                         
+                        //Primero se valida si el producto/servicio genera comision
+                        if($producto->getProductoGeneracomision()){ 
+                           
+                            //Las comisiones del empleados e definen por su perfil?
+                            if(!is_null($empleado->getEmpleadoTipocomisionproducto())){
+
+                                $tipoComision = $empleado->getEmpleadoTipocomisionproducto();
+                                if($tipoComision == 'porcentaje'){
+                                    
+                                    $comision = (($producto->getProductoPrecio() * $visitadetalle->getVisitadetalleCantidad()) * $empleado->getEmpleadoCantidadcomisionproducto())/100;
+                                    
+                                    //Servicios vendidos
+                                    $current_vendidos = $empleado_comision->getEmpleadocomisionProductosvendidos();
+                                    $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                                    $empleado_comision->setEmpleadocomisionProductosvendidos($new_vendidos);
+                                    
+                                    //Comision servicios
+                                    $current_productos = $empleado_comision->getEmpleadocomisionComisionproductos();
+                                    $new_productos = $current_productos + $comision;
+                                    $empleado_comision->setEmpleadocomisionComisionproductos($new_productos);
+                                    
+                                    //Acumulado
+                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+                                
+                                    
+                                }else if($tipoComision == 'cantidad'){
+                                    
+                                    $comision = $empleado->getEmpleadoCantidadcomisionproducto() * $visitadetalle->getVisitadetalleCantidad();
+                                    
+                                    //Productos vendidos
+                                    $current_vendidos = $empleado_comision->getEmpleadocomisionProductosvendidos();
+                                    $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                                    $empleado_comision->setEmpleadocomisionProductosvendidos($new_vendidos);
+                                    
+                                    //Comision Productos
+                                    $current_productos = $empleado_comision->getEmpleadocomisionComisionproductos();
+                                    $new_productos = $current_productos + $comision;
+                                    $empleado_comision->setEmpleadocomisionComisionproductos($new_productos);
+                                    
+                                    //Acumulado
+                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+                                    
+                                }
+
+                            }else{ //Las comisiones del empleado las define el servico/producto vendido
+                                
+                                $tipoComision = $producto->getProductoTipocomision();
+                                if($tipoComision == 'porcentaje'){
+                                    
+                                    $comision = (($producto->getProductoPrecio() * $visitadetalle->getVisitadetalleCantidad()) * $producto->getProductoComision())/100;
+                                    
+                                    //productos vendidos
+                                    $current_vendidos = $empleado_comision->getEmpleadocomisionProductosvendidos();
+                                    $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                                    $empleado_comision->setEmpleadocomisionProductosvendidos($new_vendidos);
+                                    
+                                    //Comision productos
+                                    $current_productos = $empleado_comision->getEmpleadocomisionComisionproductos();
+                                    $new_productos = $current_productos + $comision;
+                                    $empleado_comision->setEmpleadocomisionComisionproductos($new_productos);
+                                    
+                                    //Acumulado
+                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+                                    
+                                    
+                                }else if($tipoComision == 'cantidad'){
+                                    
+                                    $comision = $producto->getProductoComision() * $visitadetalle->getVisitadetalleCantidad();
+                                    
+                                    //productos vendidos
+                                    $current_vendidos = $empleado_comision->getEmpleadocomisionProductosvendidos();
+                                    $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                                    $empleado_comision->setEmpleadocomisionProductosvendidos($new_vendidos);
+                                    
+                                    //Comision productos
+                                    $current_productos = $empleado_comision->getEmpleadocomisionComisionproductos();
+                                    $new_productos = $current_productos + $comision;
+                                    $empleado_comision->setEmpleadocomisionComisionproductos($new_productos);
+                                    
+                                    //Acumulado
+                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+                                    
+                                }
+                            }
+                            $empleado_comision->save();
+                        }
+
                     }else if($detalle['type'] == 'servicio'){
                         
                         $visitadetalle->setIdservicioclinica($detalle['id']);
@@ -528,7 +655,107 @@ class AgendaController extends AbstractActionController
                              }
                              
                          }
+                         
+                         /*
+                         * COMISIONES
+                         */
+                         
+                         
+                        //Primero se valida si el producto/servicio genera comision
+                        if($serivicio->getServicioGeneracomision()){ 
+                           
+                            //Las comisiones del empleados e definen por su perfil?
+                            if(!is_null($empleado->getEmpleadoTipocomisionservicio())){
 
+                                $tipoComision = $empleado->getEmpleadoTipocomisionservicio(); 
+                                if($tipoComision == 'porcentaje'){
+                                    
+                                    $comision = (($servicio_clinica->getServicioclinicaPrecio() * $visitadetalle->getVisitadetalleCantidad()) * $empleado->getEmpleadoCantidadcomisionservicio())/100;
+                                    
+                                    //Servicios vendidos
+                                    $current_vendidos = $empleado_comision->getEmpleadocomisionServiciosvendidos();
+                                    $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                                    $empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
+                                    
+                                    //Comision servicios
+                                    $current_servicios = $empleado_comision->getEmpleadocomisionComisionservicios();
+                                    $new_servicios = $current_servicios + $comision;
+                                    $empleado_comision->setEmpleadocomisionComisionservicios($new_servicios);
+                                    
+                                    //Acumulado
+                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+                                
+                                    
+                                }else if($tipoComision == 'cantidad'){
+                                    
+                                    $comision = $empleado->getEmpleadoCantidadcomisionservicio() * $visitadetalle->getVisitadetalleCantidad();
+                                    
+                                    //Servicios vendidos
+                                    $current_vendidos = $empleado_comision->getEmpleadocomisionServiciosvendidos();
+                                    $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                                    $empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
+                                    
+                                    //Comision servicios
+                                    $current_servicios = $empleado_comision->getEmpleadocomisionComisionservicios();
+                                    $new_servicios = $current_servicios + $comision;
+                                    $empleado_comision->setEmpleadocomisionComisionservicios($new_servicios);
+                                    
+                                    //Acumulado
+                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+                                    
+                                }
+
+                            }else{ //Las comisiones del empleado las define el servico/producto vendido
+                                
+                                $tipoComision = $serivicio->getServicioTipocomision();
+                                if($tipoComision == 'porcentaje'){
+                                    
+                                    $comision = (($servicio_clinica->getServicioclinicaPrecio() * $visitadetalle->getVisitadetalleCantidad()) * $serivicio->getServicioComision())/100;
+                                    
+                                    //Servicios vendidos
+                                    $current_vendidos = $empleado_comision->getEmpleadocomisionServiciosvendidos();
+                                    $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                                    $empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
+                                    
+                                    //Comision servicios
+                                    $current_servicios = $empleado_comision->getEmpleadocomisionComisionservicios();
+                                    $new_servicios = $current_servicios + $comision;
+                                    $empleado_comision->setEmpleadocomisionComisionservicios($new_servicios);
+                                    
+                                    //Acumulado
+                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+                                    
+                                    
+                                }else if($tipoComision == 'cantidad'){
+                                    
+                                    $comision = $serivicio->getServicioComision() * $visitadetalle->getVisitadetalleCantidad();
+                                    
+                                    //Servicios vendidos
+                                    $current_vendidos = $empleado_comision->getEmpleadocomisionServiciosvendidos();
+                                    $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                                    $empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
+                                    
+                                    //Comision servicios
+                                    $current_servicios = $empleado_comision->getEmpleadocomisionComisionservicios();
+                                    $new_servicios = $current_servicios + $comision;
+                                    $empleado_comision->setEmpleadocomisionComisionservicios($new_servicios);
+                                    
+                                    //Acumulado
+                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+                                    
+                                }
+                            }
+                            $empleado_comision->save();
+                        }
+                      
                     }else{
                         $visitadetalle->setIdmembresia($detalle['id']);
                         $visitadetalle->save();
@@ -548,6 +775,7 @@ class AgendaController extends AbstractActionController
                                            ->setPacientemembresiaEstatus('activa')
                                            ->setPacientemembresiaFechainicio(new \DateTime())
                                            ->save();
+                        
                     }
                     
                     
@@ -770,6 +998,10 @@ class AgendaController extends AbstractActionController
                 $servicio_array = $servicio->toArray(\BasePeer::TYPE_FIELDNAME);
                 $servicio_array['disponible'] = $disponible;
                 $servicio_array['servicio_dependencia'] = $servicio->getServicio()->getServicioDependencia();
+                //Si el servicio NO genera ingresa modificamos su valor a $0.00;
+                if(!$servicio->getServicio()->getServicioGeneraingreso()){
+                    $servicio_array['servicioclinica_precio'] = 0;
+                }
                 
                 $servicios_array[] = $servicio_array;
             }

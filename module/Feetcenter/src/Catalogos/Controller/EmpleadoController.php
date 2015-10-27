@@ -227,7 +227,12 @@ class EmpleadoController extends AbstractActionController
                 
                 //Validamos nuestro formulario
                 if($form->isValid()){
-     
+                    
+                    $entity->setEmpleadoCantidadcomisionproducto(NULL)
+                           ->setEmpleadoCantidadcomisionservicio(NULL)
+                           ->setEmpleadoTipocomisionproducto(NULL)
+                           ->setEmpleadoTipocomisionservicio(NULL);
+                    
                     //Recorremos nuestro formulario y seteamos los valores a nuestro objeto Lugar
                     foreach ($post_data as $key => $value) {
                         if (\EmpleadoPeer::getTableMap()->hasColumn($key) && $key != 'empleado_fechanacimiento') {
