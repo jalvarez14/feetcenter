@@ -102,6 +102,24 @@
   
        }
        
+       var buildTable = function(from,to){
+           
+           //Consultamos los empleados que intervienen en el rango de fechas y la clinica
+           var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
+           clinicas_select = clinicas_select[0];
+           
+           $.ajax({
+               url:'/empleados/comisiones/getempleados',
+               dataType: 'json',
+               method:'GET',
+               data:{idclinica:clinicas_select,from:from.format('YYYY-MM-DD'),to:to.format('YYYY-MM-DD')},
+               success: function(data){
+
+               },
+           });
+           
+       }
+       
        /*
         * Public methods
         */
@@ -124,13 +142,15 @@
             var day = now.get('date');
             
             if(day<=14){
-                var from = now.date(1);
-                var to = now.date(14);
-            }else{
-                var from = now.date(15);
-                var to = now.endOf('month');
+                var from = moment().date(1);
+                var to = moment().date(14);
+            }else{  
+                var from = moment().date(15);
+                var to = moment().endOf('month');
             }
             
+            
+            buildTable(from,to);
             
                 
         }

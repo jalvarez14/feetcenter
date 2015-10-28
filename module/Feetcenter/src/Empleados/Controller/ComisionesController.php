@@ -14,7 +14,18 @@ use Zend\View\Model\ViewModel;
 
 class ComisionesController extends AbstractActionController
 {
-    
+    public function getempleadosAction(){
+        
+        //Cachamos nuestros parametros de la url
+        $idclinica = $this->params()->fromQuery('idclinica');
+        $from = $this->params()->fromQuery('from');
+        $to = $this->params()->fromQuery('to');
+        
+        $empleados = \EmpleadocomisionQuery::create()->joinEmpleado()->withColumn('empleado_nombre')->select('idempledo')->groupBy('idempledo')->filterByIdclinica($idclinica)->filterByEmpleadocomisionFecha(array('min' => $from, 'max' => $to))->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        return $this->getResponse()->setContent(json_encode($empleados));
+        
+    }
+        
     public function comisionesbyclinicaAction(){
         
         if($this->params()->fromQuery('idclinica')){
