@@ -113,15 +113,26 @@
             //Inicializamos nuestro multiple select
             $container.find("select[name=idclinica]").multipleSelect({
                 single:true,   
-                onClick : filterByClinica,
+                //onClick : filterByClinica,
             });
             
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.idclinica]);
             
+            //filterByClinica();
+            
+            var now = moment();
+            var day = now.get('date');
+            
+            if(day<=14){
+                var from = now.date(1);
+                var to = now.date(14);
+            }else{
+                var from = now.date(15);
+                var to = now.endOf('month');
+            }
             
             
-            
-            filterByClinica();
+                
         }
 
     }
