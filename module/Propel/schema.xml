@@ -450,10 +450,6 @@
     <column name="membresia_descripcion" phpName="MembresiaDescripcion" type="LONGVARCHAR" required="true"/>
     <column name="membresia_servicios" phpName="MembresiaServicios" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="membresia_cupones" phpName="MembresiaCupones" type="DECIMAL" size="10" scale="2" required="true"/>
-    <column name="servicio_generaingreso" phpName="ServicioGeneraingreso" type="BOOLEAN" size="1" required="true"/>
-    <column name="servicio_generacomision" phpName="ServicioGeneracomision" type="BOOLEAN" size="1" required="true"/>
-    <column name="servicio_tipocomision" phpName="ServicioTipocomision" type="CHAR" sqlType="enum('porcentaje','cantidad')" required="false"/>
-    <column name="servicio_comision" phpName="ServicioComision" type="DECIMAL" size="10" scale="2" required="false"/>
     <column name="membresia_precio" phpName="MembresiaPrecio" type="DECIMAL" size="10" scale="2" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>

@@ -44,48 +44,7 @@
             </label>
         </div>
     </div>
-    <div class="units-row">
-        <div class="unit-100">
-            <fieldset>
-                <legend>Ingresos y comisiones</legend>
-                <div class="units-row">
-                    <div class="unit-33">
-                        <label>
-                            <b>
-                              Genera ingreso <span class="req">*</span>  
-                            </b> 
-                        </label>
-                        <ul class="forms-inline-list">
-                            <?php echo $this->formRadio($form->get('servicio_generaingreso')); ?>
-                        </ul>
-                    </div>
-                    <div class="unit-33">
-                        <label>
-                            <b>
-                                 Genera comisión <span class="req">*</span>
-                            </b> 
-                        </label>
-                        <ul class="forms-inline-list">
-                            <?php echo $this->formRadio($form->get('servicio_generacomision')); ?>
-                        </ul>
-                    </div>
-                    <div class="unit-33">
-                        <div class="units-row">
-                            <div class="unit-50">
-                                <label><b>Tipo de comisión</b></label>
-                                <?php echo $this->formSelect($form->get('servicio_tipocomision')); ?>
-                            </div>
-                            <div class="unit-50">
-                                <label><b>Cantidad de comisión</b></label>
-                                <?php $form->get('servicio_comision')->setAttribute('disabled',true);?>
-                                <?php echo $this->formText($form->get('servicio_comision')); ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-    </div>
+
     <div class="units-row">
         <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
     </div>

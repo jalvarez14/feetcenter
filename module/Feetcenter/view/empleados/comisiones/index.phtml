@@ -1,0 +1,125 @@
+<style>
+    .table-comisiones th{
+        text-align: center;
+    }
+    .table-comisiones tr.row {
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
+<div id="empleados_comisiones_container">
+    
+    <h1>Comisiónes</h1>
+    <div class="units-row">
+        <div class="unit-30">
+            Clinica
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <table class="table-comisiones table-bordered">
+        <thead>
+            <tr>
+<!--                <th>Fecha</th>
+                <th>Daniel Castanedo</th>
+                <th>Sergio Castanedo</th>-->
+            </tr>
+        </thead>
+        <tbody>
+<!--            <tr class="row">
+                <td></td>
+                <td >
+                    <div class="units-row" style="margin-bottom: 0px;">
+                        <div class="unit-20">
+                            <label>Com Serv.</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>Com Prod.</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>Serv Vend.</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>Prod Vend.</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>Ac.</label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="units-row" style="margin-bottom: 0px;">
+                        <div class="unit-20">
+                            <label>Com Serv.</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>Com Prod.</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>Serv Vend.</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>Prod Vend.</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>Ac.</label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>01/01/01</td>
+                <td>
+                    <div class="units-row" style="margin-bottom: 0px;">
+                        <div class="unit-20">
+                            <label>1</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>2</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>3</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>4</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>5</label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="units-row" style="margin-bottom: 0px;">
+                        <div class="unit-20">
+                            <label>1</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>2</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>3</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>4</label>
+                        </div>
+                        <div class="unit-20">
+                            <label>5</label>
+                        </div>
+                    </div>
+                </td>
+            </tr>-->
+        </tbody>
+    </table>
+</div>
+<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="/js/empleados/comisiones.js"></script>
+<script>
+    var comisiones = $('#empleados_comisiones_container').comisiones({
+        idclinica: <?php echo $idclinica?>,
+    });
+    comisiones.init();
+    
+</script>

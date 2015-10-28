@@ -142,11 +142,6 @@ class MembresiaController extends AbstractActionController
             
             //Instanciamos nuestro formulario
             $form = new \Catalogos\Form\MembresiaForm();
-            
-            if($entity->getServicioGeneracomision()){
-                $form->get('servicio_tipocomision')->setAttribute('disabled', false);
-                $form->get('servicio_comision')->setAttribute('disabled', false);
-            }
 
             //Le ponemos los datos de nuestro lugar a nuestro formulario
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));

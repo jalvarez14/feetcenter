@@ -591,10 +591,6 @@ CREATE TABLE `membresia`
     `membresia_descripcion` TEXT NOT NULL,
     `membresia_servicios` DECIMAL(10,2) NOT NULL,
     `membresia_cupones` DECIMAL(10,2) NOT NULL,
-    `servicio_generaingreso` TINYINT(1) NOT NULL,
-    `servicio_generacomision` TINYINT(1) NOT NULL,
-    `servicio_tipocomision` enum('porcentaje','cantidad'),
-    `servicio_comision` DECIMAL(10,2),
     `membresia_precio` DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (`idmembresia`)
 ) ENGINE=InnoDB;

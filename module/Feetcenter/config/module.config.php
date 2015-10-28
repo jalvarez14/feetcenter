@@ -260,6 +260,16 @@ return array(
                     ),
                 ),
             ),
+             'empleados-comisiones' => array(
+                 'type' => 'Segment',
+                 'options' => array(
+                    'route' => '/empleados/comisiones[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Empleados\Controller\Comisiones',
+                        'action' => 'index',
+                    ),
+                ),
+             ),
             'empleados-reportes' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -510,6 +520,7 @@ return array(
             //Empleados
             'Empleados\Controller\Empleados' => 'Empleados\Controller\EmpleadosController',
             'Empleados\Controller\Reportes' => 'Empleados\Controller\ReportesController',
+            'Empleados\Controller\Comisiones' => 'Empleados\Controller\ComisionesController',
             //Pacientes
             'Pacientes\Controller\Pacientes' => 'Pacientes\Controller\PacientesController',
             'Pacientes\Controller\Grupos' => 'Pacientes\Controller\GruposController',

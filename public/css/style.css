@@ -209,6 +209,56 @@ table.dataTable tbody tr.warning{
         color: white;
     }
     
+     .disable {
+
+      background-color: rgb(255, 190, 190);
+
+    }
+    
+    .fc-widget-header{
+        background-color: #FFF;
+    }
+    
+    .agenda_descanso{
+        cursor: not-allowed;
+        width: 100%;
+    }
+    
+    .visita_porconfirmar{
+        background: #fbc02d;
+    }
+    
+    .visita_confirmada{
+        background: #fb8c00;
+    }
+    
+    .visita_cancelo{
+        background: #f4511e;
+    }
+    
+    .visita_nosepresento{
+        background: #6d4c41;
+    }
+    
+    .visita_reprogramda{
+        background: #9e9e9e;
+    }
+    
+    .visita_enservicio{
+        background: #039be5;
+    }
+    
+    .visita_terminado{
+        background: #43a047;
+    }
+    
+    .receso{
+        background: #00bcd4;
+    }
+    .fc-event-time{
+        height: 22px;
+    }
+    
 
  
     
