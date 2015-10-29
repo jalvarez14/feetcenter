@@ -260,6 +260,24 @@ table.dataTable tbody tr.warning{
         height: 22px;
     }
     
+    .table-comisiones th{
+        text-align: center;
+    }
+    .table-comisiones tr.row {
+        text-align: center;
+        font-weight: bold;
+    }
+    
+    .table.dataTable tfoot th, table.dataTable tfoot td{
+        border-top:1px solid #EEE;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .table-comisiones tbody div{
+        text-align: center;
+    }
+    
 
  
     

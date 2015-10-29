@@ -270,6 +270,16 @@ return array(
                     ),
                 ),
              ),
+            'empleados-vendidos' => array(
+                 'type' => 'Segment',
+                 'options' => array(
+                    'route' => '/empleados/vendidos[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Empleados\Controller\Vendidos',
+                        'action' => 'index',
+                    ),
+                ),
+             ),
             'empleados-reportes' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -521,6 +531,7 @@ return array(
             'Empleados\Controller\Empleados' => 'Empleados\Controller\EmpleadosController',
             'Empleados\Controller\Reportes' => 'Empleados\Controller\ReportesController',
             'Empleados\Controller\Comisiones' => 'Empleados\Controller\ComisionesController',
+            'Empleados\Controller\Vendidos' => 'Empleados\Controller\VendidosController',
             //Pacientes
             'Pacientes\Controller\Pacientes' => 'Pacientes\Controller\PacientesController',
             'Pacientes\Controller\Grupos' => 'Pacientes\Controller\GruposController',

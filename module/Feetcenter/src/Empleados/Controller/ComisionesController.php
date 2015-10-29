@@ -14,6 +14,20 @@ use Zend\View\Model\ViewModel;
 
 class ComisionesController extends AbstractActionController
 {
+    
+    public function filterbydatebyidempleadoAction(){
+        
+        $sesion = new \Shared\Session\AouthSession();
+        
+        $from = $this->params()->fromQuery('from');
+        $to = $this->params()->fromQuery('to');
+        
+        $comisiones = \EmpleadocomisionQuery::create()->filterByIdempledo($sesion->getIdempleado())->filterByEmpleadocomisionFecha(array('min' => $from, 'max' => $to))->joinEmpleado()->withColumn('empleado_nombre')->orderBy('empleadocomision_fecha',  \Criteria::ASC)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        
+        return $this->getResponse()->setContent(json_encode($comisiones));
+        
+    }
+    
     public function getempleadosAction(){
         
         //Cachamos nuestros parametros de la url
@@ -69,7 +83,14 @@ class ComisionesController extends AbstractActionController
             $clinicas = \ClinicaQuery::create()->filterByIdclinica($session->getIdclinica())->find();
             $idclinica = $session->getIdclinica();
         }elseif($idrol == 3){ //Pedicurista
-            
+        
+            //Obtenemos las comisiones del empleado en sesion
+            $comisiones = \EmpleadocomisionQuery::create()->filterByIdempledo($session->getIdempleado())->groupBy('empleadocomision_fecha')->joinEmpleado()->withColumn('empleado_nombre')->orderBy('empleadocomision_fecha',  \Criteria::DESC)->find();
+
+            $viewModel = new ViewModel();
+            $viewModel->setTemplate('empleados/comisiones/index_pedicurista');
+            $viewModel->setVariable('comisiones', $comisiones);
+            return $viewModel;
         }
         
         return new ViewModel(array(

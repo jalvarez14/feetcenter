@@ -1,0 +1,52 @@
+<div id="empleados_comisiones_container">
+    <h1>Comisiónes</h1>
+    <div class="units-row">
+        <div class="unit-100" id="filter_container">
+            <label style="display: block">Filtrar por periodo de tiempo</label>
+            <input placeholder="Desde" type="email" name="comisiones_from" class="width-6" />
+            <input placeholder="Hasta" type="email" name="comisiones_to" class="width-6" />
+            <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
+        </div>
+    </div>
+    <table class="table-comisiones table-bordered">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Com Serv.</th>
+                <th>Com Prod.</th>
+                <th>Serv Vend.</th>
+                <th>Prod Vend.</th>
+                <th>Ac.</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $comision = new Empleadocomision()?>
+            <?php foreach ($comisiones as $comision) :?>
+                <tr>
+                    <td ><?php echo $comision->getEmpleadocomisionFecha('d/m/Y')?></td>
+                    <td type="comisionservicios"><?php echo $comision->getEmpleadocomisionComisionservicios()?></td>
+                    <td type="comisionproductos"><?php echo $comision->getEmpleadocomisionComisionproductos()?></td>
+                    <td type="serviciosvendidos"><?php echo $comision->getEmpleadocomisionServiciosvendidos()?></td>
+                    <td type="productosvendidos"><?php echo $comision->getEmpleadocomisionProductosvendidos()?></td>
+                    <td type="acumulado"><?php echo $comision->getEmpleadocomisionAcumulado()?></td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td >Totales</td>
+                <td type="comisionservicios"></td>
+                <td type="comisionproductos"></td>
+                <td type="serviciosvendidos"></td>
+                <td type="productosvendidos"></td>
+                <td type="acumulado"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="/js/empleados/comisiones.js"></script>
+<script>
+    var comisiones = $('#empleados_comisiones_container').comisiones();
+    comisiones.pedicurista();
+</script>

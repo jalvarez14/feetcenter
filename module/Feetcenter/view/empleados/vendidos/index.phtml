@@ -1,0 +1,64 @@
+<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
+<link href="/css/plugin/monthpicker.css" media="all" rel="stylesheet" type="text/css" />
+<style>
+    .month-year-input{
+        width: 60%;
+    }
+    
+    .month-picker {
+        width: 250px;
+    }
+</style>
+<div id="empleados_vendidos_container">
+    <h1>Productos y servicios vendidos</h1>
+    <div class="units-row">
+        <div class="unit-30">
+            Clinica
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-30" id="month_filter_container">
+            <label style="display: block">Filtrar por mes</label>
+            <input placeholder="Mes" type="text" name="month_filter" class="width-60" />
+            <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <table class="table-vendidos-servicios table-bordered">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+            </table>
+        </div>
+        <div class="unit-50">
+            <table class="table-vendidos-productos table-bordered">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+            </table>
+        </div>
+    </div>
+    
+
+</div>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" type="text/javascript"></script>
+<script src="/plugins/monthPicker/monthPicker.js"></script>
+<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="/js/empleados/vendidos.js"></script>
+<script>
+    var vendidos = $('#empleados_vendidos_container').vendidos({
+        session: <?php echo $session?>,
+    });
+    vendidos.init();
+    
+</script>

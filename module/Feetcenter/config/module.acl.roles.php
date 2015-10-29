@@ -36,6 +36,7 @@ return array(
             'empleados-reportes/editar',
             'empleados-reportes/eliminar',
             'empleados-comisiones',
+            'empleados-vendidos',
             //pacientes
             'pacientes',
             'pacientes/nuevo',
@@ -76,6 +77,7 @@ return array(
             'empleados-reportes/editar',
             'empleados-reportes/eliminar',
             'empleados-comisiones',
+            'empleados-vendidos',
             //pacientes
             'pacientes',
             'pacientes/nuevo',
@@ -120,6 +122,7 @@ return array(
             'empleados-reportes',
             'empleados-reportes/vernota',
             'empleados-comisiones',
+            'empleados-vendidos',
             //pacientes
             'pacientes',
             'pacientes/filter',
@@ -165,6 +168,7 @@ return array(
             'seguimiento/nuevo',
             'seguimiento/editar',
             'seguimiento/eliminar',
+            
             
         ),
     ),

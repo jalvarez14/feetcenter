@@ -103,6 +103,14 @@
            
            var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
            clinicas_select = clinicas_select[0];
+           
+            //LIMPIAMOS NUESTRA TABLA
+
+            $container.find('table.table-comisiones thead tr').remove();
+            $container.find('table.table-comisiones tbody tr').remove();
+            $container.find('table.table-comisiones tfoot tr').remove();
+
+           
            //Hacemos la peticion ajax
            $.ajax({
                url:'/empleados/comisiones/comisionesbyclinica',
@@ -113,7 +121,11 @@
                success: function(data){ 
                    //Las cabeceras de nuestros headers
                    
-                    if(data.empleados.length > 0){
+                    if(data.empleados.length > 0 && data.comisiones.length > 0){
+                        if(typeof $table != 'undefined'){
+                            $table.clear();
+                            $table.destroy();
+                        }
                         
                         var $thead1 = $('<tr class="row_empleados"><th>Fecha</th></tr>');
                         var $thead2 =  $('<tr><th></th></tr>');
@@ -177,34 +189,36 @@
                              } 
                              
                         });
+                        
+                        $.ajax({
+                            url: '/json/lang_es_datatable.json',
+                            dataType: 'json',
+                            async:false,
+                            success: function(data){
+                                $table = container.find('table').DataTable({
+                                    language:data,
+                                    searching: false,
+                                    ordering:  false,
+                                    lengthChange: false,
+                                    iDisplayLength:15,
+                                    info: false,
+
+                                });
+                            }
+                        });
+
+                        container.find('table').on( 'page.dt', function () {
+                            setTimeout(function(){
+                                calcularTotales();
+                            },100);
+                        });
 
                     }   
                     
                }
            });
            
-           $.ajax({
-                url: '/json/lang_es_datatable.json',
-                dataType: 'json',
-                async:false,
-                success: function(data){
-                    $table = container.find('table').DataTable({
-                        language:data,
-                        searching: false,
-                        ordering:  false,
-                        lengthChange: false,
-                        iDisplayLength:15,
-                        info: false,
-                        
-                    });
-                }
-            });
-            
-            container.find('table').on( 'page.dt', function () {
-                setTimeout(function(){
-                    calcularTotales();
-                },100);
-            });
+           
             
             /*
              * Calculamos los totales
@@ -214,6 +228,89 @@
 
        }
        
+       var filterByDateBypedicurista = function(from,to){
+           
+           //Hacemos la peticion ajax
+           $.ajax({
+               url:'/empleados/comisiones/filterbydatebyidempleado',
+               dataType: 'json',
+               method:'GET',
+               async:false,
+               data:{from:from,to:to},
+               success: function(data){
+                   
+                     //LIMPIAMOS NUESTRA TABLA
+                      $table.clear();
+                      $table.destroy();
+                     
+                      $.each(data,function(){
+                          
+                          var date = moment(this.empleadocomision_fecha,'MM/DD/YY');
+                          var row = $('<tr>');
+                          row.append('<td>'+date.format('DD/MM/YYYY')+'</td>');
+                          row.append('<td  type="comisionservicios">'+this.empleadocomision_comisionservicios+'</td>');
+                          row.append('<td  type="comisionproductos">'+this.empleadocomision_comisionproductos+'</td>');
+                          row.append('<td  type="serviciosvendidos">'+this.empleadocomision_serviciosvendidos+'</td>');
+                          row.append('<td  type="productosvendidos">'+this.empleadocomision_productosvendidos+'</td>');
+                          row.append('<td  type="acumulado">'+this.empleadocomision_acumulado+'</td>');
+                          
+                          $container.find('table.table-comisiones tbody').append(row);
+                          
+                      });
+                      
+                      //Datatable
+                        $.ajax({
+                            url: '/json/lang_es_datatable.json',
+                            dataType: 'json',
+                            async:false,
+                            success: function(data){
+                                $table = container.find('table').DataTable({
+                                    language:data,
+                                    searching: false,
+                                    ordering:  false,
+                                    lengthChange: false,
+                                    iDisplayLength:15,
+                                    info: false,
+
+                                });
+                            }
+                        });
+                        
+                        //Calculamos totales
+                        var total = 0;
+                        $container.find('tbody [type=comisionservicios]').each(function(){
+                            total +=accounting.unformat($(this).text());
+                        });
+                        $container.find('tfoot [type=comisionservicios]').text(accounting.formatMoney(total));
+
+                        var total = 0;
+                        $container.find('tbody [type=comisionproductos]').each(function(){
+                            total +=accounting.unformat($(this).text());
+                        });
+                        $container.find('tfoot [type=comisionproductos]').text(accounting.formatMoney(total));
+
+                        var total = 0;
+                        $container.find('tbody [type=serviciosvendidos]').each(function(){
+                            total +=parseInt($(this).text());
+                        });
+                        $container.find('tfoot [type=serviciosvendidos]').text(total);
+
+                        var total = 0;
+                        $container.find('tbody [type=productosvendidos]').each(function(){
+                            total +=parseInt($(this).text());
+                        });
+                        $container.find('tfoot [type=productosvendidos]').text(total);
+
+                        var total = 0;
+                        $container.find('tbody [type=acumulado]').each(function(){
+                            total +=accounting.unformat($(this).text());
+                        });
+                        $container.find('tfoot [type=acumulado]').text(accounting.formatMoney(total));
+                    
+
+               }
+           });
+       }
        var filterByDate = function(from,to){
             var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
            clinicas_select = clinicas_select[0];
@@ -334,15 +431,12 @@
             //Inicializamos nuestro multiple select
             $container.find("select[name=idclinica]").multipleSelect({
                 single:true,   
-                //onClick : filterByClinica,
+                onClick : filterByClinica,
             });
             
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.idclinica]);
-            
+
             filterByClinica();
-            
-            settings.now = moment();
-            settings.day = settings.now.get('date');
 
             //Inicializamos nuestros calendarios del filtro de fechas
             var pickdateFrom = $container.find('input[name=comisiones_from]').pickadate({
@@ -408,7 +502,161 @@
             
             
         }
+        
+        
+        plugin.pedicurista = function(){
+            
+            //Damos formato a nuestra tabla
+            $container.find('tbody [type=comisionservicios],tbody [type=comisionproductos],tbody [type=acumulado]').each(function(){
+                var value = $(this).text();
+                $(this).text(accounting.formatMoney(value));
+            });
+            
+            //Datatable
+            $.ajax({
+                url: '/json/lang_es_datatable.json',
+                dataType: 'json',
+                async:false,
+                success: function(data){
+                    $table = container.find('table').DataTable({
+                        language:data,
+                        searching: false,
+                        ordering:  false,
+                        lengthChange: false,
+                        iDisplayLength:15,
+                        info: false,
+                        
+                    });
+                }
+            });
+            
+            //Inicializamos nuestros calendarios del filtro de fechas
+            var pickdateFrom = $container.find('input[name=comisiones_from]').pickadate({
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+            });
+            
+            //Inicializamos nuestros calendarios del filtro de fechas
+            var pickdateTo= $container.find('input[name=comisiones_to]').pickadate({
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+            });
+            
+            $container.find('button#filterbydate').on('click',function(){
+                
+                var empty = false;
+                
+                 $('#filter_container input:visible').removeClass('input-error');
+                
+                $('#filter_container input:visible').each(function(){
+                    if($(this).val() == ""){
+                        empty = true;
+                        $(this).addClass('input-error');
+                    }
+                });
+                
+                if(!empty){
+                   var from = $container.find('input[name=comisiones_from_submit]').val();
+                   var to = $container.find('input[name=comisiones_to_submit]').val();
+                   
+                   filterByDateBypedicurista(from,to);
 
+                }
+                
+                
+            });
+            
+            
+            container.find('table').on( 'page.dt', function () {
+                setTimeout(function(){
+                    //Calculamos totales
+                    var total = 0;
+                    $container.find('tbody [type=comisionservicios]').each(function(){
+                        total +=accounting.unformat($(this).text());
+                    });
+                    $container.find('tfoot [type=comisionservicios]').text(accounting.formatMoney(total));
+
+                    var total = 0;
+                    $container.find('tbody [type=comisionproductos]').each(function(){
+                        total +=accounting.unformat($(this).text());
+                    });
+                    $container.find('tfoot [type=comisionproductos]').text(accounting.formatMoney(total));
+
+                    var total = 0;
+                    $container.find('tbody [type=serviciosvendidos]').each(function(){
+                        total +=parseInt($(this).text());
+                    });
+                    $container.find('tfoot [type=serviciosvendidos]').text(total);
+
+                    var total = 0;
+                    $container.find('tbody [type=productosvendidos]').each(function(){
+                        total +=parseInt($(this).text());
+                    });
+                    $container.find('tfoot [type=productosvendidos]').text(total);
+
+                    var total = 0;
+                    $container.find('tbody [type=acumulado]').each(function(){
+                        total +=accounting.unformat($(this).text());
+                    });
+                    $container.find('tfoot [type=acumulado]').text(accounting.formatMoney(total));
+                    
+                },100);
+            });
+            
+            //Calculamos totales
+            var total = 0;
+            $container.find('tbody [type=comisionservicios]').each(function(){
+                total +=accounting.unformat($(this).text());
+            });
+            $container.find('tfoot [type=comisionservicios]').text(accounting.formatMoney(total));
+
+            var total = 0;
+            $container.find('tbody [type=comisionproductos]').each(function(){
+                total +=accounting.unformat($(this).text());
+            });
+            $container.find('tfoot [type=comisionproductos]').text(accounting.formatMoney(total));
+
+            var total = 0;
+            $container.find('tbody [type=serviciosvendidos]').each(function(){
+                total +=parseInt($(this).text());
+            });
+            $container.find('tfoot [type=serviciosvendidos]').text(total);
+
+            var total = 0;
+            $container.find('tbody [type=productosvendidos]').each(function(){
+                total +=parseInt($(this).text());
+            });
+            $container.find('tfoot [type=productosvendidos]').text(total);
+
+            var total = 0;
+            $container.find('tbody [type=acumulado]').each(function(){
+                total +=accounting.unformat($(this).text());
+            });
+            $container.find('tfoot [type=acumulado]').text(accounting.formatMoney(total));
+
+        }
     }
 
        
