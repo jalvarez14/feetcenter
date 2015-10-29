@@ -39,6 +39,7 @@
        var defaults = {
            
        };
+       var $table;
        
        /* 
         * Important Components
@@ -46,10 +47,57 @@
         var $container = $(container);  
         
         var settings;
+        var $table;
         
         /*
         * Private methods
         */
+       
+       var calcularTotales = function(){
+           
+           $container.find('table.table-comisiones thead tr.row_empleados th:not(:first-child)').each(function(){
+                var idempleado = $(this).attr('id');
+                
+                //comision servicios
+                var total = 0;
+                $container.find('table.table-comisiones tbody td[idempleado='+idempleado+'] label[type=comisionservicios]').each(function(){
+
+                    total +=accounting.unformat($(this).text());
+                });
+                $container.find('table.table-comisiones tfoot td[idempleado='+idempleado+'] label[type=comisionservicios]').text(accounting.formatMoney(total));
+                
+                //comision servicios
+                var total = 0;
+                $container.find('table.table-comisiones tbody td[idempleado='+idempleado+'] label[type=comisionproductos]').each(function(){
+                    total +=accounting.unformat($(this).text());
+                });
+                $container.find('table.table-comisiones tfoot td[idempleado='+idempleado+'] label[type=comisionproductos]').text(accounting.formatMoney(total));
+                
+                //comision servicios
+                var total = 0;
+                $container.find('table.table-comisiones tbody td[idempleado='+idempleado+'] label[type=serviciosvendidos]').each(function(){
+                    total +=parseInt($(this).text());
+                });
+                $container.find('table.table-comisiones tfoot td[idempleado='+idempleado+'] label[type=serviciosvendidos]').text(total);
+                
+                //comision servicios
+                var total = 0;
+                $container.find('table.table-comisiones tbody td[idempleado='+idempleado+'] label[type=productosvendidos]').each(function(){
+                    total +=parseInt($(this).text());
+                });
+                $container.find('table.table-comisiones tfoot td[idempleado='+idempleado+'] label[type=productosvendidos]').text(total);
+                
+                //comision servicios
+                var total = 0;
+                $container.find('table.table-comisiones tbody td[idempleado='+idempleado+'] label[type=acumulado]').each(function(){
+                    total +=accounting.unformat($(this).text());
+                });
+                $container.find('table.table-comisiones tfoot td[idempleado='+idempleado+'] label[type=acumulado]').text(accounting.formatMoney(total));
+                
+                
+
+            });
+       }
        
        var filterByClinica = function(){
            
@@ -60,66 +108,221 @@
                url:'/empleados/comisiones/comisionesbyclinica',
                dataType: 'json',
                method:'GET',
+               async:false,
                data:{idclinica:clinicas_select},
                success: function(data){ 
                    //Las cabeceras de nuestros headers
                    
                     if(data.empleados.length > 0){
-                         $container.find('thead tr').append('<th>Fecha</th>');
+                        
+                        var $thead1 = $('<tr class="row_empleados"><th>Fecha</th></tr>');
+                        var $thead2 =  $('<tr><th></th></tr>');
                          
                          $.each(data.empleados,function(){
-                            $container.find('thead tr').append('<th id="'+this.idempleado+'">'+this.empleado_nombre+'</th>')
+                            $thead1.append('<th id="'+this.idempleado+'">'+this.empleado_nombre+'</th>');
+                            $thead2.append('<th><div class="units-row" style="margin-bottom: 0px;"><div class="unit-20"><label>Com Serv.</label></div><div class="unit-20"><label>Com Prod.</label></div><div class="unit-20"><label>Serv Vend.</label></div><div class="unit-20"><label>Prod Vend.</label></div><div class="unit-20"><label>Ac.</label></div></div></th>');
                         });
                         
-                        //Agrgamos el row de las opciones
-                        var row_options = $('<tr>',{class:'row'});
-                        row_options.append('<td></td>');
-                        
-                        $.each(data.empleados,function(){
-                            row_options.append('<td><div class="units-row" style="margin-bottom: 0px;"><div class="unit-20"><label>Com Serv.</label></div><div class="unit-20"><label>Com Prod.</label></div><div class="unit-20"><label>Serv Vend.</label></div><div class="unit-20"><label>Prod Vend.</label></div><div class="unit-20"><label>Ac.</label></div></div></td>')
-                        });
-                        $container.find('table.table-comisiones tbody').append(row_options);
-                        
+                        $('table.table-comisiones thead').append($thead1);
+                        $('table.table-comisiones thead').append($thead2);
+
                         //Las comisiones (Estructura de cada row);
                         $.each(data.comisiones,function(){
-                            var row = $('<tr>');
-                            var date = moment(this.empleadocomision_fecha,'MM/DD/YY');
-                            row.append('<td>'+date.format('DD/MM/YYYY')+'</td>')
-                            
-                            for (var i = 0; i < data.empleados.length; i++) {
-                               row.append('<td><div class="units-row" style="margin-bottom: 0px;"><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div></div></td>')
-                            }
 
-                            $container.find('table.table-comisiones tbody').append(row);
+                            var date = moment(this.empleadocomision_fecha,'MM/DD/YY');
+                            
+                            //Si aun no existe la row
+                            if($container.find('tr#'+date.format('DD-MM-YYYY')).length == 0){
+                            
+                                var row = $('<tr id="'+ date.format('DD-MM-YYYY')+'">');
+                                row.append('<td>'+date.format('DD/MM/YYYY')+'</td>')
+                                for (var i = 0; i < data.empleados.length; i++) {
+                                   row.append('<td idempleado="'+data.empleados[i].idempleado+'"></td>')
+                                }
+
+                                $container.find('table.table-comisiones tbody').append(row);
+                            }
                         });
                         
+                        //La estructura de la rowTotal
+                        var $rowTotal = $('<tr><td>Totales</td></tr>');
+                        $.each(data.empleados,function(){
+                            $rowTotal.append('<td idempleado="'+this.idempleado+'"><div class="units-row" style="margin-bottom: 0px;"><div class="unit-20"><label type="comisionservicios"></label></div><div class="unit-20"><label type="comisionproductos"></label></div><div class="unit-20"><label type="serviciosvendidos"></label></div><div class="unit-20"><label type="productosvendidos"></label></div><div class="unit-20"><label type="acumulado"></label></div></div></td>');
+                        });
                         
-          
-                    }
+                        $container.find('table.table-comisiones tfoot').append($rowTotal);
+                        
+                        
+                        //Llenamos nuestra tabla
+                        $.each(data.comisiones,function(){
+                            
+                             var date = moment(this.empleadocomision_fecha,'MM/DD/YY');
+                             date = date.format('DD-MM-YYYY');
+                            
+                             var row = $container.find('tr#'+date);
+                             
+                             //Si el empleado se encuentra en la tabla
+                             if(typeof $container.find('.table-comisiones th#'+this.idempledo).attr('id') != 'undefined'){
+                                
+                                //La posicion del empleado en la tabla
+                                var $th = $container.find('.table-comisiones th#'+this.idempledo);
+                                var index = $th.index();
+                                
+                                //<div class="units-row" style="margin-bottom: 0px;"><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div></div>
+                                //Insertamos los datos
+                               
+                                row.find('td').eq(index).append('<div class="units-row" style="margin-bottom: 0px;"><div class="unit-20"><label type="comisionservicios">'+accounting.formatMoney(this.empleadocomision_comisionservicios)+'</label></div><div class="unit-20"><label type="comisionproductos">'+accounting.formatMoney(this.empleadocomision_comisionproductos)+'</label></div><div class="unit-20"><label type="serviciosvendidos">'+parseInt(this.empleadocomision_serviciosvendidos)+'</label></div><div class="unit-20"><label type="productosvendidos">'+parseInt(this.empleadocomision_productosvendidos)+'</label></div><div class="unit-20"><label type="acumulado">'+accounting.formatMoney(this.empleadocomision_acumulado)+'</label></div></div>');
+                                
+                              
+                             } 
+                             
+                        });
+
+                    }   
                     
                }
            });
-  
-       }
-       
-       var buildTable = function(from,to){
-           
-           //Consultamos los empleados que intervienen en el rango de fechas y la clinica
-           var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
-           clinicas_select = clinicas_select[0];
            
            $.ajax({
-               url:'/empleados/comisiones/getempleados',
+                url: '/json/lang_es_datatable.json',
+                dataType: 'json',
+                async:false,
+                success: function(data){
+                    $table = container.find('table').DataTable({
+                        language:data,
+                        searching: false,
+                        ordering:  false,
+                        lengthChange: false,
+                        iDisplayLength:15,
+                        info: false,
+                        
+                    });
+                }
+            });
+            
+            container.find('table').on( 'page.dt', function () {
+                setTimeout(function(){
+                    calcularTotales();
+                },100);
+            });
+            
+            /*
+             * Calculamos los totales
+             */
+            
+            calcularTotales();
+
+       }
+       
+       var filterByDate = function(from,to){
+            var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
+           clinicas_select = clinicas_select[0];
+           
+           //Hacemos la peticion ajax
+           $.ajax({
+               url:'/empleados/comisiones/comisionesbydate',
                dataType: 'json',
                method:'GET',
-               data:{idclinica:clinicas_select,from:from.format('YYYY-MM-DD'),to:to.format('YYYY-MM-DD')},
+               async:false,
+               data:{idclinica:clinicas_select,from:from,to:to},
                success: function(data){
+                  
+                  if(data.empleados.length > 0){
+                      
+                      //LIMPIAMOS NUESTRA TABLA
+                      $table.clear();
+                      $container.find('table.table-comisiones thead tr').remove();
+                      $container.find('table.table-comisiones tfoot tr').remove();
+                      $table.destroy();
+                      
+                      
+                      var $thead1 = $('<tr class="row_empleados"><th>Fecha</th></tr>');
+                      var $thead2 =  $('<tr><th></th></tr>');
+                      
+                    $.each(data.empleados, function () {
+                        $thead1.append('<th id="' + this.idempleado + '">' + this.empleado_nombre + '</th>');
+                        $thead2.append('<th><div class="units-row" style="margin-bottom: 0px;"><div class="unit-20"><label>Com Serv.</label></div><div class="unit-20"><label>Com Prod.</label></div><div class="unit-20"><label>Serv Vend.</label></div><div class="unit-20"><label>Prod Vend.</label></div><div class="unit-20"><label>Ac.</label></div></div></th>');
+                    });
+                    
+                    $('table.table-comisiones thead').append($thead1);
+                    $('table.table-comisiones thead').append($thead2);
+                    
+                    //Las comisiones (Estructura de cada row);
+                    $.each(data.comisiones,function(){
 
+                        var date = moment(this.empleadocomision_fecha,'MM/DD/YY');
+
+                        //Si aun no existe la row
+                        if($container.find('tr#'+date.format('DD-MM-YYYY')).length == 0){
+
+                            var row = $('<tr id="'+ date.format('DD-MM-YYYY')+'">');
+                            row.append('<td>'+date.format('DD/MM/YYYY')+'</td>')
+                            for (var i = 0; i < data.empleados.length; i++) {
+                               row.append('<td idempleado="'+data.empleados[i].idempleado+'"></td>')
+                            }
+
+                            $container.find('table.table-comisiones tbody').append(row);
+                        }
+                    });
+                      
+                      
+                    //La estructura de la rowTotal
+                    var $rowTotal = $('<tr><td>Totales</td></tr>');
+                    $.each(data.empleados,function(){
+                        $rowTotal.append('<td idempleado="'+this.idempleado+'"><div class="units-row" style="margin-bottom: 0px;"><div class="unit-20"><label type="comisionservicios"></label></div><div class="unit-20"><label type="comisionproductos"></label></div><div class="unit-20"><label type="serviciosvendidos"></label></div><div class="unit-20"><label type="productosvendidos"></label></div><div class="unit-20"><label type="acumulado"></label></div></div></td>');
+                    });
+
+                    $container.find('table.table-comisiones tfoot').append($rowTotal);
+                    
+                    //Llenamos nuestra tabla
+                    $.each(data.comisiones,function(){
+
+                         var date = moment(this.empleadocomision_fecha,'MM/DD/YY');
+                         date = date.format('DD-MM-YYYY');
+
+                         var row = $container.find('tr#'+date);
+
+                         //Si el empleado se encuentra en la tabla
+                         if(typeof $container.find('.table-comisiones th#'+this.idempledo).attr('id') != 'undefined'){
+
+                            //La posicion del empleado en la tabla
+                            var $th = $container.find('.table-comisiones th#'+this.idempledo);
+                            var index = $th.index();
+
+                            //<div class="units-row" style="margin-bottom: 0px;"><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div><div class="unit-20"><label></label></div></div>
+                            //Insertamos los datos
+
+                            row.find('td').eq(index).append('<div class="units-row" style="margin-bottom: 0px;"><div class="unit-20"><label type="comisionservicios">'+accounting.formatMoney(this.empleadocomision_comisionservicios)+'</label></div><div class="unit-20"><label type="comisionproductos">'+accounting.formatMoney(this.empleadocomision_comisionproductos)+'</label></div><div class="unit-20"><label type="serviciosvendidos">'+parseInt(this.empleadocomision_serviciosvendidos)+'</label></div><div class="unit-20"><label type="productosvendidos">'+parseInt(this.empleadocomision_productosvendidos)+'</label></div><div class="unit-20"><label type="acumulado">'+accounting.formatMoney(this.empleadocomision_acumulado)+'</label></div></div>');
+
+
+                         } 
+
+                    });
+                    
+                     calcularTotales();
+                      
+                }
                },
            });
            
+           $.ajax({
+                url: '/json/lang_es_datatable.json',
+                dataType: 'json',
+                async:false,
+                success: function(data){
+                    $table = container.find('table').DataTable({
+                        language:data,
+                        searching: false,
+                        ordering:  false,
+                        lengthChange: false,
+                        iDisplayLength:15,
+                        info: false,
+                        
+                    });
+                }
+            });
+           
        }
-       
        /*
         * Public methods
         */
@@ -136,27 +339,77 @@
             
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.idclinica]);
             
-            //filterByClinica();
+            filterByClinica();
             
-            var now = moment();
-            var day = now.get('date');
+            settings.now = moment();
+            settings.day = settings.now.get('date');
+
+            //Inicializamos nuestros calendarios del filtro de fechas
+            var pickdateFrom = $container.find('input[name=comisiones_from]').pickadate({
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+            });
             
-            if(day<=14){
-                var from = moment().date(1);
-                var to = moment().date(14);
-            }else{  
-                var from = moment().date(15);
-                var to = moment().endOf('month');
-            }
+            //Inicializamos nuestros calendarios del filtro de fechas
+            var pickdateTo= $container.find('input[name=comisiones_to]').pickadate({
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+            });
             
+            /*
+             * El evento filter
+             */
             
-            buildTable(from,to);
-            
+            $container.find('button#filterbydate').on('click',function(){
                 
+                var empty = false;
+                
+                 $('#filter_container input:visible').removeClass('input-error');
+                
+                $('#filter_container input:visible').each(function(){
+                    if($(this).val() == ""){
+                        empty = true;
+                        $(this).addClass('input-error');
+                    }
+                });
+                
+                if(!empty){
+                   var from = $container.find('input[name=comisiones_from_submit]').val();
+                   var to = $container.find('input[name=comisiones_to_submit]').val();
+                   
+                   filterByDate(from,to);
+
+                }
+                
+                
+            });
+            
+            
         }
 
     }
-    
-    
-    
+
+       
 })( jQuery );

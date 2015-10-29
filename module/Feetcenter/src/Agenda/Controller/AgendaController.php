@@ -464,8 +464,8 @@ class AgendaController extends AbstractActionController
               $empleado = \EmpleadoQuery::create()->findpk($post_data['idempleado']);
               
               //Validamos si existe un registro del dia en curso del empleado
-              if(\EmpleadocomisionQuery::create()->filterByIdempledo($empleado->getIdempleado())->filterByEmpleadocomisionFecha($now->format('Y-m-d'))->exists()){
-                  $empleado_comision = \EmpleadocomisionQuery::create()->filterByIdempledo($empleado->getIdempleado())->filterByEmpleadocomisionFecha($now->format('Y-m-d'))->findOne();
+              if(\EmpleadocomisionQuery::create()->filterByIdclinica($post_data['idclinica'])->filterByIdempledo($empleado->getIdempleado())->filterByEmpleadocomisionFecha($now->format('Y-m-d'))->exists()){
+                  $empleado_comision = \EmpleadocomisionQuery::create()->filterByIdclinica($post_data['idclinica'])->filterByIdempledo($empleado->getIdempleado())->filterByEmpleadocomisionFecha($now->format('Y-m-d'))->findOne();
               }else{
                   $empleado_comision = new \Empleadocomision();
                   $empleado_comision->setIdempledo($empleado->getIdempleado())
@@ -478,7 +478,7 @@ class AgendaController extends AbstractActionController
                                     ->setEmpleadocomisionAcumulado(0)
                                     ->save();
               }
-
+              
               if(isset($post_data['vistadetallepay'])){
                 foreach ($post_data['vistadetallepay'] as $detalle){
                     $visitadetalle = new \Visitadetalle();

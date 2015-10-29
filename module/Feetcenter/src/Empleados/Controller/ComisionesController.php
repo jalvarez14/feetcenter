@@ -21,9 +21,23 @@ class ComisionesController extends AbstractActionController
         $from = $this->params()->fromQuery('from');
         $to = $this->params()->fromQuery('to');
         
-        $empleados = \EmpleadocomisionQuery::create()->joinEmpleado()->withColumn('empleado_nombre')->select('idempledo')->groupBy('idempledo')->filterByIdclinica($idclinica)->filterByEmpleadocomisionFecha(array('min' => $from, 'max' => $to))->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
-        return $this->getResponse()->setContent(json_encode($empleados));
+        $empleados_clinica = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->select('idempleado')->joinEmpleado()->withColumn('empleado_nombre')->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
+
+        return $this->getResponse()->setContent(json_encode($empleados_clinica));
         
+    }
+    
+    public function comisionesbydateAction(){
+        
+        $idclinica = $this->params()->fromQuery('idclinica');
+        $from = $this->params()->fromQuery('from');
+        $to  = $this->params()->fromQuery('to');
+        
+        $comisiones = \EmpleadocomisionQuery::create()->filterByEmpleadocomisionFecha(array('min' => $from, 'max' => $to))->joinEmpleado()->withColumn('empleado_nombre')->orderBy('empleadocomision_fecha',  \Criteria::ASC)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        
+        $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->select('idempleado')->joinEmpleado()->withColumn('empleado_nombre')->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+        
+        return $this->getResponse()->setContent(json_encode(array('comisiones' => $comisiones, 'empleados' => $empleados)));
     }
         
     public function comisionesbyclinicaAction(){
@@ -32,9 +46,11 @@ class ComisionesController extends AbstractActionController
             
             $idclinica = $this->params()->fromQuery('idclinica');
             
-            $comisiones = \EmpleadocomisionQuery::create()->joinEmpleado()->withColumn('empleado_nombre')->groupBy('empleadocomision_fecha')->orderBy('empleadocomision_fecha',  \Criteria::DESC)->filterByIdclinica($idclinica)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
-            $empleados = \EmpleadocomisionQuery::create()->joinEmpleado()->withColumn('empleado_nombre')->select('idempledo')->groupBy('idempledo')->filterByIdclinica($idclinica)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            $comisiones = \EmpleadocomisionQuery::create()->joinEmpleado()->withColumn('empleado_nombre')->orderBy('empleadocomision_fecha',  \Criteria::DESC)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
             
+            $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->select('idempleado')->joinEmpleado()->withColumn('empleado_nombre')->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+
+                       
             return $this->getResponse()->setContent(json_encode(array('comisiones' => $comisiones, 'empleados' => $empleados)));
 
        
@@ -45,13 +61,13 @@ class ComisionesController extends AbstractActionController
         
         $session  = new \Shared\Session\AouthSession();
         $idrol = $session->getIdrol();
-        
+
         if($idrol == 1){ //Admnistrador
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
         }elseif($idrol == 2){ //Encargado
-            $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
-            $idclinica = $sesion->getIdClinica();
+            $clinicas = \ClinicaQuery::create()->filterByIdclinica($session->getIdclinica())->find();
+            $idclinica = $session->getIdclinica();
         }elseif($idrol == 3){ //Pedicurista
             
         }

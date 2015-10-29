@@ -6,6 +6,12 @@
         text-align: center;
         font-weight: bold;
     }
+    
+    .table.dataTable tfoot th, table.dataTable tfoot td{
+        border-top:1px solid #EEE;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 </style>
 <div id="empleados_comisiones_container">
     
@@ -19,99 +25,21 @@
                 <?php endforeach; ?>
             </select>
         </div>
+        <div class="unit-70" id="filter_container">
+            <label style="display: block">Filtrar por periodo de tiempo</label>
+            <input placeholder="Desde" type="email" name="comisiones_from" class="width-6" />
+            <input placeholder="Hasta" type="email" name="comisiones_to" class="width-6" />
+            <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
+        </div>
     </div>
     <table class="table-comisiones table-bordered">
         <thead>
-            <tr>
-<!--                <th>Fecha</th>
-                <th>Daniel Castanedo</th>
-                <th>Sergio Castanedo</th>-->
-            </tr>
         </thead>
         <tbody>
-<!--            <tr class="row">
-                <td></td>
-                <td >
-                    <div class="units-row" style="margin-bottom: 0px;">
-                        <div class="unit-20">
-                            <label>Com Serv.</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>Com Prod.</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>Serv Vend.</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>Prod Vend.</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>Ac.</label>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="units-row" style="margin-bottom: 0px;">
-                        <div class="unit-20">
-                            <label>Com Serv.</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>Com Prod.</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>Serv Vend.</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>Prod Vend.</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>Ac.</label>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>01/01/01</td>
-                <td>
-                    <div class="units-row" style="margin-bottom: 0px;">
-                        <div class="unit-20">
-                            <label>1</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>2</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>3</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>4</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>5</label>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="units-row" style="margin-bottom: 0px;">
-                        <div class="unit-20">
-                            <label>1</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>2</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>3</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>4</label>
-                        </div>
-                        <div class="unit-20">
-                            <label>5</label>
-                        </div>
-                    </div>
-                </td>
-            </tr>-->
         </tbody>
+        <tfoot>
+            
+        </tfoot>
     </table>
 </div>
 <script src="/plugins/fullcalendar/moment.js"></script>
