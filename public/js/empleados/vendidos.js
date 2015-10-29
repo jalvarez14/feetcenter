@@ -67,24 +67,29 @@
                 async:false,
                 data:{idclinica:clinicas_select,idrol:idrol,from:from.format('YYYY-MM-DD'),to:to.format('YYYY-MM-DD')},
                 success: function(data){
-                    
+                    console.log(data.servicios);
                     if(data.empleados.length > 0){
                         
                         //Servicios
                         var $thead = $('<tr><th>Servicios</th></tr>');
                         $.each(data.empleados,function(){
-                            $thead.append('<th>'+this.empleado_nombre+'</th>');
+                            $thead.append('<th idempleado="'+this.idempleado+'">'+this.empleado_nombre+'</th>');
                         });
                         $container.find('table.table-vendidos-servicios').append($thead);
                         
                         $.each(data.servicios,function(){
                             var tr = $('<tr><td>'+this.servicio_nombre+'</td></tr>');
                             $container.find('table.table-vendidos-servicios tbody').append(tr);
+                            $.each(this.servicios.empleados,function(){
+                                console.log(this);
+                            });
                         });
                         
                         
-                        console.log(data);
-        
+                        
+                        
+                        
+                        
                         //Productos
                         $thead = $('<tr><th>Productos</th></tr>');
                         $.each(data.empleados,function(){

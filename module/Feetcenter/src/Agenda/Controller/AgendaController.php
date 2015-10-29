@@ -799,6 +799,11 @@ class AgendaController extends AbstractActionController
                          /*
                          * COMISIONES
                          */
+                        
+                        //Servicios vendidos
+                        $current_vendidos = $empleado_comision->getEmpleadocomisionServiciosvendidos();
+                        $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                        $empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
                          
 
                         //Acumulado
