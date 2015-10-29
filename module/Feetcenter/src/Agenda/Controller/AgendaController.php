@@ -531,9 +531,9 @@ class AgendaController extends AbstractActionController
                                     $empleado_comision->setEmpleadocomisionComisionproductos($new_productos);
                                     
                                     //Acumulado
-                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
-                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
-                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+//                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                                 
                                     
                                 }else if($tipoComision == 'cantidad'){
@@ -551,9 +551,9 @@ class AgendaController extends AbstractActionController
                                     $empleado_comision->setEmpleadocomisionComisionproductos($new_productos);
                                     
                                     //Acumulado
-                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
-                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
-                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+//                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                                     
                                 }
 
@@ -575,9 +575,9 @@ class AgendaController extends AbstractActionController
                                     $empleado_comision->setEmpleadocomisionComisionproductos($new_productos);
                                     
                                     //Acumulado
-                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
-                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
-                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+//                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                                     
                                     
                                 }else if($tipoComision == 'cantidad'){
@@ -595,13 +595,22 @@ class AgendaController extends AbstractActionController
                                     $empleado_comision->setEmpleadocomisionComisionproductos($new_productos);
                                     
                                     //Acumulado
-                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
-                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
-                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+//                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                                     
                                 }
                             }
-                            $empleado_comision->save();
+                        }else{
+                            //Solo cargamos, productos, servicios, membresias vendidas y acumulado
+                            $current_vendidos = $empleado_comision->getEmpleadocomisionProductosvendidos();
+                            $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                            $empleado_comision->setEmpleadocomisionProductosvendidos($new_vendidos);
+                            
+                            //Acumulado
+//                            $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                            $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                            $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                         }
 
                     }else if($detalle['type'] == 'servicio'){
@@ -683,9 +692,9 @@ class AgendaController extends AbstractActionController
                                     $empleado_comision->setEmpleadocomisionComisionservicios($new_servicios);
                                     
                                     //Acumulado
-                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
-                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
-                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+//                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                                 
                                     
                                 }else if($tipoComision == 'cantidad'){
@@ -703,9 +712,9 @@ class AgendaController extends AbstractActionController
                                     $empleado_comision->setEmpleadocomisionComisionservicios($new_servicios);
                                     
                                     //Acumulado
-                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
-                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
-                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+//                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                                     
                                 }
 
@@ -727,9 +736,9 @@ class AgendaController extends AbstractActionController
                                     $empleado_comision->setEmpleadocomisionComisionservicios($new_servicios);
                                     
                                     //Acumulado
-                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
-                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
-                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+//                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                                     
                                     
                                 }else if($tipoComision == 'cantidad'){
@@ -747,13 +756,23 @@ class AgendaController extends AbstractActionController
                                     $empleado_comision->setEmpleadocomisionComisionservicios($new_servicios);
                                     
                                     //Acumulado
-                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
-                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
-                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+//                                    $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                                    $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                                    $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                                     
                                 }
                             }
-                            $empleado_comision->save();
+                           
+                        }else{
+                            //Servicios vendidos
+                            $current_vendidos = $empleado_comision->getEmpleadocomisionServiciosvendidos();
+                            $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
+                            $empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
+                            
+                            //Acumulado
+//                            $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                            $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                            $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                         }
                       
                     }else{
@@ -783,15 +802,22 @@ class AgendaController extends AbstractActionController
                          
 
                         //Acumulado
-                        $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
-                        $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
-                        $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado)->save();
+//                        $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+//                        $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+//                        $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado)->save();
                  
                     }
                     
                     
                 }
                 
+
+                //Acumulado
+                $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+                $new_acumulado = $current_acumulado + $visita->getVisitaTotal();
+                $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
+                
+                $empleado_comision->save();
                 /*
                  * Verificamos que si existe una membresia en la orden y ademas servicios con dependencia a membresia
                  * Esos servicios le sean descontados de la membresia que compraron
