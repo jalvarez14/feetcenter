@@ -776,6 +776,17 @@ class AgendaController extends AbstractActionController
                                            ->setPacientemembresiaFechainicio(new \DateTime())
                                            ->save();
                         
+                        
+                         /*
+                         * COMISIONES
+                         */
+                         
+
+                        //Acumulado
+                        $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
+                        $new_acumulado = $current_acumulado + $visitadetalle->getVisitadetalleSubtotal();
+                        $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado)->save();
+                 
                     }
                     
                     
