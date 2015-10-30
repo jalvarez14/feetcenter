@@ -1,0 +1,109 @@
+<div id="faltante_container">
+    <h1>Faltante #<?php echo $id?></h1>
+    <?php 
+        $form->setAttribute('action', '/empleados/faltantes/editar/'.$id);
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row" style="margin-bottom: 10px;">
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Clínica <span class="req">*</span>
+            </label>
+            <?php echo $this->formSelect($form->get('idclinica')); ?>
+        </div>
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Genera <span class="req">*</span>
+            </label>
+            <?php echo $this->formSelect($form->get('idempleadogenerador')); ?>
+        </div>
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Recibe <span class="req">*</span>
+            </label>
+            <?php echo $this->formSelect($form->get('idempleadodeudor')); ?>
+        </div>
+    </div>
+    <div class="units-row" style="margin-bottom: 10px;">
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Fecha <span class="req">*</span>
+            </label>
+            <?php echo $this->formText($form->get('faltante_fecha')); ?>
+        </div>
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Hora(formato 24 hrs) <span class="req">*</span>
+            </label>
+            <?php echo $this->formText($form->get('faltante_hora')); ?>
+        </div>
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Cantidad faltante <span class="req">*</span>
+            </label>
+            <?php echo $this->formText($form->get('faltante_cantidad')); ?>
+        </div>
+    </div>
+    <div class="units-row" style="margin-bottom: 10px;">
+        <div class="unit-100">
+            <label style="margin-bottom: 0px">
+                Comentario
+            </label>
+            <?php echo $this->formTextarea($form->get('faltante_comentario')); ?>
+        </div>
+    </div>
+    <div class="units-row" style="margin-bottom: 10px;">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Comprobantes</legend>
+                <div class="units-row">
+                    <div class="unit-50" style="text-align: center">
+                        <button id="generarComprobante" class="btn btn-blue width-50">Generar comprobante</button>
+                    </div>
+                    <div class="unit-50" style="margin-top: 10px;">
+                        <label style="margin-bottom: 0px">
+                            Comprobante firmado
+                        </label>
+                        <input type="hidden" name="faltante_comprobantefirmado_submit">
+                        <?php echo $this->formFile($form->get('faltante_comprobantefirmado')); ?>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script src="/js/download.js"></script>
+<script src="/js/empleados/faltantes.js"></script>
+<script>
+    $('#faltante_container').faltantes({
+        id:<?php echo $id?>,
+    });
+    
+    var faltante = <?php echo $entity?>;
+
+    //Elcomprobante
+    if(faltante.faltante_comprobantefirmado != null){
+        
+        var faltante_comprobantefirmado = $('<p><a href="'+faltante.faltante_comprobantefirmado+'" style="text-decoration: none"><img style="width: 20px;" src="/img/icons/pdf_icon.png">Visualizar comprobante</a><a id="eliminar_comprobante" href="javascript:void(0)" style="text-decoration: none; margin-left:24px">Eliminar comprobante</a></p>');
+        
+        $('input[name=faltante_comprobantefirmado]').hide();
+        $('input[name=faltante_comprobantefirmado]').after(faltante_comprobantefirmado);
+        
+        //Los eventos del comprobante
+        $('#eliminar_comprobante').on('click',function(){
+             $('input[name=faltante_comprobantefirmado_submit]').val('delete');
+             $('input[name=faltante_comprobantefirmado]').show();
+             faltante_comprobantefirmado.remove();
+        });
+        
+        $('input[name=faltante_comprobantefirmado]').on('change',function(){
+            $('input[name=faltante_comprobantefirmado_submit]').val('');
+        });
+    }
+</script>

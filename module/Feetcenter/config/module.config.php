@@ -280,6 +280,16 @@ return array(
                     ),
                 ),
              ),
+            'empleados-faltantes' => array(
+                 'type' => 'Segment',
+                 'options' => array(
+                    'route' => '/empleados/faltantes[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Empleados\Controller\Faltantes',
+                        'action' => 'index',
+                    ),
+                ),
+             ),
             'empleados-reportes' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -532,6 +542,7 @@ return array(
             'Empleados\Controller\Reportes' => 'Empleados\Controller\ReportesController',
             'Empleados\Controller\Comisiones' => 'Empleados\Controller\ComisionesController',
             'Empleados\Controller\Vendidos' => 'Empleados\Controller\VendidosController',
+            'Empleados\Controller\Faltantes' => 'Empleados\Controller\FaltantesController',
             //Pacientes
             'Pacientes\Controller\Pacientes' => 'Pacientes\Controller\PacientesController',
             'Pacientes\Controller\Grupos' => 'Pacientes\Controller\GruposController',

@@ -1,0 +1,65 @@
+<div id="faltante_container">
+    <h1>Nuevo faltante</h1>
+    <?php 
+        $form->setAttribute('action', '/empleados/faltantes/nuevo');
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row" style="margin-bottom: 10px;">
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Clínica <span class="req">*</span>
+            </label>
+            <?php echo $this->formSelect($form->get('idclinica')); ?>
+        </div>
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Genera <span class="req">*</span>
+            </label>
+            <?php echo $this->formSelect($form->get('idempleadogenerador')); ?>
+        </div>
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Recibe <span class="req">*</span>
+            </label>
+            <?php echo $this->formSelect($form->get('idempleadodeudor')); ?>
+        </div>
+    </div>
+    <div class="units-row" style="margin-bottom: 10px;">
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Fecha <span class="req">*</span>
+            </label>
+            <?php echo $this->formText($form->get('faltante_fecha')); ?>
+        </div>
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Hora(formato 24 hrs) <span class="req">*</span>
+            </label>
+            <?php echo $this->formText($form->get('faltante_hora')); ?>
+        </div>
+        <div class="unit-33">
+            <label style="margin-bottom: 0px">
+                Cantidad faltante <span class="req">*</span>
+            </label>
+            <?php echo $this->formText($form->get('faltante_cantidad')); ?>
+        </div>
+    </div>
+    <div class="units-row" style="margin-bottom: 10px;">
+        <div class="unit-100">
+            <label style="margin-bottom: 0px">
+                Comentario
+            </label>
+            <?php echo $this->formTextarea($form->get('faltante_comentario')); ?>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script src="/js/empleados/faltantes.js"></script>
+<script>
+    $('#faltante_container').faltantes();
+</script>
