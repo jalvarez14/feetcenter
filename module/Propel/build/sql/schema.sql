@@ -454,6 +454,12 @@ CREATE TABLE `faltante`
     PRIMARY KEY (`idfaltante`),
     INDEX `idempleadogenerador` (`idempleadogenerador`),
     INDEX `idempleadodeudor` (`idempleadodeudor`),
+    INDEX `idclinica` (`idclinica`),
+    CONSTRAINT `idclinica_faltante`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     CONSTRAINT `idempleadodeudor_faltante`
         FOREIGN KEY (`idempleadodeudor`)
         REFERENCES `empleado` (`idempleado`)

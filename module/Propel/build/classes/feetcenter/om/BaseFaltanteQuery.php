@@ -34,6 +34,10 @@
  * @method FaltanteQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method FaltanteQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method FaltanteQuery leftJoinClinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Clinica relation
+ * @method FaltanteQuery rightJoinClinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Clinica relation
+ * @method FaltanteQuery innerJoinClinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Clinica relation
+ *
  * @method FaltanteQuery leftJoinEmpleadoRelatedByIdempleadodeudor($relationAlias = null) Adds a LEFT JOIN clause to the query using the EmpleadoRelatedByIdempleadodeudor relation
  * @method FaltanteQuery rightJoinEmpleadoRelatedByIdempleadodeudor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EmpleadoRelatedByIdempleadodeudor relation
  * @method FaltanteQuery innerJoinEmpleadoRelatedByIdempleadodeudor($relationAlias = null) Adds a INNER JOIN clause to the query using the EmpleadoRelatedByIdempleadodeudor relation
@@ -315,6 +319,8 @@ abstract class BaseFaltanteQuery extends ModelCriteria
      * $query->filterByIdclinica(array('min' => 12)); // WHERE idclinica >= 12
      * $query->filterByIdclinica(array('max' => 12)); // WHERE idclinica <= 12
      * </code>
+     *
+     * @see       filterByClinica()
      *
      * @param     mixed $idclinica The value to use as filter.
      *              Use scalar values for equality.
@@ -691,6 +697,82 @@ abstract class BaseFaltanteQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(FaltantePeer::FALTANTE_COMPROBANTEFIRMADO, $faltanteComprobantefirmado, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Clinica object
+     *
+     * @param   Clinica|PropelObjectCollection $clinica The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 FaltanteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByClinica($clinica, $comparison = null)
+    {
+        if ($clinica instanceof Clinica) {
+            return $this
+                ->addUsingAlias(FaltantePeer::IDCLINICA, $clinica->getIdclinica(), $comparison);
+        } elseif ($clinica instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(FaltantePeer::IDCLINICA, $clinica->toKeyValue('PrimaryKey', 'Idclinica'), $comparison);
+        } else {
+            throw new PropelException('filterByClinica() only accepts arguments of type Clinica or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Clinica relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return FaltanteQuery The current query, for fluid interface
+     */
+    public function joinClinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Clinica');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Clinica');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Clinica relation Clinica object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ClinicaQuery A secondary query class using the current class as primary query
+     */
+    public function useClinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinClinica($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Clinica', 'ClinicaQuery');
     }
 
     /**

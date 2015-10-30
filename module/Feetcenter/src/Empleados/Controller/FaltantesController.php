@@ -15,6 +15,56 @@ use Zend\View\Model\ViewModel;
 class FaltantesController extends AbstractActionController
 {
     
+    public function eliminarAction(){
+        
+        $request = $this->getRequest();
+        
+        $session = new \Shared\Session\AouthSession();
+        $idrol = (int)$session->getIdrol();
+        $idempleado = $session->getIdempleado();
+        
+        if($request->isPost()){
+            
+            $id = $this->params()->fromRoute('id');
+            
+            //Verificamos que el Id lugar que se quiere modificar exista
+            if(!\FaltanteQuery::create()->filterByIdfaltante($id)->exists()){
+                $id =0;
+            }
+            
+            //Si es incorrecto redireccionavos al action nuevo
+            if (!$id) {
+                return $this->redirect()->toRoute('empleados-faltantes');
+            }
+            
+            $entity = \FaltanteQuery::create()->findPk($id);
+            
+            //Validamos que si se trata de un encargado este faltante pertenzca al mismo usuario
+            if($idrol == 2 && $entity->getIdempleadogenerador() != $idempleado){
+               return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => false)));
+            }
+        
+        
+            
+            $entity->delete();
+            
+            //Agregamos un mensaje
+            $this->flashMessenger()->addSuccessMessage('Registro eliminado exitosamente!');
+
+            //Redireccionamos a nuestro list
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => true)));
+
+        }
+        
+        if($this->params()->fromQuery('html')){
+            $viewModel = new ViewModel();
+            $viewModel->setTerminal(true);
+            return $viewModel;
+        }
+        
+    }
+    
+    
     public function generarcomprobanteAction(){
         
         $id = $this->params()->fromQuery('id');
@@ -35,18 +85,26 @@ class FaltantesController extends AbstractActionController
     
         public function indexAction()
     {
+            $collection = \FaltanteQuery::create()->find();
+            
                         
-        return new ViewModel();
+            return new ViewModel(array(
+                    'collection' => $collection,
+                    'successMessages' => $this->flashMessenger()->getSuccessMessages(),
+            ));
     }
     
     public function editarAction(){
         
+        $session = new \Shared\Session\AouthSession();
+        
         $request = $this->getRequest();
-
+        
+        
         //Cachamos el valor desde nuestro params
         $idfaltante = (int) $this->params()->fromRoute('id');
         
-        //Verificamos que el Id lugar que se quiere modificar exista
+        //Verificamos que el Id lugar que se quiere modificar exista y que pertenezca al usuario que la creo
         if(!\FaltanteQuery::create()->filterByIdfaltante($idfaltante)->exists()){
             $idfaltante =0;
         }
@@ -59,9 +117,15 @@ class FaltantesController extends AbstractActionController
         $session = new \Shared\Session\AouthSession();
         $idrol = (int)$session->getIdrol();
         $idempleado = $session->getIdempleado();
-        
         $entity = \FaltanteQuery::create()->findPk($idfaltante);
         
+        
+        //Validamos que si se trata de un encargado este faltante pertenzca al mismo usuario
+        if($idrol == 2 && $entity->getIdempleadogenerador() != $idempleado){
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
         if($request->isPost()){
             
             $post_data = $request->getPost();
@@ -79,12 +143,12 @@ class FaltantesController extends AbstractActionController
             }
             
             $entity->setFaltanteFecha($post_data['faltante_fecha_submit']);
-            
+                        
             //El comprobante
             if(isset($_FILES['faltante_comprobantefirmado']) && !empty($_FILES['faltante_comprobantefirmado']['name'])){
                 //Si tiene una foto guurdada anteriormente
                 $upload_folder ='/img/faltantes/';
-                $tipo_archivo = $_FILES['faltante_comprobantefirmado']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = $tipo_archivo[1];  
+                $tipo_archivo = $_FILES['faltante_comprobantefirmado']['type']; $tipo_archivo = explode('/', $tipo_archivo); $tipo_archivo = 'pdf';  
                 $nombre_archivo = 'comprobante_firmado_'.$entity->getIdfaltante().'.'.$tipo_archivo;
                 $tmp_archivo = $_FILES['faltante_comprobantefirmado']['tmp_name'];
                 $archivador = $upload_folder.$nombre_archivo;
@@ -93,6 +157,15 @@ class FaltantesController extends AbstractActionController
                 } 
                 $entity->setFaltanteComprobantefirmado($archivador);
                 
+            }else{
+                //Si fue eliminado
+                if(isset($post_data['faltante_comprobantefirmado_submit']) && isset($post_data['faltante_comprobantefirmado_submit']) == 'delete'){
+                    if(!is_null($entity->getFaltanteComprobantefirmado())){
+                        unlink($_SERVER['DOCUMENT_ROOT'].$entity->getFaltanteComprobantefirmado());
+                    }
+                    $entity->setFaltanteComprobantefirmado(NULL);
+                    $entity->save();
+                }
             }
             
             $entity->save();
