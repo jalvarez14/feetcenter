@@ -335,7 +335,7 @@ class ComprasController extends AbstractActionController
                     $insumoclinica_entity->save();
                 }
             }
-
+            
             //Agregamos un mensaje
             $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
                 

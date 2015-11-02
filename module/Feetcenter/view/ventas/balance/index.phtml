@@ -22,27 +22,27 @@
             <tr>
                 <th></th>
                  <?php foreach ($clinicas as $clinica) : ?>
-                    <th><?php echo $clinica->getClinicaNombre() ?></th>
+                    <th idclinica="<?php echo $clinica->getIdclinica() ?>"><?php echo $clinica->getClinicaNombre() ?></th>
                 <?php endforeach; ?>
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr id="ingreso">
                 <td><strong>Ingresos</strong></td>
                 <?php foreach ($clinicas as $clinica) : ?>
-                    <td></td>
+                    <td idclinica="<?php echo $clinica->getIdclinica() ?>"></td>
                 <?php endforeach; ?>
             </tr>
-            <tr>
+            <tr id="egreso">
                 <td><strong>Egesos</strong></td>
                 <?php foreach ($clinicas as $clinica) : ?>
-                    <td></td>
+                    <td idclinica="<?php echo $clinica->getIdclinica() ?>"></td>
                 <?php endforeach; ?>
             </tr>
-            <tr>
+            <tr id="balance">
                 <td><strong>Balance</strong></td>
                 <?php foreach ($clinicas as $clinica) : ?>
-                    <td></td>
+                    <td idclinica="<?php echo $clinica->getIdclinica() ?>"></td>
                 <?php endforeach; ?>
             </tr>
         </tbody>

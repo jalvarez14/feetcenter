@@ -19,8 +19,23 @@ class BalanceController extends AbstractActionController
     {
         $request = $this->getRequest();
         if($request->isPost()){
+            
             $post_data = $request->getPost();
-            echo '<pre>';var_dump($post_data);echo '</pre>';exit();
+            
+            $result = array();
+            
+            $clinicas = \ClinicaQuery::create()->filterByIdclinica($post_data['clinicas'])->find();
+            $clinica = new \Clinica();
+            foreach ($clinicas as $clinica){
+                $tmp['idclinica'] = $clinica->getIdclinica();
+                $tmp['ingreso']  = !is_null(\VisitaQuery::create()->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->withColumn('SUM(visita_total)','total')->select('total')->filterByIdclinica($clinica->getIdclinica())->filterByVisitaEstatuspago('pagada')->findOne()) ? \VisitaQuery::create()->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->withColumn('SUM(visita_total)','total')->select('total')->filterByIdclinica($clinica->getIdclinica())->filterByVisitaEstatuspago('pagada')->findOne(): 0;
+                $tmp['egreso']   = !is_null(\EgresoclinicaQuery::create()->filterByEgresoclinicaFecha(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->withColumn('SUM(egresoclinica_cantidad)','total')->select('total')->filterByIdclinica($clinica->getIdclinica())->findOne()) ? \EgresoclinicaQuery::create()->filterByEgresoclinicaFecha(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->withColumn('SUM(egresoclinica_cantidad)','total')->select('total')->filterByIdclinica($clinica->getIdclinica())->findOne() : 0;
+                $tmp['balance'] = $tmp['ingreso'] - $tmp['egreso'];
+                
+                $result[] =$tmp;
+            }
+           
+            return $this->getResponse()->setContent(json_encode($result));
         }
     }
     public function indexAction()

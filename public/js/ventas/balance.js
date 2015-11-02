@@ -52,16 +52,20 @@
         */
 
        var filter = function(from,to){
-             
+
+            $container.find('[idclinica]').hide(); 
+            
             if(typeof from == 'undefined'){
           
-                var from = moment();
+                var from = moment('2000-01-01','YYYY-MM-DD');
+                
             }
             if(typeof to ==  'undefined'){
                 var to = moment();
             }
             
-      
+            
+            var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
             
             //Hacemos la peticion ajax
            $.ajax({
@@ -69,9 +73,14 @@
                dataType: 'json',
                method:'POST',
                async:false,
-               data:{from:from.format('MM-DD-YYYY'),to:to.format('MM-DD-YYYY')},
+               data:{clinicas:clinicas_select,from:from.format('YYYY-MM-DD'),to:to.format('YYYY-MM-DD')},
                success: function(data){
-                   
+                   $.each(data,function(){
+                       $container.find('[idclinica='+this.idclinica+']').show();
+                       $container.find('tr#ingreso').find('td[idclinica='+this.idclinica+']').text(accounting.formatMoney(this.ingreso));
+                       $container.find('tr#egreso').find('td[idclinica='+this.idclinica+']').text(accounting.formatMoney(this.egreso));
+                       $container.find('tr#balance').find('td[idclinica='+this.idclinica+']').text(accounting.formatMoney(this.balance));
+                   });
                },
            });
             
@@ -87,9 +96,12 @@
             
             //Inicializamos nuestro multiple select
             $container.find("select[name=idclinica]").multipleSelect({
- 
-                onClick : filter,
-                onCheckAll: filter
+                onClick : function(){
+                    filter();
+                },
+                onCheckAll: function(){
+                    filter();
+                },
             });
             
              $container.find("select[name=idclinica]").multipleSelect('checkAll');
@@ -143,8 +155,8 @@
                 });
                 
                 if(!empty){
-                   var from = $container.find('input[name=comisiones_from_submit]').val();
-                   var to = $container.find('input[name=comisiones_to_submit]').val();
+                   var from = moment($container.find('input[name=comisiones_from_submit]').val(),'YYYY/MM/DD');
+                   var to = moment($container.find('input[name=comisiones_to_submit]').val(),'YYYY/MM/DD');
                    
                    filter(from,to);
 
