@@ -118,8 +118,9 @@ class AgendaController extends AbstractActionController
                 $servicio_array = $servicio->toArray(\BasePeer::TYPE_FIELDNAME);
                 $servicio_array['disponible'] = $disponible;
                 $servicio_array['servicio_dependencia'] = $servicio->getServicio()->getServicioDependencia();
-                
-                
+                if(!$servicio->getServicio()->getServicioGeneraingreso()){
+                    $servicio_array['servicioclinica_precio'] = 0;
+                }
                 $servicios_array[] = $servicio_array;
             }
             

@@ -15,6 +15,17 @@ use Zend\View\Model\ViewModel;
 class FaltantesController extends AbstractActionController
 {
     
+    
+    public function getencargadosbyclinicaAction(){
+        
+        $idclinica = $this->params()->fromQuery('id');
+        
+        $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->filterByIdempleado($idempleado,\Criteria::NOT_EQUAL)->select('idempleado')->joinEmpleado()->withColumn('empleado_nombre')->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(2)->endUse()->endUse()->groupBy('idempleado')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+       
+         return $this->getResponse()->setContent(json_encode($empleados));
+      
+    }
+    
     public function eliminarAction(){
         
         $request = $this->getRequest();
@@ -198,7 +209,20 @@ class FaltantesController extends AbstractActionController
             }
             
             $form = new \Empleados\Form\FaltantesForm($clinicas_array, $empleados_array);
-
+            
+            $form->add(array(
+                'type' => 'Select',
+                'name' => 'idclinica',
+                'options' => array(
+                   'empty_option' => 'Por favor seleccione una clinica',
+                   'value_options' => $clinicas_array,
+                ),
+               'attributes' => array(
+                   'class' => 'width-100',
+                   'required' => true,
+               ),
+            ));
+            
             $form->add(array(
                 'type' => 'Select',
                 'name' => 'idempleadogenerador',
@@ -208,6 +232,19 @@ class FaltantesController extends AbstractActionController
                'attributes' => array(
                    'class' => 'width-100',
                   
+               ),
+            ));
+            
+            $form->add(array(
+                'type' => 'Select',
+                'name' => 'idempleadodeudor',
+                'options' => array(
+                     'empty_option' => 'Por favor seleccione un empleado',
+                    'value_options' => $empleados_array,
+                ),
+               'attributes' => array(
+                   'class' => 'width-100',
+                   'required' => true,
                ),
             ));
             
@@ -236,6 +273,18 @@ class FaltantesController extends AbstractActionController
             
             $form->add(array(
                 'type' => 'Select',
+                'name' => 'idclinica',
+                'options' => array(
+                   'value_options' => $clinicas_array,
+                ),
+               'attributes' => array(
+                   'class' => 'width-100',
+                   'required' => true,
+               ),
+            ));
+            
+            $form->add(array(
+                'type' => 'Select',
                 'name' => 'idempleadogenerador',
                 'options' => array(
                    'value_options' => array(
@@ -247,6 +296,21 @@ class FaltantesController extends AbstractActionController
                     'readonly' => true,
                ),
             ));
+            
+            $form->add(array(
+                'type' => 'Select',
+                'name' => 'idempleadodeudor',
+                'options' => array(
+         
+                    'value_options' => $empleados_array,
+                ),
+               'attributes' => array(
+                   'class' => 'width-100',
+                   'required' => true,
+               ),
+            )); 
+            
+            
             
         }
         
@@ -321,16 +385,43 @@ class FaltantesController extends AbstractActionController
             }
             
             $form = new \Empleados\Form\FaltantesForm($clinicas_array, $empleados_array);
+            
+            $form->add(array(
+                'type' => 'Select',
+                'name' => 'idclinica',
+                'options' => array(
+                   'empty_option' => 'Por favor seleccione una clinica',
+                   'value_options' => $clinicas_array,
+                ),
+               'attributes' => array(
+                   'class' => 'width-100',
+                   'required' => true,
+               ),
+            ));
 
             $form->add(array(
                 'type' => 'Select',
                 'name' => 'idempleadogenerador',
                 'options' => array(
-                   'value_options' => $empleados_array,
+                   'empty_option' => 'Por favor seleccione un empleado',
+                   //'value_options' => $empleados_array,
                 ),
                'attributes' => array(
                    'class' => 'width-100',
+                   'required' => true,
                   
+               ),
+            ));
+            
+            $form->add(array(
+                'type' => 'Select',
+                'name' => 'idempleadodeudor',
+                'options' => array(
+                     'empty_option' => 'Por favor seleccione un empleado',
+                ),
+               'attributes' => array(
+                   'class' => 'width-100',
+                   'required' => true,
                ),
             ));
             
@@ -355,7 +446,31 @@ class FaltantesController extends AbstractActionController
             
             $form = new \Empleados\Form\FaltantesForm($clinicas_array, $empleados_array);
             
-            $form->get('idclinica')->setAttribute('readonly', true);
+            $form->add(array(
+                'type' => 'Select',
+                'name' => 'idclinica',
+                'options' => array(
+                   'value_options' => $clinicas_array,
+                ),
+               'attributes' => array(
+                   'class' => 'width-100',
+                   'required' => true,
+               ),
+            ));
+            
+            $form->add(array(
+                'type' => 'Select',
+                'name' => 'idempleadodeudor',
+                'options' => array(
+         
+                    'value_options' => $empleados_array,
+                ),
+               'attributes' => array(
+                   'class' => 'width-100',
+                   'required' => true,
+               ),
+            ));
+            
             
             $form->add(array(
                 'type' => 'Select',

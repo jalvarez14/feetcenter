@@ -12,30 +12,8 @@ class FaltantesForm extends Form
         parent::__construct('FaltantesForm');
         $this->setAttribute('method', 'post');
 
-        $this->add(array(
-             'type' => 'Select',
-             'name' => 'idclinica',
-             'options' => array(
-                'value_options' => $clinicas,
-             ),
-            'attributes' => array(
-                'class' => 'width-100',
-                'required' => true,
-            ),
-        ));
         
-        $this->add(array(
-             'type' => 'Select',
-             'name' => 'idempleadodeudor',
-             'options' => array(
-                'value_options' => $empleados,
-             ),
-            'attributes' => array(
-                'class' => 'width-100',
-                'required' => true,
-            ),
-        ));
-                
+  
         $this->add(array(
             'name' => 'faltante_fecha',
             'type' => 'Text',

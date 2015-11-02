@@ -102,6 +102,32 @@
                     }
                 });
             });
+            
+            
+            //El evento getempleadosbyclinica
+            $container.find('select[name=idclinica]').on('change',function(){
+                var selected = $container.find('select[name=idclinica] option:selected').val();
+                $.ajax({
+                    url:'/empleados/faltantes/getencargadosbyclinica',
+                    dataType:'json',
+                    data:{id:selected},
+                    success:function(data){
+                       //Limpamos los select
+                       $container.find('select[name=idempleadogenerador] > option:not(:first-child)').remove();
+                       $container.find('select[name=idempleadodeudor] > option:not(:first-child)').remove();
+                       
+                       //Actualizamos los select
+                       $.each(data,function(){
+                           var option = $('<option>',{value:this.idempleado}).text(this.empleado_nombre);
+  
+                           $container.find('select[name=idempleadogenerador],select[name=idempleadodeudor]').append(option);
+                       });
+                       
+                       
+                    }
+                });
+            });
+            
        
             
         }

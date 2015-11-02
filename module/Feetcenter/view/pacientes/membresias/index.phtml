@@ -1,0 +1,74 @@
+<style>
+    .unit-custom{
+        float: left;
+        
+    }
+    
+    .no_aplica{
+        color:red;
+    }
+</style>
+<div id="clientes_membresias_container">
+    <h1>Membresias</h1>
+    <div class="units-row">
+        <div class="unit-30">
+            Clinica
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-30">
+            Estatus
+            <select multiple="multiple" name="pacientemembresia_estatus" class="width-100">
+                <option value="activa">Activa</option>
+                 <option value="terminada">Terminada</option>
+            </select>
+        </div>
+    </div>
+    <table class="table-membresias table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Servicios</th>
+                <th>Cupones</th>
+            </tr>
+            <tr>
+                <th>Cliente</th>
+                <th>Clinica</th>
+                <th>Folio</th>
+                <th id="servicios">
+                <div class="units-row" style="margin-bottom: 0px;">
+                    <?php for($i=1;$i<=$max_servicios;$i++) :?>
+                    <div style="width: <?php echo $width_servicios?>%" class="unit-custom">Serv <?php echo $i?></div>
+                    <?php endfor;?>
+                </div>
+                </th>
+                <th id="cupones">
+                <div class="units-row" style="margin-bottom: 0px;">
+                    <?php for($i=1;$i<=$max_cupones;$i++) :?>
+                    <div style="width: <?php echo $width_cupones?>%" class="unit-custom">Cup <?php echo $i?></div>
+                    <?php endfor;?>
+                    
+                </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>           
+        </tfoot>
+    </table>
+</div>
+<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="/js/pacientes/membresias.js"></script>
+<script>
+    $('#clientes_membresias_container').membresias({
+        session: <?php echo json_encode($session)?>,
+        width_servicios: <?php echo $width_servicios?>,
+        width_cupones: <?php echo $width_cupones?>,
+    });
+</script>

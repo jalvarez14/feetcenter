@@ -44,6 +44,7 @@ return array(
             'pacientes/filter',
             'pacientes/editar',
             'pacientes/eliminar',
+            'pacientes-membresias',
             'grupos',
             'seguimiento',
             'seguimiento/ver',
@@ -52,6 +53,8 @@ return array(
             'seguimiento/eliminar',
             //Agenda
             'agenda',
+            //ventas
+            'ventas-balance',
         ),
         "deny"=>array(
              
@@ -86,6 +89,7 @@ return array(
             'pacientes/filter',
             'pacientes/editar',
             'pacientes/eliminar',
+            'pacientes-membresias',
             'grupos',
             'seguimiento',
             'seguimiento/ver',
@@ -94,6 +98,8 @@ return array(
             'seguimiento/eliminar',
             //Agenda
             'agenda',
+            //ventas
+            'ventas-balance',
         ),
         "deny"=>array(
             //Inventarios
@@ -167,12 +173,14 @@ return array(
             'pacientes/nuevo',
             'pacientes/editar',
             'pacientes/eliminar',
+            'pacientes-membresias',
             'grupos',
             'seguimiento/nuevo',
             'seguimiento/editar',
             'seguimiento/eliminar',
-            
-            
+            //ventas
+            'ventas-balance',
+
         ),
     ),
 );

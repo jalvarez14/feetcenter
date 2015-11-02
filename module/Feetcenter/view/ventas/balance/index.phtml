@@ -1,0 +1,59 @@
+
+<div id="balance_container">
+    <h1>Balance</h1>
+    <div class="units-row">
+        <div class="unit-30">
+            Clini   ca
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-70" id="filter_container">
+            <label style="display: block">Filtrar por periodo de tiempo</label>
+            <input placeholder="Desde" type="email" name="comisiones_from" class="width-6" />
+            <input placeholder="Hasta" type="email" name="comisiones_to" class="width-6" />
+            <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
+        </div>
+    </div>
+    <table class="table-balance table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                 <?php foreach ($clinicas as $clinica) : ?>
+                    <th><?php echo $clinica->getClinicaNombre() ?></th>
+                <?php endforeach; ?>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Ingresos</strong></td>
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <td></td>
+                <?php endforeach; ?>
+            </tr>
+            <tr>
+                <td><strong>Egesos</strong></td>
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <td></td>
+                <?php endforeach; ?>
+            </tr>
+            <tr>
+                <td><strong>Balance</strong></td>
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <td></td>
+                <?php endforeach; ?>
+            </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="/js/ventas/balance.js"></script>
+<script>
+     $('#balance_container').balance({
+        session: <?php echo json_encode($session)?>,
+    });    
+</script>

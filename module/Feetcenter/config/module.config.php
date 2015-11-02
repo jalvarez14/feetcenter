@@ -150,6 +150,19 @@ return array(
                 ),
             ),
             /*
+            *MODULO ventas
+            */
+            'ventas-balance' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/ventas/balance[/:action][/:id]',
+                    'defaults' => array(
+                        'controller'    => 'Ventas\Controller\Balance',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            /*
             *MODULO Login
             */
             'login' => array(
@@ -419,6 +432,16 @@ return array(
                     ),
                 ),
             ),
+            'pacientes-membresias' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/pacientes/membresias[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Pacientes\Controller\Membresias',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
             'seguimiento' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -547,8 +570,11 @@ return array(
             'Pacientes\Controller\Pacientes' => 'Pacientes\Controller\PacientesController',
             'Pacientes\Controller\Grupos' => 'Pacientes\Controller\GruposController',
             'Pacientes\Controller\Seguimiento' => 'Pacientes\Controller\SeguimientoController',
+            'Pacientes\Controller\Membresias' => 'Pacientes\Controller\MembresiasController',
             //Agenda
             'Agenda\Controller\Agenda' => 'Agenda\Controller\AgendaController',
+            //Ventas
+            'Ventas\Controller\Balance' => 'Ventas\Controller\BalanceController',
         ),
     ),
     'view_manager' => array(
