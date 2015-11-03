@@ -51,6 +51,7 @@ return array(
             'seguimiento/nuevo',
             'seguimiento/editar',
             'seguimiento/eliminar',
+            'pacientes-visitas',
             //Agenda
             'agenda',
             //ventas
@@ -96,6 +97,7 @@ return array(
             'seguimiento/nuevo',
             'seguimiento/editar',
             'seguimiento/eliminar',
+            'pacientes-visitas',
             //Agenda
             'agenda',
             //ventas
@@ -136,6 +138,7 @@ return array(
             'pacientes/filter',
             'seguimiento',
             'seguimiento/ver',
+            'pacientes-visitas',
             //Agenda
             'agenda',
             

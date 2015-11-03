@@ -1,0 +1,36 @@
+<style>
+    .unit-month{
+        float: left;
+        width: 8.33%;
+        display: block;
+    }
+</style>
+<div id="clientes_visitas_container">
+    <h1>Visitas</h1>
+    <div class="units-row">
+        <div class="unit-30">
+            Clinica
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <table class="table-visitas table-bordered">
+        <thead>
+   
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>           
+        </tfoot>
+    </table>
+</div>
+<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="/js/pacientes/visitas.js"></script>
+<script>
+    $('#clientes_visitas_container').visitas({
+        session: <?php echo json_encode($session)?>,
+    });
+</script>

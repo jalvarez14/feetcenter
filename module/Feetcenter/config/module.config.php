@@ -432,6 +432,16 @@ return array(
                     ),
                 ),
             ),
+            'pacientes-visitas' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/pacientes/visitas[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Pacientes\Controller\Visitas',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
             'pacientes-membresias' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -571,6 +581,7 @@ return array(
             'Pacientes\Controller\Grupos' => 'Pacientes\Controller\GruposController',
             'Pacientes\Controller\Seguimiento' => 'Pacientes\Controller\SeguimientoController',
             'Pacientes\Controller\Membresias' => 'Pacientes\Controller\MembresiasController',
+            'Pacientes\Controller\Visitas' => 'Pacientes\Controller\VisitasController',
             //Agenda
             'Agenda\Controller\Agenda' => 'Agenda\Controller\AgendaController',
             //Ventas

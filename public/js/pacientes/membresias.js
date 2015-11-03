@@ -59,8 +59,7 @@
            
 
            $container.find('table.table-membresias tbody tr').remove();
-           
-           console.log(typeof $table);
+
            if(typeof $table != 'undefined'){
                 $table.clear();
                 $table.destroy();
