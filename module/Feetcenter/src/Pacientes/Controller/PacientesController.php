@@ -117,6 +117,13 @@ class PacientesController extends AbstractActionController
         
         $form = new \Pacientes\Form\PacientesForm($clinicas_array, $empleados_array);
         
+        if($sesion->getIdrol() != 1){
+            $form->get('paciente_nombre')->setAttribute('disabled', true);
+            $form->get('paciente_celular')->setAttribute('disabled', true);
+            $form->get('paciente_telefono')->setAttribute('disabled', true);
+            
+        }
+        
         //Le ponemos los datos de nuestro lugar a nuestro formulario
         $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
         

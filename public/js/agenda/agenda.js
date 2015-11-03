@@ -139,9 +139,8 @@
                 dataType: 'json',
                 data: {dia: date.format('YYYY-MM-DD')},
                 success: function (data) {
-                     
                     $.each(data, function (index, element) {
-                        renderEvento(element.idvisita,element.visita_fechainicio,element.visita_fechafin,element.idempleado,element.paciente_nombre,element.visita_status);
+                        renderEvento(element.idvisita,element.visita_fechainicio,element.visita_fechafin,element.idempleado,element.paciente_nombre,element.visita_status,element.visita_estatuspago);
                     });
                 }
             });
@@ -175,8 +174,12 @@
             });
         }
         
-        var renderEvento = function(id,start,end,resource,title,status){
-
+        var renderEvento = function(id,start,end,resource,title,status,pago){
+            
+            if(pago = 'pagada'){
+                title+= ' - PAGADO';
+            }
+            
             var cssClass = cssClassMap[status];
             $('#calendar').fullCalendar('renderEvent', {
                 id:id,
@@ -237,6 +240,8 @@
                  selectHelper: true,
                  selectable: true,
                  resources: '/getpedicuristasbyclinica/'+settings.idclinica,
+                 minTime:'09:00:00',
+                 maxTime:'21:00:00',
                 viewRender: function (view, element) {
 
                     var viewName = view.name;
@@ -334,7 +339,7 @@
                                                     contentType: false,
                                                     success: function (data) {
                                                         if(data.result){
-                                                            renderEvento(data.data.idvisita,data.data.visita_fechainicio,data.data.visita_fechafin,data.data.idempleado,data.data.paciente_nombre,data.data.visita_status);
+                                                            renderEvento(data.data.idvisita,data.data.visita_fechainicio,data.data.visita_fechafin,data.data.idempleado,data.data.paciente_nombre,data.data.visita_status,data.data.visita_estatuspago);
                                                             $modal.close();
                                                         }
                                                     }

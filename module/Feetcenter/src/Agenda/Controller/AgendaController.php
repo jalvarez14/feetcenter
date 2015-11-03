@@ -1073,8 +1073,8 @@ class AgendaController extends AbstractActionController
     {
         $query = $this->params()->fromQuery('q');
         
-        $result = \PacienteQuery::create()->joinClinica()->withColumn('clinica_nombre')->filterByPacienteNombre('%'.$query .'%', \Criteria::LIKE)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
-        
+        $result = \PacienteQuery::create()->joinClinica()->withColumn('clinica_nombre')->filterByPacienteNombre('%'. $query .'%', \Criteria::LIKE)->_or()->filterByPacienteCelular('%'. $query .'%')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+
         //Damos el formato
         $result_array = array();
         foreach ($result as $r){
@@ -1098,13 +1098,17 @@ class AgendaController extends AbstractActionController
                 $clinica_nombre = $cliniva->getClinicaNombre();
                 $tmp['relacionados'][$key]['clinica_nombre'] = $clinica_nombre;
             }
-            
+           
             //Mmebresia
             $tmp['membresia'] = NULL;
+            
             if(\PacientemembresiaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByPacientemembresiaEstatus('activa')->exists()){
+                                
                 $paciente_membresia = \PacientemembresiaQuery::create()->joinMembresia()->withColumn('membresia_nombre')->withColumn('membresia_servicios')->withColumn('membresia_cupones')->filterByIdpaciente($r['idpaciente'])->filterByPacientemembresiaEstatus('activa')->findOne();
+                        
                 $tmp['membresia'] = $paciente_membresia->toArray(\BasePeer::TYPE_FIELDNAME);
             }   
+
             $result_array[] = $tmp;
         }
         
