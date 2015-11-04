@@ -1,0 +1,91 @@
+<div id="expediente_ver_container">
+    <h1><?php echo $paciente->getPacienteNombre()?></h1>
+    <table class="table-visitas">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Clinica</th>
+                <th>Atendió</th>
+                <th>Tipo</th>
+                <th>Estatus</th>
+                <th>Total</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $visita = new Visita()?>
+            <?php foreach ($visitas as $visita) :?>
+                <tr id="<?php echo $visita->getIdvisita()?>">
+                    <td><?php echo $visita->getVisitaCreadaen('d/m/Y')?></td>
+                    <td><?php echo $visita->getClinica()->getClinicaNombre()?></td>
+                    <td><?php echo $visita->getEmpleadoRelatedByIdempleado()->getEmpleadoNombre()?></td>
+                    <td><?php echo $visita->getVisitaTipo()?></td>
+                    <td><?php echo $visita->getVisitaStatus()?></td>
+                    <td class="visita_total"><?php echo $visita->getVisitaTotal()?></td>
+                    <td><a class="detalles-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2><?php echo 'Visita #'. $visita->getIdvisita()?></h2>" data-content="/pacientes/expediente/detalles?html=true&idvisita=<?php echo $visita->getIdvisita()?>" href="javascript:void(0)">Detalles</a></td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+</div>
+<script>
+    
+    $.ajax({
+        url: '/json/lang_es_datatable.json',
+        dataType: 'json',
+        success: function(data){
+            var table = $('table').DataTable({
+                language:data,
+            });
+            table.on( 'draw', function () {
+                $('[data-tools="modal"]').unbind();
+                $('[data-tools="modal"]').modal();
+                
+                
+    $('.table-visitas').find('.visita_total').filter(function(){
+        var txt_value = $(this).text();
+        var money_value = accounting.formatMoney(txt_value);
+        $(this).text(money_value);
+    });
+    
+    $('.detalles-modal').on('loading.tools.modal', function(modal)
+    {
+        var $modalHeader = this.$modalHeader;
+        $modalHeader.addClass('modal_header_action');
+        var id = this.$element.closest('tr').attr('id');
+        var $modal = this ;
+        
+        this.createCancelButton('Cancelar');
+
+      
+
+    });
+    
+            });
+        }
+    });
+    
+    $('.detalles-modal').on('loading.tools.modal', function(modal)
+    {
+        var $modalHeader = this.$modalHeader;
+        $modalHeader.addClass('modal_header_action');
+        var id = this.$element.closest('tr').attr('id');
+        var $modal = this ;
+        
+        this.createCancelButton('Cancelar');
+
+      
+
+    });
+    
+    
+    
+    
+</script>
+<!--<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="/js/pacientes/expediente.js"></script>
+<script>
+    $('#expedientese_container').expediente({
+        session: <?php echo json_encode($session)?>,
+    });   
+</script>-->

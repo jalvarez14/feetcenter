@@ -1,5 +1,5 @@
 <div id="expedientese_container">
-    <h1>Expedientes<a style="float: right; text-decoration: none"href="/pacientes/nuevo">Nuevo</a></h1>
+    <h1>Expedientes</h1>
     <?php if(count($successMessages)) :?>
         <div class="units-row">
             <?php foreach ($successMessages as $message) :?>
@@ -36,6 +36,7 @@
         </tbody>
     </table>
 </div>
+<script src="/plugins/fullcalendar/moment.js"></script>
 <script src="/js/pacientes/expediente.js"></script>
 <script>
     $('#expedientese_container').expediente({

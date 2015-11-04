@@ -70,7 +70,33 @@
                async:false,
                data:{clinicas:clinicas_select},
                success:function(data){
-                    console.log(data);return;
+                    
+                    //Construimos nuestras filas
+                    $.each(data,function(){
+                        
+                        var date = moment(this.paciente_fecharegistro,'MM/DD/YY');
+                        var tr = $('<tr>');
+                        tr.append('<td>'+this.paciente_nombre+'</td>');
+                        tr.append('<td>'+this.clinica_nombre+'</td>');
+                        tr.append('<td>'+date.format('DD/MM/YYYY')+'</td>');
+                        tr.append('<td>'+this.paciente_celular+'</td>');
+                        tr.append('<td><a href="/pacientes/expediente/ver/'+this.idpaciente+'">Expediente</a></td>');
+                        $container.find('table.table-clientes tbody').append(tr);
+                    });
+                    
+                    //Datatable
+                    $.ajax({
+                        url: '/json/lang_es_datatable.json',
+                        dataType: 'json',
+                        async:false,
+                        success: function(data){
+                            $table = container.find('.table-clientes').DataTable({
+                                language:data,
+                
+                            });
+                        }
+                    });
+                   
                },
            });
            
