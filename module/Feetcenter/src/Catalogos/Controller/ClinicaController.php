@@ -189,6 +189,14 @@ class ClinicaController extends AbstractActionController
                         $empleado_clinica->save();
                     }
                 }
+                
+                //Lo valores popr defecto de la configuracion
+                $configuracion = new \Configuracion();
+                $configuracion->setIdclinica($entity->getIdclinica())
+                              ->setConfiguracionNumerocancelaciones(3)
+                              ->setConfiguracionValormaximocancelacion(500)
+                              ->setConfiguracionHastacuantosdias(30)
+                              ->save();
 
                 //Agregamos un mensaje
                 $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');

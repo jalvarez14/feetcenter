@@ -113,6 +113,9 @@ class Module
                     'Pacientes' => __DIR__ . '/src/'  .'Pacientes',
                     'Agenda' => __DIR__ . '/src/'  .'Agenda',
                     'Ventas' => __DIR__ . '/src/'  .'Ventas',
+                    'Configuracion' => __DIR__ . '/src/'  .'Configuracion',
+                    
+                    
                 ),
             ),
         );

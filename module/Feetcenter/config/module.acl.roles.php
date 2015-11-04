@@ -57,6 +57,8 @@ return array(
             'agenda',
             //ventas
             'ventas-balance',
+            //configuracion
+            'configuracion'
         ),
         "deny"=>array(
              
@@ -122,6 +124,8 @@ return array(
             'catalogos/membresias',
             //Compras
             'compras',
+            //configuracion
+            'configuracion'
             
         ),
     ),
@@ -186,6 +190,8 @@ return array(
             'seguimiento/eliminar',
             //ventas
             'ventas-balance',
+            //configuracion
+            'configuracion'
 
         ),
     ),

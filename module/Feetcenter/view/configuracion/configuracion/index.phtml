@@ -1,0 +1,44 @@
+<h1>Configuración</h1>
+<?php if(count($successMessages)) :?>
+    <div class="units-row">
+        <?php foreach ($successMessages as $message) :?>
+            <div class="unit-100">    
+                <div class="tools-alert tools-alert-green">
+                    <?php echo $message?>
+                </div> 
+            </div>
+        <?php endforeach;?>
+    </div>
+<?php endif;?>
+<form method="POST">
+    <table>
+        <thead>
+            <tr>
+                <th>Clinica</th>
+                <th>Cantidad de cancelaciones</th>
+                <th>Monto máximo de cancelación</th>
+                <th>Días efectivos para cancelar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $entity = new Configuracion()?>
+            <?php foreach($configuracion as $key => $entity) : ?>
+                <tr>
+                    <input name="<?php echo "configuracion[".$key."][idclinica]" ?>" value="<?php echo $entity->getIdclinica() ?>"class="width-100" type="hidden">
+                    <td><?php echo $entity->getClinica()->getClinicaNombre()?></td>
+                    <td><input name="<?php echo "configuracion[".$key."][numerocancelaciones]" ?>" value="<?php echo $entity->getConfiguracionNumerocancelaciones() ?>"class="width-100" type="text"></td>
+                    <td><input name="<?php echo "configuracion[".$key."][valormaximocancelacion]" ?>" value="<?php echo $entity->getConfiguracionValormaximocancelacion() ?>"class="width-100" type="text"></td>
+                    <td><input name="<?php echo "configuracion[".$key."][hastacuantosdias]" ?>" value="<?php echo $entity->getConfiguracionHastacuantosdias() ?>"class="width-100" type="text"></td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</form>
+<script>
+
+    $('table input').numeric();
+    
+</script>
