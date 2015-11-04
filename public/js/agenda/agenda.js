@@ -175,8 +175,8 @@
         }
         
         var renderEvento = function(id,start,end,resource,title,status,pago){
-            
-            if(pago = 'pagada'){
+        
+            if(pago == 'pagada'){
                 title+= ' - PAGADO';
             }
             
