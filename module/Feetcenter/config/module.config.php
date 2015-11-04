@@ -452,6 +452,16 @@ return array(
                     ),
                 ),
             ),
+            'pacientes-expediente' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/pacientes/expediente[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Pacientes\Controller\Expediente',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
             'seguimiento' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -582,6 +592,7 @@ return array(
             'Pacientes\Controller\Seguimiento' => 'Pacientes\Controller\SeguimientoController',
             'Pacientes\Controller\Membresias' => 'Pacientes\Controller\MembresiasController',
             'Pacientes\Controller\Visitas' => 'Pacientes\Controller\VisitasController',
+            'Pacientes\Controller\Expediente'=> 'Pacientes\Controller\ExpedienteController',
             //Agenda
             'Agenda\Controller\Agenda' => 'Agenda\Controller\AgendaController',
             //Ventas

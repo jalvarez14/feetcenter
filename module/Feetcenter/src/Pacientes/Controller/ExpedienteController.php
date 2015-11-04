@@ -7,16 +7,28 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Feetcenter\Controller;
+namespace Pacientes\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
+class ExpedienteController extends AbstractActionController
 {
+    
+    public function filterAction(){
+        
+    }
+
+
     public function indexAction()
     {
-                        
-        return new ViewModel();
+        $session = new \Shared\Session\AouthSession();
+        
+        $clinicas = \ClinicaQuery::create()->find();
+        
+        return new ViewModel(array(
+            'clinicas' => $clinicas,
+            'session' => $session->getData(),
+        ));
     }
 }

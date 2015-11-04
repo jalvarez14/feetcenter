@@ -197,7 +197,6 @@ class PacientesController extends AbstractActionController
         }
     }
     
-    
     public function indexAction()
     {
         $sesion = new \Shared\Session\AouthSession();

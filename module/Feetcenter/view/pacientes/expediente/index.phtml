@@ -1,5 +1,5 @@
-<div id="pacientes_container">
-    <h1>Clientes<a style="float: right; text-decoration: none"href="/pacientes/nuevo">Nuevo</a></h1>
+<div id="expedientese_container">
+    <h1>Expedientes<a style="float: right; text-decoration: none"href="/pacientes/nuevo">Nuevo</a></h1>
     <?php if(count($successMessages)) :?>
         <div class="units-row">
             <?php foreach ($successMessages as $message) :?>
@@ -21,14 +21,13 @@
             </select>
         </div>
     </div>
-    <table>
+    <table class="table-clientes">
         <thead>
             <tr>
+                <th>Nombre</th>
                 <th>Clínica</th>
                 <th>Fecha registro</th>
-                <th>Nombre</th>
                 <th>Celular</th>
-                <th>Atendido por</th>
                 <th>Opciones</th>
             </tr>
         </thead>
@@ -37,12 +36,9 @@
         </tbody>
     </table>
 </div>
-<script src="/js/pacientes/pacientes.js"></script>
+<script src="/js/pacientes/expediente.js"></script>
 <script>
-    var pacientes = $('#pacientes_container').pacientes({
-        idclinica: <?php echo $idclinica?>,
-        idrol: <?php echo $idrol?>,
-    });
-    pacientes.init();
-    
+    $('#expedientese_container').expediente({
+        session: <?php echo json_encode($session)?>,
+    });   
 </script>

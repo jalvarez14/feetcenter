@@ -45,6 +45,7 @@ return array(
             'pacientes/editar',
             'pacientes/eliminar',
             'pacientes-membresias',
+            'pacientes-expediente',
             'grupos',
             'seguimiento',
             'seguimiento/ver',
@@ -91,6 +92,7 @@ return array(
             'pacientes/editar',
             'pacientes/eliminar',
             'pacientes-membresias',
+            'pacientes-expediente',
             'grupos',
             'seguimiento',
             'seguimiento/ver',
@@ -139,6 +141,7 @@ return array(
             'seguimiento',
             'seguimiento/ver',
             'pacientes-visitas',
+            'pacientes-expediente',
             //Agenda
             'agenda',
             
