@@ -11,6 +11,19 @@ return array(
     'router' => array(
         'routes' => array(
             /*
+             * REPORTES
+             */
+            'reportes' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/reportes[/:action][/:id]',
+                    'defaults' => array(
+                        'controller'    => 'Reportes\Controller\Reportes',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            /*
              * CONFIGURACION
              */
             'configuracion' => array(
@@ -612,6 +625,8 @@ return array(
             'Ventas\Controller\Balance' => 'Ventas\Controller\BalanceController',
             //Configuracion
             'Configuracion\Controller\Configuracion' => 'Configuracion\Controller\ConfiguracionController',
+            //Reportes
+            'Reportes\Controller\Reportes' => 'Reportes\Controller\ReportesController',
         ),
     ),
     'view_manager' => array(

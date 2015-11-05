@@ -1,0 +1,49 @@
+<div id="reportes_clinicas_container">
+    <h1>Reporte por clinica</h1>
+    <div class="units-row">
+        <div class="unit-30">
+            Clinica
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-70" id="filter_container">
+            <label style="display: block">Filtrar por periodo de tiempo</label>
+            <input placeholder="Desde" type="email" name="filter_from" class="width-6" />
+            <input placeholder="Hasta" type="email" name="filter_to" class="width-6" />
+            <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <table class="table-vendidos-servicios table-bordered">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+            </table>
+        </div>
+        <div class="unit-50">
+            <table class="table-vendidos-productos table-bordered">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+            </table>
+        </div>
+    </div>
+    
+</div>
+<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="/js/reportes/reporteClinica.js"></script>
+<script>
+    $('#reportes_clinicas_container').reporteClinica({
+        session: <?php echo json_encode($session)?>,
+    });
+</script>

@@ -114,7 +114,7 @@ class Module
                     'Agenda' => __DIR__ . '/src/'  .'Agenda',
                     'Ventas' => __DIR__ . '/src/'  .'Ventas',
                     'Configuracion' => __DIR__ . '/src/'  .'Configuracion',
-                    
+                    'Reportes' => __DIR__ . '/src/'  .'Reportes',
                     
                 ),
             ),

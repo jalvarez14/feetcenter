@@ -58,7 +58,9 @@ return array(
             //ventas
             'ventas-balance',
             //configuracion
-            'configuracion'
+            'configuracion',
+            //reportes
+            'reportes',
         ),
         "deny"=>array(
              
@@ -106,6 +108,8 @@ return array(
             'agenda',
             //ventas
             'ventas-balance',
+            //reportes
+            'reportes',
         ),
         "deny"=>array(
             //Inventarios
@@ -191,7 +195,9 @@ return array(
             //ventas
             'ventas-balance',
             //configuracion
-            'configuracion'
+            'configuracion',
+            //reportes
+            'reportes',
 
         ),
     ),
