@@ -10,6 +10,19 @@
 return array(
     'router' => array(
         'routes' => array(
+            /*
+             * CONFIGURACION
+             */
+            'configuracion' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/configuracion[/:action][/:id]',
+                    'defaults' => array(
+                        'controller'    => 'Configuracion\Controller\Configuracion',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
             'catalogos' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -597,6 +610,8 @@ return array(
             'Agenda\Controller\Agenda' => 'Agenda\Controller\AgendaController',
             //Ventas
             'Ventas\Controller\Balance' => 'Ventas\Controller\BalanceController',
+            //Configuracion
+            'Configuracion\Controller\Configuracion' => 'Configuracion\Controller\ConfiguracionController',
         ),
     ),
     'view_manager' => array(
