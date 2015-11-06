@@ -1,0 +1,50 @@
+<div id="reportes_empleados_container">
+    <h1>Reporte por empleados</h1>
+    <div class="units-row">
+        <div class="unit-30">
+            Empleado
+            <select multiple="multiple" name="idempleado" class="width-100">
+                <?php $empleado = new Clinicaempleado()?>;
+                <?php foreach ($empleados as $empleado) : ?>
+                <option idclinica="<?php echo $empleado->getIdclinica()?>" value="<?php echo $empleado->getIdempleado()?>"><?php echo $empleado->getEmpleado()->getEmpleadoNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-70" id="filter_container">
+            <label style="display: block">Filtrar por periodo de tiempo</label>
+            <input placeholder="Desde" type="email" name="filter_from" class="width-6" />
+            <input placeholder="Hasta" type="email" name="filter_to" class="width-6" />
+            <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <table class="table-vendidos-servicios table-bordered">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+            </table>
+        </div>
+        <div class="unit-50">
+            <table class="table-vendidos-productos table-bordered">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+            </table>
+        </div>
+    </div>
+    
+</div>
+<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="/js/reportes/reporteEmpleados.js"></script>
+<script>
+    $('#reportes_empleados_container').reporteEmpleados({
+        session: <?php echo json_encode($session)?>,
+    });
+</script>
