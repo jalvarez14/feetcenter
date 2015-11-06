@@ -825,6 +825,7 @@
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
     <column name="visita_tipo" phpName="VisitaTipo" type="CHAR" sqlType="enum('consulta','servicio')" required="true"/>
     <column name="visita_creadaen" phpName="VisitaCreadaen" type="TIMESTAMP" required="true"/>
+    <column name="visita_canceladaen" phpName="VisitaCanceladaen" type="TIMESTAMP" required="false"/>
     <column name="visita_fechainicio" phpName="VisitaFechainicio" type="TIMESTAMP" required="true"/>
     <column name="visita_fechafin" phpName="VisitaFechafin" type="TIMESTAMP" required="true"/>
     <column name="visita_status" phpName="VisitaStatus" type="CHAR" sqlType="enum('por confirmar','confimada','cancelo','no se presento','reprogramda','en servicio','terminado')" required="true"/>

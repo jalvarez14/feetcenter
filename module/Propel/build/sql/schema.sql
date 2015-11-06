@@ -1068,6 +1068,7 @@ CREATE TABLE `visita`
     `idclinica` INTEGER NOT NULL,
     `visita_tipo` enum('consulta','servicio') NOT NULL,
     `visita_creadaen` DATETIME NOT NULL,
+    `visita_canceladaen` DATETIME,
     `visita_fechainicio` DATETIME NOT NULL,
     `visita_fechafin` DATETIME NOT NULL,
     `visita_status` enum('por confirmar','confimada','cancelo','no se presento','reprogramda','en servicio','terminado') NOT NULL,

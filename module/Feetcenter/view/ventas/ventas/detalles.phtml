@@ -1,0 +1,60 @@
+<div id="expediente_ver_container">
+    <table class="table-visitas">
+        <thead>
+            <tr>
+                <th>Cantidad</th>
+                <th>Servicio/Producto</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($visita->getVisitadetalles() as $key => $value) :?>
+            <tr>
+                <?php if ($value->getIdproductoclinica() != NULL) :?>
+                    <input type="hidden" value="<?php echo $value->getIdproductoclinica()?>" name="vistadetalle[<?php echo $key?>][id]">
+                    <input type="hidden" value="producto" name="vistadetalle[<?php echo $key?>][type]">
+                    <?php $name = $value->getProductoclinica()->getProducto()->getProductoNombre()?>
+                <?php elseif ($value->getIdservicioclinica() != NULl) :?>
+                    <?php if($value->getServicioclinica()->getServicio()->getServicioDependencia() == 'cupon') :?>
+                        <?php $paciente_membresia_detalle = PacientemembresiadetalleQuery::create()->filterByIdvisitadetalle($value->getIdvisitadetalle())->findOne() ?>
+                        <input type="hidden" value="<?php echo $paciente_membresia_detalle->getPacientemembresia()->getIdpacientemembresia()?>" name="vistadetalle[<?php echo $key?>][idpacientemembresia]">
+                    <?php endif;?>
+                    <input type="hidden" value="<?php echo $value->getIdservicioclinica()?>" name="vistadetalle[<?php echo $key?>][id]">
+                    <input type="hidden" value="servicio" name="vistadetalle[<?php echo $key?>][type]">
+                    <?php $name = $value->getServicioclinica()->getServicio()->getServicioNombre()?>
+                <?php else :?>
+                    <input type="hidden" value="<?php echo $value->getIdmembresia()?>" name="vistadetalle[<?php echo $key?>][id]">
+                    <input type="hidden" value="membresia" name="vistadetalle[<?php echo $key?>][type]">
+                    <?php $name = $value->getMembresia()->getMembresiaNombre()?>
+                <?php endif;?>
+                    <input type="hidden" value="<?php echo $value->getVisitadetallePreciounitario()?>" name="vistadetalle[<?php echo $key?>][price]">
+                    <input type="hidden" value="<?php echo $value->getVisitadetalleCantidad()?>" name="vistadetalle[<?php echo $key?>][cantidad]">
+                    <input class="visitadetalle_subtotal" type="hidden" value="<?php echo $value->getVisitadetalleSubtotal()?>" name="vistadetalle[<?php echo $key?>][subtotal]">
+                    <td><?php echo (int) $value->getVisitadetalleCantidad()?></td>
+                    <td><?php echo $name?></td>
+                    <td class="visitadetalle_subtotal"><?php echo $value->getVisitadetalleSubtotal()?></td>
+            </tr>
+            <?php endforeach;?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">Total</td>
+                <td id="total"><?php echo $visita->getVisitaTotal()?></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    
+    $('table .visitadetalle_subtotal').filter(function(){
+        var value = $(this).text();
+        var money = accounting.formatMoney(value);
+        $(this).text(money);
+    });
+    
+    
+    var total = accounting.formatMoney($('#total').text());
+    $('#total').text(total);
+    
+    
+</script>

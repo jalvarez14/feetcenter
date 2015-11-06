@@ -1,0 +1,45 @@
+<div id="ventas_container">
+    <h1>Ventas</h1>
+    <div class="units-row">
+        <div class="unit-30">
+            Clinica
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-30">
+            Estatus
+            <select multiple="multiple" name="visita_estatuspago" class="width-100">
+                <option value="pagada">Pagadas</option>
+                <option value="cancelada">Canceladas</option>
+            </select>
+        </div>
+    </div>
+    <table class="table-ventas">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Clinica</th>
+                <th>Cliente</th>
+                <th>Pedicurista</th>
+                <th>Estatus</th>
+                <th>Total</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="/js/ventas/ventas.js"></script>
+<script>
+     $('#ventas_container').ventas({
+        session: <?php echo json_encode($session)?>,
+    });    
+</script>

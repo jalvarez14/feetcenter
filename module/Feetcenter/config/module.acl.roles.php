@@ -56,6 +56,7 @@ return array(
             //Agenda
             'agenda',
             //ventas
+            'ventas',
             'ventas-balance',
             //configuracion
             'configuracion',
@@ -108,6 +109,7 @@ return array(
             'agenda',
             //ventas
             'ventas-balance',
+            'ventas',
             //reportes
             'reportes',
         ),
@@ -193,6 +195,7 @@ return array(
             'seguimiento/editar',
             'seguimiento/eliminar',
             //ventas
+            'ventas',
             'ventas-balance',
             //configuracion
             'configuracion',

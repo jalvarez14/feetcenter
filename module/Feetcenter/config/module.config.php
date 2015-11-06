@@ -10,6 +10,7 @@
 return array(
     'router' => array(
         'routes' => array(
+            
             /*
              * REPORTES
              */
@@ -178,6 +179,16 @@ return array(
             /*
             *MODULO ventas
             */
+            'ventas' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/ventas[/:action][/:id]',
+                    'defaults' => array(
+                        'controller'    => 'Ventas\Controller\Ventas',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
             'ventas-balance' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -185,6 +196,9 @@ return array(
                     'defaults' => array(
                         'controller'    => 'Ventas\Controller\Balance',
                         'action'        => 'index',
+                    ),
+                    'constraints' => array(
+                        'action' => 'index|filter',
                     ),
                 ),
             ),
@@ -623,10 +637,13 @@ return array(
             'Agenda\Controller\Agenda' => 'Agenda\Controller\AgendaController',
             //Ventas
             'Ventas\Controller\Balance' => 'Ventas\Controller\BalanceController',
+            'Ventas\Controller\Ventas' => 'Ventas\Controller\VentasController',
             //Configuracion
             'Configuracion\Controller\Configuracion' => 'Configuracion\Controller\ConfiguracionController',
             //Reportes
             'Reportes\Controller\Reportes' => 'Reportes\Controller\ReportesController',
+            //Ventas
+            
         ),
     ),
     'view_manager' => array(
