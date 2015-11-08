@@ -143,9 +143,16 @@
         
         plugin.init = function(){
             
+            
             settings = plugin.settings = $.extend({}, defaults, options);
             if(settings.session.idclinica == null){
                 settings.session.idclinica = 1;
+            }
+            
+            //Pedicurista?
+            if(settings.session.idrol == 3){
+                $container.find('select[name=idclinica]').closest('div.unit-30').hide();
+                $container.find('#month_filter_container').css('margin-left','0px');
             }
             
            //Inicializamos nuestro multiple select
@@ -181,10 +188,7 @@
 
             });
             
-            //Pedicurista?
-            if(settings.session.idrol == 3){
-                $container.find('select[name=idclinica]').closest('div.unit-30').remove();
-            }
+            
            
             
 
