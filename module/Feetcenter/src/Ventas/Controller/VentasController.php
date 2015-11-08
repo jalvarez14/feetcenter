@@ -23,7 +23,7 @@ class VentasController  extends AbstractActionController
             $post_data = $request->getPost();
             
             $visita = \VisitaQuery::create()->findPk($post_data['idvisita']);
-            
+          
             //Modificamos la visita
             $visita->setVisitaEstatuspago('cancelada')
                    ->setVisitaCanceladaen(new \DateTime())
@@ -37,6 +37,7 @@ class VentasController  extends AbstractActionController
             //Itineramos sobre los detalles
             $detalle = new \VisitadetalleQuery();
             foreach ($visita->getVisitadetalles() as $detalle){
+                
                 //Si se trata de un producto regresamos a inventario
                 if(!is_null($detalle->getIdproductoclinica())){
                     $producto_clinica = $detalle->getProductoclinica();
@@ -136,22 +137,29 @@ class VentasController  extends AbstractActionController
                     if($dependencia == 'membresia'){
                         
                         //Eliminamos de membresia detalle y sumamos a pacientemembresia
-                        $membresia_detalle = \PacientemembresiadetalleQuery::create()->findOneByIdvisitadetalle($detalle->getIdvisitadetalle());
-                        $paciente_membresia = $membresia_detalle->getPacientemembresia();
-                        $membresia_detalle->delete();
+                        if(\PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaFechainicio($visita->getVisitaFechainicio())->exists()){
+                            $membresia_detalle = \PacientemembresiadetalleQuery::create()->findOneByIdvisitadetalle($detalle->getIdvisitadetalle());
+                            $paciente_membresia = $membresia_detalle->getPacientemembresia();
+                            $current_servicios = $paciente_membresia->getPacientemembresiaServiciosdisponibles();
+                            $new_servicios = (int)$current_servicios + (int) $detalle->getVisitadetalleCantidad();
+                            $paciente_membresia->setPacientemembresiaServiciosdisponibles($new_servicios)->setPacientemembresiaEstatus('activa')->save();
+                            $membresia_detalle->delete();
+                        }
+
+                       
                         
-                        $current_servicios = $paciente_membresia->getPacientemembresiaServiciosdisponibles();
-                        $new_servicios = (int)$current_servicios + (int) $detalle->getVisitadetalleCantidad();
-                        $paciente_membresia->setPacientemembresiaServiciosdisponibles($new_servicios)->setPacientemembresiaEstatus('activa')->save();
                         
                     }elseif($dependencia == 'cupon'){
-                        $membresia_detalle = \PacientemembresiadetalleQuery::create()->findOneByIdvisitadetalle($detalle->getIdvisitadetalle());
-                        $paciente_membresia = $membresia_detalle->getPacientemembresia();
-                        $membresia_detalle->delete();
                         
-                        $current_cupones = $paciente_membresia->getPacientemembresiaCuponesdisponibles();
-                        $new_cupones = (int)$current_cupones + (int) $detalle->getVisitadetalleCantidad();
-                        $paciente_membresia->setPacientemembresiaCuponesdisponibles($new_cupones)->setPacientemembresiaEstatus('activa')->save();
+                        if(\PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaFechainicio($visita->getVisitaFechainicio())->exists()){
+                            $membresia_detalle = \PacientemembresiadetalleQuery::create()->findOneByIdvisitadetalle($detalle->getIdvisitadetalle());
+                            $paciente_membresia = $membresia_detalle->getPacientemembresia();
+                            $current_cupones = $paciente_membresia->getPacientemembresiaCuponesdisponibles();
+                            $new_cupones = (int)$current_cupones + (int) $detalle->getVisitadetalleCantidad();
+                            $paciente_membresia->setPacientemembresiaCuponesdisponibles($new_cupones)->setPacientemembresiaEstatus('activa')->save();
+                            $membresia_detalle->delete();
+                        }
+
                     }
 
                     /*
@@ -259,8 +267,11 @@ class VentasController  extends AbstractActionController
                 elseif(!is_null($detalle->getIdmembresia())){
                     
                     //Eliminamos la membresia del paciente
-                    $paciente_membresia = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaFechainicio($visita->getVisitaFechainicio())->findOne();
-                  
+                    if(\PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaFechainicio($visita->getVisitaFechainicio())->exists()){
+                        $paciente_membresia = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaFechainicio($visita->getVisitaFechainicio())->findOne();
+                        $paciente_membresia->delete();
+                    }
+                    
                     
                    /*
                     * COMISIONES
@@ -379,7 +390,7 @@ class VentasController  extends AbstractActionController
             
             $post_data = $request->getPost();
             
-            $visitas = \VisitaQuery::create()->orderByVisitaCreadaen('desc')->joinEmpleadoRelatedByIdempleado()->withColumn('empleado_nombre')->joinPaciente()->withColumn('paciente_nombre')->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->filterByVisitaEstatuspago($post_data['status'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            $visitas = \VisitaQuery::create()->orderByVisitaCreadaen('ASC')->joinEmpleadoRelatedByIdempleado()->withColumn('empleado_nombre')->joinPaciente()->withColumn('paciente_nombre')->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->filterByVisitaEstatuspago($post_data['status'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
             
             return $this->getResponse()->setContent(json_encode($visitas));
 
