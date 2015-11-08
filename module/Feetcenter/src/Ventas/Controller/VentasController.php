@@ -309,9 +309,8 @@ class VentasController  extends AbstractActionController
                 $now = new \DateTime();
                 $visita_fecha = new \DateTime($visita->getVisitaCreadaen());
                 $interval = $visita_fecha->diff($now);
-                $interval_days = (int)$interval->format('%a');
+                $interval_days = (int)$interval->format('%d');
                 
-     
                 if($interval_days <= (int)$configuracion->getConfiguracionHastacuantosdias()){
                     
                     //Validmoas que aun tenga cancelaciones disponibles
