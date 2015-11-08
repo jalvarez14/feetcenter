@@ -73,7 +73,7 @@
                data:{clinicas:clinicas_select,status:estatus_select},
                success:function(data){
                    $.each(data,function(){
-                       var tr = $('<tr>').attr('id',this.idvisita);
+                       var tr = $('<tr>').attr('id',this.idvisita).addClass(this.visita_estatuspago);
                        tr.append('<td>'+moment(this.visita_creadaen,'YYYY-MM-DD').format('DD/MM/YYYY')+'</td>');
                        tr.append('<td>'+this.clinica_nombre+'</td>');
                        tr.append('<td>'+this.paciente_nombre+'</td>');
@@ -91,34 +91,85 @@
                        });
                        
                        td.find('a[modal="detalles"]').on('loading.tools.modal', function(modal){
+                            
                             var $modalHeader = this.$modalHeader;
                             $modalHeader.addClass('modal_header_action');
                             this.createCancelButton('Cancelar');
                         });
                         
+                        
+                        
                         /*
                         * Cancelar
                         */
                        
-                       td.find('a[modal="cancelar"]').modal({
-                           title: '<h2>Advertencia</h2>',
-                           content:'/ventas/cancelar?idvisita='+this.idvisita,
-                       });
+                       if(this.visita_estatuspago == 'cancelada'){
+                           td.find('a[modal="cancelar"]').prop('disabled',true);
+                           td.find('a[modal="cancelar"]').css('cursor','not-allowed');
+                           td.find('a[modal="cancelar"]').css('color','black');
+                       }else{
                        
-                       
-                       
-                       
-                       
-                       
-                       
-                
+                            td.find('a[modal="cancelar"]').modal({
+
+                                title: '<h2>Advertencia</h2>',
+                                content:'/ventas/cancelar?idvisita='+this.idvisita,
+                            });
+
+                            td.find('a[modal="cancelar"]').on('loading.tools.modal', function(modal){
+
+
+
+                                 var $modal = this;
+                                 var $modalHeader = this.$modalHeader;
+                                 $modalHeader.addClass('modal_header_warning');
+                                 this.createCancelButton('Cancelar');
+
+                                 if(modal.find('.cancel_is_posible').length > 0){
+                                     var idvisita = tr.attr('id');
+
+                                     var $actionButton = this.createActionButton('Cancelar venta');
+                                     $actionButton.css('background','#DE2C3B');
+                                     $actionButton.on('click',function(){
+                                         $.ajax({
+                                             url:'/ventas/cancelar',
+                                             method:'post',
+                                             dataType:'json',
+                                             data:{'idvisita':idvisita},
+                                             success:function(data){
+                                                 if(data.response){
+                                                     $modal.close();
+                                                     window.location.replace('/ventas');
+                                                 }
+                                             }
+
+                                         });
+                                     });
+
+                                 }
+
+                             });
+                        }
+                        
+                        
                        tr.append(td);
                        
                        $container.find('table tbody').append(tr);
                        
-                       
-
                    });
+
+                   /*
+                    * DATATABLE
+                    */
+                   $.ajax({
+                        url: '/json/lang_es_datatable.json',
+                        dataType: 'json',
+                        async:false,
+                        success: function(data){
+                            $table = $container.find('table.table-ventas').DataTable({
+                                language:data,
+                            });
+                        }
+                    });
                    
                }
            });

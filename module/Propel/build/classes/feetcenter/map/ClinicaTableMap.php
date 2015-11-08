@@ -58,7 +58,6 @@ class ClinicaTableMap extends TableMap
         $this->addRelation('Empleadoreceso', 'Empleadoreceso', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Empleadorecesos');
         $this->addRelation('Empleadoreporte', 'Empleadoreporte', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Empleadoreportes');
         $this->addRelation('Encargadoclinica', 'Encargadoclinica', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Encargadoclinicas');
-        $this->addRelation('Faltante', 'Faltante', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Faltantes');
         $this->addRelation('Insumoclinica', 'Insumoclinica', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Insumoclinicas');
         $this->addRelation('Membresiaclinica', 'Membresiaclinica', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Membresiaclinicas');
         $this->addRelation('Paciente', 'Paciente', RelationMap::ONE_TO_MANY, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE', 'Pacientes');

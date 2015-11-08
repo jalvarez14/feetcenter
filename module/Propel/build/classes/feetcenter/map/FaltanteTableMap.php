@@ -39,7 +39,7 @@ class FaltanteTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idfaltante', 'Idfaltante', 'INTEGER', true, null, null);
-        $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
+        $this->addColumn('idclinica', 'Idclinica', 'INTEGER', true, null, null);
         $this->addForeignKey('idempleadogenerador', 'Idempleadogenerador', 'INTEGER', 'empleado', 'idempleado', true, null, null);
         $this->addForeignKey('idempleadodeudor', 'Idempleadodeudor', 'INTEGER', 'empleado', 'idempleado', true, null, null);
         $this->addColumn('faltante_creadaen', 'FaltanteCreadaen', 'TIMESTAMP', false, null, null);
@@ -57,7 +57,6 @@ class FaltanteTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('EmpleadoRelatedByIdempleadodeudor', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleadodeudor' => 'idempleado', ), 'CASCADE', 'CASCADE');
         $this->addRelation('EmpleadoRelatedByIdempleadogenerador', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleadogenerador' => 'idempleado', ), 'CASCADE', 'CASCADE');
     } // buildRelations()

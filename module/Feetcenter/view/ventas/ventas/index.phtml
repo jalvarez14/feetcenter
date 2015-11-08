@@ -1,5 +1,16 @@
 <div id="ventas_container">
     <h1>Ventas</h1>
+    <?php if(count($successMessages)) :?>
+    <div class="units-row">
+        <?php foreach ($successMessages as $message) :?>
+            <div class="unit-100">    
+                <div class="tools-alert tools-alert-green">
+                    <?php echo $message?>
+                </div> 
+            </div>
+        <?php endforeach;?>
+    </div>
+<?php endif;?>
     <div class="units-row">
         <div class="unit-30">
             Clinica

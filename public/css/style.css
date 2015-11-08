@@ -279,5 +279,15 @@ table.dataTable tbody tr.warning{
     }
     
 
- 
+    .table-ventas tr.cancelada td:nth-child(5){
+        color:red;
+    }
     
+    .table-ventas tr.pagada td:nth-child(5){
+        color:green;
+    }
+    
+    
+    .table-comisiones tfoot td{
+        text-align: center;
+    }

@@ -454,12 +454,6 @@ CREATE TABLE `faltante`
     PRIMARY KEY (`idfaltante`),
     INDEX `idempleadogenerador` (`idempleadogenerador`),
     INDEX `idempleadodeudor` (`idempleadodeudor`),
-    INDEX `idclinica` (`idclinica`),
-    CONSTRAINT `idclinica_faltante`
-        FOREIGN KEY (`idclinica`)
-        REFERENCES `clinica` (`idclinica`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
     CONSTRAINT `idempleadodeudor_faltante`
         FOREIGN KEY (`idempleadodeudor`)
         REFERENCES `empleado` (`idempleado`)
@@ -1068,13 +1062,13 @@ CREATE TABLE `visita`
     `idclinica` INTEGER NOT NULL,
     `visita_tipo` enum('consulta','servicio') NOT NULL,
     `visita_creadaen` DATETIME NOT NULL,
-    `visita_canceladaen` DATETIME,
     `visita_fechainicio` DATETIME NOT NULL,
     `visita_fechafin` DATETIME NOT NULL,
     `visita_status` enum('por confirmar','confimada','cancelo','no se presento','reprogramda','en servicio','terminado') NOT NULL,
     `visita_estatuspago` enum('pagada','no pagada','cancelada'),
     `visita_total` DECIMAL(10,2),
     `visita_nota` TEXT,
+    `visita_canceladaen` DATETIME,
     PRIMARY KEY (`idvisita`),
     INDEX `idempleadocreador` (`idempleadocreador`),
     INDEX `idempleado` (`idempleado`),

@@ -793,7 +793,7 @@ class AgendaController extends AbstractActionController
                                            ->setPacientemembresiaCuponesdisponibles($membresia->getMembresiaCupones())
                                            ->setPacientemembresiaFolio($detalle['folio'])
                                            ->setPacientemembresiaEstatus('activa')
-                                           ->setPacientemembresiaFechainicio(new \DateTime())
+                                           ->setPacientemembresiaFechainicio($visita->getVisitaFechainicio())
                                            ->save();
                         
                         
