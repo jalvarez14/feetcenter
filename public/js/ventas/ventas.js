@@ -74,7 +74,7 @@
                success:function(data){
                    $.each(data,function(){
                        var tr = $('<tr>').attr('id',this.idvisita).addClass(this.visita_estatuspago);
-                       tr.append('<td>'+moment(this.visita_creadaen,'YYYY-MM-DD').format('DD/MM/YYYY')+'</td>');
+                       tr.append('<td>'+moment(this.visita_creadaen,'YYYY-MM-DD H:m:s').format('DD/MM/YYYY - HH:mm')+'</td>');
                        tr.append('<td>'+this.clinica_nombre+'</td>');
                        tr.append('<td>'+this.paciente_nombre+'</td>');
                        tr.append('<td>'+this.empleado_nombre+'</td>');
