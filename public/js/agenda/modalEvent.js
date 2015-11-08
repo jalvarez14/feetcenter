@@ -256,7 +256,8 @@
            if(!empty){
                
                //Si es producto validamos exitencias
-               var cantidad = $container.find('input[name=visitadetalle_cantidad]').val();
+               var cantidad = parseInt($container.find('input[name=visitadetalle_cantidad]').val());
+         
                var selected = $('#visitadetalle_tipo option:selected');
                var item = selected.attr('data-name');
                var type = selected.attr('data-type');

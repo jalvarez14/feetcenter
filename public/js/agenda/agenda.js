@@ -519,6 +519,17 @@
                                         modal.find('table#visita_detalles tfoot tr').find('td').eq(0).attr('colspan',2);
                                         modal.find('span.token-input-delete-token').remove();
                                     }
+                                    else if(status == 'terminado' && status_pago == 'cancelada'){
+                                        pagarAction.prop('disabled',true);
+                                        guardarAction.prop('disabled',true);
+                                        modal.find('input,select,button').prop('disabled',true);
+                                        modal.find('table#visita_detalles th').eq(2).remove();
+                                        modal.find('table#visita_detalles tbody tr').filter(function(){
+                                            $(this).find('td').eq(2).remove();
+                                        });
+                                        modal.find('table#visita_detalles tfoot tr').find('td').eq(0).attr('colspan',2);
+                                        modal.find('span.token-input-delete-token').remove();
+                                    }
                                     
                                     
                                     
