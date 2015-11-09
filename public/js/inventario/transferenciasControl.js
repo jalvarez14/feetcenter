@@ -46,6 +46,7 @@
         var $container = $(container);  
         
         var settings;
+        var $table;
         
         /*
         * Private methods
@@ -60,16 +61,17 @@
             
             settings = plugin.settings = $.extend({}, defaults, options);
             //Paginamos
-
+            
+            
             //Paginamos el resultado inicial
             $.ajax({
                 url: '/json/lang_es_datatable.json',
                 dataType: 'json',
                 success: function(data){
-                    var table = $container.find('table').DataTable({
+                   $table = $container.find('table.table-transferencias').DataTable({
                         language:data,
                     });
-                    table.on( 'draw', function () {
+                    $table.on( 'draw', function () {
                         $('[data-tools="modal"]').unbind();
                         $('[data-tools="modal"]').modal();
                         
@@ -248,8 +250,122 @@
                             var $modalHeader = this.$modalHeader;
                             $modalHeader.addClass('modal_header_action');
                         });
+                        
+                        
+           //Inicializamos nuestros calendarios del filtro de fechas
+            var pickdateFrom = $container.find('input[name=transferencia_from]').pickadate({
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy-mm-dd',
+                selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+            });
+            
+            //Inicializamos nuestros calendarios del filtro de fechas
+            var pickdateTo= $container.find('input[name=transferencia_to]').pickadate({
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy-mm-dd',
+                selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+            });
+            
+            /*
+             * El evento filter
+             */
+            
+            $container.find('button#filterbydate').on('click',function(){
+                
+                var empty = false;
+                
+                 $('#filter_container input:visible').removeClass('input-error');
+                
+                $('#filter_container input:visible').each(function(){
+                    if($(this).val() == ""){
+                        empty = true;
+                        $(this).addClass('input-error');
+                    }
+                });
+                
+                if(!empty){
+                   var from = $container.find('input[name=transferencia_from_submit]').val();
+                   var to = $container.find('input[name=transferencia_to_submit]').val();
+                   
+                   filterByDate(from,to);
+
+                }
+                
+                
+            });
+            
+                
+            
+            
 
         }
+        
+        
+        var filterByDate = function(from, to){
+            
+            
+            //Hacemos la peticion ajax
+           $.ajax({
+               url:'/inventario/transferencias/filterbydate',
+               dataType: 'json',
+               method:'GET',
+               async:false,
+               data:{from:from,to:to},
+               success: function(data){
+                     
+                     $container.find('.table-transferencias tbody tr').remove();
+                     
+                     if(typeof $table != 'undefined'){
+                        $table.clear();
+                        $table.destroy();
+                    }
+                     
+                      $.each(data,function(){
+                     
+                          var date = moment(this.transferencia_fechamovimiento,'MM/DD/YY');
+                          var transferencia_nota = this.transferencia_nota != null ? this.transferencia_nota : "";
+                          
+                          
+                          var row = $('<tr>').attr('id',this.idtransferencia);
+                          row.append('<td>'+date.format('DD/MM/YYYY')+'</td>');
+                          row.append('<td>'+this.clinica_remitente+'</td>');
+                          row.append('<td>'+this.clinica_destinatario+'</td>');
+                          row.append('<td class="transferencia_estatus">'+this.transferencia_estatus+'</td>');
+                          row.append('<td class="transferencia_comprobante">'+this.transferencia_comprobante+'</td>');
+                          row.append('<td >'+this.empleado_receptor+'</td>');
+                          row.append('<td class="transferencia_nota">'+transferencia_nota+'</td>');
+                          row.append('<td class="tr_options"><a class="ver_detalles" data-content="/inventario/transferencias/verdetalle?html=true&id='+this.idtransferencia+'" data-tools="modal" data-width="700" data-title="<h2>Transferencia #'+this.idtransferencia+'</h2>"  href="javascript:void(0)">Ver detalles</a><a class="change_status" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Cambiar estatus</h2>" data-content="/inventario/transferencias/cambiarstatus?html=true&id='+this.idtransferencia+'" > Cambiar status</a></td>');
+                          $container.find('table.table-transferencias tbody').append(row);
+                          
+                      });
+                      
+                      plugin.init();
+                        
+
+               }
+           });
+            
+        };
 
         /*
         * Plugin initializing

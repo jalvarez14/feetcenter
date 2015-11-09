@@ -14,6 +14,34 @@ use Zend\View\Model\ViewModel;
 
 class TransferenciasController extends AbstractActionController
 {
+    
+    public function filterbydateAction(){
+        
+        if($this->params()->fromQuery()){
+            $from = new \DateTime($this->params()->fromQuery('from'));
+            $to = new \DateTime($this->params()->fromQuery('to'));
+            //->joinClinicaRelatedByIdclinicaremitente()->withColumn('clinica_nombre','clinica_remitente')
+            $trasnferencias = \TransferenciaQuery::create()->joinEmpleadoRelatedByIdempleadoreceptor()->withColumn('empleado_nombre','empleado_receptor')->filterByTransferenciaFechamovimiento(array('min' => $from->format('Y-m-d'), 'max' => $to->format('Y-m-d')))->find();
+            
+            //Hacemos el join de clinicas
+            $value = new \Transferencia();
+            $trasnferencias_array = array();
+            foreach ($trasnferencias as $key => $value){
+                $tmp = $value->toArray(\BasePeer::TYPE_FIELDNAME);
+                $clinica_remitente = $value->getClinicaRelatedByIdclinicaremitente()->getClinicaNombre();
+                $clinica_destinatarios = $value->getClinicaRelatedByIdclinicadestinataria()->getClinicaNombre();
+                $tmp['clinica_remitente'] = $clinica_remitente;
+                $tmp['clinica_destinatario'] = $clinica_destinatarios;
+                $trasnferencias_array[] = $tmp;
+            }
+            
+            return $this->getResponse()->setContent(json_encode($trasnferencias_array));
+
+        }
+        
+    }
+
+
     public function indexAction()
     {
         $sesion = new \Shared\Session\AouthSession();
