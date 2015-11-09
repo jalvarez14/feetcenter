@@ -163,7 +163,7 @@
                                 dataType:'json',
                                 data:{idvisita:idvisita},
                                 success:function(data){
-                                    console.log(data);return;
+                                    download('data:application/pdf;base64,'+data, "nota_de_remision.pdf", "application/pdf");
                                 }
                                 
                             });
