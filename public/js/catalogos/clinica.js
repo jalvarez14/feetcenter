@@ -53,6 +53,9 @@
         */
             
             var removeEmpleado = function(idempleado){
+                
+
+                
                 //De la tabla de encargados removemos el registro
                 $('#table_empleado tr[id='+idempleado+']').remove();
                 //Habilitamos en los selects
@@ -164,17 +167,29 @@
                 
             });
             
-            $container.find('table#table_empleado').find('a').one('click',function(){
+            $container.find('table#table_empleado').find('a').on('click',function(){
+                var link = $(this);
                 var idempleado = $(this).closest('tr').attr('id');
-                var nombre = $(this).closest('tr').find('td').eq(0).text();
-                $('select[name=clinica_encargado]').append('<option value="'+idempleado+'">'+nombre+'</option>');
-                $('select[name=clinica_empleado]').append('<option value="'+idempleado+'">'+nombre+'</option>');
-                $(this).closest('tr').remove();
-                
-            });
-            
+                //verificamos si se puede eliminar
+                $.ajax({
+                    url:'/catalogos/clinica/checkempleado',
+                    dataType: 'json',
+                    data:{idempleado:idempleado},
+                    success:function(data){
+                        if(data){
+                            alert('No es posible eliminar a el empleado de la clinica debido a que esté tiene citas proximas registradas');
+                        }else{
+                            var nombre = link.closest('tr').find('td').eq(0).text();
+                            $('select[name=clinica_encargado]').append('<option value="'+idempleado+'">'+nombre+'</option>');
+                            $('select[name=clinica_empleado]').append('<option value="'+idempleado+'">'+nombre+'</option>');
+                            link.closest('tr').remove();
+                        }
+                    }
+                  
+                });
 
-            
+            });
+
         }
 
         /*

@@ -14,6 +14,19 @@ use Zend\View\Model\ViewModel;
 
 class ClinicaController extends AbstractActionController
 {
+    
+    public function checkempleadoAction(){
+        if($this->params()->fromQuery('idempleado')){
+            
+            $now = new \DateTime();
+            $idempleado = $this->params()->fromQuery('idempleado');
+            $result = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByVisitaFechainicio(array('min' => $now))->exists();
+            
+            return $this->getResponse()->setContent(json_encode($result));
+        }
+    }
+    
+    
     public function indexAction()
     {
         $collection = \ClinicaQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
