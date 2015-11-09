@@ -27,6 +27,25 @@ class ComprasController extends AbstractActionController
         return new ViewModel();
     }
     
+    public function filterbydateAction(){
+        
+        $request = $this->request;
+         if($request->isPost()){
+             $post_data = $request->getPost();
+             
+            $compras = \CompraQuery::create()->filterByIdproveedor(1,  \Criteria::NOT_EQUAL)->joinProveedor()->withColumn('proveedor_nombre')->filterByCompraFecha(array('min' => $post_data['from'],'max' => $post_data['to']))->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            
+            //Dams formato a la fecha
+            foreach ($compras as $key => $value){
+                $fecha = new \DateTime($value['compra_fecha']);
+                $compras[$key]['compra_fecha'] = $fecha->format('d/m/Y');
+            }
+            
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode($compras));
+             
+         }
+    }
+    
     public function nuevoAction()
     {
         $request = $this->getRequest();
