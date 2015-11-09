@@ -88,7 +88,7 @@
                    var years = $container.find('.table-visitas thead th.year').length;
                    for(var i=0; i<years; i++){
                        
-                       var th = $('<th>');
+                       var th = $('<th>').addClass('th_year');
                        var unit_row = $('<div class="units-row"  style="margin-bottom: 0px;">').appendTo(th);
                        unit_row.append('<div class="unit-month">Ene</div>');
                        unit_row.append('<div class="unit-month">Feb</div>');

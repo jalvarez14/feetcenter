@@ -105,6 +105,7 @@
                        }
                        tr.append(td);
                        
+                      
                        //Los corresponfientes con el tipo de membresia
                        for(i=0;i<parseInt(this.membresia_cupones);i++){
                            td.find('.unit-custom').eq(i).removeClass('no_aplica').html('<span style="visibility:hidden">N/D</span>');
@@ -115,16 +116,16 @@
                             var date = moment(this.pacientemembresiadetalle_fecha,'MM/DD/YY');
                             if(this.tipo == 'membresia'){
                                 tr.find('td#servicios .units-row').find('div').last().remove();
-                                tr.find('td#servicios .units-row').prepend('<div class="unit-custom">'+date.format('DD/MM/YY')+'</div>');
+                                tr.find('td#servicios .units-row').prepend('<div class="unit-custom" style="width:'+settings.width_servicios+'%" >'+date.format('DD/MM/YY')+'</div>');
                             }else{
                                 tr.find('td#cupones .units-row').find('div').last().remove();
-                                tr.find('td#cupones .units-row').prepend('<div class="unit-custom">'+date.format('DD/MM/YY')+'</div>');
+                                tr.find('td#cupones .units-row').prepend('<div class="unit-custom" style="width:'+settings.width_servicios+'%" >'+date.format('DD/MM/YY')+'</div>');
                             }
                         });
 
                         //Insertamos
                         $container.find('.table-membresias tbody').append(tr);
-                        
+
                    });
                    
                    

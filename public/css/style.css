@@ -291,3 +291,93 @@ table.dataTable tbody tr.warning{
     .table-comisiones tfoot td{
         text-align: center;
     }
+    
+    .table-comisiones tfoot td{
+        text-align: center;
+    }
+    
+    .table-membresias tbody .unit-custom{
+        font-size: 10px !important;
+    }
+    
+    .table-membresias th#servicios{
+        min-width: 200px !important;
+    }
+    
+    .table-membresias tbody td{
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
+    
+    .table-membresias thead th{
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
+    
+    .table-membresias thead .unit-custom{
+        text-align: center;
+    }
+    
+    
+    .table-membresias tbody .units-row .unit-custom:not(:last-child){
+        border-right: solid 1px #EEEEEE;
+        height: 100%;
+    }
+    
+    .table-membresias thead .units-row .unit-custom:not(:last-child){
+        border-right: solid 1px #EEEEEE;
+    }
+    
+    .table-membresias tbody .units-row{
+
+        height: 100%;
+
+    }
+    
+    .table-membresias th#servicios{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    .table-membresias td#servicios{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    .table-membresias th#cupones{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    .table-membresias td#cupones{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    
+    .table-visitas thead th{
+         padding-top: 0px !important;
+         padding-bottom: 0px !important;
+    }
+    
+    .table-visitas tbody td{
+         padding-top: 0px !important;
+         padding-bottom: 0px !important;
+    }
+    
+    
+    .table-visitas thead .units-row .unit-month:not(:last-child){
+        border-right: solid 1px #EEEEEE;
+    }
+    
+    .table-visitas tbody .units-row .unit-month:not(:last-child){
+        border-right: solid 1px #EEEEEE;
+    }
+    
+    .table-visitas tbody td[year]{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    
+    
