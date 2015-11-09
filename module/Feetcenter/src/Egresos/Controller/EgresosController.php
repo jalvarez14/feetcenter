@@ -327,6 +327,42 @@ class EgresosController extends AbstractActionController
 
     }
     
+    public function filterbydateAction(){
+        
+         $request = $this->request;
+         if($request->isPost()){
+             $post_data = $request->getPost();
+             
+            $query = new \EgresoclinicaQuery();
+            
+            $query->filterByEgresoclinicaFechaegreso(array('min' => $post_data['from'],'max' => $post_data['to']));
+            
+            if(isset($post_data['clinicas'])){
+                 $query->filterByIdclinica($post_data['clinicas']);
+            }else{
+                $query->filterByIdclinica(array());
+            }
+            
+            if(isset($post_data['conceptos'])){
+                 $query->filterByIdconcepto($post_data['conceptos']);
+            }else{
+                $query->filterByIdconcepto(array());
+            }
+            
+            
+             $result = $query->joinClinica()->joinConcepto()->joinEmpleado()->withColumn('clinica_nombre')->withColumn('empleado_nombre')->withColumn('concepto_nombre')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+             
+             //Dams formato a la fecha
+            foreach ($result as $key => $value){
+                $fecha = new \DateTime($value['egresoclinica_fechaegreso']);
+                $result[$key]['egresoclinica_fechaegreso'] = $fecha->format('d/m/Y');
+            }
+            
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => $result)));
+             
+         }
+    }
+    
     public function filterAction(){
         $request = $this->request;
         
