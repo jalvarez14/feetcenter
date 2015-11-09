@@ -192,6 +192,32 @@ class AgendaController extends AbstractActionController
         return $this->response->setContent(json_encode($visitas->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
     }
     
+    public function geteventosbyclinicaweekAction(){
+        
+        $idclinica = $this->params()->fromRoute('id'); 
+        $from = $this->params()->fromQuery('from');
+        $to = $this->params()->fromQuery('to');
+        
+        
+        $visitas = \VisitaQuery::create()->joinEmpleadoRelatedByIdempleado()->withColumn('empleado_nombre')->filterByVisitaFechainicio(array('min' => $from.' 00:00:00', 'max' => $to.' 23:59:59'))->joinPaciente()->withColumn('paciente_nombre')->filterByIdclinica($idclinica)->filterByVisitaFechainicio(array('min' => $dia.' 00:00:00', 'max' => $dia. ' 23:59:59'))->find();
+        
+        return $this->response->setContent(json_encode($visitas->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
+    }
+    
+    public function geteventosbyempleadoweekAction(){
+        
+        $idclinica = $this->params()->fromRoute('id'); 
+        $from = $this->params()->fromQuery('from');
+        $to = $this->params()->fromQuery('to');
+        $idempleado = $this->params()->fromQuery('idempleado');
+
+        $visitas = \VisitaQuery::create()->filterByIdempleado($idempleado)->joinEmpleadoRelatedByIdempleado()->withColumn('empleado_nombre')->filterByVisitaFechainicio(array('min' => $from.' 00:00:00', 'max' => $to.' 23:59:59'))->joinPaciente()->withColumn('paciente_nombre')->filterByVisitaFechainicio(array('min' => $dia.' 00:00:00', 'max' => $dia. ' 23:59:59'))->find();
+       
+        return $this->response->setContent(json_encode($visitas->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
+    }
+    
+    
+    
     public function getrecesosbyclinicaAction(){
         
         $idclinica = $this->params()->fromRoute('id'); 

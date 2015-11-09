@@ -697,14 +697,14 @@ function Calendar(element, instanceOptions) {
 	// -----------------------------------------------------------------------------------
 	
 
-	function changeView(newViewName) {
-		if (!currentView || newViewName != currentView.name) {
-			_changeView(newViewName);
-		}
+	function changeView(newViewName,idempleado) {
+            _changeView(newViewName,idempleado);
+                
 	}
 
 
-	function _changeView(newViewName) {
+	function _changeView(newViewName,idempleado) {
+            
 		ignoreWindowResize++;
 
 		if (currentView) {
@@ -723,7 +723,8 @@ function Calendar(element, instanceOptions) {
 				.appendTo(content),
 			t // the calendar object
 		);
-
+                currentView.idempleado = idempleado;
+                
 		renderView();
 		unfreezeContentHeight();
 
@@ -732,6 +733,7 @@ function Calendar(element, instanceOptions) {
 
 
 	function renderView(inc) {
+                
 		if (
 			!currentView.start || // never rendered before
 			inc || // explicit date window change
@@ -745,6 +747,7 @@ function Calendar(element, instanceOptions) {
 
 
 	function _renderView(inc) { // assumes elementVisible
+            
 		ignoreWindowResize++;
 
 		if (currentView.start) { // already been rendered?
@@ -2396,6 +2399,7 @@ function setOuterWidth(element, width, includeMargins) {
 
 
 function setOuterHeight(element, height, includeMargins) {
+    
 	for (var i=0, e; i<element.length; i++) {
 		e = $(element[i]);
 		e.height(Math.max(0, height - vsides(e, includeMargins)));
@@ -3906,9 +3910,7 @@ function AgendaWeekView(element, calendar) { // TODO: do a WeekView mixin
 	}
 
 
-}
-
-;;
+};
 
 fcViews.agendaDay = AgendaDayView;
 
@@ -5143,8 +5145,8 @@ function AgendaEventRenderer() {
 
 			seg.top = top;
 			seg.left = left;
-			seg.outerWidth = width;
-			seg.outerHeight = bottom - top;
+			seg.outerWidth = width + 8 ;
+			seg.outerHeight = bottom - top + 2;
 			html += slotSegHtml(event, seg);
 		}
 
@@ -6238,11 +6240,11 @@ function ResourceView(element, calendar, viewName) {
 	          resource.className,
 	          headerClass
 	        ];
-
+     
 	      html +=
 					"<th class='" + classNames.join(' ') + "'>" +
-					'<div><img width="210" height="210" style="width:210px;height:210px;" src="'+resource.img+'"><p>' + htmlEscape(resource.name) +
-					"</p></div></th>";
+					'<a class="pedicurista_header" idempleado="'+resource.id+'" href="javascript:void(0)"><div><img width="210" height="210" style="width:210px;height:210px;" src="'+resource.img+'"><p>' + htmlEscape(resource.name) +
+					"</p></div></a></th>";
 		}
 
 		html +=
@@ -8594,7 +8596,7 @@ function DayEventRenderer() {
 		// Set each row's height by setting height of first inner div
 		if (doRowHeights) {
 			for (i=0; i<rowContentElements.length; i++) {
-				rowContentElements[i].height(rowContentHeights[i]);
+				rowContentElements[i].height(rowContentHeights[i]) ;
 			}
 		}
 

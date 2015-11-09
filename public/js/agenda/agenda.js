@@ -132,6 +132,36 @@
          * Hace el render de los eventos creados en la base de datos
          */
         
+        var renderEventosWeek = function(from, to){
+            
+            $.ajax({
+                url: '/geteventosbyclinicaweek/' + settings.idclinica,
+                dataType: 'json',
+                data: {from: from.format('YYYY-MM-DD'),to: to.format('YYYY-MM-DD')},
+                success: function (data) {
+                    $.each(data, function (index, element) {
+                        renderEventoWeek(element);
+                    });
+                }
+            });
+        }
+        
+        var renderEventosEmpleadoWeek = function(from, to,idempleado){
+            
+            $.ajax({
+                url: '/geteventosbyempleadoweek',
+                dataType: 'json',
+                data: {from: from.format('YYYY-MM-DD'),to: to.format('YYYY-MM-DD'),idempleado:idempleado},
+                success: function (data) {
+                    $.each(data, function (index, element) {
+                        renderEventoWeek(element);
+                    });
+                }
+            });
+        }
+        
+        
+        
         var renderEventos = function(date) {
            
             $.ajax({
@@ -194,6 +224,21 @@
             
         }
         
+        var renderEventoWeek = function(visita){
+            
+            var cssClass = cssClassMap[visita.visita_status];
+            $('#calendar').fullCalendar('renderEvent', {
+                id:visita.idvisita,
+                title: visita.empleado_nombre + ' - ' + visita.paciente_nombre,
+                start: visita.visita_fechainicio,
+                end: visita.visita_fechafin,
+                allDay: false,
+                //resources: resource,
+                className: cssClass,
+                editable: false,
+            });
+        }
+        
         var renderReceso = function(id,start,end,resource){
 
             var cssClass = cssClassMap[status];
@@ -222,14 +267,187 @@
              var date = moment(picker.get('select').obj);
              
              //Inicializamos nuestro calendario
-             $('#calendar').fullCalendar({
-                 //selectOverlap:false,
-                 //eventOverlap:false,
-                 //slotEventOverlap:false,
+             var json = getjsonCalendar(date);
+             $('#calendar').fullCalendar(json);
+        }
+        
+        function newMethodPay(){
+            var fieldsetContainer = $(this).closest('fieldset');
+            var newRow = $(this).closest('div.units-row').clone();
+            newRow.find('input').val(0);
+            newRow.find('button').on('click',newMethodPay);
+            var eliminar = $('<a href="javascript:void(0)">Eliminar</a>');
+            eliminar.on('click',function(){
+                $(this).closest('div.units-row').remove();
+            });
+            $(this).after(eliminar).parent().css('margin-top','27px');
+            $(this).remove();
+            fieldsetContainer.prepend(newRow);
+        }
+        
+        function pay(modal){
+
+            var payMethodContainer = modal.$modalBody.find('#pay_container');
+            var detailsContainer = modal.$modalBody.find('#pay_details_container');
+            var empty = false;
+
+            payMethodContainer.find('input[required]').removeClass('input-error');
+            payMethodContainer.find('span.error').remove();
+            $.each(payMethodContainer.find('#pay_method_container input[required]'),function(){
+                if($(this).val() == ""){
+                    empty = true;
+                    $(this).addClass('input-error');
+                    var $span = $(this).siblings('span.req');
+                    $span.after('<span class="error"> campo obligatorio</span>');
+                }
+            });
+            
+            detailsContainer.find('input[required]').removeClass('input-error');
+            detailsContainer.find('span.error').remove();
+            $.each(detailsContainer.find('input[required]'),function(){
+                if($(this).val() == ""){
+                    empty = true;
+                    $(this).addClass('input-error');
+                }
+            });
+
+            if(!empty){
+                var total = parseFloat(payMethodContainer.find('input[name=visita_total]').val());
+                var sum = 0;
+                $.each(payMethodContainer.find('#pay_method_container input[name*=cantidad]'),function(){
+                    sum += parseFloat($(this).val());
+                });
+                
+                if(total == sum){
+                    
+                    var formData = new FormData();
+                    $.each(modal.$modalBody.find('input:not(:checkbox, :radio),select'),function(){
+                        formData.append($(this).attr('name'),$(this).val());
+                    });
+                    $.each(modal.$modalBody.find(':checkbox:checked, :radio:checked'),function(){
+                        formData.append($(this).attr('name'),$(this).val());
+                    });
+                     //Hacemos la peticion ajax
+                    $.ajax({
+                        dataType: 'json', 
+                        type: "POST",
+                        url: '/pagar',
+                        data: formData,
+                        async: false,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            if(data.result){
+                                initCalendar();
+                                modal.close();
+                            }
+                        }
+                    });
+                }else{
+                    alert('Cantidad(s) incorrecta, el total debe de se igual a $'+total );
+                }
+
+                
+            }
+        }
+        
+        function unselect(){
+            $('#calendar').fullCalendar('unselect');
+        }
+        
+        function valdarFolio(){
+            
+            $(this).removeClass('input-error');
+            
+            var folio = $(this).val();
+            var $folioInpit  = $(this);
+            
+            
+            $.ajax({
+                url:'/validarnuevofolio',
+                data:{folio:folio},
+                dataType:'json',
+                async:false,
+                success:function(data){
+                    if(!data.response){
+                         $folioInpit.val('');
+                         $folioInpit.addClass('input-error');
+                         alert(data.msg);
+                         settings.folio_valido = false;
+                    }else{
+                        settings.folio_valido = true;
+                    }
+                }
+            });
+            
+        }
+        
+        function isOverlapping(event){
+             
+            // "calendar" on line below should ref the element on which fc has been called 
+            var array = $('#calendar').fullCalendar('clientEvents');
+            
+            for(var i in array){
+                if (event.resources[0] == array[i].resources[0] && event.end > array[i].start && event.start < array[i].end && event.id !==array[i].id){
+                   return true;
+                }
+            }
+            return false;
+        }
+
+       /*
+        * Public methods
+        */
+        
+        plugin.init = function(){
+            
+            settings = plugin.settings = $.extend({}, defaults, options);
+            
+            //Inicializamos nuestro multiple select
+            $container.find("select[name=idclinica]").multipleSelect({
+                single:true,   
+                onClick : initCalendar,
+            });
+            
+            $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.idclinica]);
+            
+            /*Inicializamos nuestros calendarios*/
+            $container.find('input[name=agenda_fecha]').pickadate({
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+                onSet: function(selected,evnt) {
+                     initCalendar();
+               }
+            });
+            var picker = $container.find('input[name=agenda_fecha]').pickadate('picker');
+            picker.set('select', new Date());
+
+            $('#calendar:not(".fc-event")').on('contextmenu', function (e) {
+                e.preventDefault();
+            });
+            
+            
+
+
+        }
+        
+        var getjsonCalendar = function(date){
+            return{
                  header:{
                     left:   'title',
                     center: '',
-                    right:  'agendaWeek,prev,next'
+                    right:  'agendaWeek,resourceDay,prev,next'
                 },
                  timezone:'local',
                  now:date,
@@ -242,21 +460,54 @@
                  resources: '/getpedicuristasbyclinica/'+settings.idclinica,
                  minTime:'09:00:00',
                  maxTime:'21:00:00',
+                 columnFormat:'D/M',
                 viewRender: function (view, element) {
-
+                    $('#calendar').fullCalendar( 'removeEvents');
                     var viewName = view.name;
                     switch (viewName) {
                             case 'resourceDay':
                             {
+                                $container.find('.fc-header-center').text('');
+                                 $container.find('#filter_container').show();
                                 var date = view.end._d;
                                 renderDescansos(moment(date));
                                 renderEventos(moment(date));
                                 renderRecesos(moment(date));
+                                
+                                //La vista semana por pedicursta
+                                $container.find('a.pedicurista_header').on('click',function(){
+                                  
+                                    var idempleado = $(this).attr('idempleado');
+                                    var text = $(this).find('p').text();
+                                    $container.find('.fc-header-center').text(text);
+                                   
+                                    
+                                    
+                                    $('#calendar').fullCalendar( 'changeView', 'agendaWeek', idempleado);
+                                
+                                    
+                                    
+                                });
+                                
+                                
+                                
                                 break;
                             }
                             case 'agendaWeek':
                             {
-                                renderEventos(moment(date));
+                                
+                                $container.find('#filter_container').hide();
+                                var from = view.start;
+                                var to = view.end;
+                                
+                                if(typeof view.idempleado != 'undefined'){
+                                    
+                                    renderEventosEmpleadoWeek(from,to,view.idempleado);
+                                     $container.find('.fc-button-agendaWeek').removeClass('fc-state-active');
+                                }else{
+                                    $container.find('.fc-header-center').text('');
+                                    renderEventosWeek(from,to);
+                                }
 
                                 break;
                             }
@@ -460,6 +711,9 @@
 
                 },
                 eventClick: function( event, jsEvent, view ) { 
+                    if(view.name !== 'resourceDay'){
+                        return;
+                    }
                     var is_visita = true;
                     var className = event.className[0];
                     var type_array = className.split('_'); var type = type_array[0];
@@ -894,182 +1148,16 @@
                     }
                     
                     
-                }
-             });
-        }
-        
-        function newMethodPay(){
-            var fieldsetContainer = $(this).closest('fieldset');
-            var newRow = $(this).closest('div.units-row').clone();
-            newRow.find('input').val(0);
-            newRow.find('button').on('click',newMethodPay);
-            var eliminar = $('<a href="javascript:void(0)">Eliminar</a>');
-            eliminar.on('click',function(){
-                $(this).closest('div.units-row').remove();
-            });
-            $(this).after(eliminar).parent().css('margin-top','27px');
-            $(this).remove();
-            fieldsetContainer.prepend(newRow);
-        }
-        
-        function pay(modal){
-
-            var payMethodContainer = modal.$modalBody.find('#pay_container');
-            var detailsContainer = modal.$modalBody.find('#pay_details_container');
-            var empty = false;
-
-            payMethodContainer.find('input[required]').removeClass('input-error');
-            payMethodContainer.find('span.error').remove();
-            $.each(payMethodContainer.find('#pay_method_container input[required]'),function(){
-                if($(this).val() == ""){
-                    empty = true;
-                    $(this).addClass('input-error');
-                    var $span = $(this).siblings('span.req');
-                    $span.after('<span class="error"> campo obligatorio</span>');
-                }
-            });
-            
-            detailsContainer.find('input[required]').removeClass('input-error');
-            detailsContainer.find('span.error').remove();
-            $.each(detailsContainer.find('input[required]'),function(){
-                if($(this).val() == ""){
-                    empty = true;
-                    $(this).addClass('input-error');
-                }
-            });
-
-            if(!empty){
-                var total = parseFloat(payMethodContainer.find('input[name=visita_total]').val());
-                var sum = 0;
-                $.each(payMethodContainer.find('#pay_method_container input[name*=cantidad]'),function(){
-                    sum += parseFloat($(this).val());
-                });
-                
-                if(total == sum){
-                    
-                    var formData = new FormData();
-                    $.each(modal.$modalBody.find('input:not(:checkbox, :radio),select'),function(){
-                        formData.append($(this).attr('name'),$(this).val());
-                    });
-                    $.each(modal.$modalBody.find(':checkbox:checked, :radio:checked'),function(){
-                        formData.append($(this).attr('name'),$(this).val());
-                    });
-                     //Hacemos la peticion ajax
-                    $.ajax({
-                        dataType: 'json', 
-                        type: "POST",
-                        url: '/pagar',
-                        data: formData,
-                        async: false,
-                        processData: false,
-                        contentType: false,
-                        success: function (data) {
-                            if(data.result){
-                                initCalendar();
-                                modal.close();
-                            }
-                        }
-                    });
-                }else{
-                    alert('Cantidad(s) incorrecta, el total debe de se igual a $'+total );
-                }
-
-                
-            }
-        }
-        
-        function unselect(){
-            $('#calendar').fullCalendar('unselect');
-        }
-        
-        function valdarFolio(){
-            
-            $(this).removeClass('input-error');
-            
-            var folio = $(this).val();
-            var $folioInpit  = $(this);
-            
-            
-            $.ajax({
-                url:'/validarnuevofolio',
-                data:{folio:folio},
-                dataType:'json',
-                async:false,
-                success:function(data){
-                    if(!data.response){
-                         $folioInpit.val('');
-                         $folioInpit.addClass('input-error');
-                         alert(data.msg);
-                         settings.folio_valido = false;
-                    }else{
-                        settings.folio_valido = true;
+                },
+                eventRender: function(event, element, view) {
+                    if(view.name == 'agendaWeek'){
+                        var height = $(element).innerHeight();
+                       
+                        
+                        //$(element).css('height', height + 3 'px');
                     }
                 }
-            });
-            
         }
-        
-        function isOverlapping(event){
-             
-            // "calendar" on line below should ref the element on which fc has been called 
-            var array = $('#calendar').fullCalendar('clientEvents');
-            
-            for(var i in array){
-                if (event.resources[0] == array[i].resources[0] && event.end > array[i].start && event.start < array[i].end && event.id !==array[i].id){
-                   return true;
-                }
-            }
-            return false;
-        }
-
-       /*
-        * Public methods
-        */
-        
-        plugin.init = function(){
-            
-            settings = plugin.settings = $.extend({}, defaults, options);
-            
-            //Inicializamos nuestro multiple select
-            $container.find("select[name=idclinica]").multipleSelect({
-                single:true,   
-                onClick : initCalendar,
-            });
-            
-            $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.idclinica]);
-            
-            /*Inicializamos nuestros calendarios*/
-            $container.find('input[name=agenda_fecha]').pickadate({
-                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
-                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
-                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
-                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
-                today: 'hoy',
-                clear: 'borrar',
-                close: 'cerrar',
-                firstDay: 1,
-                format: 'd !de mmmm !de yyyy',
-                formatSubmit: 'yyyy/mm/dd',
-                selectYears: true,
-                selectMonths: true,
-                selectYears: 25,
-                onSet: function(selected,evnt) {
-                     initCalendar();
-               }
-            });
-            var picker = $container.find('input[name=agenda_fecha]').pickadate('picker');
-            picker.set('select', new Date());
-
-               
-
-            
-            
-            
-            $('#calendar:not(".fc-event")').on('contextmenu', function (e) {
-                e.preventDefault();
-            });
-
-
         }
 
         
