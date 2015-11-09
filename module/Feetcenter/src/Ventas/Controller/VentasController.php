@@ -98,7 +98,7 @@ class VentasController  extends AbstractActionController
                 
                 $line = array(
                     "CANT" => (int)$detalle->getVisitadetalleCantidad(),
-                    "DESCRIPCION" => $descripcion,
+                    "DESCRIPCION" => utf8_decode($descripcion),
                     "P. UNIT" => $detalle->getVisitadetallePreciounitario(),
                     "TOTAL" => $detalle->getVisitadetalleSubtotal(),
                 );
