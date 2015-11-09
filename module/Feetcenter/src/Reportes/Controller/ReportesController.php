@@ -40,7 +40,7 @@ class ReportesController extends AbstractActionController
                 $servicio = new \Servicioclinica();
                 foreach ($clinica_servicios as $servicio){
                     $serv = $servicio->getServicio()->toArray(\BasePeer::TYPE_FIELDNAME);
-                    $vendidos = \VisitadetalleQuery::create()->select('total')->withColumn('SUM(visitadetalle_cantidad)','total')->filterByIdservicioclinica($servicio->getIdservicioclinica())->useVisitaQuery()->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->findOne();
+                    $vendidos = \VisitadetalleQuery::create()->select('total')->withColumn('SUM(visitadetalle_cantidad)','total')->filterByIdservicioclinica($servicio->getIdservicioclinica())->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->findOne();
                     $serv['vendidos'] = (int)$vendidos;
                     $cli['servicios'][] = $serv;
                 }
@@ -65,7 +65,7 @@ class ReportesController extends AbstractActionController
                 $producto = new \Productoclinica();
                 foreach ($clinica_productos as $producto){
                     $prod = $producto->getProducto()->toArray(\BasePeer::TYPE_FIELDNAME);
-                    $vendidos = \VisitadetalleQuery::create()->select('total')->withColumn('SUM(visitadetalle_cantidad)','total')->filterByIdproductoclinica($producto->getIdproductoclinica())->useVisitaQuery()->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->findOne();
+                    $vendidos = \VisitadetalleQuery::create()->select('total')->withColumn('SUM(visitadetalle_cantidad)','total')->filterByIdproductoclinica($producto->getIdproductoclinica())->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->findOne();
                     $prod['vendidos'] = (int)$vendidos;
                     $cli['productos'][] = $prod;
                 }
@@ -90,7 +90,7 @@ class ReportesController extends AbstractActionController
                 $membresia = new \Membresia();
                 foreach ($membresias as $membresia){
                     $mem = $membresia->toArray(\BasePeer::TYPE_FIELDNAME);
-                    $vendidos = \VisitadetalleQuery::create()->select('total')->withColumn('SUM(visitadetalle_cantidad)','total')->filterByIdmembresia($membresia->getIdmembresia())->useVisitaQuery()->filterByidclinica($clinica->getIdclinica())->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->findOne();
+                    $vendidos = \VisitadetalleQuery::create()->select('total')->withColumn('SUM(visitadetalle_cantidad)','total')->filterByIdmembresia($membresia->getIdmembresia())->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByidclinica($clinica->getIdclinica())->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->findOne();
                     $mem['vendidos'] = (int)$vendidos;
                     $cli['membresias'][] = $mem;
                 }
@@ -187,7 +187,7 @@ class ReportesController extends AbstractActionController
                 $emp['membresias'] = $membresias_array;
                 $emp['productos'] = $productos_array;
                 //Sus visitas
-                $visita_detalles_servicios = \VisitadetalleQuery::create()->filterByIdservicioclinica(NULL,\Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->find();
+                $visita_detalles_servicios = \VisitadetalleQuery::create()->filterByIdservicioclinica(NULL,\Criteria::NOT_EQUAL)->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->find();
                 //Comenzamos a itnerar sobre los detalles
                 $detalle = new \Visitadetalle();
                 foreach ($visita_detalles_servicios as $detalle){
@@ -196,7 +196,7 @@ class ReportesController extends AbstractActionController
                     $emp['servicios'][$idservicio]['vendidos']+=$cantidad;
                 }
                 
-                $visita_detalles_membresias = \VisitadetalleQuery::create()->filterByIdmembresia(NULL,\Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->find();
+                $visita_detalles_membresias = \VisitadetalleQuery::create()->filterByIdmembresia(NULL,\Criteria::NOT_EQUAL)->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->find();
                 //Comenzamos a itnerar sobre los detalles
                 $detalle = new \Visitadetalle();
                 foreach ($visita_detalles_membresias as $detalle){
@@ -205,7 +205,7 @@ class ReportesController extends AbstractActionController
                     $emp['membresias'][$idmembresia]['vendidos']+=$cantidad;
                 }
                 
-                $visita_detalles_productos = \VisitadetalleQuery::create()->filterByIdproductoclinica(NULL,\Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->find();
+                $visita_detalles_productos = \VisitadetalleQuery::create()->filterByIdproductoclinica(NULL,\Criteria::NOT_EQUAL)->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->endUse()->find();
                 //Comenzamos a itnerar sobre los detalles
                 $detalle = new \Visitadetalle();
                 foreach ($visita_detalles_productos as $detalle){
