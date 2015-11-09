@@ -83,9 +83,9 @@ class SeguimientoController extends AbstractActionController
         $idpaciente = $this->params()->fromRoute('idpaciente');
         $paciente = \PacienteQuery::create()->findPk($idpaciente);
         
-        $id = $this->params()->fromRoute('idpaciente');
+        $id = $this->params()->fromRoute('id');
         $entity = \PacienteseguimientoQuery::create()->findPk($id);
-        
+   
         
         if($request->isPost()){
             

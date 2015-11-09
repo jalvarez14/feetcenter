@@ -229,7 +229,7 @@
                  header:{
                     left:   'title',
                     center: '',
-                    right:  'prev,next'
+                    right:  'agendaWeek,prev,next'
                 },
                  timezone:'local',
                  now:date,
@@ -246,14 +246,20 @@
 
                     var viewName = view.name;
                     switch (viewName) {
-                        case 'resourceDay':
-                        {
-                            var date = view.end._d;
-                            renderDescansos(moment(date));
-                            renderEventos(moment(date));
-                            renderRecesos(moment(date));
-                            break;
-                        }
+                            case 'resourceDay':
+                            {
+                                var date = view.end._d;
+                                renderDescansos(moment(date));
+                                renderEventos(moment(date));
+                                renderRecesos(moment(date));
+                                break;
+                            }
+                            case 'agendaWeek':
+                            {
+                                renderEventos(moment(date));
+
+                                break;
+                            }
                     }
 
                 },
