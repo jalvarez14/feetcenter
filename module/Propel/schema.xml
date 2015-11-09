@@ -346,6 +346,9 @@
     <column name="faltante_comentario" phpName="FaltanteComentario" type="LONGVARCHAR" required="false"/>
     <column name="faltante_comprobante" phpName="FaltanteComprobante" type="LONGVARCHAR" required="false"/>
     <column name="faltante_comprobantefirmado" phpName="FaltanteComprobantefirmado" type="LONGVARCHAR" required="false"/>
+    <foreign-key foreignTable="clinica" name="idclinica_faltante" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
     <foreign-key foreignTable="empleado" name="idempleadodeudor_faltante" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idempleadodeudor" foreign="idempleado"/>
     </foreign-key>
@@ -357,6 +360,9 @@
     </index>
     <index name="idempleadodeudor">
       <index-column name="idempleadodeudor"/>
+    </index>
+    <index name="idclinica">
+      <index-column name="idclinica"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
@@ -819,13 +825,13 @@
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
     <column name="visita_tipo" phpName="VisitaTipo" type="CHAR" sqlType="enum('consulta','servicio')" required="true"/>
     <column name="visita_creadaen" phpName="VisitaCreadaen" type="TIMESTAMP" required="true"/>
+    <column name="visita_canceladaen" phpName="VisitaCanceladaen" type="TIMESTAMP" required="false"/>
     <column name="visita_fechainicio" phpName="VisitaFechainicio" type="TIMESTAMP" required="true"/>
     <column name="visita_fechafin" phpName="VisitaFechafin" type="TIMESTAMP" required="true"/>
     <column name="visita_status" phpName="VisitaStatus" type="CHAR" sqlType="enum('por confirmar','confimada','cancelo','no se presento','reprogramda','en servicio','terminado')" required="true"/>
     <column name="visita_estatuspago" phpName="VisitaEstatuspago" type="CHAR" sqlType="enum('pagada','no pagada','cancelada')" required="false"/>
     <column name="visita_total" phpName="VisitaTotal" type="DECIMAL" size="10" scale="2" required="false"/>
     <column name="visita_nota" phpName="VisitaNota" type="LONGVARCHAR" required="false"/>
-    <column name="visita_canceladaen" phpName="VisitaCanceladaen" type="TIMESTAMP" required="false"/>
     <foreign-key foreignTable="clinica" name="idclinica_visita" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
     </foreign-key>

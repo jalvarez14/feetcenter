@@ -13,13 +13,13 @@
  * @method VisitaQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
  * @method VisitaQuery orderByVisitaTipo($order = Criteria::ASC) Order by the visita_tipo column
  * @method VisitaQuery orderByVisitaCreadaen($order = Criteria::ASC) Order by the visita_creadaen column
+ * @method VisitaQuery orderByVisitaCanceladaen($order = Criteria::ASC) Order by the visita_canceladaen column
  * @method VisitaQuery orderByVisitaFechainicio($order = Criteria::ASC) Order by the visita_fechainicio column
  * @method VisitaQuery orderByVisitaFechafin($order = Criteria::ASC) Order by the visita_fechafin column
  * @method VisitaQuery orderByVisitaStatus($order = Criteria::ASC) Order by the visita_status column
  * @method VisitaQuery orderByVisitaEstatuspago($order = Criteria::ASC) Order by the visita_estatuspago column
  * @method VisitaQuery orderByVisitaTotal($order = Criteria::ASC) Order by the visita_total column
  * @method VisitaQuery orderByVisitaNota($order = Criteria::ASC) Order by the visita_nota column
- * @method VisitaQuery orderByVisitaCanceladaen($order = Criteria::ASC) Order by the visita_canceladaen column
  *
  * @method VisitaQuery groupByIdvisita() Group by the idvisita column
  * @method VisitaQuery groupByIdempleado() Group by the idempleado column
@@ -28,13 +28,13 @@
  * @method VisitaQuery groupByIdclinica() Group by the idclinica column
  * @method VisitaQuery groupByVisitaTipo() Group by the visita_tipo column
  * @method VisitaQuery groupByVisitaCreadaen() Group by the visita_creadaen column
+ * @method VisitaQuery groupByVisitaCanceladaen() Group by the visita_canceladaen column
  * @method VisitaQuery groupByVisitaFechainicio() Group by the visita_fechainicio column
  * @method VisitaQuery groupByVisitaFechafin() Group by the visita_fechafin column
  * @method VisitaQuery groupByVisitaStatus() Group by the visita_status column
  * @method VisitaQuery groupByVisitaEstatuspago() Group by the visita_estatuspago column
  * @method VisitaQuery groupByVisitaTotal() Group by the visita_total column
  * @method VisitaQuery groupByVisitaNota() Group by the visita_nota column
- * @method VisitaQuery groupByVisitaCanceladaen() Group by the visita_canceladaen column
  *
  * @method VisitaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method VisitaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -73,13 +73,13 @@
  * @method Visita findOneByIdclinica(int $idclinica) Return the first Visita filtered by the idclinica column
  * @method Visita findOneByVisitaTipo(string $visita_tipo) Return the first Visita filtered by the visita_tipo column
  * @method Visita findOneByVisitaCreadaen(string $visita_creadaen) Return the first Visita filtered by the visita_creadaen column
+ * @method Visita findOneByVisitaCanceladaen(string $visita_canceladaen) Return the first Visita filtered by the visita_canceladaen column
  * @method Visita findOneByVisitaFechainicio(string $visita_fechainicio) Return the first Visita filtered by the visita_fechainicio column
  * @method Visita findOneByVisitaFechafin(string $visita_fechafin) Return the first Visita filtered by the visita_fechafin column
  * @method Visita findOneByVisitaStatus(string $visita_status) Return the first Visita filtered by the visita_status column
  * @method Visita findOneByVisitaEstatuspago(string $visita_estatuspago) Return the first Visita filtered by the visita_estatuspago column
  * @method Visita findOneByVisitaTotal(string $visita_total) Return the first Visita filtered by the visita_total column
  * @method Visita findOneByVisitaNota(string $visita_nota) Return the first Visita filtered by the visita_nota column
- * @method Visita findOneByVisitaCanceladaen(string $visita_canceladaen) Return the first Visita filtered by the visita_canceladaen column
  *
  * @method array findByIdvisita(int $idvisita) Return Visita objects filtered by the idvisita column
  * @method array findByIdempleado(int $idempleado) Return Visita objects filtered by the idempleado column
@@ -88,13 +88,13 @@
  * @method array findByIdclinica(int $idclinica) Return Visita objects filtered by the idclinica column
  * @method array findByVisitaTipo(string $visita_tipo) Return Visita objects filtered by the visita_tipo column
  * @method array findByVisitaCreadaen(string $visita_creadaen) Return Visita objects filtered by the visita_creadaen column
+ * @method array findByVisitaCanceladaen(string $visita_canceladaen) Return Visita objects filtered by the visita_canceladaen column
  * @method array findByVisitaFechainicio(string $visita_fechainicio) Return Visita objects filtered by the visita_fechainicio column
  * @method array findByVisitaFechafin(string $visita_fechafin) Return Visita objects filtered by the visita_fechafin column
  * @method array findByVisitaStatus(string $visita_status) Return Visita objects filtered by the visita_status column
  * @method array findByVisitaEstatuspago(string $visita_estatuspago) Return Visita objects filtered by the visita_estatuspago column
  * @method array findByVisitaTotal(string $visita_total) Return Visita objects filtered by the visita_total column
  * @method array findByVisitaNota(string $visita_nota) Return Visita objects filtered by the visita_nota column
- * @method array findByVisitaCanceladaen(string $visita_canceladaen) Return Visita objects filtered by the visita_canceladaen column
  *
  * @package    propel.generator.feetcenter.om
  */
@@ -202,7 +202,7 @@ abstract class BaseVisitaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total`, `visita_nota`, `visita_canceladaen` FROM `visita` WHERE `idvisita` = :p0';
+        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_canceladaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total`, `visita_nota` FROM `visita` WHERE `idvisita` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -582,6 +582,49 @@ abstract class BaseVisitaQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the visita_canceladaen column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaCanceladaen('2011-03-14'); // WHERE visita_canceladaen = '2011-03-14'
+     * $query->filterByVisitaCanceladaen('now'); // WHERE visita_canceladaen = '2011-03-14'
+     * $query->filterByVisitaCanceladaen(array('max' => 'yesterday')); // WHERE visita_canceladaen < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $visitaCanceladaen The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaCanceladaen($visitaCanceladaen = null, $comparison = null)
+    {
+        if (is_array($visitaCanceladaen)) {
+            $useMinMax = false;
+            if (isset($visitaCanceladaen['min'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_CANCELADAEN, $visitaCanceladaen['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visitaCanceladaen['max'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_CANCELADAEN, $visitaCanceladaen['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_CANCELADAEN, $visitaCanceladaen, $comparison);
+    }
+
+    /**
      * Filter the query on the visita_fechainicio column
      *
      * Example usage:
@@ -794,49 +837,6 @@ abstract class BaseVisitaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(VisitaPeer::VISITA_NOTA, $visitaNota, $comparison);
-    }
-
-    /**
-     * Filter the query on the visita_canceladaen column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByVisitaCanceladaen('2011-03-14'); // WHERE visita_canceladaen = '2011-03-14'
-     * $query->filterByVisitaCanceladaen('now'); // WHERE visita_canceladaen = '2011-03-14'
-     * $query->filterByVisitaCanceladaen(array('max' => 'yesterday')); // WHERE visita_canceladaen < '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $visitaCanceladaen The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return VisitaQuery The current query, for fluid interface
-     */
-    public function filterByVisitaCanceladaen($visitaCanceladaen = null, $comparison = null)
-    {
-        if (is_array($visitaCanceladaen)) {
-            $useMinMax = false;
-            if (isset($visitaCanceladaen['min'])) {
-                $this->addUsingAlias(VisitaPeer::VISITA_CANCELADAEN, $visitaCanceladaen['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($visitaCanceladaen['max'])) {
-                $this->addUsingAlias(VisitaPeer::VISITA_CANCELADAEN, $visitaCanceladaen['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(VisitaPeer::VISITA_CANCELADAEN, $visitaCanceladaen, $comparison);
     }
 
     /**

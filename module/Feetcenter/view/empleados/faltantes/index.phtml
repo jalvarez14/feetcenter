@@ -27,6 +27,7 @@
     <?php $entity = new Faltante()?>
     <tbody>
         <?php foreach($collection as $entity) : ?>
+        <?php echo '<pre>';var_dump($entity->getClinica());echo '</pre>';exit();?>
             <tr id="<?php echo $entity->getIdfaltante()?>">
                 <td><?php echo $entity->getFaltanteFecha('d/m/Y')?></td>
                 <td><?php echo $entity->getFaltanteHora()?></td>

@@ -98,7 +98,7 @@ class FaltantesController extends AbstractActionController
     {
             $collection = \FaltanteQuery::create()->find();
             
-                        
+            
             return new ViewModel(array(
                     'collection' => $collection,
                     'successMessages' => $this->flashMessenger()->getSuccessMessages(),
