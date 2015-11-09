@@ -20,8 +20,8 @@ class ClinicaController extends AbstractActionController
             
             $now = new \DateTime();
             $idempleado = $this->params()->fromQuery('idempleado');
-            $result = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByVisitaFechainicio(array('min' => $now))->exists();
-            
+            $result = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByVisitaFechainicio(array('min' => $now))->toString();
+            echo '<pre>';var_dump($result); echo '</pre>';exit();
             return $this->getResponse()->setContent(json_encode($result));
         }
     }
