@@ -15,6 +15,103 @@ use Zend\View\Model\ViewModel;
 class VentasController  extends AbstractActionController
 {
     
+    public $friendlyMonth = array(
+        '01' => 'Enero',
+        '02' => 'Febrero',
+        '03' => 'Marzo',
+        '04' => 'Abril',
+        '05' => 'Mayo',
+        '06' => 'Junio',
+        '07' => 'Julio',
+        '08' => 'Agosto',
+        '09' => 'Septiembre',
+        '10' => 'Octubre',
+        '11' => 'Noviembre',
+        '12' => 'Diciembre',
+    );
+    
+    public function generarnotaAction(){
+        
+        if($this->params()->fromQuery('idvisita')){
+            
+            $idvisita =  $this->params()->fromQuery('idvisita');
+            $visita = \VisitaQuery::create()->findPk($idvisita);
+            
+            $target = "nota_de_remision.pdf";
+           
+            $pdf = new \Shared\PdfCreator\NotaRemision('P', 'mm', 'A4');
+            $pdf->AddPage();
+            $pdf->addSociete( "FeetCenter",
+                  "MARIA GUADALUPE MANGATO MIRANDA\n" .
+                  "R.F.C. MAMG820213913\n" .
+                  "REGIMEN DE INCORPORACION FISCAL\n".
+                  strtoupper($visita->getClinica()->getClinicaDireccion())."\n".
+                  "TEL: ".$visita->getClinica()->getClinicaTelefono());
+            $pdf->fact_dev( "", $visita->getIdvisita());
+            $pdf->addPageNumber($visita->getVisitaCreadaen('d'));
+            $pdf->addDate(strtoupper($this->friendlyMonth[$visita->getVisitaCreadaen('m')]));
+            $pdf->addClient($visita->getVisitaCreadaen('Y'));
+            $pdf->addReglement(strtoupper($visita->getPaciente()->getPacienteNombre()));
+            $direccion = '';
+            if(!is_null($visita->getPaciente()->getPacienteCalle())){
+                $direccion.=strtoupper($visita->getPaciente()->getPacienteCalle());
+            }
+            if(!is_null($visita->getPaciente()->getPacienteNumero())){
+                $direccion.=' '.strtoupper($visita->getPaciente()->getPacienteNumero());
+            }
+            if(!is_null($visita->getPaciente()->getPacienteColonia())){
+                $direccion.=' COLONIA ' .strtoupper($visita->getPaciente()->getPacienteColonia());
+            }
+            if(!is_null($visita->getPaciente()->getPacienteCodigopostal())){
+                $direccion.=' CP ' .strtoupper($visita->getPaciente()->getPacienteCodigopostal());
+            }
+            $pdf->addEcheance($direccion);
+            
+            $ciudad = '';
+            if(!is_null($visita->getPaciente()->getPacienteCiudad())){
+                $ciudad.=strtoupper($visita->getPaciente()->getPacienteCiudad());
+            }
+            if(!is_null($visita->getPaciente()->getPacienteEstado())){
+                $ciudad.=', '.strtoupper($visita->getPaciente()->getPacienteEstado());
+            }
+            
+            $pdf->addNumTVA($ciudad);
+            
+            $cols=array( "CANT"    => 23,
+             "DESCRIPCION"  => 119,
+             "P. UNIT"     => 22,
+             "TOTAL"      => 26);
+            
+            $pdf->addCols( $cols);
+            
+            $y    = 99;
+            $detalle = new \Visitadetalle();
+            foreach ($visita->getVisitadetalles() as $detalle){
+                
+                if(!is_null($detalle->getIdproductoclinica())){
+                    $descripcion = strtoupper($detalle->getProductoclinica()->getProducto()->getProductoNombre());
+                }elseif(!is_null($detalle->getIdservicioclinica())){
+                    $descripcion = strtoupper($detalle->getServicioclinica()->getServicio()->getServicioNombre());
+                }else{
+                    $descripcion = strtoupper($detalle->getMembresia()->getMembresiaNombre());
+                }
+                
+                $line = array(
+                    "CANT" => (int)$detalle->getVisitadetalleCantidad(),
+                    "DESCRIPCION" => $descripcion,
+                    "P. UNIT" => $detalle->getVisitadetallePreciounitario(),
+                    "TOTAL" => $detalle->getVisitadetalleSubtotal(),
+                );
+                $size = $pdf->addLine( $y, $line );
+                $y   += $size + 2;
+            }
+            $pdf->addCadreTVAs($visita->getVisitaTotal());  
+            $pdf->Output($_SERVER['DOCUMENT_ROOT'].'/img/ventas/'.$target,'F');
+            echo '<pre>';var_dump($pdf);echo '</pre>';exit();
+        }
+        
+    }
+    
     public function cancelarAction(){
         
         $request = $this->getRequest();

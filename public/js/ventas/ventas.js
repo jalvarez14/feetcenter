@@ -80,7 +80,7 @@
                        tr.append('<td>'+this.empleado_nombre+'</td>');
                        tr.append('<td>'+this.visita_estatuspago.capitalize()+'</td>');
                        tr.append('<td>'+accounting.formatMoney(this.visita_total)+'</td>');
-                       var td = $('<td><a href="javascript:void(0)" modal="detalles">Ver detalles</a><a>Nota de remision</a><a href="javascript:void(0)" modal="cancelar">Cancelar</a></td>').addClass('tr_options');
+                       var td = $('<td><a href="javascript:void(0)" modal="detalles">Ver detalles</a><a class="nota_remision" href="javascript:void(0)">Nota de remision</a><a href="javascript:void(0)" modal="cancelar">Cancelar</a></td>').addClass('tr_options');
                        
                        /*
                         * DETALLES
@@ -150,7 +150,28 @@
                              });
                         }
                         
+                        /*
+                        * NOTA DE REMISION
+                        */
                         
+                        td.find('a.nota_remision').on('click',function(){
+                            
+                            var idvisita = tr.attr('id');
+                            $.ajax({
+                                method:'get',
+                                url:'/ventas/generarnota',
+                                dataType:'json',
+                                data:{idvisita:idvisita},
+                                success:function(data){
+                                    console.log(data);return;
+                                }
+                                
+                            });
+                            
+                            
+                        });
+                        
+                       
                        tr.append(td);
                        
                        $container.find('table tbody').append(tr);
