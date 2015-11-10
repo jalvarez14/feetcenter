@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <propel>
-        <datasources default="feetcenter">
-            <datasource id="feetcenter">
+        <datasources default="feetcent_feetcener">
+            <datasource id="feetcent_feetcener">
                 <adapter>mysql</adapter> <!-- sqlite, mysql, myssql, oracle, or pgsql -->
                 <connection>
-                    <dsn>mysql:host=feetcenter;dbname=feetcenter</dsn>
-                    <user>root</user>
-                    <password>mysql</password>
+                    <dsn>mysql:host=localhost;dbname=feetcent_feetcener</dsn>
+                    <user>feetcent_admin</user>
+                    <password>3TZ7dyGs</password>
                 </connection>
             </datasource>
         </datasources>

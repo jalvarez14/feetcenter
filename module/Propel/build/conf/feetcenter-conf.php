@@ -4,17 +4,17 @@
 $conf = array (
   'datasources' => 
   array (
-    'feetcenter' => 
+    'feetcent_feetcener' => 
     array (
       'adapter' => 'mysql',
       'connection' => 
       array (
-        'dsn' => 'mysql:host=feetcenter;dbname=feetcenter',
-        'user' => 'root',
-        'password' => 'mysql',
+        'dsn' => 'mysql:host=localhost;dbname=feetcent_feetcener',
+        'user' => 'feetcent_admin',
+        'password' => '3TZ7dyGs',
       ),
     ),
-    'default' => 'feetcenter',
+    'default' => 'feetcent_feetcener',
   ),
   'generator_version' => '1.7.1',
 );
