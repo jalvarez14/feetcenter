@@ -5,7 +5,7 @@
             <datasource id="feetcent_feetcenter">
                 <adapter>mysql</adapter> <!-- sqlite, mysql, myssql, oracle, or pgsql -->
                 <connection>
-                    <dsn>mysql:host=localhost;dbname=feetcent_feetcenter</dsn>
+                    <dsn>mysql:host=127.0.0.1;dbname=feetcent_feetcenter</dsn>
                     <user>feetcent_admin</user>
                     <password>3TZ7dyGs</password>
                 </connection>

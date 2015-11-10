@@ -5,7 +5,7 @@ use Zend\ModuleManager\ModuleManager;
 class Module
 {
     public function init(ModuleManager $moduleManager) {
-        \Propel::init(__DIR__ . '/build/conf/feetcenter-conf.php');
+        \Propel::init(__DIR__ . '/build/conf/feetcent_feetcenter-conf.php');
         set_include_path(__DIR__ . '/build/classes' . PATH_SEPARATOR . get_include_path());
     }
     public function getAutoloaderConfig() {
