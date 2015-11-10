@@ -79,9 +79,20 @@
                        tr.append('<td>'+this.paciente_nombre+'</td>');
                        tr.append('<td>'+this.empleado_nombre+'</td>');
                        tr.append('<td>'+this.visita_estatuspago.capitalize()+'</td>');
+                       var efectivo = 0; var tarjeta = 0;
+                       $.each(this.pagos,function(){
+                           console.log(this);
+                           if(this.visitapago_tipo == 'efectivo'){
+                               efectivo+= parseFloat(this.visitapago_cantidad);
+                           }else{
+                               tarjeta+= parseFloat(this.visitapago_cantidad);
+                           }
+                       });
+                       tr.append('<td>'+accounting.formatMoney(efectivo)+'</td>');
+                       tr.append('<td>'+accounting.formatMoney(tarjeta)+'</td>');
                        tr.append('<td>'+accounting.formatMoney(this.visita_total)+'</td>');
                        var td = $('<td><a href="javascript:void(0)" modal="detalles">Ver detalles</a><a class="nota_remision" href="javascript:void(0)">Nota de remision</a><a href="javascript:void(0)" modal="cancelar">Cancelar</a></td>').addClass('tr_options');
-                       
+                   
                        /*
                         * DETALLES
                         */

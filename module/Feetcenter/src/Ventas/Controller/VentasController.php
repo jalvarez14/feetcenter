@@ -488,9 +488,16 @@ class VentasController  extends AbstractActionController
             
             $post_data = $request->getPost();
             
-            $visitas = \VisitaQuery::create()->orderByVisitaCreadaen('ASC')->joinEmpleadoRelatedByIdempleado()->withColumn('empleado_nombre')->joinPaciente()->withColumn('paciente_nombre')->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->filterByVisitaEstatuspago($post_data['status'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
-            
-            return $this->getResponse()->setContent(json_encode($visitas));
+            $visitas_array = array();
+            $visitas = \VisitaQuery::create()->orderByVisitaCreadaen('ASC')->joinEmpleadoRelatedByIdempleado()->withColumn('empleado_nombre')->joinPaciente()->withColumn('paciente_nombre')->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->filterByVisitaEstatuspago($post_data['status'])->find();
+            $visita = new \Visita();    
+            foreach ($visitas as $visita){
+                
+                $tmp = $visita->toArray(\BasePeer::TYPE_FIELDNAME);
+                $tmp['pagos'] = $visita->getVisitapagos()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
+                $visitas_array[] = $tmp;
+            }
+            return $this->getResponse()->setContent(json_encode($visitas_array));
 
         }
         

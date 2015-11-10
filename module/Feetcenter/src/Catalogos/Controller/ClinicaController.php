@@ -33,6 +33,17 @@ class ClinicaController extends AbstractActionController
     
     public function indexAction()
     {
+        
+        for($i=0;$i<10000;$i++){
+           $paciente = new \Paciente();
+           $paciente->setPacienteNombre('Daniel Castanedo Barraga')
+                    ->setPacienteCelular('123456789')
+                    ->setPacienteNumero('123456789')
+                    ->setIdclinica(1)
+                    ->save();
+        }
+        
+        
         $collection = \ClinicaQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
 
         
