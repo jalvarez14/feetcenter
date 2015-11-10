@@ -761,8 +761,16 @@
 
                                     var $modalHeader = this.$modalHeader;
                                     $modalHeader.addClass('modal_header_action');
-                                    this.createCancelButton('Cancelar');
+                                    var atrasAction = this.createActionButton('Atras');
+                                    atrasAction.css('background','#e0e3e5');
+                                    atrasAction.css('color','black');
+                                    
+                                    atrasAction.prop('disabled',true);
+                                    atrasAction.css('cursor','auto');
+                                    
+                                    
                                     var guardarAction = this.createActionButton('Guardar');
+                                    
                                     var pagarAction = this.createActionButton('Pagar');
                                     pagarAction.css('background','#4caf50');
                                     
@@ -830,8 +838,36 @@
                                      var payMethodContainer = modal.find('#pay_method_container');
                                      
                                      
-                                     
                                      pagarAction.on('click', $.proxy(function(){
+                                        event1();
+                                     }));
+                                     var event1 = function(){
+                                         
+                                         /*
+                                          *  Evento atras
+                                          */
+                                        atrasAction.prop('disabled',false);
+                                        atrasAction.css('cursor','pointer');
+
+                                          atrasAction.on('click', $.proxy(function(){
+                                                nextDateContainer.slideUp();
+                                                modalEventContainer.children(':not(:last-child)').show();
+                                                pagarAction.text('Pagar');
+                                                pagarAction.prop('disabled',false);
+                                                guardarAction.prop('disabled',false);
+                                                payDetailsContainer.hide();
+                                                payMethodContainer.hide();
+                                                nextDateContainer.hide();
+                                                dateContainer.hide();
+                                                pagarAction.unbind();
+                                                nextDateContainer.find('input[name=visita_siguiente]').prop('checked',false);
+                                                pagarAction.on('click', $.proxy(function(){
+                                                    event1();
+                                                }));
+                                            
+                                          }));
+                                         
+                                         
                                          //RENOMBRAMOS BOTON
                                          pagarAction.text('Continuar');
                                          //HABILITAMOS INPUTS
@@ -1013,7 +1049,10 @@
                                                                                    
                                                                                     }));
                                                                                      
-                                                                               }else{
+                                                                               }
+                                                                               else{
+                                                                                   
+                                                                                   
                                                                                    
                                                                                    pagarAction.text('Pagar');
                                                                                    payDetailsContainer.slideDown();
@@ -1053,12 +1092,18 @@
                                                             });
                                                     }
                                                 });
-                                             }else{
+                                             }
+                                             else{
                                                 
                                                  dateContainer.slideUp();
                                                  pagarAction.prop('disabled',false);
                                                  pagarAction.unbind();
                                                  pagarAction.on('click', $.proxy(function(){
+                                                     
+                                                     //console.log($modal);
+                                                     //console.log($modal.$modal.find('.modal-close-btn').remove());
+                                                    
+                                                     //var atrasAction = $modal.createActionButton('Atras');
                                                      
                                                      pagarAction.text('Pagar');
                                                      pagarAction.unbind();
@@ -1099,7 +1144,7 @@
                                              }
                                          });
                                          
-                                     }));
+                                     };
                                     guardarAction.on('click', $.proxy(function(){
                                         var empty = false;
                                         modal.find('span.error').remove();
