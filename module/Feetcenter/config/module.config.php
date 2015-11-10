@@ -440,6 +440,16 @@ return array(
                            ),
                        ),
                    ),
+                    'serverside' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/serverside',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Pacientes',
+                               'action'        => 'serverside',
+                           ),
+                       ),
+                   ),
                     'editar' => array(
                        'type' => 'Segment',
                        'options' => array(

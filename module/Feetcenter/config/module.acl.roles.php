@@ -53,6 +53,7 @@ return array(
             'seguimiento/editar',
             'seguimiento/eliminar',
             'pacientes-visitas',
+            'pacientes/serverside',
             //Agenda
             'agenda',
             //ventas
@@ -91,6 +92,7 @@ return array(
             'empleados-vendidos',
             'empleados-faltantes',
             //pacientes
+            'pacientes/serverside',
             'pacientes',
             'pacientes/nuevo',
             'pacientes/filter',
@@ -147,6 +149,7 @@ return array(
             'empleados-vendidos',
             //pacientes
             'pacientes',
+            'pacientes/serverside',
             'pacientes/filter',
             'seguimiento',
             'seguimiento/ver',

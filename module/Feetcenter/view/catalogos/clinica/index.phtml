@@ -42,8 +42,13 @@ $(function()
         dataType: 'json',
         success: function(data){
             var table = $('table').DataTable({
+                
                 language:data,
             });
+            
+            
+            
+            
             table.on( 'draw', function () {
                 $('[data-tools="modal"]').modal();
             });

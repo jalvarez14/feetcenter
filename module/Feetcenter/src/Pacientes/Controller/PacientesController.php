@@ -15,6 +15,15 @@ use Zend\View\Model\ViewModel;
 class PacientesController extends AbstractActionController
 {
     
+    public $columns = array(
+         0 => 'clinica_nombre',
+         1 => 'paciente_fecharegistro',
+         2 => 'paciente_nombre',
+         3 => 'paciente_celular',
+         4 => 'empleado_nombre',
+
+    );
+    
     public function editarAction(){
         
         $request = $this->request;
@@ -174,6 +183,70 @@ class PacientesController extends AbstractActionController
             return $viewModel;
         }
         
+    }
+    
+    public function serversideAction(){
+        
+        $request = $this->getRequest();
+        
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+          
+            //Comenzamos hacer la query
+            $pacienteQuery = new \PacienteQuery();
+
+            //JOIN
+            $pacienteQuery->joinEmpleado()->withColumn('clinica_nombre');
+            $pacienteQuery->joinClinica()->withColumn('empleado_nombre');
+
+            //WHERE
+            $pacienteQuery->filterByIdclinica($post_data['clinicas']);
+            
+            //ORDER TODO
+
+             //SELECT
+            $pacienteQuery->select(array('idpaciente','paciente_nombre','paciente_celular','paciente_fecharegistro'));
+            
+            //$result = $pacienteQuery->paginate($post_data['start'],$post_data['length']);
+            
+            $pacienteQuery->setOffset(25);
+            
+              echo '<pre>';var_dump($pacienteQuery->find()->toArray()); echo '</pre>';exit();
+            
+            //Damos el formato
+            $data = array();
+            foreach ($result->getResults()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                
+                $paciente_fecharegistro = new \DateTime($value['paciente_fecharegistro']);
+                
+               
+                $tmp['DT_RowId'] = $value['idpaciente'];
+                $tmp['clinica_nombre'] = $value['clinica_nombre'];
+                $tmp['paciente_fecharegistro'] = $paciente_fecharegistro->format('d/m/Y');
+                $tmp['paciente_nombre'] = $value['paciente_nombre'];
+                $tmp['paciente_celular'] = $value['paciente_celular'];
+                $tmp['empleado_nombre'] = $value['empleado_nombre'];
+                
+                $data[] = $tmp;
+ 
+            }   
+            
+          
+            //El arreglo que regresamos
+            $json_data = array(
+                "draw"            => (int)$post_data['draw'],
+                "recordsTotal"    => (int)$result->getNbResults(),
+                "recordsFiltered" => (int)$result->getNbResults(),
+                "data"            => $data
+            );
+            
+
+            
+            return $this->getResponse()->setContent(json_encode($json_data));
+           
+            
+        }
     }
     
     public function filterAction(){
