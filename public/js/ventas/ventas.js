@@ -1,4 +1,4 @@
-(function( $ ){
+    (function( $ ){
     
    
    /*
@@ -113,9 +113,11 @@
                             var total_tarjeta = 0;
                             var total = 0;
                             $.each(settings.json.data,function(){
-                                total_efectivo+=parseFloat(this.visita_efectivo);
-                                total_tarjeta+=parseFloat(this.visita_tarjeta);
-                                total+=parseFloat(this.visita_total);
+                                if(this.visita_estatuspago == 'pagada'){
+                                    total_efectivo+=parseFloat(this.visita_efectivo);
+                                    total_tarjeta+=parseFloat(this.visita_tarjeta);
+                                    total+=parseFloat(this.visita_total);
+                                }
                             });
                             
                             $container.find('#total_efectivo').text(accounting.formatMoney(total_efectivo));
@@ -144,7 +146,8 @@
                                 /*
                                  * Cancelar
                                  */
-                       
+
+                                 
                                 if(tr.find('td.estatus_pago').text() == 'cancelada'){
                                     tr.addClass('cancelada');
                                     tr.find('a[modal="cancelar"]').prop('disabled',true);
