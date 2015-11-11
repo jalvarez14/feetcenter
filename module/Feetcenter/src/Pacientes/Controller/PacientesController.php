@@ -202,7 +202,7 @@ class PacientesController extends AbstractActionController
 
             //WHERE
             $pacienteQuery->filterByIdclinica($post_data['clinicas']);
-            
+            $recordsFiltered = $pacienteQuery->count();
             //ORDER TODO
 
              //SELECT
@@ -210,13 +210,24 @@ class PacientesController extends AbstractActionController
             
             //$result = $pacienteQuery->paginate($post_data['start'],$post_data['length']);
             
-            $pacienteQuery->setOffset(25);
-            
-              echo '<pre>';var_dump($pacienteQuery->find()->toArray()); echo '</pre>';exit();
-            
+            $pacienteQuery->setOffset((int)$post_data['start']);
+            $pacienteQuery->setLimit((int)$post_data['length']);
+
+            //SEARCH
+//            $search_array = array();
+//            if(!empty($post_data['search']['value'])){
+//                foreach ($this->columns as $column){
+//                    if(\PacientePeer::getTableMap()->hasColumn($column)){
+//                        $phpname = \BasePeer::translateFieldname('paciente', $column, \BasePeer::TYPE_FIELDNAME, \BasePeer::TYPE_PHPNAME);
+//                        $search_array[$phpname] = $post_data['search']['value'];
+//                    }
+//                }
+//            }
+//    
+//            echo '<pre>';var_dump($pacienteQuery->toString());echo '</pre>';exit();
             //Damos el formato
             $data = array();
-            foreach ($result->getResults()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+            foreach ($pacienteQuery->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
                 
                 $paciente_fecharegistro = new \DateTime($value['paciente_fecharegistro']);
                 
@@ -227,17 +238,19 @@ class PacientesController extends AbstractActionController
                 $tmp['paciente_nombre'] = $value['paciente_nombre'];
                 $tmp['paciente_celular'] = $value['paciente_celular'];
                 $tmp['empleado_nombre'] = $value['empleado_nombre'];
+                $tmp['opciones'] = '<a href="/pacientes/editar/'.$value['idpaciente'].'">Editar</a><a href="javascript:void(0)" class="delete_modal" style="margin-left: 18px;">Eliminar</a>';
                 
                 $data[] = $tmp;
  
             }   
             
-          
+            
+            
             //El arreglo que regresamos
             $json_data = array(
                 "draw"            => (int)$post_data['draw'],
-                "recordsTotal"    => (int)$result->getNbResults(),
-                "recordsFiltered" => (int)$result->getNbResults(),
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => $recordsFiltered,
                 "data"            => $data
             );
             

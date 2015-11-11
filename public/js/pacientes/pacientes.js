@@ -67,29 +67,60 @@
                         processing: true,
                         iDisplayLength:25,
                         ordering: false,
-                        columnDefs: [{
-                            targets: -1,
-                            data: null, 
-                        }],
                         columns: [
                             { data: "clinica_nombre" },
                             { data: "paciente_fecharegistro" },
                             { data: "paciente_nombre" },
                             { data: "paciente_celular" },
                             { data: "empleado_nombre" },
+                            { data: "opciones" },
                         ],
                         ajax: {
                             url: '/pacientes/serverside',
                             type: 'POST',
                             data:{clinicas:clinicas_select},
+                        },
+                        drawCallback: function( settings ) {
+                           $container.find('table tbody a.delete_modal').modal({
+                                title: '<h2>Advertencia</h2>',
+                                content:'/pacientes/eliminar/delete?html=true',
+                            });
+                            
+                            $('table tbody a.delete_modal').on('loading.tools.modal', function(modal)
+                            {
+                                var $modalHeader = this.$modalHeader;
+                                $modalHeader.addClass('modal_header_warning');
+                                var id = this.$element.closest('tr').attr('id');
+                                var $modal = this ;
+
+                                this.createCancelButton('Cancelar');
+
+                                var buttonDelete = this.createDeleteButton('Eliminar');
+
+                                buttonDelete.on('click', $.proxy(function()
+                                {
+                                    //Hacemos la peticion ajax
+                                    $.ajax({
+                                        url:'/pacientes/eliminar/'+id,
+                                        dataType: 'json',
+                                        method:'POST',
+                                        success: function(data){
+                                            if(data.response){
+                                                $modal.close();
+                                                window.location.replace('/pacientes');
+                                            }
+                                        }
+                                    });
+
+
+                                }, this));
+
+                            });
                         }
                     });
                     
-                    
-                 
-                    
-                    
-                    
+          
+
                 }
             });
        };
