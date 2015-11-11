@@ -30,6 +30,94 @@ class VentasController  extends AbstractActionController
         '12' => 'Diciembre',
     );
     
+    public function serversideAction(){
+        
+        $request = $this->getRequest();
+        
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+            
+            //Comenzamos hacer la query
+            $query = new \VisitaQuery();
+            
+            //JOIN
+            $query->joinClinica()->withColumn('clinica_nombre','visita_clinica');
+            $query->joinPaciente()->withColumn('paciente_nombre','visita_cliente');
+            $query->joinEmpleadoRelatedByIdempleado()->withColumn('empleado_nombre','visita_pedicurista');
+            
+            //WHERE
+            $query->filterByIdclinica($post_data['clinicas']);
+            $query->filterByVisitaEstatuspago($post_data['estatus']);
+            $query->filterByVisitaFechainicio(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'));
+            $recordsFiltered = $query->count();
+            
+            //LIMIT
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+            //ORDER 
+            $query->orderByVisitaFechainicio('desc');
+            
+            //SEARCH
+            if(!empty($post_data['search']['value'])){
+                
+                $search_value = $post_data['search']['value'];
+                $c = new \Criteria();
+                
+                $c1= $c->getNewCriterion('clinica_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('paciente_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c3= $c->getNewCriterion('empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c4= $c->getNewCriterion('visita_estatuspago', '%'.$search_value.'%', \Criteria::LIKE);
+                
+                $c1->addOr($c2)->addOr($c3)->addOr($c4);
+
+                $query->addAnd($c1);
+
+            }
+            
+            
+            //RESULT
+            $data = array();
+            $visita = new \Visita();
+            foreach ($query->find() as $visita){
+                
+                
+                $tmp = $visita->toArray(\BasePeer::TYPE_FIELDNAME);
+                $tmp['DT_RowId'] = $visita->getIdvisita();
+                $tmp['visita_fecha'] = $visita->getVisitaFechainicio('d-m-Y - H:i');
+                $tmp['visita_efectivo']  = 0;
+                $tmp['visita_tarjeta'] = 0;
+                
+                //Efectivo
+                foreach ($visita->getVisitapagos() as $pago){
+                    if($pago->getVisitapagoTipo() == 'efectivo'){
+                        $tmp['visita_efectivo']+=(float)$pago->getVisitapagoCantidad();
+                    }else{
+                        $tmp['visita_tarjeta']+=(float)$pago->getVisitapagoCantidad();
+                    }
+                }
+                
+                $tmp['opciones'] = '<a href="javascript:void(0)" modal="detalles">Ver detalles</a><a class="nota_remision" href="javascript:void(0)">Nota de remision</a><a href="javascript:void(0)" modal="cancelar">Cancelar</a>';
+                
+                $data[]=$tmp;
+            }
+            
+            //El arreglo que regresamos
+            $json_data = array(
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => $recordsFiltered,
+                "data"            => $data
+            );
+            
+            return $this->getResponse()->setContent(json_encode($json_data));
+             
+
+            
+            
+        }
+    }
     public function generarnotaAction(){
         
         if($this->params()->fromQuery('idvisita')){
@@ -495,6 +583,14 @@ class VentasController  extends AbstractActionController
                 
                 $tmp = $visita->toArray(\BasePeer::TYPE_FIELDNAME);
                 $tmp['pagos'] = $visita->getVisitapagos()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
+                $tmp['visita_efectivo']  = 0;
+                $tmp['visita_tarjeta'] = 0;
+                
+                //Efectivo
+                foreach ($visita->getVisitapagos() as $pago){
+                    echo '<pre>';var_dump($pago->toArray());echo '</pre>';exit();
+                }
+                
                 $visitas_array[] = $tmp;
             }
             return $this->getResponse()->setContent(json_encode($visitas_array));

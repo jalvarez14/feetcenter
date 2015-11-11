@@ -70,7 +70,8 @@
                         language:data,
                         processing: true,
                         iDisplayLength:25,
-                        ordering: false,
+                        order:[],
+                        ordering:false,
                         columns: [
                             { data: "clinica_nombre" },
                             { data: "paciente_fecharegistro" },
@@ -85,6 +86,7 @@
                             data:{clinicas:clinicas_select},
                         },
                         drawCallback: function( settings ) {
+                           
                            $container.find('table tbody a.delete_modal').modal({
                                 title: '<h2>Advertencia</h2>',
                                 content:'/pacientes/eliminar/delete?html=true',

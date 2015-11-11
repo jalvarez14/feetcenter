@@ -197,8 +197,8 @@ class PacientesController extends AbstractActionController
             $pacienteQuery = new \PacienteQuery();
 
             //JOIN
-            $pacienteQuery->joinEmpleado()->withColumn('clinica_nombre');
-            $pacienteQuery->joinClinica()->withColumn('empleado_nombre');
+            $pacienteQuery->joinEmpleado()->withColumn('empleado_nombre');
+            $pacienteQuery->joinClinica()->withColumn('clinica_nombre');
 
             //WHERE
             $pacienteQuery->filterByIdclinica($post_data['clinicas']);
@@ -212,19 +212,28 @@ class PacientesController extends AbstractActionController
             
             $pacienteQuery->setOffset((int)$post_data['start']);
             $pacienteQuery->setLimit((int)$post_data['length']);
-
+            
+            //ORDER (TODO)
+        
             //SEARCH
-//            $search_array = array();
-//            if(!empty($post_data['search']['value'])){
-//                foreach ($this->columns as $column){
-//                    if(\PacientePeer::getTableMap()->hasColumn($column)){
-//                        $phpname = \BasePeer::translateFieldname('paciente', $column, \BasePeer::TYPE_FIELDNAME, \BasePeer::TYPE_PHPNAME);
-//                        $search_array[$phpname] = $post_data['search']['value'];
-//                    }
-//                }
-//            }
-//    
-//            echo '<pre>';var_dump($pacienteQuery->toString());echo '</pre>';exit();
+            if(!empty($post_data['search']['value'])){
+                $search_value = $post_data['search']['value'];
+                $c = new \Criteria();
+                
+                $c1= $c->getNewCriterion('paciente.paciente_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('paciente.paciente_celular', '%'.$search_value.'%', \Criteria::LIKE);
+                //$c3= $c->getNewCriterion('paciente.paciente_fecharegistro', '%'.$search_value.'%', \Criteria::LIKE);
+                $c4= $c->getNewCriterion('empleado.empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c5= $c->getNewCriterion('clinica.clinica_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                
+                $c1->addOr($c2)->addOr($c4)->addOr($c5);
+
+                $pacienteQuery->addAnd($c1);
+
+            }
+            
+            
+           
             //Damos el formato
             $data = array();
             foreach ($pacienteQuery->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){

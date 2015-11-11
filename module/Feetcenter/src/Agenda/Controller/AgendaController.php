@@ -628,7 +628,8 @@ class AgendaController extends AbstractActionController
                                     
                                 }
                             }
-                        }else{
+                        }
+                        else{
                             //Solo cargamos, productos, servicios, membresias vendidas y acumulado
                             $current_vendidos = $empleado_comision->getEmpleadocomisionProductosvendidos();
                             $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();

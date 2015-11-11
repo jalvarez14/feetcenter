@@ -12,7 +12,7 @@
     </div>
 <?php endif;?>
     <div class="units-row">
-        <div class="unit-30">
+        <div class="unit-20">
             Clinica
             <select multiple="multiple" name="idclinica" class="width-100">
                 <?php foreach ($clinicas as $clinica) : ?>
@@ -20,12 +20,18 @@
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="unit-30">
+        <div class="unit-20">
             Estatus
             <select multiple="multiple" name="visita_estatuspago" class="width-100">
                 <option value="pagada">Pagadas</option>
                 <option value="cancelada">Canceladas</option>
             </select>
+        </div>
+        <div class="unit-60" id="filter_container">
+            <label style="display: block">Filtrar por periodo de tiempo</label>
+            <input placeholder="Desde" type="email" name="ventas_from" class="width-6" />
+            <input placeholder="Hasta" type="email" name="ventas_to" class="width-6" />
+            <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
         </div>
     </div>
     <table class="table-ventas">
@@ -43,9 +49,15 @@
             </tr>
         </thead>
         <tbody>
-
         </tbody>
         <tfoot>
+            <tr>
+                <td colspan="5">Totales</td>
+                <td id="total_efectivo">0</td>
+                <td id="total_tarjeta">0</td>
+                <td id="total">0</td>
+                <td></td>
+            </tr>
         </tfoot>
     </table>
 </div>
