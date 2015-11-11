@@ -129,7 +129,7 @@ class VentasController  extends AbstractActionController
             
             $target = "nota_de_remision.pdf";
            
-            $pdf = new \Shared\PdfCreator\NotaRemision('P', 'mm', 'A4');
+            $pdf = new Shared\PdfCreator\NotaRemision('P', 'mm', 'A4');
             $pdf->AddPage();
             $pdf->addSociete( "FeetCenter",
                   "MARIA GUADALUPE MANGATO MIRANDA\n" .
