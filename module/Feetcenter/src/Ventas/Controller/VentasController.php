@@ -130,7 +130,7 @@ class VentasController  extends AbstractActionController
             $visita = \VisitaQuery::create()->findPk($idvisita);
             
             $pdf = new \Shared\PdfCreator\FPDF\FPDF();
-            echo '<pre>';var_dump($pdf); echo '</pre>';exit();
+           
             
             $target = "nota_de_remision.pdf";
             
