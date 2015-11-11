@@ -19,7 +19,7 @@ class Faltante extends FPDF {
         $faltante = \FaltanteQuery::create()->findPk($this->faltante->getIdfaltante());
 
         // Logo
-        $this->Image($_SERVER['DOCUMENT_ROOT'].'/img/logo/top_logo.png', 10, 10, 40);
+        $this->Image($_SERVER['DOCUMENT_ROOT'].'/img/logo/top_logo.png', 10, 5, 60);
         //FONT
         $this->SetFont('Arial', 'B', 10);
         
