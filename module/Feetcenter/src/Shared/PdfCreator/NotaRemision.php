@@ -12,10 +12,10 @@ class NotaRemision extends FPDF
     var $format;
     var $angle=0;
     
-
+    
     public function __construct() {
-       //parent::
-        
+       parent::FPDF();
+
     }
 
 // private functions

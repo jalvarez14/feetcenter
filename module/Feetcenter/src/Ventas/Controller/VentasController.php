@@ -128,9 +128,9 @@ class VentasController  extends AbstractActionController
             
             $idvisita =  $this->params()->fromQuery('idvisita');
             $visita = \VisitaQuery::create()->findPk($idvisita);
-            
+            echo '<pre>';var_dump($visita->toArray()); echo '</pre>';exit();
             $target = "nota_de_remision.pdf";
-           
+            
             $pdf = new \Shared\PdfCreator\NotaRemision('P', 'mm', 'A4');
             $pdf->AddPage();
             $pdf->addSociete( "FeetCenter",
