@@ -100,24 +100,27 @@ class Module
     {
 
         return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                    'Catalogos' => __DIR__ . '/src/'  .'Catalogos',
-                    'Compras' => __DIR__ . '/src/'  .'Compras',
-                    'Login' => __DIR__ . '/src/'  .'Login',
-                    'Shared' => __DIR__ . '/src/'  .'Shared',
-                    'Inventario' => __DIR__ . '/src/'  .'Inventario',
-                    'Egresos' => __DIR__ . '/src/'  .'Egresos',
-                    'Empleados' => __DIR__ . '/src/'  .'Empleados',
-                    'Pacientes' => __DIR__ . '/src/'  .'Pacientes',
-                    'Agenda' => __DIR__ . '/src/'  .'Agenda',
-                    'Ventas' => __DIR__ . '/src/'  .'Ventas',
-                    'Configuracion' => __DIR__ . '/src/'  .'Configuracion',
-                    'Reportes' => __DIR__ . '/src/'  .'Reportes',
-                    
-                ),
+            'Zend\Loader\ClassMapAutoloader' => array(
+                __DIR__ . '/autoload_classmap.php',
             ),
+//            'Zend\Loader\StandardAutoloader' => array(
+//                'namespaces' => array(
+//                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+//                    'Catalogos' => __DIR__ . '/src/'  .'Catalogos',
+//                    'Compras' => __DIR__ . '/src/'  .'Compras',
+//                    'Login' => __DIR__ . '/src/'  .'Login',
+//                    'Shared' => __DIR__ . '/src/'  .'Shared',
+//                    'Inventario' => __DIR__ . '/src/'  .'Inventario',
+//                    'Egresos' => __DIR__ . '/src/'  .'Egresos',
+//                    'Empleados' => __DIR__ . '/src/'  .'Empleados',
+//                    'Pacientes' => __DIR__ . '/src/'  .'Pacientes',
+//                    'Agenda' => __DIR__ . '/src/'  .'Agenda',
+//                    'Ventas' => __DIR__ . '/src/'  .'Ventas',
+//                    'Configuracion' => __DIR__ . '/src/'  .'Configuracion',
+//                    'Reportes' => __DIR__ . '/src/'  .'Reportes',
+//                    
+//                ),
+//            ),
         );
     }
 }
