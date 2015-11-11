@@ -4,7 +4,7 @@ namespace Shared\PdfCreator;
 
 use Shared\PdfCreator\FPDF\FPDF;
 
-class NotaRemision extends FPDF
+class NotaRemision extends \Shared\PdfCreator\FPDF\FPDF
 {
     
     // private variables
