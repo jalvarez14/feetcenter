@@ -56,6 +56,10 @@
            
            var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
            
+           if(typeof $table != 'undefined'){
+                $table.clear();
+                $table.destroy();
+            }
            $.ajax({
                 url: '/json/lang_es_datatable.json',
                 dataType: 'json',
