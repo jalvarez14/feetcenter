@@ -12,11 +12,11 @@ class NotaRemision extends FPDF
     var $format;
     var $angle=0;
     
-//    
-//    public function __construct() {
-//       //parent::
-//        
-//    }
+
+    public function __construct() {
+       //parent::
+        
+    }
 
 // private functions
 function RoundedRect($x, $y, $w, $h, $r, $style = '')
