@@ -120,7 +120,9 @@ class VentasController  extends AbstractActionController
     }
     public function generarnotaAction(){
         
-        
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
         
         if($this->params()->fromQuery('idvisita')){
             
@@ -129,7 +131,7 @@ class VentasController  extends AbstractActionController
             
             $target = "nota_de_remision.pdf";
            
-            $pdf = new Shared\PdfCreator\NotaRemision('P', 'mm', 'A4');
+            $pdf = new \Shared\PdfCreator\NotaRemision('P', 'mm', 'A4');
             $pdf->AddPage();
             $pdf->addSociete( "FeetCenter",
                   "MARIA GUADALUPE MANGATO MIRANDA\n" .
