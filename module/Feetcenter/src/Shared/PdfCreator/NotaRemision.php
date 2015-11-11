@@ -118,10 +118,10 @@ function sizeOfText( $texte, $largeur )
 function addSociete( $nom, $adresse )
 {
     
-        $this->Image($_SERVER['DOCUMENT_ROOT'].'/img/logo/top_logo.png', 10, 12, 30);
+        $this->Image($_SERVER['DOCUMENT_ROOT'].'/img/logo/top_logo.png', 10, 5, 60);
         
 	$x1 = 40;
-	$y1 = 18;
+	$y1 = 22;
 	//Positionnement en bas
 	$this->SetXY( $x1, $y1 );
 	$this->SetFont('Arial','B',12);
