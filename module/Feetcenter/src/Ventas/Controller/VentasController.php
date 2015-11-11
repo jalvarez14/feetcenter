@@ -120,6 +120,10 @@ class VentasController  extends AbstractActionController
     }
     public function generarnotaAction(){
         
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+        
         if($this->params()->fromQuery('idvisita')){
             
             $idvisita =  $this->params()->fromQuery('idvisita');
