@@ -274,7 +274,9 @@
         function newMethodPay(){
             var fieldsetContainer = $(this).closest('fieldset');
             var newRow = $(this).closest('div.units-row').clone();
+            var count = parseInt(fieldsetContainer.find('input').length);
             newRow.find('input').val(0);
+            newRow.find('input').attr('name','visitapago_tipo['+count+'][cantidad]');
             newRow.find('button').on('click',newMethodPay);
             var eliminar = $('<a href="javascript:void(0)">Eliminar</a>');
             eliminar.on('click',function(){

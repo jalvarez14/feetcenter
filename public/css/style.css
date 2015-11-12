@@ -379,5 +379,9 @@ table.dataTable tbody tr.warning{
         padding-right: 0px;
     }
     
+    .fc-event-title{
+        font-size: 8px;
+    }
+    
     
     
