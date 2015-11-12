@@ -648,10 +648,12 @@
                 },
                 eventResize:function( event, delta, revertFunc, jsEvent, ui, view ) { 
                     var viewName = view.name;
-                    switch (viewName) {
-                         case 'resourceDay':
-                        {
+                           
                             if(!isOverlapping(event)){
+                                if(event.className[0] == "visita_terminado" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" ){
+                                    revertFunc();
+                                    return;
+                                }
                                 if(event.className[0]!='receso'){
                                     //La peticion ajax
                                     $.ajax({
@@ -674,18 +676,19 @@
                             }else{
                                  revertFunc();
                             }
-                        }
-                     }
+
                 },
                 eventDrop:function(event, delta, revertFunc, jsEvent, ui, view ) {
-                     var viewName = view.name;
-                     switch (viewName) {
-                              case 'resourceDay':
-                        {
+                             console.log(event);
                             var n = moment();
                             var d = event.start.diff(n,'minutes');
                             
                             if(!isOverlapping(event) && d > 0){
+                                if(event.className[0] == "visita_terminado" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso"){
+                                    revertFunc();
+                                    return;
+                                }
+                                
                                 if(event.className[0]!='receso'){
                                     //La peticion ajax
                                     $.ajax({
@@ -708,10 +711,21 @@
                             }else{
                                 revertFunc();
                             }
-                        }
-                     }
-
-                },
+                        
+                     
+                 },
+                 
+                 /*
+                  * 
+            "por confirmar":"visita_porconfirmar",
+            "confimada":"visita_confirmada",
+            "cancelo":"visita_cancelo",
+            "no se presento":"visita_nosepresento",
+            "reprogramda":"visita_reprogramda",
+            "en servicio":"visita_enservicio",
+            "terminado":"visita_terminado",
+                  */
+                
                 eventClick: function( event, jsEvent, view ) { 
                     if(view.name !== 'resourceDay'){
                         return;
@@ -778,18 +792,7 @@
                                     
                                     var status_pago = modal.find('div#visita_estatuspago').attr('value');
                                     var status = modal.find('select[name=visita_status]').val();
-                                    if(status == 'terminado' && status_pago == 'pagada'){
-                                        pagarAction.prop('disabled',true);
-                                        guardarAction.prop('disabled',true);
-                                        modal.find('input,select,button').prop('disabled',true);
-                                        modal.find('table#visita_detalles th').eq(2).remove();
-                                        modal.find('table#visita_detalles tbody tr').filter(function(){
-                                            $(this).find('td').eq(2).remove();
-                                        });
-                                        modal.find('table#visita_detalles tfoot tr').find('td').eq(0).attr('colspan',2);
-                                        modal.find('span.token-input-delete-token').remove();
-                                    }
-                                    else if(status == 'terminado' && status_pago == 'cancelada'){
+                                    if(status_pago == 'pagada' || status_pago == 'cancelada'){
                                         pagarAction.prop('disabled',true);
                                         guardarAction.prop('disabled',true);
                                         modal.find('input,select,button').prop('disabled',true);
@@ -801,8 +804,18 @@
                                         modal.find('span.token-input-delete-token').remove();
                                     }
                                     
-                                    
-                                    
+                                   if(status == 'cancelo' || status == 'no se presento' || status == 'reprogramda'){
+                                        pagarAction.prop('disabled',true);
+                                        guardarAction.prop('disabled',true);
+                                        modal.find('input,select,button').prop('disabled',true);
+                                        modal.find('table#visita_detalles th').eq(2).remove();
+                                        modal.find('table#visita_detalles tbody tr').filter(function(){
+                                            $(this).find('td').eq(2).remove();
+                                        });
+                                        modal.find('table#visita_detalles tfoot tr').find('td').eq(0).attr('colspan',2);
+                                        modal.find('span.token-input-delete-token').remove();
+                                    }
+
                                     /*
                                      * Evento pagar
                                      */
