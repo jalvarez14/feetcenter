@@ -81,7 +81,7 @@ div.token-input-dropdown {
     position: absolute;
     width: 400px;
     background-color: #fff;
-    overflow: hidden;
+    //overflow: hidden;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
@@ -89,6 +89,8 @@ div.token-input-dropdown {
     font-size: 12px;
     font-family: Verdana, sans-serif;
     z-index: 1;
+    height:150px;
+    overflow:auto;
 }
 
 div.token-input-dropdown p {
