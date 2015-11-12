@@ -578,6 +578,9 @@
             $container.find('button[btn-action=open_paciente_container]').on('click',openPacienteContainer);
             $container.find('.nuevo_paciente_close').on('click',closePacienteContainer);
             $container.find('[btn-action=submit_paciente]').on('click',submitPaciente);
+            $container.find('input[name=paciente_celular_confirmar]').bind("cut copy paste",function(e) {
+                e.preventDefault();
+            });
             
             //Relacionado paciente
             $container.find('button[btn-action=open_relacionados_container]').on('click',openRelacionadosContainer);
