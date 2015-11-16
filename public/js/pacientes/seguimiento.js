@@ -54,31 +54,43 @@
        var filter = function(){
            
            var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
-           
+           var pedicuristas_select = $("select[name=idempleado]").multipleSelect('getSelects');
+          
+           if(typeof $table != 'undefined'){
+                $table.clear();
+                $table.destroy();
+            }
            $.ajax({
-               url:'/pacientes/filter',
-               dataType: 'json',
-               method:'POST',
-               data:{clinicas:clinicas_select},
-               success: function(data){
-                  $table.clear();
-                  if(data.result.length > 0){
-                      //Agregamos los nuevos registros
-                        $.each(data.result,function(){
-                                var rowNode = $table.row.add([
-                                    this.clinica_nombre,
-                                    this.paciente_fecharegistro,
-                                    this.paciente_nombre,
-                                    this.paciente_celular,
-                                    this.empleado_nombre,
-                                    '<td class="tr_options"><a href="/pacientes/seguimiento/ver/'+this.idpaciente+'">Ver segumiento</a></td>'
-                                ]).draw().node();
-                            $(rowNode).attr('id',this.idpaciente);
-                        });
-                  }
-                  $table.draw();
-               }  
-           });
+                url: '/json/lang_es_datatable.json',
+                dataType: 'json',
+                async:false,
+                success: function(data){
+                    $table = container.find('table').DataTable({
+                        serverSide: true,
+                        language:data,
+                        processing: true,
+                        iDisplayLength:25,
+                        order:[],
+                        ordering:false,
+                        columns: [
+                            { data: "clinica_nombre" },
+                            { data: "paciente_fecharegistro" },
+                            { data: "paciente_nombre" },
+                            { data: "paciente_celular" },
+                            { data: "empleado_nombre" },
+                            { data: "opciones" },
+                        ],
+                        ajax: {
+                            url: '/pacientes/seguimiento/serverside',
+                            type: 'POST',
+                            data:{clinicas:clinicas_select,empleados:pedicuristas_select},
+                        },
+                    });
+                    
+          
+
+                }
+            });
        };
 
        
@@ -111,8 +123,20 @@
                 onUncheckAll:filter,
             });
             
+            //Inicializamos nuestro multiple select
+            $container.find("select[name=idempleado]").multipleSelect({
+                allSelected:'Todos los pedicuristas',
+                selectAllText:'Todos los pedicuristas',
+                onClick : filter,
+                onCheckAll:filter,
+                onUncheckAll:filter,
+            });
+            
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.idclinica]);
-            filter();
+            $container.find("select[name=idempleado]").multipleSelect("checkAll");
+            
+            
+            //filter();
            
             
         }

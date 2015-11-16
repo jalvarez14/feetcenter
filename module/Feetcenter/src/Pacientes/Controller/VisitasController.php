@@ -14,7 +14,110 @@ use Zend\View\Model\ViewModel;
 
 class VisitasController extends AbstractActionController
 {
-    
+   
+    public function serversideAction(){
+        
+        $request = $this->getRequest();
+        
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+          
+            //Comenzamos hacer la query
+            $query = new \PacienteQuery();
+
+            //JOIN
+            $query->joinEmpleado()->withColumn('empleado_nombre');
+            $query->joinClinica()->withColumn('clinica_nombre');
+
+            //WHERE
+            $query->filterByIdclinica($post_data['clinicas']);
+            $query->filterByIdempleado($post_data['empleados']);
+            $recordsFiltered = $query->count();
+            
+            
+
+            //ORDER TODO
+
+             //SELECT
+            $query->select(array('idpaciente','paciente_nombre','paciente_celular','paciente_fecharegistro'));
+            
+            //$result = $pacienteQuery->paginate($post_data['start'],$post_data['length']);
+            
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+            //ORDER (TODO)
+        
+            //SEARCH
+            if(!empty($post_data['search']['value'])){
+                $search_value = $post_data['search']['value'];
+                $c = new \Criteria();
+                
+                $c1= $c->getNewCriterion('paciente.paciente_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('paciente.paciente_celular', '%'.$search_value.'%', \Criteria::LIKE);
+                //$c3= $c->getNewCriterion('paciente.paciente_fecharegistro', '%'.$search_value.'%', \Criteria::LIKE);
+                $c4= $c->getNewCriterion('empleado.empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c5= $c->getNewCriterion('clinica.clinica_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                
+                $c1->addOr($c2)->addOr($c4)->addOr($c5);
+
+                $query->addAnd($c1);
+
+            }
+
+            //Damos el formato
+            $data = array();
+            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                
+                $paciente_fecharegistro = new \DateTime($value['paciente_fecharegistro']);
+                
+               
+                $tmp['DT_RowId'] = $value['idpaciente'];
+                $tmp['clinica_nombre'] = $value['clinica_nombre'];
+                $tmp['idpaciente'] = $value['idpaciente'];
+                $tmp['paciente_fecharegistro'] = $paciente_fecharegistro->format('d/m/Y');
+                $tmp['paciente_nombre'] = $value['paciente_nombre'];
+                $tmp['paciente_celular'] = $value['paciente_celular'];
+                $tmp['empleado_nombre'] = $value['empleado_nombre'];
+                $tmp['visitas'] = \VisitaQuery::create()->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio(\Criteria::ASC)->filterByIdpaciente($value['idpaciente'])->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+                
+                $data[] = $tmp;
+ 
+            } 
+            
+            $visitas = \VisitaQuery::create()->filterByIdempleado($post_data['empleados'])->filterByVisitaEstatuspago('pagada')->orderByVisitaCreadaen(\Criteria::ASC)->joinPaciente()->withColumn('paciente_nombre')->withColumn('paciente_celular')->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
+            
+            //Comparamos la fecha de hoy con el primer registro, para obtener las columnas (fechas)
+            $first_date = new \DateTime();
+            if(isset($visitas[0])){
+                $first_date = new \DateTime($visitas[0]['visita_creadaen']);
+            }
+            $today = new \DateTime();
+            $interval = $first_date->diff($today);
+            
+           
+            
+            
+            //El arreglo que regresamos
+            $json_data = array(
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => $recordsFiltered,
+                "data"            => $data,
+                'year_start' =>(int) $first_date->format('Y'),
+                'interval' => (int)$interval->format('%y')
+             
+                
+            );
+            
+
+            
+            return $this->getResponse()->setContent(json_encode($json_data));
+           
+            
+        }
+    }
    public function filterAction(){
        
        $request = $this->getRequest();
@@ -46,8 +149,10 @@ class VisitasController extends AbstractActionController
         
         //Las clinicas
         $clinicas = \ClinicaQuery::create()->find();
+        $empleados = \ClinicaempleadoQuery::create()->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
         
         return new ViewModel(array(
+            'empleados' => $empleados,
             'session' => $session->getData(),
             'clinicas' => $clinicas,
         ));

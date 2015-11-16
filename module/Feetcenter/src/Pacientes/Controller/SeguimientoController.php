@@ -234,12 +234,103 @@ class SeguimientoController extends AbstractActionController
              $idclinica = $sesion->getIdClinica();
              
         }
+        
+        $empleados = \ClinicaempleadoQuery::create()->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
 
         return new ViewModel(array(
+            'empleados' => $empleados,
             'idrol' => $idrol,
             'clinicas' => $clinicas,
             'idclinica' => $idclinica,    
             'successMessages' => $this->flashMessenger()->getSuccessMessages(),
         ));
+    }
+    
+    
+    public function serversideAction(){
+        
+        $request = $this->getRequest();
+        
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+          
+            //Comenzamos hacer la query
+            $pacienteQuery = new \PacienteQuery();
+
+            //JOIN
+            $pacienteQuery->joinEmpleado()->withColumn('empleado_nombre');
+            $pacienteQuery->joinClinica()->withColumn('clinica_nombre');
+
+            //WHERE
+            $pacienteQuery->filterByIdclinica($post_data['clinicas']);
+            $pacienteQuery->filterByIdempleado($post_data['empleados']);
+            $recordsFiltered = $pacienteQuery->count();
+            //ORDER TODO
+
+             //SELECT
+            $pacienteQuery->select(array('idpaciente','paciente_nombre','paciente_celular','paciente_fecharegistro'));
+            
+            //$result = $pacienteQuery->paginate($post_data['start'],$post_data['length']);
+            
+            $pacienteQuery->setOffset((int)$post_data['start']);
+            $pacienteQuery->setLimit((int)$post_data['length']);
+            
+            //ORDER (TODO)
+        
+            //SEARCH
+            if(!empty($post_data['search']['value'])){
+                $search_value = $post_data['search']['value'];
+                $c = new \Criteria();
+                
+                $c1= $c->getNewCriterion('paciente.paciente_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('paciente.paciente_celular', '%'.$search_value.'%', \Criteria::LIKE);
+                //$c3= $c->getNewCriterion('paciente.paciente_fecharegistro', '%'.$search_value.'%', \Criteria::LIKE);
+                $c4= $c->getNewCriterion('empleado.empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c5= $c->getNewCriterion('clinica.clinica_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                
+                $c1->addOr($c2)->addOr($c4)->addOr($c5);
+
+                $pacienteQuery->addAnd($c1);
+
+            }
+            
+            
+           
+            //Damos el formato
+            $data = array();
+            foreach ($pacienteQuery->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                
+                $paciente_fecharegistro = new \DateTime($value['paciente_fecharegistro']);
+                
+               
+                $tmp['DT_RowId'] = $value['idpaciente'];
+                $tmp['clinica_nombre'] = $value['clinica_nombre'];
+                $tmp['paciente_fecharegistro'] = $paciente_fecharegistro->format('d/m/Y');
+                $tmp['paciente_nombre'] = $value['paciente_nombre'];
+                $tmp['paciente_celular'] = $value['paciente_celular'];
+                $tmp['empleado_nombre'] = $value['empleado_nombre'];
+                $tmp['opciones'] = '<a href="/pacientes/seguimiento/ver/'.$value['idpaciente'].'">Ver seguimiento</a>';
+                
+                $data[] = $tmp;
+ 
+            }   
+            
+            
+            
+            //El arreglo que regresamos
+            $json_data = array(
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => $recordsFiltered,
+                "data"            => $data
+            );
+            
+
+            
+            return $this->getResponse()->setContent(json_encode($json_data));
+           
+            
+        }
     }
 }

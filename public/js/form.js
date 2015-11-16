@@ -31,7 +31,7 @@ $(document).ready(function(){
                     error=true;
                     $(this).addClass('input-error');
                     var $span = $(this).siblings('span.req');
-                    $span.after('<span class="error"> La contraseña no coincide</span>');
+                    $span.after('<span class="error"> Los campos no coinciden</span>');
                     return;
                 }
             }

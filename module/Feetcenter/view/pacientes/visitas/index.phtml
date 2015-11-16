@@ -16,6 +16,15 @@
                 <?php endforeach; ?>
             </select>
         </div>
+        <div class="unit-30">
+           
+            Pedicurista
+            <select multiple="multiple" name="idempleado" class="width-100">
+                <?php foreach ($empleados as $empleado) : ?>
+                <option value="<?php echo $empleado->getIdempleado()?>"><?php echo $empleado->getEmpleado()->getEmpleadoNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
     </div>
     <table class="table-visitas table-bordered">
         <thead> 

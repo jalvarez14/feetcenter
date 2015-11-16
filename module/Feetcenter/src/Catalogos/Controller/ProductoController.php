@@ -144,9 +144,26 @@ class ProductoController extends AbstractActionController
         }
         
         if($this->params()->fromQuery('html')){
+            
+            $idproducto = $this->params()->fromQuery('idproducto');
+            //Guardamos en un arreglo todos los productoclinica que correspondan a ese producto
+            $producto_clinica_array = array();
+            $producto_clinica = \ProductoclinicaQuery::create()->filterByIdproducto($idproducto)->select('idproductoclinica')->find()->toArray();
+            
             $viewModel = new ViewModel();
             $viewModel->setTerminal(true);
-            return $viewModel;
+             
+            $can_delete = \VisitadetalleQuery::create()->filterByIdproductoclinica($producto_clinica)->exists();
+            
+            if($can_delete){
+                $msj = 'Lo sentimos, no es posible eliminar el producto ya que este cuenta con registros en el modulo de ventas';
+                return $this->getResponse()->setContent($msj);
+            }else{
+                return $viewModel;
+            }
+            
+            
+            
         }
         
     }

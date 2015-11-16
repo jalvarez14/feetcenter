@@ -47,6 +47,7 @@ class VentasController  extends AbstractActionController
             $query->joinEmpleadoRelatedByIdempleado()->withColumn('empleado_nombre','visita_pedicurista');
             
             //WHERE
+            $query->filterByIdempleado($post_data['empleados']);
             $query->filterByIdclinica($post_data['clinicas']);
             $query->filterByVisitaEstatuspago($post_data['estatus']);
             $query->filterByVisitaFechainicio(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'));
@@ -609,12 +610,15 @@ class VentasController  extends AbstractActionController
          
         //Las clinicas
         $clinicas = \ClinicaQuery::create()->find();
+        $empleados = \ClinicaempleadoQuery::create()->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
         
         if($session->getIdrol()!= 1){
+            $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($session->getIdClinica())->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
             $clinicas = \ClinicaQuery::create()->filterByIdclinica($session->getIdClinica())->find();
         }
         
         return new ViewModel(array(
+            'empleados' => $empleados,
             'successMessages' => $this->flashMessenger()->getSuccessMessages(),
             'clinicas' => $clinicas,
             'session' => $session->getData(),

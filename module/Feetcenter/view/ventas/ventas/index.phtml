@@ -27,7 +27,16 @@
                 <option value="cancelada">Canceladas</option>
             </select>
         </div>
-        <div class="unit-60" id="filter_container">
+        <div class="unit-20">
+           
+            Pedicurista
+            <select multiple="multiple" name="idempleado" class="width-100">
+                <?php foreach ($empleados as $empleado) : ?>
+                <option value="<?php echo $empleado->getIdempleado()?>"><?php echo $empleado->getEmpleado()->getEmpleadoNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-40" id="filter_container">
             <label style="display: block">Filtrar por periodo de tiempo</label>
             <input placeholder="Desde" type="email" name="ventas_from" class="width-6" />
             <input placeholder="Hasta" type="email" name="ventas_to" class="width-6" />

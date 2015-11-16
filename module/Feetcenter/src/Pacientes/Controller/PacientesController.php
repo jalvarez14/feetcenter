@@ -202,6 +202,7 @@ class PacientesController extends AbstractActionController
 
             //WHERE
             $pacienteQuery->filterByIdclinica($post_data['clinicas']);
+            $pacienteQuery->filterByIdempleado($post_data['empleados']);
             $recordsFiltered = $pacienteQuery->count();
             //ORDER TODO
 
@@ -313,13 +314,16 @@ class PacientesController extends AbstractActionController
             //Filtros
              $clinicas = \ClinicaQuery::create()->find();
              $idclinica = $sesion->getIdClinica();
-        }elseif($sesion->getIdrol() == 3){//PEDICURISTA (PENDIENTE)
+        }elseif($sesion->getIdrol() == 3){//PEDICURISTA 
              $clinicas = \ClinicaQuery::create()->find();
              $idclinica = $sesion->getIdClinica();
             
         }
-
+        
+        $empleados = \ClinicaempleadoQuery::create()->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
+       
         return new ViewModel(array(
+            'empleados' => $empleados,
             'idrol' => $idrol,
             'clinicas' => $clinicas,
             'idclinica' => $idclinica,    

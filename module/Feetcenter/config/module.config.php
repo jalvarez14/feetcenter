@@ -523,6 +523,16 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'serverside' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/serverside',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Seguimiento',
+                               'action'        => 'serverside',
+                           ),
+                       ),
+                   ),
                     'ver' => array(
                        'type' => 'Segment',
                        'options' => array(

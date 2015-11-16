@@ -31,17 +31,23 @@
         <div class="unit-33">
             <label>
                 Celular <span class="req">*</span>
-                <?php echo $this->formText($form->get('paciente_celular')); ?>
+                <?php echo $this->formPassword($form->get('paciente_celular')); ?>
             </label>
         </div>
+        <div class="unit-33">
+            <label>
+                Confirmar celular <span class="req">*</span>
+                <input required name="paciente_celular_confirmar" type="text" class="width-100 confirm" for="paciente_celular">
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
         <div class="unit-33">
             <label>
                 Teléfono
                 <?php echo $this->formText($form->get('paciente_telefono')); ?>
             </label>
         </div>
-    </div>
-    <div class="units-row">
         <div class="unit-33">
             <label>
                 Calle
@@ -54,14 +60,15 @@
                 <?php echo $this->formText($form->get('paciente_numero')); ?>
             </label>
         </div>
+        
+    </div>
+    <div class="units-row">
         <div class="unit-33">
             <label>
                 Colonia
                 <?php echo $this->formText($form->get('paciente_colonia')); ?>
             </label>
         </div>
-    </div>
-    <div class="units-row">
         <div class="unit-33">
             <label>
                 Código postal
@@ -74,14 +81,15 @@
                 <?php echo $this->formText($form->get('paciente_ciudad')); ?>
             </label>
         </div>
+        
+    </div>
+    <div class="units-row">
         <div class="unit-33">
             <label>
                 Estado
                 <?php echo $this->formText($form->get('paciente_estado')); ?>
             </label>
         </div>
-    </div>
-    <div class="units-row">
         <div class="unit-33">
             <label>
                 Sexo
@@ -90,9 +98,9 @@
         </div>
         <div class="unit-33">
             <label style="margin-bottom: 0px">
-                Fecha de nacimiento              
+                Fecha de nacimiento
             </label>
-             <?php echo $this->formText($form->get('paciente_fechanacimiento')); ?>
+            <?php echo $this->formText($form->get('paciente_fechanacimiento')); ?>
         </div>
     </div>
     <div class="units-row">

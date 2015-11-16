@@ -55,7 +55,8 @@
        var filter = function(){
            
            var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
-           
+           var pedicuristas_select = $("select[name=idempleado]").multipleSelect('getSelects');
+          
            if(typeof $table != 'undefined'){
                 $table.clear();
                 $table.destroy();
@@ -83,7 +84,7 @@
                         ajax: {
                             url: '/pacientes/serverside',
                             type: 'POST',
-                            data:{clinicas:clinicas_select},
+                            data:{clinicas:clinicas_select,empleados:pedicuristas_select},
                         },
                         drawCallback: function( settings ) {
                            
@@ -151,8 +152,18 @@
                 onUncheckAll:filter,
             });
             
+            //Inicializamos nuestro multiple select
+            $container.find("select[name=idempleado]").multipleSelect({
+                allSelected:'Todos los pedicuristas',
+                selectAllText:'Todos los pedicuristas',
+                onClick : filter,
+                onCheckAll:filter,
+                onUncheckAll:filter,
+            });
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.idclinica]);
-            filter();
+            $container.find("select[name=idempleado]").multipleSelect("checkAll");
+            
+            //filter();
            
             
         }

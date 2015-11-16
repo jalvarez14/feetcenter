@@ -58,7 +58,8 @@
             
             var clinicas_select = $container.find("select[name=idclinica]").multipleSelect('getSelects');
             var estatus_select = $container.find("select[name=visita_estatuspago]").multipleSelect('getSelects');
-            
+            var empleados_select = $container.find("select[name=idempleado]").multipleSelect('getSelects');
+
             var from = typeof from == 'undefined' ? now.format('DD-MM-YYYY') : from;
             var to = typeof to == 'undefined' ? now.format('DD-MM-YYYY') : to;
 
@@ -96,7 +97,7 @@
                         ajax: {
                             url: '/ventas/serverside',
                             type: 'POST',
-                            data:{clinicas:clinicas_select,estatus:estatus_select,from:from,to:to},
+                            data:{empleados:empleados_select,clinicas:clinicas_select,estatus:estatus_select,from:from,to:to},
                         },
                         drawCallback: function( settings ) {
                        
@@ -338,8 +339,19 @@
                 },
             });
             
+            //Inicializamos nuestro multiple select
+            $container.find("select[name=idempleado]").multipleSelect({
+                onClick : function(){
+                    filter();
+                },
+                onCheckAll: function(){
+                    filter();
+                },
+            });
+            
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.session.idclinica]);
             $container.find("select[name=visita_estatuspago]").multipleSelect("setSelects", ['pagada','cancelada']);
+            $container.find("select[name=idempleado]").multipleSelect("checkAll");
 
             //Inicializamos nuestros calendarios del filtro de fechas
             var pickdateFrom = $container.find('input[name=ventas_from]').pickadate({
