@@ -169,7 +169,7 @@
             <fieldset>
                 <legend>Datos de acceso al sistema</legend>
                 <div class="units-row" id="acceso_row">
-                    <div class="unit-30">
+                    <div class="unit-20">
                         <label>Rol</b</label>
                         <select class="width-100" name="accesos[0][idrol]">
                             <?php foreach($roles as $rol) :?>
@@ -177,13 +177,17 @@
                             <?php endforeach;?>
                         </select>
                     </div>
-                    <div class="unit-30">
+                    <div class="unit-20">
                         <label>Nombre de usuario</b</label> <span class="req">*</span>
                         <input class="width-100" type="text"  name="accesos[0][username]" required>
                     </div>
-                    <div class="unit-30">
+                    <div class="unit-20">
                         <label>Contraseña</b</label> <span class="req">*</span>
                         <input class="width-100" type="password"  name="accesos[0][password]" required>
+                    </div>
+                    <div class="unit-20">
+                        <label>Confirmar contraseña</b</label> <span class="req">*</span>
+                        <input class="width-100 confirm" for="accesos[0][password]" type="password"  name="accesos[0][password_confirmar]" required>
                     </div>
                     <div class="unit-10">
                         <a class="btn btn-blue" data-action="addAcceso" style="margin-top: 24px;">Agregar</a>

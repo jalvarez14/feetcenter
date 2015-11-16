@@ -7,11 +7,13 @@ $(document).ready(function(){
         
         var $form = $(this).closest('form');
         var empty = false;
+        var error = false;
         
         $form.find('span.error').remove();
         $form.find('[required]').removeClass('input-error');
         
         $form.find('[required]').each(function(){
+            console.log(this);
             if($(this).val() == ""){
                 empty = true;
                 $(this).addClass('input-error');
@@ -19,7 +21,7 @@ $(document).ready(function(){
                 $span.after('<span class="error"> campo obligatorio</span>');
             }
         });
-        if(empty){
+        if(empty || error){
             e.preventDefault();
         }
         
