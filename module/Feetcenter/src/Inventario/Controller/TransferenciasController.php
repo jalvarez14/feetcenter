@@ -131,7 +131,10 @@ class TransferenciasController extends AbstractActionController
             $transferencia->setTransferenciaComprobante('/img/transferencias/'.$target);
             $transferencia->save();
             
-            $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
+            //Actualizamos la sesion
+            $sesion->updateNotifications();
+            
+            $this->flashMessenger()->addSuccessMessage('Transferencia enviada!');
             return $this->redirect()->toRoute('inventario/transferencias');
 
         }
@@ -189,6 +192,10 @@ class TransferenciasController extends AbstractActionController
             
             if($post_data['transferencia_estatus'] == 'rechazada' || $post_data['transferencia_estatus'] == 'cancelada' ){
                 
+                //Actualizamos session
+                $transferencia_pendientes = (int)$sesion->getTransferenciasPendientes();
+                $sesion->setTransferenciasPendientes($transferencia_pendientes - 1);
+                
                 //Agregamos la nota
                 $transferencia->setTransferenciaNota($post_data['transferencia_nota']);
                 //Regresamos los items a la clinica remitente
@@ -218,6 +225,10 @@ class TransferenciasController extends AbstractActionController
                 }
 
             }elseif($post_data['transferencia_estatus'] == 'aceptada'){
+                
+                //Actualizamos session
+                $transferencia_pendientes = (int)$sesion->getTransferenciasPendientes();
+                $sesion->setTransferenciasPendientes($transferencia_pendientes - 1);
                 
                 //Modificamos la fecha de movimientos
                 $transferencia->setTransferenciaFechamovimiento(new \DateTime());
@@ -253,6 +264,7 @@ class TransferenciasController extends AbstractActionController
               
             $transferencia->save();
             $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
+            $sesion->updateNotifications();
             return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => true)));
         }
         

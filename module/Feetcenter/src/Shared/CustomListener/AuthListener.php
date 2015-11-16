@@ -59,6 +59,7 @@ class AuthListener implements ListenerAggregateInterface {
         
         /* Verificamos si es una ruta excluida ó si hay una sesión activa */
         if (in_array( $controller , $excludeControllers, true ) || $AouthSession->isActive() ) {  
+            $AouthSession->updateNotifications();
             return;
         }else{
             

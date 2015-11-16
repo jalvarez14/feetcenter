@@ -22,7 +22,9 @@ class AouthSession extends AbstractActionController {
             $session["empleadoacceso_username"] = array_key_exists("empleadoacceso_username", $session ) ? $session["empleadoacceso_username"] : null;
             $session["empleado_nombre"] = array_key_exists( "empleado_nombre", $session ) ? $session["empleado_nombre"] : null;
             $session["empleado_foto"] =  (array_key_exists("empleado_foto", $session ) && !is_null($session["empleado_foto"])) ? $session["empleado_foto"] : '/img/empleados/default.jpg';
-
+            $session["transferencias_pendientes"] = array_key_exists( "transferencias_pendientes", $session ) ? $session["transferencias_pendientes"] : 0;
+            
+            
             $session_data = new Container('session_data');
             $session_data->idempleadoacceso           = $session["idempleadoacceso"];
             $session_data->idclinica            = $session["idclinica"];
@@ -32,6 +34,8 @@ class AouthSession extends AbstractActionController {
             $session_data->empleadoacceso_username      = $session["empleadoacceso_username"];
             $session_data->empleado_nombre      = $session["empleado_nombre"];
             $session_data->empleado_foto        = $session["empleado_foto"];
+            $session_data->transferencias_pendientes        = $session["transferencias_pendientes"];
+            
 
     }
     
@@ -84,6 +88,7 @@ class AouthSession extends AbstractActionController {
             "empleadoacceso_username"    => $session_data->empleadoacceso_username,
             "empleado_nombre"    => $session_data->empleado_nombre,
             "empleado_foto"    => $session_data->empleado_foto,
+            "transferencias_pendientes" => $session_data->transferencias_pendientes,
 
         );
     }
@@ -92,6 +97,30 @@ class AouthSession extends AbstractActionController {
      * 
      * @return string
      */
+    
+    public static function updateNotifications(){
+        
+        if(AouthSession::getIdrol() == 1){
+            $transferencias = \TransferenciaQuery::create()->filterByTransferenciaEstatus('enviada')->count();
+            AouthSession::setTransferenciasPendientes($transferencias);
+        }else{
+            $transferencias = \TransferenciaQuery::create()->filterByIdclinicadestinataria(AouthSession::getIdClinica())->filterByTransferenciaEstatus('enviada')->count();  
+            AouthSession::setTransferenciasPendientes($transferencias);
+            
+        }
+    }
+
+
+    public static function getTransferenciasPendientes(){
+        $session_data = new Container('session_data');
+        return $session_data->transferencias_pendientes;
+    }
+    
+    public static function setTransferenciasPendientes($num){
+        $session_data = new Container('session_data');
+        $session_data->transferencias_pendientes = $num;
+    }
+    
     
     public static function getRolNombre(){
         $session_data = new Container('session_data');

@@ -172,6 +172,10 @@
 
     var grupoFrom = $('#clinica_container').grupos();
     grupoFrom.form();
+    
+    $('input[name=paciente_celular_confirmar],input[name=paciente_celular]').bind("cut copy paste",function(e) {
+        e.preventDefault();
+    });
 
 
 </script>

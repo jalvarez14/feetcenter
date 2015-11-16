@@ -55,7 +55,7 @@
                     <li><a href="/">Agenda</a></li>
                     <li><a href="#" data-tools="dropdown" data-target="#dropdown-pacientes">Clientes</a></li>
                     <li><a href="#" data-tools="dropdown" data-target="#dropdown-ventas">Ventas</a></li>
-                    <li><a href="#"  data-tools="dropdown" data-target="#dropdown-inventarios">Inventarios <span style="display: inline"class="badge badge-error">4</span></a></li>
+                    <li><a href="#"  data-tools="dropdown" data-target="#dropdown-inventarios">Inventarios <span id="notification_transfers" style="display: none"class="badge badge-error"><?php echo \Shared\Session\AouthSession::getTransferenciasPendientes()?></span></a></li>
                     <li><a href="#" data-tools="dropdown" data-target="#dropdown-egresos">Egresos</a></li>
                     <li><a href="#" data-tools="dropdown" data-target="#dropdown-empleados">Empleados</a></li>
                     <li><a href="#" data-tools="dropdown" data-target="#dropdown-compras">Compras</a></li>
@@ -141,4 +141,12 @@
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>
     </body>
+    <script>
+        var transferencias_pendientes = parseInt(<?php echo \Shared\Session\AouthSession::getTransferenciasPendientes()?>);
+        if(transferencias_pendientes > 0){
+            $('#notification_transfers').css('display','inline');
+        }else{
+            $('#notification_transfers').hide();
+        }
+    </script>
 </html>

@@ -204,6 +204,7 @@
                            contentType: false,
                             success: function(data){
                                 if(data.response){
+                                   
                                     $modal.close();
                                     window.location.replace('/inventario/transferencias');
                                 }

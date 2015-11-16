@@ -151,7 +151,9 @@ class PacientesController extends AbstractActionController
         $request = $this->getRequest();
         
         if($request->isPost()){
-             
+            
+            $session = new \Shared\Session\AouthSession();
+            
             $id = $this->params()->fromRoute('id');
             
             //Verificamos que el Id lugar que se quiere modificar exista
@@ -164,20 +166,34 @@ class PacientesController extends AbstractActionController
                 return $this->redirect()->toRoute('pacientes');
             }
             
-            //Instanciamos nuestro lugar
-            $entity = \PacienteQuery::create()->findPk($id);
+            if($session->getIdrol() == 1){
             
-            $entity->delete();
-            
-            //Agregamos un mensaje
-            $this->flashMessenger()->addSuccessMessage('Registro eliminado exitosamente!');
+                //Instanciamos nuestro lugar
+                $entity = \PacienteQuery::create()->findPk($id);
 
-            //Redireccionamos a nuestro list
-            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => true)));
+                $entity->delete();
+
+                //Agregamos un mensaje
+                $this->flashMessenger()->addSuccessMessage('Registro eliminado exitosamente!');
+
+                //Redireccionamos a nuestro list
+                return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('response' => true)));
+            }else{
+                $this->getResponse()->setStatusCode(404);
+                return; 
+            }
 
         }
         
         if($this->params()->fromQuery('html')){
+            
+            $idpaciente = $this->params()->fromQuery('idpaciente');
+            $can_delete = \VisitaQuery::create()->filterByIdpaciente($idpaciente)->exists();
+            
+            if($can_delete){
+                $msj = 'Lo sentimos, no es posible eliminar el cliente ya que este cuenta con registros en el modulo de ventas';
+                return $this->getResponse()->setContent($msj);
+            }
             $viewModel = new ViewModel();
             $viewModel->setTerminal(true);
             return $viewModel;
@@ -190,6 +206,8 @@ class PacientesController extends AbstractActionController
         $request = $this->getRequest();
         
         if($request->isPost()){
+            
+            $session = new \Shared\Session\AouthSession();
             
             $post_data = $request->getPost();
           
@@ -248,7 +266,13 @@ class PacientesController extends AbstractActionController
                 $tmp['paciente_nombre'] = $value['paciente_nombre'];
                 $tmp['paciente_celular'] = $value['paciente_celular'];
                 $tmp['empleado_nombre'] = $value['empleado_nombre'];
-                $tmp['opciones'] = '<a href="/pacientes/editar/'.$value['idpaciente'].'">Editar</a><a href="javascript:void(0)" class="delete_modal" style="margin-left: 18px;">Eliminar</a>';
+                
+                 $tmp['opciones'] = '<a href="/pacientes/editar/'.$value['idpaciente'].'">Editar</a><a href="javascript:void(0)" class="delete_modal" style="margin-left: 18px;">Eliminar</a>';
+                if($session->getIdrol() != 1){
+                     $tmp['opciones'] = '<a href="/pacientes/editar/'.$value['idpaciente'].'">Editar</a>';
+                }
+                
+               
                 
                 $data[] = $tmp;
  

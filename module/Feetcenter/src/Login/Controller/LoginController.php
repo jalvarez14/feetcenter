@@ -69,6 +69,20 @@ class LoginController extends AbstractActionController
 
                     //Verificamos que el usuario no este logueado actualmente
                     if(!$empleado_acceso->getEmpleadoaccesoEnsesion()){
+                        
+                        /*
+                         * NOTIFICACIONES
+                         */
+                        
+                        if($empleado_acceso->getIdrol() == 1){
+                            $transferencias = \TransferenciaQuery::create()->filterByTransferenciaEstatus('enviada')->count();
+                        }else{
+                            $transferencias = \TransferenciaQuery::create()->filterByIdclinicadestinataria($empleado_acceso->getIdrol())->filterByTransferenciaEstatus('enviada')->count();  
+                        }
+                        
+                        
+                        
+                        
                         //Creamos nuestra session
                         $session->Create(array(
                             'idempleadoacceso' => $empleado_acceso->getIdempleadoacceso(),
@@ -79,7 +93,7 @@ class LoginController extends AbstractActionController
                             'empleadoacceso_username' => $empleado_acceso->getEmpleadoaccesoUsername(),
                             'empleado_nombre' => $empleado_acceso->getEmpleado()->getEmpleadoNombre(),
                             'empleado_foto' => $empleado_acceso->getEmpleado()->getEmpleadoFoto(),
-
+                            'transferencias_pendientes' => $transferencias,
                         ));               
                         
                         $empleado_acceso->setEmpleadoaccesoEnsesion(1);
