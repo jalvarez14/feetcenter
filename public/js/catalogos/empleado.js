@@ -100,6 +100,10 @@
         plugin.init = function(){
             
             settings = plugin.settings = $.extend({}, defaults, options);
+            
+            $container.find('input[name*=password]').bind("cut copy paste",function(e) {
+                e.preventDefault();
+            });
 
             //Inicializamos los campos de fecha
             $container.find('input[name=empleado_fechanacimiento]').pickadate({

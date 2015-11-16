@@ -21,11 +21,12 @@ $(document).ready(function(){
                 return;
             }
             if($(this).hasClass('confirm')){
+                
                 var value = $(this).val();
                 var confirm_with = $(this).attr('for');
                 var $confirm_with = $form.find('[name="'+confirm_with+'"]');
                 var confirm_value = $confirm_with.val();
-                
+                console.log($confirm_with);
                 if(value != confirm_value){
                     error=true;
                     $(this).addClass('input-error');
