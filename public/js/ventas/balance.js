@@ -57,7 +57,7 @@
             
             if(typeof from == 'undefined'){
           
-                var from = moment('2000-01-01','YYYY-MM-DD');
+                var from = moment();
                 
             }
             if(typeof to ==  'undefined'){

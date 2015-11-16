@@ -13,12 +13,12 @@ $(document).ready(function(){
         $form.find('[required]').removeClass('input-error');
         
         $form.find('[required]').each(function(){
-            console.log(this);
             if($(this).val() == ""){
                 empty = true;
                 $(this).addClass('input-error');
                 var $span = $(this).siblings('span.req');
                 $span.after('<span class="error"> campo obligatorio</span>');
+                
             }
         });
         if(empty || error){
