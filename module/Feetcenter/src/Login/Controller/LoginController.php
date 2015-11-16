@@ -111,9 +111,14 @@ class LoginController extends AbstractActionController
     public function outAction() {
          
          $AouthSession = new \Shared\Session\AouthSession();
-         $empleado_acesso = \EmpleadoaccesoQuery::create()->findPk(\Shared\Session\AouthSession::getIdempleadoacceso());
-         $empleado_acesso->setEmpleadoaccesoEnsesion(0);
-         $empleado_acesso->save();
+         
+         $empleado_acesso = \EmpleadoaccesoQuery::create()->findPk($AouthSession->getIdempleadoacceso());
+
+         if(!is_null($empleado_acesso)){
+            $empleado_acesso->setEmpleadoaccesoEnsesion(0);
+            $empleado_acesso->save();
+         }   
+
          $AouthSession->Close();
          return $this->redirect()->toRoute('login');
     }

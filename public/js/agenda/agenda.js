@@ -450,7 +450,7 @@
                  header:{
                     left:   'title',
                     center: '',
-                    right:  'agendaWeek,resourceDay,prev,next'
+                    right:  'today,agendaWeek,resourceDay,prev,next'
                 },
                  timezone:'local',
                  now:date,
@@ -464,6 +464,7 @@
                  minTime:'09:00:00',
                  maxTime:'21:00:00',
                  columnFormat:'D/M',
+                 titleFormat:'dddd D , MMMM YYYY',
                 viewRender: function (view, element) {
                     $('#calendar').fullCalendar( 'removeEvents');
                     var viewName = view.name;
@@ -651,7 +652,7 @@
                     var viewName = view.name;
                            
                             if(!isOverlapping(event)){
-                                if(event.className[0] == "visita_terminado" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" ){
+                                if(event.className[0] == "visita_terminado" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso"){
                                     revertFunc();
                                     return;
                                 }
@@ -715,18 +716,6 @@
                         
                      
                  },
-                 
-                 /*
-                  * 
-            "por confirmar":"visita_porconfirmar",
-            "confimada":"visita_confirmada",
-            "cancelo":"visita_cancelo",
-            "no se presento":"visita_nosepresento",
-            "reprogramda":"visita_reprogramda",
-            "en servicio":"visita_enservicio",
-            "terminado":"visita_terminado",
-                  */
-                
                 eventClick: function( event, jsEvent, view ) { 
                     if(view.name !== 'resourceDay'){
                         return;

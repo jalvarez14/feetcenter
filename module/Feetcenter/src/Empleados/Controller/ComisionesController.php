@@ -57,10 +57,10 @@ class ComisionesController extends AbstractActionController
     public function comisionesbyclinicaAction(){
         
         if($this->params()->fromQuery('idclinica')){
-            
+
             $idclinica = $this->params()->fromQuery('idclinica');
             
-            $comisiones = \EmpleadocomisionQuery::create()->joinEmpleado()->withColumn('empleado_nombre')->orderBy('empleadocomision_fecha',  \Criteria::DESC)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            $comisiones = \EmpleadocomisionQuery::create()->filterByEmpleadocomisionFecha(new \DateTime())->joinEmpleado()->withColumn('empleado_nombre')->orderBy('empleadocomision_fecha',  \Criteria::DESC)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
             
             $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->select('idempleado')->joinEmpleado()->withColumn('empleado_nombre')->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
 

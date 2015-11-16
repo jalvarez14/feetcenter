@@ -78,6 +78,7 @@
                         var tr = $('<tr>');
                         tr.append('<td>'+this.paciente_nombre+'</td>');
                         tr.append('<td>'+this.clinica_nombre+'</td>');
+                        tr.append('<td>'+this.empleado_nombre+'</td>');
                         tr.append('<td>'+date.format('DD/MM/YYYY')+'</td>');
                         tr.append('<td>'+this.paciente_celular+'</td>');
                         tr.append('<td><a href="/pacientes/expediente/ver/'+this.idpaciente+'">Expediente</a></td>');

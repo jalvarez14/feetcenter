@@ -75,9 +75,11 @@
                async:false,
                data:{clinicas:clinicas_select,from:from.format('YYYY-MM-DD'),to:to.format('YYYY-MM-DD')},
                success: function(data){
+                  
                    $.each(data,function(){
                        $container.find('[idclinica='+this.idclinica+']').show();
-                       $container.find('tr#ingreso').find('td[idclinica='+this.idclinica+']').text(accounting.formatMoney(this.ingreso));
+                       $container.find('tr#ingreso_efectivo').find('td[idclinica='+this.idclinica+']').text(accounting.formatMoney(this.ingrsos_efectivo));
+                       $container.find('tr#ingreso_tarjeta').find('td[idclinica='+this.idclinica+']').text(accounting.formatMoney(this.ingrsos_tarjeta));
                        $container.find('tr#egreso').find('td[idclinica='+this.idclinica+']').text(accounting.formatMoney(this.egreso));
                        $container.find('tr#balance').find('td[idclinica='+this.idclinica+']').text(accounting.formatMoney(this.balance));
                    });

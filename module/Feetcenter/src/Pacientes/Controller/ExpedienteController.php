@@ -54,7 +54,7 @@ class ExpedienteController extends AbstractActionController
            
            $post_data = $request->getPost();
            
-           $pacientes = \PacienteQuery::create()->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+           $pacientes = \PacienteQuery::create()->joinEmpleado()->withColumn('empleado_nombre')->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
            
            return $this->getResponse()->setContent(json_encode($pacientes));
        }

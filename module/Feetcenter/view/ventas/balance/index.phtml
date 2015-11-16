@@ -27,8 +27,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr id="ingreso">
-                <td><strong>Ingresos</strong></td>
+            <tr id="ingreso_efectivo">
+                <td><strong>Ingresos efectivo</strong></td>
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <td idclinica="<?php echo $clinica->getIdclinica() ?>"></td>
+                <?php endforeach; ?>
+            </tr>
+            <tr id="ingreso_tarjeta">
+                <td><strong>Ingresos tarjeta</strong></td>
                 <?php foreach ($clinicas as $clinica) : ?>
                     <td idclinica="<?php echo $clinica->getIdclinica() ?>"></td>
                 <?php endforeach; ?>

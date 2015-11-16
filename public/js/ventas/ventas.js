@@ -59,7 +59,7 @@
             var clinicas_select = $container.find("select[name=idclinica]").multipleSelect('getSelects');
             var estatus_select = $container.find("select[name=visita_estatuspago]").multipleSelect('getSelects');
             
-            var from = typeof from == 'undefined' ? '1990-08-19' : from;
+            var from = typeof from == 'undefined' ? now.format('DD-MM-YYYY') : from;
             var to = typeof to == 'undefined' ? now.format('DD-MM-YYYY') : to;
 
             if(typeof $table != 'undefined'){
