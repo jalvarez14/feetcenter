@@ -47,7 +47,9 @@ class BalanceController extends AbstractActionController
     }
     public function indexAction()
     {
-            
+        
+        $date = new \DateTime();
+
         $session  = new \Shared\Session\AouthSession();
         $idrol = $session->getIdrol();
         

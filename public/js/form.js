@@ -18,9 +18,26 @@ $(document).ready(function(){
                 $(this).addClass('input-error');
                 var $span = $(this).siblings('span.req');
                 $span.after('<span class="error"> campo obligatorio</span>');
-                
+                return;
             }
+            if($(this).hasClass('confirm')){
+                var value = $(this).val();
+                var confirm_with = $(this).attr('for');
+                var $confirm_with = $form.find('[name="'+confirm_with+'"]');
+                var confirm_value = $confirm_with.val();
+                
+                if(value != confirm_value){
+                    error=true;
+                    $(this).addClass('input-error');
+                    var $span = $(this).siblings('span.req');
+                    $span.after('<span class="error"> La contraseña no coincide</span>');
+                    return;
+                }
+            }
+            
         });
+        
+        console.log(empty);
         if(empty || error){
             e.preventDefault();
         }

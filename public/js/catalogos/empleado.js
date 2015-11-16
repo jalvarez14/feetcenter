@@ -75,10 +75,12 @@
             new_row.find('select').attr('name','accesos[1][idrol]');
             new_row.find('input').eq(0).attr('name','accesos[1][username]');
             new_row.find('input').eq(1).attr('name','accesos[1][password]');
+            new_row.find('input').eq(2).attr('name','accesos[1][password_confirmar]').attr('for','accesos[1][password]');
             
             //Limpiamos los inputs
             new_row.find('input').eq(0).val('');
             new_row.find('input').eq(1).val('');
+            new_row.find('input').eq(2).val('');
             
             //El evento para eliminar la row del acceso
             new_row.find('a').on('click',function(){
