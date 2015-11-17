@@ -37,6 +37,7 @@ return array(
     'Empleados\Controller\VendidosController'          => __DIR__ . '/src/Empleados/Controller/VendidosController.php',
     'Empleados\Form\FaltantesForm'                     => __DIR__ . '/src/Empleados/Form/FaltantesForm.php',
     'Empleados\Form\ReporteForm'                       => __DIR__ . '/src/Empleados/Form/ReporteForm.php',
+    'Feetcenter\Controller\CronjobController'          => __DIR__ . '/src/Feetcenter/Controller/CronjobController.php',
     'Feetcenter\Controller\IndexController'            => __DIR__ . '/src/Feetcenter/Controller/IndexController.php',
     'Feetcenter\Controller\MicuentaController'         => __DIR__ . '/src/Feetcenter/Controller/MicuentaController.php',
     'Inventario\Controller\ExistenciasController'      => __DIR__ . '/src/Inventario/Controller/ExistenciasController.php',

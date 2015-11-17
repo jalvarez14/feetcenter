@@ -55,6 +55,7 @@ class AuthListener implements ListenerAggregateInterface {
         /* Rutas excluidas de verificación */
         $excludeControllers = array(
             'Login\Controller\Login',
+            'Feetcenter\Controller\Cronjob',
         );
         
         /* Verificamos si es una ruta excluida ó si hay una sesión activa */

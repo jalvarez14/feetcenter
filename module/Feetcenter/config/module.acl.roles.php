@@ -64,7 +64,8 @@ return array(
             'configuracion',
             //reportes
             'reportes',
-            
+            //Cronjobs
+            'cron-autologout',
         ),
         "deny"=>array(
              
@@ -119,6 +120,8 @@ return array(
             'reportes',
             //mi cuenta
             'micuenta',
+            //Cronjobs
+            'cron-autologout',
         ),
         "deny"=>array(
             //Inventarios
@@ -165,6 +168,8 @@ return array(
             'agenda',
             //mi cuenta
             'micuenta',
+            //Cronjobs
+            'cron-autologout',
             
         ),
         "deny"=>array(

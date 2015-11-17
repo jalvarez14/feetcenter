@@ -607,6 +607,21 @@ return array(
             ),
         ),
     ),
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'cron-autologout' => array(
+                    'options' => array(
+                        'route' => 'autologout',
+                        'defaults' => array(
+                            'controller' => 'Feetcenter\Controller\Cronjob',
+                            'action' => 'autologout',
+                        ),
+                    ),
+                ),
+            )
+        )
+    ),
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -678,6 +693,8 @@ return array(
             'Reportes\Controller\Reportes' => 'Reportes\Controller\ReportesController',
             //Mi cuenta
             'Feetcenter\Controller\Micuenta' => 'Feetcenter\Controller\MicuentaController',
+            //Cronjobs 
+            'Feetcenter\Controller\Cronjob' => 'Feetcenter\Controller\CronjobController',
             
         ),
     ),
@@ -697,11 +714,5 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
-    // Placeholder for console routes
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-            ),
-        ),
-    ),
+
 );
