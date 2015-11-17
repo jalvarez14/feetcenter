@@ -44,6 +44,7 @@
         * Important Components
         */ 
         var $container = $(container);  
+        var $payContainer = $container.find('#pay_container');
         
         var settings;
         var pacientes_array = new Array();
@@ -241,6 +242,8 @@
        }
         
        var addProduct = function(){
+           
+          
            var itemCount = $container.find('table#visita_detalles tbody tr').length;
            
            $container.find('#addproduct_container input,#addproduct_container select').removeClass('input-error');
@@ -269,11 +272,13 @@
                         var price = selected.attr('data-price');
                         var subtotal = parseInt(cantidad) * parseInt(price);
                         var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'">');
+                        var inputs2 = $('<input type="hidden" name="vistadetallepay['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetallepay['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetallepay['+itemCount+'][subtotal]" value="'+subtotal+'">');
                         var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
                         opciones.find('a').on('click',deleteProduct);
 
 
-                        //Nuestra row
+                        //Nuestra row del modal principal
+                        
                         var tr = $('<tr>');
                         tr.append(inputs);
                         tr.append('<td>'+cantidad+'</td>');
@@ -281,7 +286,17 @@
                         tr.append(opciones);
                         tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
                         $container.find('table#visita_detalles tbody').append(tr);
-
+                        
+                        
+                        //Nuestra row de la pantalla de pago
+                        var tr2 = $('<tr>');
+                        tr2.append(inputs2);
+                        tr2.append('<td>'+cantidad+'</td>');
+                        tr2.append('<td>'+item+'</td>');
+                        tr2.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+                        $payContainer.find('table#pay_details tbody').append(tr2);
+                        
+                        
                         //Calculamos el total
                         var total = 0;
                         
@@ -299,7 +314,8 @@
                        $container.find('input[name=visitadetalle_cantidad]').addClass('input-error');
                        alert('La cantidad debe de ser menor o igual al numero de existencias');
                    }
-               }else if(type == 'servicio'){
+               }
+               else if(type == 'servicio'){
 
                     var data_dependencia = selected.attr('data-dependencia');
                     if(data_dependencia == 'membresia'){
@@ -336,7 +352,7 @@
                                         tr.append(opciones);
                                         tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
                                         $container.find('table#visita_detalles tbody').append(tr);
-
+                                        
                                         //Calculamos el total
                                         var total = 0;
                                         $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
@@ -366,8 +382,9 @@
                         var id = selected.val();
                         var price = selected.attr('data-price');
                         var subtotal = parseInt(cantidad) * parseInt(price);
-                        var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'">');
-                        var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
+                       var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'">');
+                       var inputs2 = $('<input type="hidden" name="vistadetallepay['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetallepay['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetallepay['+itemCount+'][subtotal]" value="'+subtotal+'">'); 
+                       var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
                         opciones.find('a').on('click',deleteProduct);
 
                         //Nuestra row
@@ -378,7 +395,16 @@
                         tr.append(opciones);
                         tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
                         $container.find('table#visita_detalles tbody').append(tr);
-
+                        
+                        //Nuestra row de la pantalla de pago
+                        var tr2 = $('<tr>');
+                        tr2.append(inputs2);
+                        tr2.append('<td>'+cantidad+'</td>');
+                        tr2.append('<td>'+item+'</td>');
+                        tr2.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+                        $payContainer.find('table#pay_details tbody').append(tr2);
+                        
+                        
                         //Calculamos el total
                         var total = 0;
                         $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
@@ -392,7 +418,8 @@
                         selected.addClass('hide');
                         $('#addproduct_container input,#addproduct_container select').val('');
                     }
-               }else{
+               }
+               else{
                    var idmembresia = selected.val();
                    var idclinica = container.find('input[name=idclinica]').val();
                    //Obtenemos los servicios de la membresia seleccionada y los insertamos en nuestro select de productos/servicios
@@ -419,10 +446,12 @@
                     var price = selected.attr('data-price');
                     var subtotal = parseInt(cantidad) * parseInt(price);
                     var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'">');
+                    var inputs2 = $('<input type="hidden" name="vistadetallepay['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetallepay['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetallepay['+itemCount+'][subtotal]" value="'+subtotal+'">');
+                    
                     var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
                     opciones.find('a').on('click',deleteProduct);
 
-                    //Nuestra row
+                    //Nuestra row de modal principal
                     var tr = $('<tr>');
                     tr.append(inputs);
                     tr.append('<td>'+cantidad+'</td>');
@@ -430,6 +459,54 @@
                     tr.append(opciones);
                     tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
                     $container.find('table#visita_detalles tbody').append(tr);
+                    
+                    //Nuestra row de la pantalla de pago
+                    var tr2 = $('<tr>');
+                    tr2.append(inputs2);
+                    tr2.append('<td>'+cantidad+'</td>');
+                    tr2.append('<td>'+item+'</td>');
+                    tr2.append('<td><input type="text" name="vistadetallepay['+itemCount+'][folio]" required="" style="cursor: auto;"></td>');
+                    tr2.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+                    
+                   
+                   
+                   $payContainer.find('table#pay_details tbody').append(tr2);
+                   
+                   
+                   
+                   
+//                   <tr>
+//<input type="hidden" name="vistadetallepay[2][price]" value="2200.00" style="cursor: auto;">
+//<input type="hidden" name="vistadetallepay[2][subtotal]" value="2200.00" style="cursor: auto;">
+//<input type="hidden" name="vistadetallepay[2][id]" value="1" style="cursor: auto;">
+//<input type="hidden" name="vistadetallepay[2][cantidad]" value="1.00" style="cursor: auto;">
+//<input type="hidden" name="vistadetallepay[2][type]" value="membresia" style="cursor: auto;">
+//<td>1</td>
+//<td>Membresía anual</td>
+//<td>
+//<input type="text" name="vistadetallepay[2][folio]" required="" style="cursor: auto;">
+//</td>
+//<td class="visitadetalle_subtotal">$ 2,200.00</td>
+//</tr>
+//     
+//
+//
+//<tr>
+//<input type="hidden" value="1" name="vistadetallepay[2][id]">
+//<input type="hidden" value="membresia" name="vistadetallepay[2][type]">
+//<input type="hidden" value="2200.00" name="vistadetallepay[2][price]">
+//<input type="hidden" value="1" name="vistadetallepay[2][cantidad]">
+//<input type="hidden" value="2200" name="vistadetallepay[2][subtotal]">
+//<td>1</td>
+//<td>Membresía anual</td>
+//<td>
+//<input class="input-error" type="text" style="cursor: auto;" required="" name="vistadetallepay[2][folio]">
+//</td>
+//<td>$ 2,200.00</td>
+//</tr>
+                   
+                   
+                    
 
                     //Calculamos el total
                     var total = 0;

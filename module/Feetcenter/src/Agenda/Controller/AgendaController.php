@@ -306,6 +306,16 @@ class AgendaController extends AbstractActionController
              
              $idvisita = $this->params()->fromQuery('idvisita');
              $entity = \VisitaQuery::create()->findPk($idvisita);
+             
+             
+             //Validamos si tiene el evento ya agendada una proxima cita
+             $next_date = \VisitaQuery::create()->filterByIdclinica($entity->getIdclinica())->filterByIdpaciente($entity->getIdpaciente())->filterByVisitaFechainicio(array('min' => $entity->getVisitaFechafin()))->exists();
+             if($next_date){
+                 $next_date = \VisitaQuery::create()->filterByIdclinica($entity->getIdclinica())->filterByIdpaciente($entity->getIdpaciente())->filterByVisitaFechainicio(array('min' => $entity->getVisitaFechafin()))->findOne();
+             }else{
+                 $next_date = false;
+             }
+             
            
              //Instanciamos nuestro formulario
              $form = new \Agenda\Form\EventoForm($entity->getIdempleadocreador(), $entity->getIdclinica(), $entity->getIdempleado(), $entity->getVisitaCreadaen(), $entity->getVisitaFechainicio(), $entity->getVisitaFechafin());
@@ -314,9 +324,10 @@ class AgendaController extends AbstractActionController
              $form->setAttribute('novalidate', true);
              $form->setAttribute('class', 'forms');
              $form->get('visita_estatuspago')->setValue($entity->getVisitaEstatuspago());
+            
              
              $status = $entity->getVisitaStatus();
-            
+
             if($status == 'confimada'){ 
                 //Modificamos nuestro select del estatus
                 $form->add(array(
@@ -324,7 +335,6 @@ class AgendaController extends AbstractActionController
                     'name' => 'visita_status',
                     'options' => array(
                        'value_options' => array(
-                            'por confirmar' => 'Por confirmar',
                             'confimada' => 'Confimada',
                             'en servicio' => 'En servicio',
                             'cancelo' => 'Cancelo',
@@ -343,7 +353,7 @@ class AgendaController extends AbstractActionController
                     'options' => array(
                        'value_options' => array(
                                'en servicio' => 'En servicio',
-                                'terminado' => 'Terminado',
+                               'terminado' => 'Terminado',
                        ),
                     ),
                    'attributes' => array(
@@ -364,6 +374,24 @@ class AgendaController extends AbstractActionController
                        'class' => 'width-100',
                    ),
                 ));
+            }
+            elseif($status == 'por confirmar'){
+                $form->add(array(
+                    'type' => 'Select',
+                    'name' => 'visita_status',
+                    'options' => array(
+                       'value_options' => array(
+                               'por confirmar' => 'Por confirmar',
+                               'confimada' => 'Confimada',
+                               'cancelo' => 'Cancelo',
+                               'no se presento' => 'No se presento',
+                               'reprogramda' => 'Reprogramda',
+                       ),
+                    ),
+                   'attributes' => array(
+                       'class' => 'width-100',
+                   ),
+                ));
             }else{
                 $form->add(array(
                     'type' => 'Select',
@@ -373,6 +401,9 @@ class AgendaController extends AbstractActionController
                                'por confirmar' => 'Por confirmar',
                                'confimada' => 'Confimada',
                                'en servicio' => 'En servicio',
+                                'cancelo' => 'Cancelo',
+                                'reprogramda' => 'Reprogramda',
+                           'no se presento' => 'No se presento',
                        ),
                     ),
                    'attributes' => array(
@@ -450,6 +481,7 @@ class AgendaController extends AbstractActionController
            
             $viewModel = new ViewModel();
             $viewModel->setVariables(array(
+                'next_date' => $next_date, 
                 'form' => $form,
                 'visita' => $entity,
                 'productos' => $productos,

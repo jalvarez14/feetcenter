@@ -8,6 +8,7 @@
     <?php echo $this->formHidden($form->get('visita_creadaen')); ?>
     <?php echo $this->formHidden($form->get('visita_fechainicio')); ?>
     <?php echo $this->formHidden($form->get('visita_fechafin')); ?>
+    <?php echo $this->formHidden($form->get('visita_tipo')); ?>
 
     
    
@@ -248,25 +249,51 @@
                     <legend>
                         ¿Agendar una proxima cita?
                     </legend>
-                    <ul class="forms-inline-list">
-                        <li>
-                            <input type="radio" name="visita_siguiente" value="si">
-                            <label>Si</label>
-                            <input type="radio" name="visita_siguiente" value="no">
-                            <label>No</label>
+                    <?php if($next_date) :?>
+                        <ul class="forms-inline-list">
+                            <li>
+                                <input  disabled="disabled" checked type="radio" name="visita_siguiente" value="si">
+                                <label>Si</label>
+                                <input disabled="disabled"  type="radio" name="visita_siguiente" value="no">
+                                <label>No</label>
 
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    <?php else :?>
+                        <ul class="forms-inline-list">
+                            <li>
+                                <input  type="radio" name="visita_siguiente" value="si">
+                                <label>Si</label>
+                                <input  type="radio" name="visita_siguiente" value="no">
+                                <label>No</label>
+
+                            </li>
+                        </ul>
+                    <?php endif;?>
                 </fieldset>
             </div>
         </div>
         <div id="pay_date_container"class="units-row" style="margin-bottom: 0px; display: none">
             <div class="unit-100">
                 <fieldset>
+                    <?php if($next_date) :?>
+                    
+                    <div class="unit-100">
+                    <b>Fecha y hora: </b>
+                    <?php echo $next_date->getVisitaFechainicio('d/m/Y')?>
+                    </div>
+             
+                    <div class="units-row" style="margin-bottom: 0px;">
+                    <div class="unit-100">
+                    <b>Pedicurista: </b>
+                    <?php echo $next_date->getEmpleadoRelatedByIdempleado()->getEmpleadoNombre()?>
+                    </div>
+                    </div>
+                <?php endif;?>
                     <legend>
                         Detalles cita
                     </legend>
-                    <div class="units-row">
+                    <div id="next_date_form" class="units-row">
                         <div class="unit-33">
                            <label class="forms-inline-list">
                                 <b>Pedicurista</b> <span class="req">*</span>
@@ -292,10 +319,10 @@
                         </div>
                     </div>
                     <div class="units-row">
-                    <div class="unit-40 centered">
-                        <a href="javascript:void(0)" btn-action="submit_visita_siguiente" class="btn btn-green width-100">Guardar</a>
+                        <div class="unit-40 centered">
+                            <a href="javascript:void(0)" btn-action="submit_visita_siguiente" class="btn btn-green width-100">Guardar</a>
+                        </div>
                     </div>
-                </div>
                     <div id="pay_date_anticipado_selector"class="units-row" style="margin-bottom: 0px;  display: none">
                         <div class="unit-100">
                             <b>¿Pago anticipado?</b>
@@ -495,7 +522,7 @@
 <script src="/js/agenda/modalEvent.js"></script>
 
 <script>
-    console.log('entro');
+   
     //Nuestro checkbox de tipo de servicio
     var visita_tipo = "<?php echo $visita->getVisitaTipo() ?>";
     $('#modal_event_container').find('input[name=visita_tipo]').prop('checked',false);
@@ -512,3 +539,4 @@
         paciente:<?php echo $paciente?>,
     });
 </script>
+
