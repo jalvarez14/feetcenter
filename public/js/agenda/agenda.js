@@ -823,7 +823,7 @@
                                      
                                     modal.find('select[name=visita_status]').on('change',function(){
                                         var status =  modal.find('select[name=visita_status]').val();
-                                        if(status == 'terminado' && status_pay == 'no pagada'){
+                                        if(status_pay == 'no pagada'){
                                             modal.find('span.token-input-delete-token').hide();
                                             modalEventContainer.find('input,button,select:not(select[name=visita_status])').prop('disabled',true);
                                             modalEventContainer.find('input,button,select:not(select[name=visita_status])').css('cursor','not-allowed');
