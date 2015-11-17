@@ -27,6 +27,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+                ->prependFile($this->basePath('js/check_browser_close.js'))
                 ->prependFile($this->basePath('plugins/fancyBox/source/jquery.fancybox.js'))
             ->prependFile($this->basePath('/js/plugin/multiple.js'))
             ->prependFile($this->basePath('js/plugin/datatable/jquery.dataTables.js'))
@@ -66,6 +67,7 @@
         </ul>
         <ul id="dropdown-profile" class="dropdown">
             <li><a href="/login/out">Cerrar sesión</a></li>
+            <li><a href="/micuenta">Mi cuenta</a></li>
         </ul>
         <ul id="dropdown-pacientes" class="dropdown">
             <li><a href="/pacientes">Clientes</a></li>

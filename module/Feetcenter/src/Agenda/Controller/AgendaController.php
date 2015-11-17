@@ -70,7 +70,7 @@ class AgendaController extends AbstractActionController
     
     public function indexAction()
     {
-
+        echo '<pre>';var_dump($_SESSION);echo '</pre>';exit();
         $sesion = new \Shared\Session\AouthSession();
         $idrol = $sesion->getIdrol();
         

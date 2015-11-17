@@ -1,0 +1,197 @@
+<?php if(count($successMessages)) :?>
+    <div class="units-row">
+        <?php foreach ($successMessages as $message) :?>
+            <div class="unit-100">    
+                <div class="tools-alert tools-alert-green">
+                    <?php echo $message?>
+                </div> 
+            </div>
+        <?php endforeach;?>
+    </div>
+<?php endif;?>
+<div id="empleado_container">
+    <h1><?php echo $form->get('empleado_nombre')->getValue()?></h1>
+    
+    <?php 
+        $form->setAttribute('action', '/micuenta/'.$id);
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('empleado_nombre')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Numero del seguro social
+                <?php echo $this->formText($form->get('empleado_nss')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                RFC
+                <?php echo $this->formText($form->get('empleado_rfc')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Calle
+                <?php echo $this->formText($form->get('empleado_calle')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Numero
+                <?php echo $this->formText($form->get('empleado_numero')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Colonia
+                <?php echo $this->formText($form->get('empleado_colonia')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Codigo postal
+                <?php echo $this->formText($form->get('empleado_codigopostal')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Ciudad
+                <?php echo $this->formText($form->get('empleado_ciudad')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Sexo
+                <?php echo $this->formSelect($form->get('empleado_sexo')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+             <label style="margin-bottom: 0px">
+                Fecha de nacimiento
+            </label>
+            <?php echo $this->formText($form->get('empleado_fechanacimiento')); ?>
+            
+        </div>
+        <div class="unit-50">
+            <label>
+                Teléfono
+                <?php echo $this->formText($form->get('empleado_telefono')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Celular
+                <?php echo $this->formText($form->get('empleado_celular')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Sueldo
+                <?php echo $this->formText($form->get('empleado_sueldo')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Datos de acceso al sistema</legend>
+                <div class="units-row" id="acceso_row">
+                    <div class="unit-25">
+                        <label>Rol</b</label>
+                        <input  class="width-100" name="accesos[0][idrol]" type="hidden" required>
+                        <select disabled class="width-100" name="accesos[0][idrol2]">
+                            <?php foreach($roles as $rol) :?>
+                                <option value="<?php echo $rol['idrol']?>"><?php echo $rol['rol_nombre']?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                    <div class="unit-25">
+                        <label>Nombre de usuario</b</label> <span class="req">*</span>
+                         <input  class="width-100" name="accesos[0][username]" type="hidden" required value="<?php echo $empleado_accesos[0]['empleadoacceso_username']?>">
+                         <input disabled class="width-100" type="text" required value="<?php echo $empleado_accesos[0]['empleadoacceso_username']?>">
+                    </div>
+                    <div class="unit-25">
+                        <label>Contraseña</b</label> <span class="req">*</span>
+                        <input class="width-100" type="password"  name="accesos[0][password]" required value="<?php echo $empleado_accesos[0]['empleadoacceso_password']?>">
+                    </div>
+                    <div class="unit-25">
+                        <label>Confirmar contraseña</b</label> <span class="req">*</span>
+                        <input class="width-100 confirm" type="password" for="accesos[0][password]"  name="accesos[0][password_confirmar]" required value="<?php echo $empleado_accesos[0]['empleadoacceso_password']?>">
+                    </div>
+                </div>
+                <?php if(isset($empleado_accesos[1])) :?>
+                <div class="units-row">
+                    <div class="unit-25">
+                        <label>Rol</b</label>
+                        <input  class="width-100" name="accesos[1][idrol]" type="hidden" required>
+                        <select disabled class="width-100" name="accesos[1][idrol2]">
+                            <?php foreach($roles as $rol) :?>
+                                <option value="<?php echo $rol['idrol']?>"><?php echo $rol['rol_nombre']?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                    <div class="unit-25">
+                        <label>Nombre de usuario</b</label> 
+                        <input  class="width-100" name="accesos[1][username]" type="hidden" required value="<?php echo $empleado_accesos[1]['empleadoacceso_username']?>">
+                        <input disabled class="width-100" type="text" required value="<?php echo $empleado_accesos[1]['empleadoacceso_username']?>">
+                    </div>
+                    <div class="unit-25">
+                        <label>Contraseña</b</label> <span class="req">*</span>
+                        <input class="width-100" type="password"  name="accesos[1][password]" required value="<?php echo $empleado_accesos[1]['empleadoacceso_password']?>">
+                    </div>
+                    <div class="unit-25">
+                        <label>Confirmar contraseña</b</label> <span class="req">*</span>
+                        <input class="width-100 confirm" for="accesos[1][password]" type="password"  name="accesos[1][password_confirmar]" required value="<?php echo $empleado_accesos[1]['empleadoacceso_password']?>">
+                    </div>
+                </div>
+                <?php endif;?>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script src="/js/catalogos/empleado.js"></script>
+<script>
+    var empleado = <?php echo json_encode($entity)?>;
+    var empleado_accesos = <?php echo json_encode($empleado_accesos)?>;
+
+    
+     //La area de accessos
+    var access_row_flag = false; 
+    $('#acceso_row select[name="accesos[0][idrol2]"],#acceso_row input[name="accesos[0][idrol]"]').val(empleado_accesos[0].idrol);
+    if(empleado_accesos.length > 1){
+        $('#acceso_row a').addClass('btn-disabled');
+        $('#acceso_row').next('div').find('select[name="accesos[1][idrol2]"],input[name="accesos[1][idrol]"]').val(empleado_accesos[1].idrol);
+        access_row_flag = true;
+        
+    }
+
+    $('#empleado_container').empleado({empleado:empleado,access_row_flag:access_row_flag });
+    
+   
+</script>

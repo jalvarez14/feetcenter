@@ -64,6 +64,7 @@ return array(
             'configuracion',
             //reportes
             'reportes',
+            
         ),
         "deny"=>array(
              
@@ -116,6 +117,8 @@ return array(
             'ventas',
             //reportes
             'reportes',
+            //mi cuenta
+            'micuenta',
         ),
         "deny"=>array(
             //Inventarios
@@ -160,6 +163,8 @@ return array(
             'pacientes-expediente',
             //Agenda
             'agenda',
+            //mi cuenta
+            'micuenta',
             
         ),
         "deny"=>array(

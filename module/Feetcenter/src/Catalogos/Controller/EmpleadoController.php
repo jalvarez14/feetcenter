@@ -182,6 +182,29 @@ class EmpleadoController extends AbstractActionController
         
     }
     
+    public function desbloquearAction(){
+        
+        $id = (int) $this->params()->fromRoute('id');
+        
+        if(!\EmpleadoQuery::create()->filterByIdempleado($id)->exists()){
+            $id =0;
+        }
+        
+        $empleado_accesos = \EmpleadoaccesoQuery::create()->filterByIdempleado($id)->find();
+        
+        foreach ($empleado_accesos as $accesso){
+            $accesso->setEmpleadoaccesoEnsesion(0);
+            $accesso->save();
+        }
+        
+        //Agregamos un mensaje
+        $this->flashMessenger()->addSuccessMessage('Empleado desbloqueado!');
+
+        //Redireccionamos a nuestro list
+        return $this->redirect()->toRoute('catalogos/empleado');
+                
+    }
+    
     public function editarAction()
     {   
         $request = $this->getRequest();

@@ -10,6 +10,20 @@
 return array(
     'router' => array(
         'routes' => array(
+            /*
+             * MI CUENTA
+             */
+            
+            'micuenta' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/micuenta[/:id]',
+                    'defaults' => array(
+                        'controller'    => 'Feetcenter\Controller\Micuenta',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
             
             /*
              * REPORTES
@@ -662,7 +676,8 @@ return array(
             'Configuracion\Controller\Configuracion' => 'Configuracion\Controller\ConfiguracionController',
             //Reportes
             'Reportes\Controller\Reportes' => 'Reportes\Controller\ReportesController',
-            //Ventas
+            //Mi cuenta
+            'Feetcenter\Controller\Micuenta' => 'Feetcenter\Controller\MicuentaController',
             
         ),
     ),

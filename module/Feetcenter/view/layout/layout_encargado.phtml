@@ -29,6 +29,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+                ->prependFile($this->basePath('js/check_browser_close.js'))
                 ->prependFile($this->basePath('plugins/bootstrap-timepicker-0.5.1/js/bootstrap-timepicker.js'))
                 ->prependFile($this->basePath('plugins/fancyBox/source/jquery.fancybox.js'))
 
@@ -71,6 +72,7 @@
         <!--Dropdown-->
         <ul id="dropdown-profile" class="dropdown">
             <li><a href="/login/out">Cerrar sesión</a></li>
+            <li><a href="/micuenta">Mi cuenta</a></li>
         </ul>
         <ul id="dropdown-empleados" class="dropdown">
             <li><a href="/empleados">Horarios</a></li>
@@ -143,5 +145,8 @@
         }else{
             $('#notification_transfers').hide();
         }
+
+
+    
     </script>
 </html>
