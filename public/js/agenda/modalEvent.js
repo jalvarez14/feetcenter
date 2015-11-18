@@ -461,6 +461,7 @@
                     $container.find('table#visita_detalles tbody').append(tr);
                     
                     //Nuestra row de la pantalla de pago
+                    
                     var tr2 = $('<tr>');
                     tr2.append(inputs2);
                     tr2.append('<td>'+cantidad+'</td>');
@@ -468,9 +469,20 @@
                     tr2.append('<td><input type="text" name="vistadetallepay['+itemCount+'][folio]" required="" style="cursor: auto;"></td>');
                     tr2.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
                     
+                   //Contamos el numero de columnas de nuestra tabla de pago
+                   if($payContainer.find('table#pay_details thead th').length == 3){
+                        $payContainer.find('table#pay_details thead th').eq(1).after('<th>Folio</th>');
+                        $payContainer.find('table#pay_details tbody tr').each(function(){
+                            $(this).find('td').eq(1).after('<td></td>');
+                        });
+                        $payContainer.find('table#pay_details tfoot tr td').eq(0).after('<td></td>');
+                        $payContainer.find('table#pay_details tbody').append(tr2);
+                   }else{
+                        $payContainer.find('table#pay_details tbody').append(tr2);
+                   }
                    
                    
-                   $payContainer.find('table#pay_details tbody').append(tr2);
+                   //
                    
                    
                    
