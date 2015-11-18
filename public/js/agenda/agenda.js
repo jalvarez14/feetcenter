@@ -744,7 +744,7 @@
                         var start = moment(event.start);
                         var diff = now.diff(start,'minutes');
           
-                        if(diff > 15 && $.inArray(status,['en servicio', 'terminado']) < 0){
+                        if(diff > 20 && $.inArray(status,['en servicio', 'terminado']) < 0){
                             is_editable = false;
                         }
                         
@@ -1577,7 +1577,7 @@
                              });
                              
                         }else{
-                            alert('Lo sentimos, esta vista ya no es editable debido a que han transcurrido 15 minutos desde su hora de inicio');
+                            alert('Lo sentimos, esta vista ya no es editable debido a que han transcurrido 20 minutos desde su hora de inicio');
                         }
                         
                     }

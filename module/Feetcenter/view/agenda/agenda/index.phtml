@@ -19,7 +19,7 @@
     <?php endif;?>
     <div class="units-row">
         <div class="unit-30">
-            Clinica
+            <label style="font-size: 18px">Clinica</label>
             <select multiple="multiple" name="idclinica" class="width-100">
                 <?php foreach ($clinicas as $clinica) : ?>
                     <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
@@ -27,8 +27,8 @@
             </select>
         </div>
         <div class="unit-30" id="filter_container">
-            <label>
-                Fecha   
+            <label style="font-size: 18px">
+                Buscar Fecha   
             </label>
             <input class="width-100" type="text" name="agenda_fecha" style="height: 26px;">
         </div>
