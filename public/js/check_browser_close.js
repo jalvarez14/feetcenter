@@ -40,21 +40,29 @@ function wireUpEvents() {
       validNavigation = true;
     }
   });
+  
  
   // Attach the event click for all links in the page
-  $("a").bind("click", function() {
-    validNavigation = true;
+  $(document).on('click','a', function() {
+     validNavigation = true;
   });
- 
-  // Attach the event submit for all forms in the page
-  $("form").bind("submit", function() {
-    validNavigation = true;
+  
+   // Attach the event click for all links in the page
+  $(document).on('click','button', function() {
+     validNavigation = true;
   });
- 
-  // Attach the event click for all inputs in the page
-  $("input[type=submit]").bind("click", function() {
-    validNavigation = true;
+  
+   // Attach the event click for all links in the page
+  $(document).on('submit','form', function() {
+     validNavigation = true;
   });
+  
+   // Attach the event click for all links in the page
+  $(document).on('click','input[type=submit]', function() {
+     validNavigation = true;
+  });
+   
+
  
 }
  

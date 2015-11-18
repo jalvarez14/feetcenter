@@ -151,7 +151,7 @@
             
             settings = plugin.settings = $.extend({}, defaults, options);
             if(settings.idrol == 3){
-                container.find('thead tr th').last().remove();
+                //container.find('thead tr th').last().remove();
             }
             
             //Inicializamos nuestro multiple select
