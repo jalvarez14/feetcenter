@@ -128,9 +128,7 @@ class PacientesController extends AbstractActionController
         
         if($sesion->getIdrol() != 1){
             $form->get('paciente_nombre')->setAttribute('disabled', true);
-            $form->get('paciente_celular')->setAttribute('disabled', true);
-
-            
+            $form->get('paciente_celular')->setAttribute('disabled', true);            
         }
         
         //Le ponemos los datos de nuestro lugar a nuestro formulario

@@ -31,13 +31,23 @@
         <div class="unit-33">
             <label>
                 Celular <span class="req">*</span>
-                <input disabled value="<?php echo $form->get('paciente_celular')->getValue()?>"required name="paciente_celular" type="password" class="width-100" >
+                <?php if(\Shared\Session\AouthSession::getIdrol() != 1) :?>
+                 <input disabled value="<?php echo $form->get('paciente_celular')->getValue()?>"required name="paciente_celular" type="password" class="width-100" >
+                <?php else :?>
+                 <input  value="<?php echo $form->get('paciente_celular')->getValue()?>"required name="paciente_celular" type="password" class="width-100" >
+                <?php endif;?>
+               
             </label>
         </div>
         <div class="unit-33">
             <label>
                 Confirmar celular <span class="req">*</span>
-                 <input disabled value="<?php echo $form->get('paciente_celular')->getValue()?>"required name="paciente_celular_confirmar" type="text" class="width-100 confirm" for="paciente_celular">
+                <?php if(\Shared\Session\AouthSession::getIdrol() != 1) :?>
+                  <input  disabled value="<?php echo $form->get('paciente_celular')->getValue()?>"required name="paciente_celular_confirmar" type="text" class="width-100 confirm" for="paciente_celular">
+                <?php else :?>
+                  <input  value="<?php echo $form->get('paciente_celular')->getValue()?>"required name="paciente_celular_confirmar" type="text" class="width-100 confirm" for="paciente_celular">
+                <?php endif;?>
+                
             </label>
         </div>
     </div>
