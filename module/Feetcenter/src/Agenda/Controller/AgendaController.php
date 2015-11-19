@@ -339,7 +339,7 @@ class AgendaController extends AbstractActionController
                             'en servicio' => 'En servicio',
                             'cancelo' => 'Cancelo',
                             'no se presento' => 'No se presento',
-                            'reprogramda' => 'Reprogramda',
+                            'reprogramda' => 'Reprogramada',
                        ),
                     ),
                    'attributes' => array(
@@ -382,10 +382,10 @@ class AgendaController extends AbstractActionController
                     'options' => array(
                        'value_options' => array(
                                'por confirmar' => 'Por confirmar',
-                               'confimada' => 'Confimada',
+                               'confimada' => 'Confirmada',
                                'cancelo' => 'Cancelo',
                                'no se presento' => 'No se presento',
-                               'reprogramda' => 'Reprogramda',
+                               'reprogramda' => 'Reprogramada',
                        ),
                     ),
                    'attributes' => array(
@@ -399,10 +399,10 @@ class AgendaController extends AbstractActionController
                     'options' => array(
                        'value_options' => array(
                                'por confirmar' => 'Por confirmar',
-                               'confimada' => 'Confimada',
+                               'confimada' => 'Confirmada',
                                'en servicio' => 'En servicio',
                                 'cancelo' => 'Cancelo',
-                                'reprogramda' => 'Reprogramda',
+                                'reprogramda' => 'Reprogramada',
                            'no se presento' => 'No se presento',
                        ),
                     ),
