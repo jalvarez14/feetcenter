@@ -199,8 +199,8 @@ class VentasController  extends AbstractActionController
                 $y   += $size + 2;
             }
             $pdf->addCadreTVAs($visita->getVisitaTotal());  
-            $pdf->Output($_SERVER['DOCUMENT_ROOT'].'/img/ventas/'.$target,'F');
-            $base64 = base64_encode(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/img/ventas/'.$target));
+            $pdf->Output($_SERVER['DOCUMENT_ROOT'].'img/ventas/'.$target,'F');
+            $base64 = base64_encode(file_get_contents($_SERVER['DOCUMENT_ROOT'].'img/ventas/'.$target));
             return $this->getResponse()->setContent(json_encode($base64));
         }
         

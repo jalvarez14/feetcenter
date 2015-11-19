@@ -91,7 +91,7 @@ class VisitasController extends AbstractActionController
             //Comparamos la fecha de hoy con el primer registro, para obtener las columnas (fechas)
             $first_date = new \DateTime();
             if(isset($visitas[0])){
-                $first_date = new \DateTime($visitas[0]['visita_creadaen']);
+                $first_date = new \DateTime($visitas[0]['visita_fechainicio']);
             }
             $today = new \DateTime();
             $interval = $first_date->diff($today);
