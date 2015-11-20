@@ -1,4 +1,4 @@
-<h1>Membresias<a style="float: right; text-decoration: none"href="/catalogos/membresias/nuevo">Nuevo</a></h1>
+<h1>Membresías<a style="float: right; text-decoration: none"href="/catalogos/membresias/nuevo">Nuevo</a></h1>
 <?php if(count($successMessages)) :?>
     <div class="units-row">
         <?php foreach ($successMessages as $message) :?>
@@ -26,7 +26,7 @@
         <?php foreach($collection as $entity) : ?>
             <tr id="<?php echo $entity->getIdmembresia()?>">
                 <td><?php echo $entity->getMembresiaNombre()?></td>
-                <td><?php echo $entity->getMembresiaDescripcion()?></td>
+                <td><?php echo $entity->getMembresiaDescripción()?></td>
                 <td><?php echo (int)$entity->getMembresiaServicios()?></td>
                 <td><?php echo (int)$entity->getMembresiaCupones()?></td>
                 <td><?php echo $entity->getMembresiaPrecio()?></td>

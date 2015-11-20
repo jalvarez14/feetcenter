@@ -335,10 +335,10 @@ class AgendaController extends AbstractActionController
                     'name' => 'visita_status',
                     'options' => array(
                        'value_options' => array(
-                            'confimada' => 'Confimada',
+                            'confimada' => 'Confirmada',
                             'en servicio' => 'En servicio',
                             'cancelo' => 'Cancelo',
-                            'no se presento' => 'No se presento',
+                            'no se presento' => 'No se presentó',
                             'reprogramda' => 'Reprogramada',
                        ),
                     ),
@@ -384,7 +384,7 @@ class AgendaController extends AbstractActionController
                                'por confirmar' => 'Por confirmar',
                                'confimada' => 'Confirmada',
                                'cancelo' => 'Cancelo',
-                               'no se presento' => 'No se presento',
+                               'no se presento' => 'No se presentó',
                                'reprogramda' => 'Reprogramada',
                        ),
                     ),
@@ -403,7 +403,7 @@ class AgendaController extends AbstractActionController
                                'en servicio' => 'En servicio',
                                 'cancelo' => 'Cancelo',
                                 'reprogramda' => 'Reprogramada',
-                           'no se presento' => 'No se presento',
+                           'no se presento' => 'No se presentó',
                        ),
                     ),
                    'attributes' => array(
@@ -1063,7 +1063,7 @@ class AgendaController extends AbstractActionController
                 'options' => array(
                    'value_options' => array(
                            'por confirmar' => 'Por confirmar',
-                           'confimada' => 'Confimada',
+                           'confimada' => 'Confirmada',
                            'en servicio' => 'En servicio',
                    ),
                 ),

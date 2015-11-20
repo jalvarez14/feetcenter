@@ -899,7 +899,7 @@
                                         payDetailsContainer.find('input[name=visita_total]').val(total);
                                         payDetailsContainer.find('#total').text(accounting.formatMoney(total));
                                         payMethodContainer.find('#addMethodPay').unbind();
-                                        console.log(payMethodContainer.find('#addMethodPay').on('click',newMethodPay))
+                                        payMethodContainer.find('#addMethodPay').on('click',newMethodPay);
                                         payMethodContainer.find('input').val(total);
                                         payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
                                         payDetailsContainer.slideDown();
