@@ -17,7 +17,7 @@ class MembresiaController extends AbstractActionController
     public function indexAction()
     {
         $collection = \MembresiaQuery::create()->find();
-
+       
         return new ViewModel(array(
             'collection'   => $collection,
             'successMessages' => $this->flashMessenger()->getSuccessMessages(),
