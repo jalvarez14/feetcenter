@@ -162,14 +162,14 @@
             <label><b>Servicio / Producto</b> <span class="req">*</span>
                 <select  class="width-100" id="visitadetalle_tipo">
                     <option value="">Seleccione el producto/servicio...</option>
-                    <optgroup label="Productos">
-                        <?php foreach ($productos as $producto) :?>
-                            <option data-name="<?php echo $producto['producto_nombre']?>" data-existencias="<?php echo (int)$producto['productoclinica_existencia']?>" data-price="<?php echo $producto['producto_precio']?>" data-type="producto" value="<?php echo $producto['idproductoclinica']?>"><?php echo $producto['producto_nombre']?></option>
-                        <?php endforeach;?>
-                    </optgroup>
                     <optgroup label="Servicios">
                          <?php foreach ($servicios as $servicio) :?>
                             <option data-dependencia="<?php echo $servicio['servicio_dependencia']?>" data-available="<?php echo $servicio['disponible'] ?>" data-name="<?php echo $servicio['servicio_nombre']?>"  data-price="<?php echo $servicio['servicioclinica_precio']?>" data-type="servicio" value="<?php echo $servicio['idservicioclinica']?>"><?php echo $servicio['servicio_nombre']?></option>
+                        <?php endforeach;?>
+                    </optgroup>
+                    <optgroup label="Productos">
+                        <?php foreach ($productos as $producto) :?>
+                            <option data-name="<?php echo $producto['producto_nombre']?>" data-existencias="<?php echo (int)$producto['productoclinica_existencia']?>" data-price="<?php echo $producto['producto_precio']?>" data-type="producto" value="<?php echo $producto['idproductoclinica']?>"><?php echo $producto['producto_nombre']?></option>
                         <?php endforeach;?>
                     </optgroup>
                     <optgroup label="Membresías">

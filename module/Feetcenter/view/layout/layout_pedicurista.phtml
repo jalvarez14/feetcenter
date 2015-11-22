@@ -14,7 +14,9 @@
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('fonts/font-awesome-4.4.0/css/font-awesome.css'))
                          ->prependStylesheet($this->basePath('css/style.css'))
-                         
+                                                 ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input-facebook.css'))
+                        ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input-mac.css'))
+                        ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input.css'))
                          ->prependStylesheet($this->basePath('plugins/fullcalendar/fullcalendar.css'))
                         ->prependStylesheet($this->basePath('plugins/bootstrap-timepicker-0.5.1/css/timepicker.css'))
                         ->prependStylesheet($this->basePath('plugins/fancyBox/source/jquery.fancybox.css'))
@@ -27,6 +29,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+                ->prependFile($this->basePath('plugins/tokeninput/src/jquery.tokeninput.js'))
                 ->prependFile($this->basePath('js/check_browser_close.js'))
                 ->prependFile($this->basePath('plugins/fancyBox/source/jquery.fancybox.js'))
             ->prependFile($this->basePath('/js/plugin/multiple.js'))

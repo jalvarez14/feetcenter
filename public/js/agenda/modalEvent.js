@@ -545,10 +545,11 @@
         plugin.init = function(){
             
             settings = plugin.settings = $.extend({}, defaults, options);
-                    
+                   
             formatoCatalogo(); //Damos formato al catalogo 
 
             //Inicializamos al autocomplete
+            
             $container.find('input[name=paciente_autocomplete]').tokenInput('/findpacientes',{
                 //propertyToSearch: 'paciente_nombre',
                 hintText: "Comience a escribir...",

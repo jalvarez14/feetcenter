@@ -264,11 +264,13 @@
              $container.find('#calendar').fullCalendar('destroy');
              
              var picker = $container.find('input[name=agenda_fecha]').pickadate('picker');
+            
              var date = moment(picker.get('select').obj);
              
              //Inicializamos nuestro calendario
              var json = getjsonCalendar(date);
              $('#calendar').fullCalendar(json);
+             $('#calendar').fullCalendar('gotoDate', date);
         }
         
         function newMethodPay(){
@@ -454,19 +456,19 @@
                     right:  'today,agendaWeek,resourceDay,prev,next'
                 },
                  timezone:'local',
-                 now:date,
+                 now:new Date(),
                  allDaySlot:false,
                  defaultView: 'resourceDay',
                  scrollTime: '08:00:00',
-                 slotDuration: '00:15:00',
+                 slotDuration: '00:15:01:00',
                  selectHelper: true,
                  selectable: true,
                  resources: '/getpedicuristasbyclinica/'+settings.idclinica,
-                 minTime:'09:00:00',
+                 minTime:'10:00:00',
                  maxTime:'21:00:00',
                  columnFormat:'D/M',
                  titleFormat:'dddd D , MMMM YYYY',
-                viewRender: function (view, element) {
+                viewRender: function (view, element){
                     $('#calendar').fullCalendar( 'removeEvents');
                     var viewName = view.name;
                     switch (viewName) {
@@ -520,7 +522,14 @@
 
                 },
                 select: function(start, end, event,view) {
-
+                    
+                    //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
+                    if(settings.idrol == 3){
+                         unselect();
+                         return false;
+                    }
+                   
+                    
                     var viewName = view.name;
                     switch (viewName) {
                         case 'resourceDay':
@@ -649,7 +658,11 @@
 
 
                 },
-                eventResize:function( event, delta, revertFunc, jsEvent, ui, view ) { 
+                eventResize:function( event, delta, revertFunc, jsEvent, ui, view ) {
+                    //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
+                    if(settings.idrol == 3){
+                         revertFunc();
+                    }
                     var viewName = view.name;
                            
                             if(!isOverlapping(event)){
@@ -682,7 +695,11 @@
 
                 },
                 eventDrop:function(event, delta, revertFunc, jsEvent, ui, view ) {
-                
+                    
+                            //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
+                            if(settings.idrol == 3){
+                                 revertFunc();
+                            }
                             var n = moment();
                             var d = event.start.diff(n,'minutes');
                             
@@ -724,6 +741,11 @@
                     var is_visita = true;
                     var className = event.className[0];
                     var type_array = className.split('_'); var type = type_array[0];
+                    
+                    //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
+                    if(settings.idrol == 3){
+                         return false;
+                    }
                     
                     if(type != 'visita'){
                         is_visita = false;
