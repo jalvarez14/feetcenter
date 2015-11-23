@@ -552,6 +552,9 @@
                                 var eventCheck = {resources:{0:parseInt(event.data.id)},start:start,end:end,id:0};
                                 //Que no se traslapen
                                 if(!isOverlapping(eventCheck)){
+                                    
+                                    $('body').addClass('loading');
+                                    
                                     var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Nueva visita');
 
                                     $modalLauncher.unbind();
@@ -569,6 +572,8 @@
                                     $modalLauncher.unbind();
 
                                     $modalLauncher.on('loading.tools.modal', function(modal){
+                                        
+                                         $('body').removeClass('loading');
                                         var $modal = this ;
 
                                         var $modalHeader = this.$modalHeader;
@@ -644,6 +649,8 @@
                                         }));
 
                                     });
+                                    
+                                   
                                 }else{
                                      unselect();
                                 }
