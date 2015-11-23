@@ -1003,9 +1003,12 @@ class AgendaController extends AbstractActionController
                 }
             }
             $entity->setVisitaEstatuspago('no pagada');
+            $entity->setVisitaYear($entity->getVisitaFechainicio('Y'));
+            $entity->setVisitaMonth($entity->getVisitaFechainicio('m'));
+            $entity->setVisitaDay($entity->getVisitaFechainicio('d'));
             
             $entity->save();
-            
+          
             //Ahora los detalles
             if(isset($post_data['vistadetalle'])){
                 foreach ($post_data['vistadetalle'] as $detalle){

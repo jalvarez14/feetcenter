@@ -457,6 +457,10 @@
     <column name="membresia_servicios" phpName="MembresiaServicios" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="membresia_cupones" phpName="MembresiaCupones" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="membresia_precio" phpName="MembresiaPrecio" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="servicio_generaingreso" phpName="ServicioGeneraingreso" type="BOOLEAN" size="1" required="false"/>
+    <column name="servicio_generacomision" phpName="ServicioGeneracomision" type="BOOLEAN" size="1" required="false"/>
+    <column name="servicio_tipocomision" phpName="ServicioTipocomision" type="CHAR" sqlType="enum('porcentaje','cantidad')" required="false"/>
+    <column name="servicio_comision" phpName="ServicioComision" type="DECIMAL" size="10" scale="2" required="false"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -832,6 +836,9 @@
     <column name="visita_estatuspago" phpName="VisitaEstatuspago" type="CHAR" sqlType="enum('pagada','no pagada','cancelada')" required="false"/>
     <column name="visita_total" phpName="VisitaTotal" type="DECIMAL" size="10" scale="2" required="false"/>
     <column name="visita_nota" phpName="VisitaNota" type="LONGVARCHAR" required="false"/>
+    <column name="visita_year" phpName="VisitaYear" type="INTEGER" required="false"/>
+    <column name="visita_month" phpName="VisitaMonth" type="INTEGER" required="false"/>
+    <column name="visita_day" phpName="VisitaDay" type="INTEGER" required="false"/>
     <foreign-key foreignTable="clinica" name="idclinica_visita" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
     </foreign-key>
