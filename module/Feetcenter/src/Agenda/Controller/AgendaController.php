@@ -309,9 +309,14 @@ class AgendaController extends AbstractActionController
              
              
              //Validamos si tiene el evento ya agendada una proxima cita
+             $anticipado = 'false';
              $next_date = \VisitaQuery::create()->filterByIdclinica($entity->getIdclinica())->filterByIdpaciente($entity->getIdpaciente())->filterByVisitaFechainicio(array('min' => $entity->getVisitaFechafin()))->exists();
              if($next_date){
                  $next_date = \VisitaQuery::create()->filterByIdclinica($entity->getIdclinica())->filterByIdpaciente($entity->getIdpaciente())->filterByVisitaFechainicio(array('min' => $entity->getVisitaFechafin()))->findOne();
+                 $anticipado = \VisitadetalleQuery::create()->filterByIdvisita($entity->getIdvisita())->filterByIdmembresia(NULL, \Criteria::NOT_EQUAL)->exists();
+                 if($anticipado){
+                     $anticipado ='true' ;
+                 }
              }else{
                  $next_date = false;
              }
@@ -478,7 +483,7 @@ class AgendaController extends AbstractActionController
                 $paciente_membresia = \PacientemembresiaQuery::create()->joinMembresia()->withColumn('membresia_nombre')->withColumn('membresia_servicios')->withColumn('membresia_cupones')->filterByIdpaciente($paciente->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->findOne();
                 $paciente_array['membresia'] = $paciente_membresia->toArray(\BasePeer::TYPE_FIELDNAME);
             }  
-           
+
             $viewModel = new ViewModel();
             $viewModel->setVariables(array(
                 'next_date' => $next_date, 
@@ -489,6 +494,7 @@ class AgendaController extends AbstractActionController
                 'paciente' => json_encode($paciente_array),
                 'empleados' => $empleados,
                 'membresias' => $membresias,
+                'anticipado' => $anticipado
             ));
             $viewModel->setTerminal(true);
             return $viewModel;

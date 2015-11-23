@@ -56,7 +56,10 @@
            
             var clinicas_select =   $("select[name=idclinica]").multipleSelect('getSelects');
             var pedicuristas_select = $("select[name=idempleado]").multipleSelect('getSelects');
-            
+            var year = $("select[name=visita_year]").multipleSelect('getSelects');
+            var months = $("select[name=visita_mes]").multipleSelect('getSelects');
+            var order = $("select[name=visita_order]").multipleSelect('getSelects');
+
             $container.find('table.table-visitas thead tr').remove();
 
             $container.find('table.table-visitas tbody tr').remove();
@@ -81,7 +84,7 @@
                             ajax: {
                                 url: '/pacientes/visitas/serverside',
                                 type: 'POST',
-                                data:{clinicas:clinicas_select,empleados:pedicuristas_select},
+                                data:{year:year,months:months,order:order,clinicas:clinicas_select,empleados:pedicuristas_select},
                             },
                             drawCallback: function( settings ) {
                                 
@@ -375,8 +378,40 @@
                 onUncheckAll:filter,
             });
             
+            //Inicializamos nuestro multiple select
+            $container.find("select[name=visita_year]").multipleSelect({
+                allSelected:'Todos los años',
+                selectAllText:'Todos los años',
+                onClick : filter,
+                onCheckAll:filter,
+                onUncheckAll:filter,
+            });
+            
+            //Inicializamos nuestro multiple select
+            $container.find("select[name=visita_mes]").multipleSelect({
+                allSelected:'Todos los meses',
+                selectAllText:'Todos los meses',
+                onClick : filter,
+                onCheckAll:filter,
+                onUncheckAll:filter,
+            });
+            
+            //Inicializamos nuestro multiple select
+            $container.find("select[name=visita_order]").multipleSelect({
+                single:true,
+                onClick : filter,
+                onCheckAll:filter,
+                onUncheckAll:filter,
+            });
+            
+            
+            
+            
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.session.idclinica]);
             $container.find("select[name=idempleado]").multipleSelect("checkAll");
+            $container.find("select[name=visita_year]").multipleSelect("checkAll");
+            $container.find("select[name=visita_mes]").multipleSelect("checkAll");
+            $container.find("select[name=visita_order]").multipleSelect("setSelects",['asc']);
             //filter();
         }
 

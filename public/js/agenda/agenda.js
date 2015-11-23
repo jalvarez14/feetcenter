@@ -735,6 +735,8 @@
                      
                  },
                 eventClick: function( event, jsEvent, view ) { 
+                    
+                   
                     if(view.name !== 'resourceDay'){
                         return;
                     }
@@ -752,7 +754,9 @@
                     }
                     
                     if(is_visita){
-    
+                        
+                        
+                        
                         var status = type_array[1];
                         $.each(cssClassMap,function(index,element){
                             if('visita_'+status==element){
@@ -772,7 +776,7 @@
                         
                         if(is_editable){
                             
-                           
+                            $('body').addClass('loading');
                             
                             var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800); $modalLauncher.attr('data-title',event.title);
                             $modalLauncher.unbind();
@@ -878,20 +882,32 @@
                                    /*
                                     * LA VENTANA Principal
                                     */
-                                     var eventoPrincipal = function(){
+                                     var eventoPrincipal = function(next){
                                          
                                          //El evento atras de la venta de pagar
                                         atrasAction.unbind();
                                         atrasAction.prop('disabled',true);
                                         atrasAction.css('cursor','auto');
                                         
-                                        pagarAction.text('Pagar');
-                                        pagarAction.unbind();
-                                        pagarAction.prop('disabled',false);
-                                        pagarAction.css('cursor','pointer');
-                                        pagarAction.on('click', $.proxy(function(){
-                                            eventoProximaCita();
-                                        }));
+                                        if(typeof next != 'undefined'){
+                                            pagarAction.text('Pagar');
+                                            pagarAction.unbind();
+                                            pagarAction.prop('disabled',false);
+                                            pagarAction.css('cursor','pointer');
+                                            pagarAction.on('click', $.proxy(function(){
+                                                modalEventContainer.children(':not(:last-child)').hide();
+                                                eventoPagar();
+                                            }));
+                                        }else{
+                                            
+                                            pagarAction.text('Pagar');
+                                            pagarAction.unbind();
+                                            pagarAction.prop('disabled',false);
+                                            pagarAction.css('cursor','pointer');
+                                            pagarAction.on('click', $.proxy(function(){
+                                                eventoProximaCita();
+                                            }));
+                                        }
                                      }
                                      
                                      
@@ -952,7 +968,30 @@
                                      */ 
                                     
                                     var eventoProximaCita = function(){
+                                        
+                                        //¿Anticipado?
+                                        var anticipado = modalEventContainer.find('input[name=anticipado]').val();
+                                        if(anticipado == 'true'){
+                                            dateContainer.find('input[name=visita_pagoanticipado]').prop('disabled',true);
+                                        }else{
+                                            dateContainer.find('input[name=visita_pagoanticipado]').prop('disabled',false);
+                                        }
+                                        
+                                        dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]').unbind();
+                                        dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]').on('change',function(){
+                                            var anticipado = dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]:checked').val();
+                                            if(anticipado == 'si'){
+                                                dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideDown();
+                                                pagarAction.prop('disabled',false);
 
+                                            }else{
+                                                dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideUp();
+                                                pagarAction.prop('disabled',false);
+                                            }
+
+//       
+                                        });
+                                        
                                         //El evento atras de la venta de pagar
                                         atrasAction.unbind();
                                         atrasAction.prop('disabled',false);
@@ -963,6 +1002,17 @@
                                             dateContainer.hide();
                                             modalEventContainer.children(':not(:last-child)').slideDown();
                                             eventoPrincipal();
+                                        }));
+                                        
+                                        dateContainer.find('#addAnticipado').unbind();
+                                        dateContainer.find('#addAnticipado').prop('disabled',false);
+                                        dateContainer.find('#addAnticipado').css('cursor','pointer');
+                                        dateContainer.find('#addAnticipado').on('click', $.proxy(function(){
+                    
+                                            nextDateContainer.hide();
+                                            dateContainer.hide();
+                                            modalEventContainer.children(':not(:last-child)').slideDown();
+                                            eventoPrincipal('pago');
                                         }));
                                         
                                         var next_date = nextDateContainer.find('input[name=visita_siguiente]:checked').val();
@@ -1100,94 +1150,7 @@
                                                                                     pagarAction.prop('disabled',false);
                                                                                 }
                                                                                 
-//                                                                                pagarAction.on('click', $.proxy(function(){
-//
-//                                                                                  pagarAction.text('Pagar');
-//                                                                                  pagarAction.prop('disabled',true);
-//                                                                                  dateContainer.hide();
-//                                                                                  nextDateContainer.hide();
-//                                                                                  payDetailsContainer.slideDown();
-//                                                                                  if(anticipado == 'si'){
-//                                                                                        pagarAction.text('Pagar');
-//                                                                                        pagarAction.unbind();
-//                                                                                        var itemCount = payDetailsContainer.find('tbody tr').length;
-//                                                                                        var selected = dateContainer.find('select[name=pay_date_anticipado_servicio] option:selected');
-//
-//                                                                                        //                                                                                 
-//                                                                                        var id = selected.val();
-//                                                                                        var item = selected.attr('data-name');
-//                                                                                        var price = selected.attr('data-price');
-//                                                                                        var subtotal = parseInt(price);
-//                                                                                        var inputs = $('<input type="hidden" name="vistadetallepay['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+itemCount+'][type]" value="servicio"><input type="hidden" name="vistadetallepay['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+itemCount+'][cantidad]" value="1"><input type="hidden" name="vistadetallepay['+itemCount+'][subtotal]" value="'+subtotal+'">');
-//
-//                                                                                       //Nuestra row
-//                                                                                       var tr = $('<tr>');
-//                                                                                       tr.append(inputs);
-//                                                                                       tr.append('<td>1</td>');
-//                                                                                       tr.append('<td>'+item+'</td>');
-//                                                                                       if(payDetailsContainer.find('th').length == 4){
-//                                                                                           tr.append('<td></td>');
-//                                                                                       }
-//                                                                                       tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
-//
-//                                                                                       payDetailsContainer.find('table#pay_details tbody').append(tr);
-//
-//                                                                                       //Calculamos el total
-//                                                                                       var total = 0;
-//                                                                                       $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
-//                                                                                           var subtotal = accounting.unformat($(this).find('td').last().text());
-//
-//                                                                                           total += subtotal;
-//                                                                                       });
-//                                                                                       payDetailsContainer.find('input[name=visita_total]').val(total);
-//                                                                                       payDetailsContainer.find('#total').text(accounting.formatMoney(total));
-//
-//                                                                                       payMethodContainer.find('input').val(total);
-//                                                                                       payMethodContainer.slideDown();
-//
-//                                                                                       pagarAction.on('click', $.proxy(function(){
-//
-//                                                                                           pay($modal);
-//
-//                                                                                       }));
-//
-//                                                                                  }
-//                                                                                  else{
-//
-//
-//
-//                                                                                      pagarAction.text('Pagar');
-//                                                                                      payDetailsContainer.slideDown();
-//
-//
-//                                                                                      payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
-//
-//                                                                                      //Calculamos el total
-//                                                                                       var total = 0;
-//                                                                                       $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
-//                                                                                           var subtotal = accounting.unformat($(this).find('td').last().text());
-//
-//                                                                                           total += subtotal;
-//                                                                                       });
-//                                                                                       payDetailsContainer.find('input[name=visita_total]').val(total);
-//                                                                                       payDetailsContainer.find('#total').text(accounting.formatMoney(total));
-//
-//
-//
-//                                                                                       payMethodContainer.find('input').val(total);
-//                                                                                       payMethodContainer.slideDown();
-//
-//                                                                                  }
-////                                                                                  pagarAction.unbind();
-////                                                                                  pagarAction.prop('disabled',false);
-////                                                                                  pagarAction.on('click', $.proxy(function(){
-////
-////                                                                                          pay($modal);
-////
-////
-////                                                                                  }));
-//
-//                                                                                }));
+//       
                                                                             });
                                                                             
                                                                             pagarAction.unbind();
@@ -1590,7 +1553,7 @@
                                                 success: function (data) {
                                                     if(data.result){
                                                         initCalendar();
-                                                        //$modal.close();
+                                                        $modal.close();
                                                     }
                                                 }
                                             });
@@ -1598,7 +1561,11 @@
                                         
                                     }));
                                     
+                                    $('body').removeClass('loading');
+                                    
                              });
+                             
+                               
                              
                         }else{
                             alert('Lo sentimos, esta vista ya no es editable debido a que han transcurrido 20 minutos desde su hora de inicio');
@@ -1606,7 +1573,7 @@
                         
                     }
                     
-                    
+                   
                 },
                 eventRender: function(event, element, view) {
                     if(view.name == 'agendaWeek'){

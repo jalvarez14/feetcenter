@@ -8,7 +8,7 @@
 <div id="clientes_visitas_container">
     <h1>Visitas</h1>
     <div class="units-row">
-        <div class="unit-30">
+        <div class="unit-20">
             Clínica
             <select multiple="multiple" name="idclinica" class="width-100">
                 <?php foreach ($clinicas as $clinica) : ?>
@@ -16,13 +16,45 @@
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="unit-30">
-           
+        <div class="unit-20">
             Pedicurista
             <select multiple="multiple" name="idempleado" class="width-100">
                 <?php foreach ($empleados as $empleado) : ?>
                 <option value="<?php echo $empleado->getIdempleado()?>"><?php echo $empleado->getEmpleado()->getEmpleadoNombre() ?></option>
                 <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-20">
+            Año
+            <select multiple="multiple" name="visita_year" class="width-100">
+                <?php for($i=$years['from'];$i<=$years['to'];$i++) :?>
+                    <option value="<?php echo $i?>"><?php echo $i?></option>
+                <?php endfor;?>
+            </select>
+        </div>
+        
+         <div class="unit-20">
+            Mes
+            <select multiple="multiple" name="visita_mes" class="width-100">
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+        </div>
+        <div class="unit-20">
+            Orden
+            <select multiple="multiple" name="visita_order" class="width-100">
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
             </select>
         </div>
     </div>

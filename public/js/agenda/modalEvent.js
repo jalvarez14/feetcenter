@@ -224,12 +224,26 @@
            var id = row.find('input[name*=id]').val();
            var type = row.find('input[name*=type]').val();
            $container.find('#visitadetalle_tipo option[data-type='+type+'][value='+id+']').removeClass('hide');
+           var index = row.index();
            row.remove();
+           
            
            if($('#visita_container table#visita_detalles tbody input[name*=type][value=membresia]').length == 0){
                $container.find('option[data-dependencia=membresia]').remove();
            }
+           
+           if(type == 'membresia'){
+               $container.find('input[name=anticipado]').val('false');
+               $container.find('input[name=visita_pagoanticipado]').prop('disabled',false);
+               $container.find('input[name=visita_pagoanticipado]').prop('checked',false);
+               $container.find('#pay_date_anticipado_input').hide();
+           }
+           
+           
+           //Removemos de la lista de pay
+           $container.find('table#pay_details tbody tr').eq(index).remove();
 
+           
             //Calculamos el total
             var total = 0;
             $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
@@ -237,7 +251,7 @@
                 total += subtotal;
             });
             $container.find('input[name=visita_total]').val(total);
-           $container.find('#total').text(accounting.formatMoney(total));
+            $container.find('#total').text(accounting.formatMoney(total));
            
        }
         
@@ -266,6 +280,7 @@
                var type = selected.attr('data-type');
 
                if(type == 'producto'){
+                   //$container.find('input[name=visitadetalle_cantidad]').closest('div').show();
                    var existencias = selected.attr('data-existencias');
                    if(cantidad<=existencias){
                         var id = selected.val();
@@ -316,7 +331,7 @@
                    }
                }
                else if(type == 'servicio'){
-
+                    //$container.find('input[name=visitadetalle_cantidad]').closest('div').hide();
                     var data_dependencia = selected.attr('data-dependencia');
                     if(data_dependencia == 'membresia'){
                         var error = false;
@@ -420,6 +435,7 @@
                     }
                }
                else{
+                   //$container.find('input[name=visitadetalle_cantidad]').closest('div').hide();
                    var idmembresia = selected.val();
                    var idclinica = container.find('input[name=idclinica]').val();
                    //Obtenemos los servicios de la membresia seleccionada y los insertamos en nuestro select de productos/servicios
@@ -535,6 +551,7 @@
 
                }
                
+               $container.find('input[name=visitadetalle_cantidad]').val(1);
 
            }
        }
@@ -709,6 +726,22 @@
                  }
                  $container.find('input[name=paciente_autocomplete]').tokenInput('add',{id:settings.paciente.idpaciente,visita_total:settings.paciente.visita_total,visita_ultima:settings.paciente.visita_ultima,relacionados:settings.paciente.relacionados,name:settings.paciente.paciente_nombre + ' - Celular: ' + settings.paciente.paciente_celular + ' - Telefono: ' + telefono,membresia:settings.paciente.membresia});
             }
+            
+            $container.find('#visitadetalle_tipo').on('change',function(){
+                var selected = $('#visitadetalle_tipo option:selected');
+                var item = selected.attr('data-name');
+                var type = selected.attr('data-type');
+                
+                if(type == 'producto'){
+                    $container.find('input[name=visitadetalle_cantidad]').closest('div').show();
+                }else{
+                    $container.find('input[name=visitadetalle_cantidad]').val(1);
+                    $container.find('input[name=visitadetalle_cantidad]').closest('div').hide();
+                }
+                console.log(type);
+            });
+            
+            
             
            
 

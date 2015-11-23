@@ -9,7 +9,7 @@
     <?php echo $this->formHidden($form->get('visita_fechainicio')); ?>
     <?php echo $this->formHidden($form->get('visita_fechafin')); ?>
     <?php echo $this->formHidden($form->get('visita_tipo')); ?>
-
+    <input name="anticipado" value="<?php echo $anticipado?>" type="hidden">
     
    
     <div class="units-row" style="margin-bottom: 0px;">
@@ -175,10 +175,10 @@
                 </select>
             </label>
         </div>
-        <div class="unit-20">
+        <div class="unit-20" style="display: none">
             <label>
                 <b>Cantidad</b> <span class="req">*</span>
-                <input class="width-100" type="text"  name="visitadetalle_cantidad">
+                <input  value="1" class="width-100" type="text"  name="visitadetalle_cantidad">
             </label>
         </div>
         <div class="unit-20" style="margin-top: 22px;">
@@ -323,7 +323,27 @@
                             <a href="javascript:void(0)" btn-action="submit_visita_siguiente" class="btn btn-green width-100">Guardar</a>
                         </div>
                     </div>
-                    <div id="pay_date_anticipado_selector"class="units-row" style="margin-bottom: 0px;  display: none">
+                    <?php if($anticipado == 'true') :?>
+                        <div id="pay_date_anticipado_selector"class="units-row" style="margin-bottom: 0px;  display: block">
+                        <div class="unit-100">
+                            <b>¿Pago anticipado?</b>
+                            <ul class="forms-inline-list">
+                                <li>
+                                    <input disabled="disabled" checked type="radio" name="visita_pagoanticipado" value="si">
+                                    <label>Si</label>
+                                    <input disabled="disabled" type="radio" name="visita_pagoanticipado" value="no">
+                                    <label>No</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="pay_date_anticipado_input"class="units-row" style="margin-bottom: 0px;  display: none">
+                        <div class="unit-100">
+                            <a id="addAnticipado" class="btn btn-blue">Agregar pago anticipado</a>
+                        </div>
+                    </div>
+                    <?php else :?>
+                        <div id="pay_date_anticipado_selector"class="units-row" style="margin-bottom: 0px;  display: none">
                         <div class="unit-100">
                             <b>¿Pago anticipado?</b>
                             <ul class="forms-inline-list">
@@ -339,16 +359,11 @@
                     </div>
                     <div id="pay_date_anticipado_input"class="units-row" style="margin-bottom: 0px;  display: none">
                         <div class="unit-100">
-                            <label>
-                                <b>Servicio</b> <span class="req">*</span>
-                                <select class="width-100" name="pay_date_anticipado_servicio">
-                                    <?php foreach($servicios as $servicio) :?> 
-                                     <option data-name="<?php echo $servicio['servicio_nombre']?>"  data-price="<?php echo $servicio['servicioclinica_precio']?>" data-type="servicio" value="<?php echo $servicio['idservicioclinica']?>"><?php echo $servicio['servicio_nombre']?></option>
-                                   <?php endforeach;?>
-                                </select>
-                            </label>
+                            <a id="addAnticipado" class="btn btn-blue">Agregar pago anticipado</a>
                         </div>
                     </div>
+                    <?php endif;?>
+                    
                 </fieldset>
             </div>
         </div>

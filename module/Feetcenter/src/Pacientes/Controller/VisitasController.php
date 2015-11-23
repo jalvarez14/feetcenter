@@ -22,7 +22,7 @@ class VisitasController extends AbstractActionController
         if($request->isPost()){
             
             $post_data = $request->getPost();
-          
+         
             //Comenzamos hacer la query
             $query = new \PacienteQuery();
 
@@ -34,11 +34,7 @@ class VisitasController extends AbstractActionController
             $query->filterByIdclinica($post_data['clinicas']);
             $query->filterByIdempleado($post_data['empleados']);
             $recordsFiltered = $query->count();
-            
-            
-
-            //ORDER TODO
-
+                        
              //SELECT
             $query->select(array('idpaciente','paciente_nombre','paciente_celular','paciente_fecharegistro'));
             
@@ -48,7 +44,7 @@ class VisitasController extends AbstractActionController
             $query->setLimit((int)$post_data['length']);
             
             //ORDER (TODO)
-        
+       
             //SEARCH
             if(!empty($post_data['search']['value'])){
                 $search_value = $post_data['search']['value'];
@@ -80,7 +76,7 @@ class VisitasController extends AbstractActionController
                 $tmp['paciente_nombre'] = $value['paciente_nombre'];
                 $tmp['paciente_celular'] = $value['paciente_celular'];
                 $tmp['empleado_nombre'] = $value['empleado_nombre'];
-                $tmp['visitas'] = \VisitaQuery::create()->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio(\Criteria::ASC)->filterByIdpaciente($value['idpaciente'])->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+                $tmp['visitas'] = \VisitaQuery::create()->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio($post_data['order'][0])->filterByIdpaciente($value['idpaciente'])->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
                 
                 $data[] = $tmp;
  
@@ -150,11 +146,19 @@ class VisitasController extends AbstractActionController
         //Las clinicas
         $clinicas = \ClinicaQuery::create()->find();
         $empleados = \ClinicaempleadoQuery::create()->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
+        $first_visita = \VisitaQuery::create()->orderByVisitaFechainicio('asc')->limit(1)->findOne();
+        $now = new \DateTime();
+        
+        $years = array(
+            'from' =>(int) $first_visita->getVisitaFechainicio('Y'),
+            'to' => (int)$now->format('Y'),
+        );
         
         return new ViewModel(array(
             'empleados' => $empleados,
             'session' => $session->getData(),
             'clinicas' => $clinicas,
+            'years' => $years,
         ));
     }
 }
