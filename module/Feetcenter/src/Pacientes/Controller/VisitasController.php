@@ -15,7 +15,7 @@ use Zend\View\Model\ViewModel;
 class VisitasController extends AbstractActionController
 {
    
-    public function serversideBackAction(){
+    public function serversideAction(){
         
         $request = $this->getRequest();
         
@@ -43,12 +43,10 @@ class VisitasController extends AbstractActionController
             if($post_data['order'][0] == 'asc'){
                 $query->orderBy('visita_fechainicio', \Criteria::ASC);
             }else{
-                $query->orderBy('visita_fechainicio', \Criteria::DESC);
+                $query->orderBy('visita_day', \Criteria::DESC);
             }
             
-            
-           
-            //$result = $pacienteQuery->paginate($post_data['start'],$post_data['length']);
+            $query->groupByIdpaciente();
             
             $query->setOffset((int)$post_data['start']);
             $query->setLimit((int)$post_data['length']);
@@ -75,27 +73,27 @@ class VisitasController extends AbstractActionController
             }
 
             //Damos el formato
-            $data = $query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            $data = array();
             
-//            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
-//                
-//                $paciente_fecharegistro = new \DateTime($value['paciente_fecharegistro']);
-//                
-//               
-//                $tmp['DT_RowId'] = $value['idpaciente'];
-//                $tmp['clinica_nombre'] = $value['clinica_nombre'];
-//                $tmp['idpaciente'] = $value['idpaciente'];
-//                $tmp['paciente_fecharegistro'] = $paciente_fecharegistro->format('d/m/Y');
-//                $tmp['paciente_nombre'] = $value['paciente_nombre'];
-//                $tmp['paciente_celular'] = $value['paciente_celular'];
-//                $tmp['empleado_nombre'] = $value['empleado_nombre'];
-//                $tmp['visitas'] = \VisitaQuery::create()->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio($post_data['order'][0])->filterByIdpaciente($value['idpaciente'])->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
-//                
-//                $data[] = $tmp;
-// 
-//            } 
+            $value = new \Visita();
+            foreach ($query->find() as $value){
+                
+                $paciente_fecharegistro = new \DateTime($value->getPaciente()->getPacienteFecharegistro());
+  
+                $tmp['DT_RowId'] = $value->getIdpaciente();
+                $tmp['clinica_nombre'] = $value->getPaciente()->getClinica()->getClinicaNombre();
+                $tmp['idpaciente'] = $value->getIdpaciente();
+                $tmp['paciente_fecharegistro'] = $paciente_fecharegistro->format('d/m/Y');
+                $tmp['paciente_nombre'] = $value->getPaciente()->getPacienteNombre();
+                $tmp['paciente_celular'] = $value->getPaciente()->getPacienteCelular();
+                $tmp['empleado_nombre'] = $value->getEmpleadoRelatedByIdempleado()->getEmpleadoNombre();
+                $tmp['visitas'] = \VisitaQuery::create()->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio($post_data['order'][0])->filterByIdpaciente($value->getIdpaciente())->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+                
+                $data[] = $tmp;
+ 
+            } 
             
-            $visitas = \VisitaQuery::create()->filterByIdempleado($post_data['empleados'])->filterByVisitaEstatuspago('pagada')->orderByVisitaCreadaen(\Criteria::ASC)->joinPaciente()->withColumn('paciente_nombre')->withColumn('paciente_celular')->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
+            $visitas = $query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
             
             //Comparamos la fecha de hoy con el primer registro, para obtener las columnas (fechas)
             $first_date = new \DateTime();
@@ -128,7 +126,7 @@ class VisitasController extends AbstractActionController
         }
     }
     
-    public function serversideAction(){
+    public function serversideBackAction(){
         
         $request = $this->getRequest();
         
