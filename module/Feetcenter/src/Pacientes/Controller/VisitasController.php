@@ -135,21 +135,24 @@ class VisitasController extends AbstractActionController
         if($request->isPost()){
             
             $post_data = $request->getPost();
-           
+
             //Comenzamos hacer la query
             $query = new \PacienteQuery();
 
             //JOIN
             $query->joinEmpleado()->withColumn('empleado_nombre');
             $query->joinClinica()->withColumn('clinica_nombre');
+            
 
             //WHERE
             $query->filterByIdclinica($post_data['clinicas']);
             $query->filterByIdempleado($post_data['empleados']);
+            
+            
             $recordsFiltered = $query->count();
                         
              //SELECT
-            $query->select(array('idpaciente','paciente_nombre','paciente_celular','paciente_fecharegistro'));
+            //$query->select(array('idpaciente','paciente_nombre','paciente_celular','paciente_fecharegistro'));
             
             //$result = $pacienteQuery->paginate($post_data['start'],$post_data['length']);
             
@@ -157,7 +160,10 @@ class VisitasController extends AbstractActionController
             $query->setLimit((int)$post_data['length']);
             
             //ORDER (TODO)
-       
+//            SELECT paciente.idpaciente, paciente_nombre FROM `paciente` WHERE paciente.idpaciente IN (select visita.idpaciente from visita,paciente where visita_year=2015 and visita.visita_month=10 GROUP by paciente.idpaciente ORDER by visita.visita_day asc )
+                
+            $query->useVisitaQuery()->orderByVisitaDay($post_data['order'][0])->groupByIdpaciente()->endUse();
+            
             //SEARCH
             if(!empty($post_data['search']['value'])){
                 $search_value = $post_data['search']['value'];
@@ -177,7 +183,9 @@ class VisitasController extends AbstractActionController
 
             //Damos el formato
             $data = array();
-            $query->useVisitaQuery()->orderByVisitaFechainicio($post_data['order'][0])->endUse();
+            //$query->useVisitaQuery()->orderByVisitaFechainicio($post_data['order'][0])->endUse();
+ 
+
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
                 
                 $paciente_fecharegistro = new \DateTime($value['paciente_fecharegistro']);
@@ -196,7 +204,9 @@ class VisitasController extends AbstractActionController
  
             }   
             
-            $visitas = \VisitaQuery::create()->filterByIdempleado($post_data['empleados'])->filterByVisitaEstatuspago('pagada')->orderByVisitaCreadaen(\Criteria::ASC)->joinPaciente()->withColumn('paciente_nombre')->withColumn('paciente_celular')->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
+            //$visitas = \VisitaQuery::create()->filterByIdempleado($post_data['empleados'])->filterByVisitaEstatuspago('pagada')->orderByVisitaCreadaen(\Criteria::ASC)->joinPaciente()->withColumn('paciente_nombre')->withColumn('paciente_celular')->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
+            $visitas = $query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+            
             
             //Comparamos la fecha de hoy con el primer registro, para obtener las columnas (fechas)
             $first_date = new \DateTime();
@@ -206,9 +216,7 @@ class VisitasController extends AbstractActionController
             $today = new \DateTime();
             $interval = $first_date->diff($today);
             
-           
-            
-            
+
             //El arreglo que regresamos
             $json_data = array(
                 "draw"            => (int)$post_data['draw'],
@@ -217,8 +225,7 @@ class VisitasController extends AbstractActionController
                 "data"            => $data,
                 'year_start' =>(int) $first_date->format('Y'),
                 'interval' => (int)$interval->format('%y')
-             
-                
+
             );
             
 
