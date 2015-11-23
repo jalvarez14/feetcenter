@@ -205,9 +205,8 @@ class VisitasController extends AbstractActionController
             }   
             
             //$visitas = \VisitaQuery::create()->filterByIdempleado($post_data['empleados'])->filterByVisitaEstatuspago('pagada')->orderByVisitaCreadaen(\Criteria::ASC)->joinPaciente()->withColumn('paciente_nombre')->withColumn('paciente_celular')->joinClinica()->withColumn('clinica_nombre')->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
-            $visitas = $query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
-            
-            
+            $visitas = $query->useVisitaQuery()->orderByVisitaFechainicio(\Criteria::ASC)->endUse()->withColumn('visita_fechainicio')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
+
             //Comparamos la fecha de hoy con el primer registro, para obtener las columnas (fechas)
             $first_date = new \DateTime();
             if(isset($visitas[0])){
@@ -228,6 +227,7 @@ class VisitasController extends AbstractActionController
 
             );
             
+       
 
             
             return $this->getResponse()->setContent(json_encode($json_data));
