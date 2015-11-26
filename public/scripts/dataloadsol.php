@@ -15,8 +15,8 @@
     /************************ YOUR DATABASE CONNECTION END HERE  ****************************/
     
     
-    set_include_path('/Applications/AMPPS/www/classes');
-    include 'PHPExcel/IOFactory.php';
+   // set_include_path('/Applications/AMPPS/www/classes');
+    require 'PHPExcel/IOFactory.php';
     
     // This is the file path to be uploaded.
     $inputFileName = 'sol2.xls';
