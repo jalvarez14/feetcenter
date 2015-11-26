@@ -5,8 +5,8 @@
     /************************ YOUR DATABASE CONNECTION START HERE   ****************************/
     
     define ("DB_HOST", "localhost"); // set database host
-    define ("DB_USER", "root"); // set database user
-    define ("DB_PASS","mysql"); // set database password
+    define ("DB_USER", "feetcent_admin"); // set database user
+    define ("DB_PASS","3TZ7dyGs"); // set database password
     define ("DB_NAME","feetcent_feetcenter"); // set database name
     
     $link = mysql_connect(DB_HOST, DB_USER, DB_PASS) or die("Couldn't make connection.");
