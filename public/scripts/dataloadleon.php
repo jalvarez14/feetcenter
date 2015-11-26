@@ -18,7 +18,7 @@
     
     
     //set_include_path('/Applications/AMPPS/www/classes');
-    require 'PHPExcel/IOFactory.php';
+    require 'phpexcel/IOFactory.php';
     
     // This is the file path to be uploaded.
     $inputFileName = 'leon2.xls';
