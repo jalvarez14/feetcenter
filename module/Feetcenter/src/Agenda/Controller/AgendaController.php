@@ -216,8 +216,6 @@ class AgendaController extends AbstractActionController
         return $this->response->setContent(json_encode($visitas->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
     }
     
-    
-    
     public function getrecesosbyclinicaAction(){
         
         $idclinica = $this->params()->fromRoute('id'); 
@@ -427,8 +425,11 @@ class AgendaController extends AbstractActionController
             $servicios_array = array();
             $servicios = \ServicioclinicaQuery::create()->filterByIdclinica($entity->getIdclinica())->useServicioQuery()->filterByServicioDependencia('membresia',  \Criteria::NOT_EQUAL)->endUse()->withColumn('servicio_nombre')->find();
             if(\VisitadetalleQuery::create()->filterByIdvisita($entity->getIdvisita())->filterByIdmembresia(NULL,\Criteria::NOT_EQUAL)->exists()){
+               
                 $servicios = \ServicioclinicaQuery::create()->filterByIdclinica($entity->getIdclinica())->useServicioQuery()->endUse()->withColumn('servicio_nombre')->find();
+                
             }
+           
             //Validamos si se tienen los insumos suficentes para realizar el servicio
             $servicio = new \Servicioclinica();
 

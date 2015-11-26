@@ -831,6 +831,7 @@
                                         });
                                         modal.find('table#visita_detalles tfoot tr').find('td').eq(0).attr('colspan',2);
                                         modal.find('span.token-input-delete-token').remove();
+                                        
                                     }
                                     
                                    if(status == 'cancelo' || status == 'no se presento' || status == 'reprogramda'){
@@ -843,6 +844,10 @@
                                             $(this).find('td').eq(2).remove();
                                         });
                                         modal.find('table#visita_detalles tfoot tr').find('td').eq(0).attr('colspan',2);
+                                        modal.find('span.token-input-delete-token').remove();
+                                    }
+                                    
+                                    if(status == 'en servicio' || status == 'terminado'){
                                         modal.find('span.token-input-delete-token').remove();
                                     }
 
