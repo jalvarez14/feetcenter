@@ -59,7 +59,7 @@
             var year = $("select[name=visita_year]").multipleSelect('getSelects');
             var months = $("select[name=visita_mes]").multipleSelect('getSelects');
             var order = $("select[name=visita_order]").multipleSelect('getSelects');
-
+            
             $container.find('table.table-visitas thead tr').remove();
 
             $container.find('table.table-visitas tbody tr').remove();
@@ -101,6 +101,7 @@
                                     thead1.append('<th class="year">'+year_start+'</th>');
                                     year_start+=1;
                                 }
+                                
                                 thead1.append('<th></th>');
                                 $container.find('.table-visitas thead').append(thead1);
                                 
@@ -126,12 +127,14 @@
 
                                     thead2.append(th);
                                 }
+                                
                                 thead2.append('<th>Totales</th>');
                                 $container.find('.table-visitas thead').append(thead2);
                                 
                                 // El esqueleto
                                 $.each(data,function(){
-            
+                                    
+                                    //VALIDAMOS SI YA EXISTE UNA ROW CON EL CLIENTE
                                     var tr = $('<tr>');
                                     tr.attr('id',this.idpaciente);
                                     tr.append('<td>'+this.paciente_nombre+'</td>');
@@ -404,15 +407,28 @@
                 onUncheckAll:filter,
             });
             
-            
-            
-            
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.session.idclinica]);
-            $container.find("select[name=idempleado]").multipleSelect("checkAll");
-            $container.find("select[name=visita_year]").multipleSelect("checkAll");
-            $container.find("select[name=visita_mes]").multipleSelect("checkAll");
+            
+            var empleados = new Array();
+            $container.find("select[name=idempleado] option").each(function(){
+                empleados.push($(this).val());
+            });
+            $container.find("select[name=idempleado]").multipleSelect("setSelects", empleados);
+             
+            var years = new Array();
+            $container.find("select[name=visita_year] option").each(function(){
+                years.push($(this).val());
+            });
+             $container.find("select[name=visita_year]").multipleSelect("setSelects", years);
+             
+             var months = new Array();
+             $container.find("select[name=visita_mes] option").each(function(){
+                months.push($(this).val());
+            });
+            $container.find("select[name=visita_mes]").multipleSelect("setSelects", months);
+
             $container.find("select[name=visita_order]").multipleSelect("setSelects",['asc']);
-            //filter();
+            filter();
         }
 
         /*

@@ -237,6 +237,9 @@
                $container.find('input[name=visita_pagoanticipado]').prop('disabled',false);
                $container.find('input[name=visita_pagoanticipado]').prop('checked',false);
                $container.find('#pay_date_anticipado_input').hide();
+               
+               console.log($container.find('tr[depenencia=membresia]').remove())
+               
            }
            
            
@@ -403,7 +406,7 @@
                         opciones.find('a').on('click',deleteProduct);
 
                         //Nuestra row
-                        var tr = $('<tr>');
+                        var tr = $('<tr>').attr('depenencia','membresia');
                         tr.append(inputs);
                         tr.append('<td>'+cantidad+'</td>');
                         tr.append('<td>'+item+'</td>');
@@ -412,7 +415,7 @@
                         $container.find('table#visita_detalles tbody').append(tr);
                         
                         //Nuestra row de la pantalla de pago
-                        var tr2 = $('<tr>');
+                        var tr2 = $('<tr>').attr('depenencia','membresia');
                         tr2.append(inputs2);
                         tr2.append('<td>'+cantidad+'</td>');
                         tr2.append('<td>'+item+'</td>');

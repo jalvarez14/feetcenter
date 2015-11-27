@@ -197,8 +197,20 @@
         <tbody>
             <?php $value = new Visitadetalle()?>
             <?php foreach ($visita->getVisitadetalles() as $key => $value) :?>
-           
-            <tr>
+            <!--VALIDAMOS SI SE TRATA DE UN SERVICIO CON DEPENDENCIA EN MEMBRESIA-->
+            <?php 
+            $dependencia = false;
+                if(!is_null($value->getIdservicioclinica())){
+                    if($value->getServicioclinica()->getServicio()->getServicioDependencia() == 'membresia'){
+                         $dependencia = true;
+                    }
+                }
+            ?>
+            <?php if($dependencia) :?>
+                <tr depenencia="membresia">
+            <?php else :?>
+                <tr>
+            <?php endif;?>
                 <?php if ($value->getIdproductoclinica() != NULL) :?>
                     <input type="hidden" value="<?php echo $value->getIdproductoclinica()?>" name="vistadetalle[<?php echo $key?>][id]">
                     <input type="hidden" value="producto" name="vistadetalle[<?php echo $key?>][type]">

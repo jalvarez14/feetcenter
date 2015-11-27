@@ -217,8 +217,11 @@ class PacientesController extends AbstractActionController
             $pacienteQuery->joinClinica()->withColumn('clinica_nombre');
 
             //WHERE
+            $empleados_array = $post_data['empleados'];
+            array_push($empleados_array, "1");
+
             $pacienteQuery->filterByIdclinica($post_data['clinicas']);
-            $pacienteQuery->filterByIdempleado($post_data['empleados']);
+            $pacienteQuery->filterByIdempleado($empleados_array);
             $recordsFiltered = $pacienteQuery->count();
             //ORDER TODO
 

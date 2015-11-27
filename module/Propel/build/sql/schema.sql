@@ -598,6 +598,10 @@ CREATE TABLE `membresia`
     `membresia_servicios` DECIMAL(10,2) NOT NULL,
     `membresia_cupones` DECIMAL(10,2) NOT NULL,
     `membresia_precio` DECIMAL(10,2) NOT NULL,
+    `servicio_generaingreso` TINYINT(1),
+    `servicio_generacomision` TINYINT(1),
+    `servicio_tipocomision` enum('porcentaje','cantidad'),
+    `servicio_comision` DECIMAL(10,2),
     PRIMARY KEY (`idmembresia`)
 ) ENGINE=InnoDB;
 
@@ -1075,6 +1079,9 @@ CREATE TABLE `visita`
     `visita_estatuspago` enum('pagada','no pagada','cancelada'),
     `visita_total` DECIMAL(10,2),
     `visita_nota` TEXT,
+    `visita_year` INTEGER,
+    `visita_month` INTEGER,
+    `visita_day` INTEGER,
     PRIMARY KEY (`idvisita`),
     INDEX `idempleadocreador` (`idempleadocreador`),
     INDEX `idempleado` (`idempleado`),
