@@ -64,11 +64,32 @@ class LoginController extends AbstractActionController
                         $idclinica = NULL;
                     }else{
                         $idclinica = $clinica_empleado->getIdclinica();
+                        //VERIFICAMOS QUE NO EXISTA UN EMPLEADO DE TIPO ENCARGADLO LOGUEADO POR CLINICA
+                       $empleados_clinica = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->find();
+
+                       $flag = false;
+                       foreach ($empleados_clinica as $empleado){
+                           if(\EmpleadoaccesoQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadoaccesoEnsesion(true)->exists()){
+                              $flag = true; 
+                           }
+                       }
+                       
+                       if($flag){
+                  
+                        
+                            $this->flashMessenger()->addErrorMessage('Ya existe un empleado con el rol de encargardo en sesión!');
+                            return $this->redirect()->toRoute('login');
+                    
+                       }
+                        
                     }
                     
 
                     //Verificamos que el usuario no este logueado actualmente
                     if(!$empleado_acceso->getEmpleadoaccesoEnsesion()){
+                        
+                        
+                        
                         
                         /*
                          * NOTIFICACIONES
