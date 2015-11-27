@@ -673,7 +673,7 @@
                     var viewName = view.name;
                            
                             if(!isOverlapping(event)){
-                                if(event.className[0] == "visita_reprogramda" || event.className[0] == "visita_terminado" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso"){
+                                if(event.className[0] == "visita_reprogramda" || event.className[0] == "visita_terminado" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso" || event.className[0] == "visita_terminado") {
                                     revertFunc();
                                     return;
                                 }
@@ -709,9 +709,9 @@
                             }
                             var n = moment();
                             var d = event.start.diff(n,'minutes');
-                            
+                           
                             if(!isOverlapping(event) && d > 0){
-                                if(event.className[0] == "visita_reprogramda" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso"){
+                                if(event.className[0] == "visita_reprogramda" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso" || event.className[0] == "visita_terminado"){
                                     revertFunc();
                                     return;
                                 }
