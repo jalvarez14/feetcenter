@@ -197,18 +197,19 @@
 //                        */
 //                        
                             tr.find('a.nota_remision').on('click',function(){
-
+                                $('body').addClass('loading');
                                 $.ajax({
                                     method:'get',
                                     url:'/ventas/generarnota',
                                     dataType:'json',
+                                    async: false,
                                     data:{idvisita:idvisita},
                                     success:function(data){
                                         download('data:application/pdf;base64,'+data, "nota_de_remision.pdf", "application/pdf");
                                     }
 
                                 });
-
+                                $('body').removeClass('loading');
 
                             });
                                 
