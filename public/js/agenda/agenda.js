@@ -392,8 +392,10 @@
              
             // "calendar" on line below should ref the element on which fc has been called 
             var array = $('#calendar').fullCalendar('clientEvents');
-            
+      
             for(var i in array){
+                var event_end = event.end
+                event_end = event_end.second(0);
                 if (event.resources[0] == array[i].resources[0] && event.end > array[i].start && event.start < array[i].end && event.id !==array[i].id){
                    return true;
                 }
@@ -541,8 +543,9 @@
                             
                             var n = moment();
                             var d = start.diff(n,'minutes');
-                                
+
                             if(d < 0){
+                               
                                 alert('No es posible crear una cita en una fecha/hora anterior a la actual!');
                                 unselect();
                                 return;
@@ -652,6 +655,7 @@
                                     
                                    
                                 }else{
+                                    console.log('entroooo');
                                      unselect();
                                 }
                             }else{
