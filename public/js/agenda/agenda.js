@@ -160,8 +160,6 @@
             });
         }
         
-        
-        
         var renderEventos = function(date) {
            
             $.ajax({
@@ -187,8 +185,7 @@
                     });
                 }
             });
-        }
-        
+        }   
         
         var crearNodisponible = function(start,end,resource){
             $('#calendar').fullCalendar('renderEvent', {
@@ -261,10 +258,10 @@
              settings.idclinica = clinica_select[0];
 
              //Destruimos nuestro calendario
+        
              $container.find('#calendar').fullCalendar('destroy');
-             
+
              var picker = $container.find('input[name=agenda_fecha]').pickadate('picker');
-            
              var date = moment(picker.get('select').obj);
              
              //Inicializamos nuestro calendario
@@ -435,17 +432,20 @@
                 selectMonths: true,
                 selectYears: 25,
                 onSet: function(selected,evnt) {
-                     initCalendar();
-               }
+                     $('#calendar').fullCalendar('gotoDate', selected.select);
+
+                            
+                }
             });
             var picker = $container.find('input[name=agenda_fecha]').pickadate('picker');
-            picker.set('select', new Date());
-
+            picker.set('select',  new Date());
+            
+            
             $('#calendar:not(".fc-event")').on('contextmenu', function (e) {
                 e.preventDefault();
             });
             
-            
+            initCalendar();
 
 
         }
@@ -476,9 +476,19 @@
                     switch (viewName) {
                             case 'resourceDay':
                             {
+                                
+                               
+
                                 $container.find('.fc-header-center').text('');
-                                 $container.find('#filter_container').show();
+                                $container.find('#filter_container').show();
                                 var date = view.end._d;
+                                
+                                //cambiamos la fecha de nuestro selector
+                               var picker = $container.find('input[name=agenda_fecha]').pickadate('picker');
+                                picker.set('select',  date);
+                              
+                                //$container.find('input[name=agenda_fecha]').pickadate('picker').set('select', new Date(2015, 3, 30));
+                               
                                 renderDescansos(moment(date));
                                 renderEventos(moment(date));
                                 renderRecesos(moment(date));
@@ -655,7 +665,7 @@
                                     
                                    
                                 }else{
-                                    console.log('entroooo');
+          
                                      unselect();
                                 }
                             }else{
