@@ -272,9 +272,7 @@ class PacientesController extends AbstractActionController
                 if($session->getIdrol() != 1){
                      $tmp['opciones'] = '<a href="/pacientes/editar/'.$value['idpaciente'].'">Editar</a>';
                 }
-                
-               
-                
+
                 $data[] = $tmp;
  
             }   

@@ -9,57 +9,80 @@
 
 namespace Login\Controller;
 
+
+
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
+
+
 class LoginController extends AbstractActionController
 {
+    
+    
     public function indexAction()
     {
         
+        
         //Nuesta session
         $session = new \Shared\Session\AouthSession();
+        
         
         if($session->isActive()){
             return $this->redirect()->toRoute('agenda');
         }
         
+        
         //Instanciamos nuestro formulario
         $form = new \Login\Form\LoginForm();
     
+        
         return new ViewModel(array(
             'form' => $form,
             'errorMessages' => $this->flashMessenger()->getErrorMessages(),
         ));
+        
+        
     }
+    
     
     public function inAction()
     {
         
+        
         $request = $this->getRequest();
         $response = $this->getResponse();
+        
         
         //Instanciamos nuestro formulario
         $form = new \Login\Form\LoginForm();
         
+        
         //Nuesta session
         $session = new \Shared\Session\AouthSession();
-           
+          
+        
         if($request->isPost()){
+            
             
             $post_data = $request->getPost();
             
+            
             $post_data['empleadoacceso_password'] = md5($post_data['empleadoacceso_password']);
+            
             
             //Verificamos si los datos de acceso son correctos
             if(\EmpleadoaccesoQuery::create()->filterByEmpleadoaccesoUsername($post_data['empleadoacceso_username'])->filterByEmpleadoaccesoPassword($post_data['empleadoacceso_password'])->exists()){
 
+                
                 $empleado_acceso = \EmpleadoaccesoQuery::create()->filterByEmpleadoaccesoUsername($post_data['empleadoacceso_username'])->filterByEmpleadoaccesoPassword($post_data['empleadoacceso_password'])->findOne();
                
+                
                 //Verificamos que ese usario ya este asiganod alguna clinica
                 if(\ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->exists() || $empleado_acceso->getIdrol()==1){
                     $clinica_empleado = \ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->findOne();
                    
+                    
                     if($empleado_acceso->getIdrol() == 1){
                         $idclinica = NULL;
                     }else{
@@ -86,7 +109,7 @@ class LoginController extends AbstractActionController
                     
 
                     //Verificamos que el usuario no este logueado actualmente
-                    if(!$empleado_acceso->getEmpleadoaccesoEnsesion()){
+                    //if(!$empleado_acceso->getEmpleadoaccesoEnsesion()){
                         
                         
                         
@@ -96,8 +119,12 @@ class LoginController extends AbstractActionController
                          */
                         
                         if($empleado_acceso->getIdrol() == 1){
+                            
+                            
                             $transferencias = \TransferenciaQuery::create()->filterByTransferenciaEstatus('enviada')->count();
                         }else{
+                            
+                            
                             $transferencias = \TransferenciaQuery::create()->filterByIdclinicadestinataria($empleado_acceso->getIdrol())->filterByTransferenciaEstatus('enviada')->count();  
                         }
                         
@@ -117,17 +144,18 @@ class LoginController extends AbstractActionController
                             'transferencias_pendientes' => $transferencias,
                         ));               
                         
+                        
                         $empleado_acceso->setEmpleadoaccesoEnsesion(1);
                         $empleado_acceso->save();
                         
                         
 
                         return $this->redirect()->toRoute('agenda');
-                    }else{
+                    //}else{
                         
-                        $this->flashMessenger()->addErrorMessage('El usuario ya ha iniciado sesión en otro dispositivo');
-                        return $this->redirect()->toRoute('login');
-                    }
+                    //    $this->flashMessenger()->addErrorMessage('El usuario ya ha iniciado sesión en otro dispositivo');
+                    //    return $this->redirect()->toRoute('login');
+                    //}
 
                 }else{
                     $this->flashMessenger()->addErrorMessage('No es posible iniciar sesion con este usuario ya que no ha sido asignado a ninguna clinica');
