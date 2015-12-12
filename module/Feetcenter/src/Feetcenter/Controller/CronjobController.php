@@ -17,11 +17,12 @@ class CronjobController extends AbstractActionController
     public function autologoutAction()
     {
 
-        $administradores = \EmpleadoaccesoQuery::create()->filterByIdrol(1)->find();
+        $administradores = \EmpleadoaccesoQuery::create()->find();
         foreach ($administradores as $admin){
             $admin->setEmpleadoaccesoEnsesion(0);
             $admin->save();
         }
         
     }
+    
 }

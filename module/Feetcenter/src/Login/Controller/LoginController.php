@@ -109,7 +109,7 @@ class LoginController extends AbstractActionController
                     
 
                     //Verificamos que el usuario no este logueado actualmente
-                    //if(!$empleado_acceso->getEmpleadoaccesoEnsesion()){
+                    if(!$empleado_acceso->getEmpleadoaccesoEnsesion()){
                         
                         
                         
@@ -151,11 +151,11 @@ class LoginController extends AbstractActionController
                         
 
                         return $this->redirect()->toRoute('agenda');
-                    //}else{
+                    }else{
                         
-                    //    $this->flashMessenger()->addErrorMessage('El usuario ya ha iniciado sesión en otro dispositivo');
-                    //    return $this->redirect()->toRoute('login');
-                    //}
+                        $this->flashMessenger()->addErrorMessage('El usuario ya ha iniciado sesión en otro dispositivo');
+                        return $this->redirect()->toRoute('login');
+                    }
 
                 }else{
                     $this->flashMessenger()->addErrorMessage('No es posible iniciar sesion con este usuario ya que no ha sido asignado a ninguna clinica');
