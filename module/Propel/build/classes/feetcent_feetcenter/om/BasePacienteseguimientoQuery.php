@@ -11,6 +11,7 @@
  * @method PacienteseguimientoQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
  * @method PacienteseguimientoQuery orderByIdempleado($order = Criteria::ASC) Order by the idempleado column
  * @method PacienteseguimientoQuery orderByIdcanalcomunicacion($order = Criteria::ASC) Order by the idcanalcomunicacion column
+ * @method PacienteseguimientoQuery orderByIdestatusseguimiento($order = Criteria::ASC) Order by the idestatusseguimiento column
  * @method PacienteseguimientoQuery orderByPacienteseguimientoFechacreacion($order = Criteria::ASC) Order by the pacienteseguimiento_fechacreacion column
  * @method PacienteseguimientoQuery orderByPacienteseguimientoComentario($order = Criteria::ASC) Order by the pacienteseguimiento_comentario column
  * @method PacienteseguimientoQuery orderByPacienteseguimientoFecha($order = Criteria::ASC) Order by the pacienteseguimiento_fecha column
@@ -20,6 +21,7 @@
  * @method PacienteseguimientoQuery groupByIdclinica() Group by the idclinica column
  * @method PacienteseguimientoQuery groupByIdempleado() Group by the idempleado column
  * @method PacienteseguimientoQuery groupByIdcanalcomunicacion() Group by the idcanalcomunicacion column
+ * @method PacienteseguimientoQuery groupByIdestatusseguimiento() Group by the idestatusseguimiento column
  * @method PacienteseguimientoQuery groupByPacienteseguimientoFechacreacion() Group by the pacienteseguimiento_fechacreacion column
  * @method PacienteseguimientoQuery groupByPacienteseguimientoComentario() Group by the pacienteseguimiento_comentario column
  * @method PacienteseguimientoQuery groupByPacienteseguimientoFecha() Group by the pacienteseguimiento_fecha column
@@ -40,6 +42,10 @@
  * @method PacienteseguimientoQuery rightJoinEmpleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleado relation
  * @method PacienteseguimientoQuery innerJoinEmpleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleado relation
  *
+ * @method PacienteseguimientoQuery leftJoinEstatusseguimiento($relationAlias = null) Adds a LEFT JOIN clause to the query using the Estatusseguimiento relation
+ * @method PacienteseguimientoQuery rightJoinEstatusseguimiento($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Estatusseguimiento relation
+ * @method PacienteseguimientoQuery innerJoinEstatusseguimiento($relationAlias = null) Adds a INNER JOIN clause to the query using the Estatusseguimiento relation
+ *
  * @method PacienteseguimientoQuery leftJoinPaciente($relationAlias = null) Adds a LEFT JOIN clause to the query using the Paciente relation
  * @method PacienteseguimientoQuery rightJoinPaciente($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Paciente relation
  * @method PacienteseguimientoQuery innerJoinPaciente($relationAlias = null) Adds a INNER JOIN clause to the query using the Paciente relation
@@ -51,6 +57,7 @@
  * @method Pacienteseguimiento findOneByIdclinica(int $idclinica) Return the first Pacienteseguimiento filtered by the idclinica column
  * @method Pacienteseguimiento findOneByIdempleado(int $idempleado) Return the first Pacienteseguimiento filtered by the idempleado column
  * @method Pacienteseguimiento findOneByIdcanalcomunicacion(int $idcanalcomunicacion) Return the first Pacienteseguimiento filtered by the idcanalcomunicacion column
+ * @method Pacienteseguimiento findOneByIdestatusseguimiento(int $idestatusseguimiento) Return the first Pacienteseguimiento filtered by the idestatusseguimiento column
  * @method Pacienteseguimiento findOneByPacienteseguimientoFechacreacion(string $pacienteseguimiento_fechacreacion) Return the first Pacienteseguimiento filtered by the pacienteseguimiento_fechacreacion column
  * @method Pacienteseguimiento findOneByPacienteseguimientoComentario(string $pacienteseguimiento_comentario) Return the first Pacienteseguimiento filtered by the pacienteseguimiento_comentario column
  * @method Pacienteseguimiento findOneByPacienteseguimientoFecha(string $pacienteseguimiento_fecha) Return the first Pacienteseguimiento filtered by the pacienteseguimiento_fecha column
@@ -60,6 +67,7 @@
  * @method array findByIdclinica(int $idclinica) Return Pacienteseguimiento objects filtered by the idclinica column
  * @method array findByIdempleado(int $idempleado) Return Pacienteseguimiento objects filtered by the idempleado column
  * @method array findByIdcanalcomunicacion(int $idcanalcomunicacion) Return Pacienteseguimiento objects filtered by the idcanalcomunicacion column
+ * @method array findByIdestatusseguimiento(int $idestatusseguimiento) Return Pacienteseguimiento objects filtered by the idestatusseguimiento column
  * @method array findByPacienteseguimientoFechacreacion(string $pacienteseguimiento_fechacreacion) Return Pacienteseguimiento objects filtered by the pacienteseguimiento_fechacreacion column
  * @method array findByPacienteseguimientoComentario(string $pacienteseguimiento_comentario) Return Pacienteseguimiento objects filtered by the pacienteseguimiento_comentario column
  * @method array findByPacienteseguimientoFecha(string $pacienteseguimiento_fecha) Return Pacienteseguimiento objects filtered by the pacienteseguimiento_fecha column
@@ -170,7 +178,7 @@ abstract class BasePacienteseguimientoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idpacienteseguimiento`, `idpaciente`, `idclinica`, `idempleado`, `idcanalcomunicacion`, `pacienteseguimiento_fechacreacion`, `pacienteseguimiento_comentario`, `pacienteseguimiento_fecha` FROM `pacienteseguimiento` WHERE `idpacienteseguimiento` = :p0';
+        $sql = 'SELECT `idpacienteseguimiento`, `idpaciente`, `idclinica`, `idempleado`, `idcanalcomunicacion`, `idestatusseguimiento`, `pacienteseguimiento_fechacreacion`, `pacienteseguimiento_comentario`, `pacienteseguimiento_fecha` FROM `pacienteseguimiento` WHERE `idpacienteseguimiento` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -475,6 +483,50 @@ abstract class BasePacienteseguimientoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PacienteseguimientoPeer::IDCANALCOMUNICACION, $idcanalcomunicacion, $comparison);
+    }
+
+    /**
+     * Filter the query on the idestatusseguimiento column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdestatusseguimiento(1234); // WHERE idestatusseguimiento = 1234
+     * $query->filterByIdestatusseguimiento(array(12, 34)); // WHERE idestatusseguimiento IN (12, 34)
+     * $query->filterByIdestatusseguimiento(array('min' => 12)); // WHERE idestatusseguimiento >= 12
+     * $query->filterByIdestatusseguimiento(array('max' => 12)); // WHERE idestatusseguimiento <= 12
+     * </code>
+     *
+     * @see       filterByEstatusseguimiento()
+     *
+     * @param     mixed $idestatusseguimiento The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PacienteseguimientoQuery The current query, for fluid interface
+     */
+    public function filterByIdestatusseguimiento($idestatusseguimiento = null, $comparison = null)
+    {
+        if (is_array($idestatusseguimiento)) {
+            $useMinMax = false;
+            if (isset($idestatusseguimiento['min'])) {
+                $this->addUsingAlias(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, $idestatusseguimiento['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idestatusseguimiento['max'])) {
+                $this->addUsingAlias(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, $idestatusseguimiento['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, $idestatusseguimiento, $comparison);
     }
 
     /**
@@ -818,6 +870,82 @@ abstract class BasePacienteseguimientoQuery extends ModelCriteria
         return $this
             ->joinEmpleado($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Empleado', 'EmpleadoQuery');
+    }
+
+    /**
+     * Filter the query by a related Estatusseguimiento object
+     *
+     * @param   Estatusseguimiento|PropelObjectCollection $estatusseguimiento The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PacienteseguimientoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByEstatusseguimiento($estatusseguimiento, $comparison = null)
+    {
+        if ($estatusseguimiento instanceof Estatusseguimiento) {
+            return $this
+                ->addUsingAlias(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, $estatusseguimiento->getIdestatusseguimiento(), $comparison);
+        } elseif ($estatusseguimiento instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, $estatusseguimiento->toKeyValue('PrimaryKey', 'Idestatusseguimiento'), $comparison);
+        } else {
+            throw new PropelException('filterByEstatusseguimiento() only accepts arguments of type Estatusseguimiento or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Estatusseguimiento relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PacienteseguimientoQuery The current query, for fluid interface
+     */
+    public function joinEstatusseguimiento($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Estatusseguimiento');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Estatusseguimiento');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Estatusseguimiento relation Estatusseguimiento object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EstatusseguimientoQuery A secondary query class using the current class as primary query
+     */
+    public function useEstatusseguimientoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEstatusseguimiento($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Estatusseguimiento', 'EstatusseguimientoQuery');
     }
 
     /**

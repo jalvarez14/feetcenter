@@ -24,13 +24,13 @@ abstract class BasePacienteseguimientoPeer
     const TM_CLASS = 'PacienteseguimientoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the idpacienteseguimiento field */
     const IDPACIENTESEGUIMIENTO = 'pacienteseguimiento.idpacienteseguimiento';
@@ -46,6 +46,9 @@ abstract class BasePacienteseguimientoPeer
 
     /** the column name for the idcanalcomunicacion field */
     const IDCANALCOMUNICACION = 'pacienteseguimiento.idcanalcomunicacion';
+
+    /** the column name for the idestatusseguimiento field */
+    const IDESTATUSSEGUIMIENTO = 'pacienteseguimiento.idestatusseguimiento';
 
     /** the column name for the pacienteseguimiento_fechacreacion field */
     const PACIENTESEGUIMIENTO_FECHACREACION = 'pacienteseguimiento.pacienteseguimiento_fechacreacion';
@@ -75,12 +78,12 @@ abstract class BasePacienteseguimientoPeer
      * e.g. PacienteseguimientoPeer::$fieldNames[PacienteseguimientoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idpacienteseguimiento', 'Idpaciente', 'Idclinica', 'Idempleado', 'Idcanalcomunicacion', 'PacienteseguimientoFechacreacion', 'PacienteseguimientoComentario', 'PacienteseguimientoFecha', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idpacienteseguimiento', 'idpaciente', 'idclinica', 'idempleado', 'idcanalcomunicacion', 'pacienteseguimientoFechacreacion', 'pacienteseguimientoComentario', 'pacienteseguimientoFecha', ),
-        BasePeer::TYPE_COLNAME => array (PacienteseguimientoPeer::IDPACIENTESEGUIMIENTO, PacienteseguimientoPeer::IDPACIENTE, PacienteseguimientoPeer::IDCLINICA, PacienteseguimientoPeer::IDEMPLEADO, PacienteseguimientoPeer::IDCANALCOMUNICACION, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHACREACION, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_COMENTARIO, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPACIENTESEGUIMIENTO', 'IDPACIENTE', 'IDCLINICA', 'IDEMPLEADO', 'IDCANALCOMUNICACION', 'PACIENTESEGUIMIENTO_FECHACREACION', 'PACIENTESEGUIMIENTO_COMENTARIO', 'PACIENTESEGUIMIENTO_FECHA', ),
-        BasePeer::TYPE_FIELDNAME => array ('idpacienteseguimiento', 'idpaciente', 'idclinica', 'idempleado', 'idcanalcomunicacion', 'pacienteseguimiento_fechacreacion', 'pacienteseguimiento_comentario', 'pacienteseguimiento_fecha', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Idpacienteseguimiento', 'Idpaciente', 'Idclinica', 'Idempleado', 'Idcanalcomunicacion', 'Idestatusseguimiento', 'PacienteseguimientoFechacreacion', 'PacienteseguimientoComentario', 'PacienteseguimientoFecha', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idpacienteseguimiento', 'idpaciente', 'idclinica', 'idempleado', 'idcanalcomunicacion', 'idestatusseguimiento', 'pacienteseguimientoFechacreacion', 'pacienteseguimientoComentario', 'pacienteseguimientoFecha', ),
+        BasePeer::TYPE_COLNAME => array (PacienteseguimientoPeer::IDPACIENTESEGUIMIENTO, PacienteseguimientoPeer::IDPACIENTE, PacienteseguimientoPeer::IDCLINICA, PacienteseguimientoPeer::IDEMPLEADO, PacienteseguimientoPeer::IDCANALCOMUNICACION, PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHACREACION, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_COMENTARIO, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPACIENTESEGUIMIENTO', 'IDPACIENTE', 'IDCLINICA', 'IDEMPLEADO', 'IDCANALCOMUNICACION', 'IDESTATUSSEGUIMIENTO', 'PACIENTESEGUIMIENTO_FECHACREACION', 'PACIENTESEGUIMIENTO_COMENTARIO', 'PACIENTESEGUIMIENTO_FECHA', ),
+        BasePeer::TYPE_FIELDNAME => array ('idpacienteseguimiento', 'idpaciente', 'idclinica', 'idempleado', 'idcanalcomunicacion', 'idestatusseguimiento', 'pacienteseguimiento_fechacreacion', 'pacienteseguimiento_comentario', 'pacienteseguimiento_fecha', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -90,12 +93,12 @@ abstract class BasePacienteseguimientoPeer
      * e.g. PacienteseguimientoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idpacienteseguimiento' => 0, 'Idpaciente' => 1, 'Idclinica' => 2, 'Idempleado' => 3, 'Idcanalcomunicacion' => 4, 'PacienteseguimientoFechacreacion' => 5, 'PacienteseguimientoComentario' => 6, 'PacienteseguimientoFecha' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idpacienteseguimiento' => 0, 'idpaciente' => 1, 'idclinica' => 2, 'idempleado' => 3, 'idcanalcomunicacion' => 4, 'pacienteseguimientoFechacreacion' => 5, 'pacienteseguimientoComentario' => 6, 'pacienteseguimientoFecha' => 7, ),
-        BasePeer::TYPE_COLNAME => array (PacienteseguimientoPeer::IDPACIENTESEGUIMIENTO => 0, PacienteseguimientoPeer::IDPACIENTE => 1, PacienteseguimientoPeer::IDCLINICA => 2, PacienteseguimientoPeer::IDEMPLEADO => 3, PacienteseguimientoPeer::IDCANALCOMUNICACION => 4, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHACREACION => 5, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_COMENTARIO => 6, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHA => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPACIENTESEGUIMIENTO' => 0, 'IDPACIENTE' => 1, 'IDCLINICA' => 2, 'IDEMPLEADO' => 3, 'IDCANALCOMUNICACION' => 4, 'PACIENTESEGUIMIENTO_FECHACREACION' => 5, 'PACIENTESEGUIMIENTO_COMENTARIO' => 6, 'PACIENTESEGUIMIENTO_FECHA' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('idpacienteseguimiento' => 0, 'idpaciente' => 1, 'idclinica' => 2, 'idempleado' => 3, 'idcanalcomunicacion' => 4, 'pacienteseguimiento_fechacreacion' => 5, 'pacienteseguimiento_comentario' => 6, 'pacienteseguimiento_fecha' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Idpacienteseguimiento' => 0, 'Idpaciente' => 1, 'Idclinica' => 2, 'Idempleado' => 3, 'Idcanalcomunicacion' => 4, 'Idestatusseguimiento' => 5, 'PacienteseguimientoFechacreacion' => 6, 'PacienteseguimientoComentario' => 7, 'PacienteseguimientoFecha' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idpacienteseguimiento' => 0, 'idpaciente' => 1, 'idclinica' => 2, 'idempleado' => 3, 'idcanalcomunicacion' => 4, 'idestatusseguimiento' => 5, 'pacienteseguimientoFechacreacion' => 6, 'pacienteseguimientoComentario' => 7, 'pacienteseguimientoFecha' => 8, ),
+        BasePeer::TYPE_COLNAME => array (PacienteseguimientoPeer::IDPACIENTESEGUIMIENTO => 0, PacienteseguimientoPeer::IDPACIENTE => 1, PacienteseguimientoPeer::IDCLINICA => 2, PacienteseguimientoPeer::IDEMPLEADO => 3, PacienteseguimientoPeer::IDCANALCOMUNICACION => 4, PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO => 5, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHACREACION => 6, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_COMENTARIO => 7, PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHA => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPACIENTESEGUIMIENTO' => 0, 'IDPACIENTE' => 1, 'IDCLINICA' => 2, 'IDEMPLEADO' => 3, 'IDCANALCOMUNICACION' => 4, 'IDESTATUSSEGUIMIENTO' => 5, 'PACIENTESEGUIMIENTO_FECHACREACION' => 6, 'PACIENTESEGUIMIENTO_COMENTARIO' => 7, 'PACIENTESEGUIMIENTO_FECHA' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('idpacienteseguimiento' => 0, 'idpaciente' => 1, 'idclinica' => 2, 'idempleado' => 3, 'idcanalcomunicacion' => 4, 'idestatusseguimiento' => 5, 'pacienteseguimiento_fechacreacion' => 6, 'pacienteseguimiento_comentario' => 7, 'pacienteseguimiento_fecha' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -174,6 +177,7 @@ abstract class BasePacienteseguimientoPeer
             $criteria->addSelectColumn(PacienteseguimientoPeer::IDCLINICA);
             $criteria->addSelectColumn(PacienteseguimientoPeer::IDEMPLEADO);
             $criteria->addSelectColumn(PacienteseguimientoPeer::IDCANALCOMUNICACION);
+            $criteria->addSelectColumn(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO);
             $criteria->addSelectColumn(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHACREACION);
             $criteria->addSelectColumn(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_COMENTARIO);
             $criteria->addSelectColumn(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHA);
@@ -183,6 +187,7 @@ abstract class BasePacienteseguimientoPeer
             $criteria->addSelectColumn($alias . '.idclinica');
             $criteria->addSelectColumn($alias . '.idempleado');
             $criteria->addSelectColumn($alias . '.idcanalcomunicacion');
+            $criteria->addSelectColumn($alias . '.idestatusseguimiento');
             $criteria->addSelectColumn($alias . '.pacienteseguimiento_fechacreacion');
             $criteria->addSelectColumn($alias . '.pacienteseguimiento_comentario');
             $criteria->addSelectColumn($alias . '.pacienteseguimiento_fecha');
@@ -641,6 +646,57 @@ abstract class BasePacienteseguimientoPeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related Estatusseguimiento table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinEstatusseguimiento(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PacienteseguimientoPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PacienteseguimientoPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(PacienteseguimientoPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PacienteseguimientoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining the related Paciente table
      *
      * @param      Criteria $criteria
@@ -893,6 +949,73 @@ abstract class BasePacienteseguimientoPeer
 
 
     /**
+     * Selects a collection of Pacienteseguimiento objects pre-filled with their Estatusseguimiento objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Pacienteseguimiento objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinEstatusseguimiento(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PacienteseguimientoPeer::DATABASE_NAME);
+        }
+
+        PacienteseguimientoPeer::addSelectColumns($criteria);
+        $startcol = PacienteseguimientoPeer::NUM_HYDRATE_COLUMNS;
+        EstatusseguimientoPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PacienteseguimientoPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PacienteseguimientoPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = PacienteseguimientoPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PacienteseguimientoPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = EstatusseguimientoPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = EstatusseguimientoPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = EstatusseguimientoPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    EstatusseguimientoPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Pacienteseguimiento) to $obj2 (Estatusseguimiento)
+                $obj2->addPacienteseguimiento($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
      * Selects a collection of Pacienteseguimiento objects pre-filled with their Paciente objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1001,6 +1124,8 @@ abstract class BasePacienteseguimientoPeer
 
         $criteria->addJoin(PacienteseguimientoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
+
         $criteria->addJoin(PacienteseguimientoPeer::IDPACIENTE, PacientePeer::IDPACIENTE, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -1046,14 +1171,19 @@ abstract class BasePacienteseguimientoPeer
         EmpleadoPeer::addSelectColumns($criteria);
         $startcol5 = $startcol4 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
 
+        EstatusseguimientoPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + EstatusseguimientoPeer::NUM_HYDRATE_COLUMNS;
+
         PacientePeer::addSelectColumns($criteria);
-        $startcol6 = $startcol5 + PacientePeer::NUM_HYDRATE_COLUMNS;
+        $startcol7 = $startcol6 + PacientePeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(PacienteseguimientoPeer::IDCANALCOMUNICACION, CanalcomunicacionPeer::IDCANALCOMUNICACION, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDPACIENTE, PacientePeer::IDPACIENTE, $join_behavior);
 
@@ -1128,22 +1258,40 @@ abstract class BasePacienteseguimientoPeer
                 $obj4->addPacienteseguimiento($obj1);
             } // if joined row not null
 
-            // Add objects for joined Paciente rows
+            // Add objects for joined Estatusseguimiento rows
 
-            $key5 = PacientePeer::getPrimaryKeyHashFromRow($row, $startcol5);
+            $key5 = EstatusseguimientoPeer::getPrimaryKeyHashFromRow($row, $startcol5);
             if ($key5 !== null) {
-                $obj5 = PacientePeer::getInstanceFromPool($key5);
+                $obj5 = EstatusseguimientoPeer::getInstanceFromPool($key5);
                 if (!$obj5) {
 
-                    $cls = PacientePeer::getOMClass();
+                    $cls = EstatusseguimientoPeer::getOMClass();
 
                     $obj5 = new $cls();
                     $obj5->hydrate($row, $startcol5);
-                    PacientePeer::addInstanceToPool($obj5, $key5);
+                    EstatusseguimientoPeer::addInstanceToPool($obj5, $key5);
                 } // if obj5 loaded
 
-                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj5 (Paciente)
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj5 (Estatusseguimiento)
                 $obj5->addPacienteseguimiento($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Paciente rows
+
+            $key6 = PacientePeer::getPrimaryKeyHashFromRow($row, $startcol6);
+            if ($key6 !== null) {
+                $obj6 = PacientePeer::getInstanceFromPool($key6);
+                if (!$obj6) {
+
+                    $cls = PacientePeer::getOMClass();
+
+                    $obj6 = new $cls();
+                    $obj6->hydrate($row, $startcol6);
+                    PacientePeer::addInstanceToPool($obj6, $key6);
+                } // if obj6 loaded
+
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj6 (Paciente)
+                $obj6->addPacienteseguimiento($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -1193,6 +1341,8 @@ abstract class BasePacienteseguimientoPeer
         $criteria->addJoin(PacienteseguimientoPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDPACIENTE, PacientePeer::IDPACIENTE, $join_behavior);
 
@@ -1249,6 +1399,8 @@ abstract class BasePacienteseguimientoPeer
 
         $criteria->addJoin(PacienteseguimientoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
+
         $criteria->addJoin(PacienteseguimientoPeer::IDPACIENTE, PacientePeer::IDPACIENTE, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -1303,6 +1455,65 @@ abstract class BasePacienteseguimientoPeer
         $criteria->addJoin(PacienteseguimientoPeer::IDCANALCOMUNICACION, CanalcomunicacionPeer::IDCANALCOMUNICACION, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDPACIENTE, PacientePeer::IDPACIENTE, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Estatusseguimiento table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptEstatusseguimiento(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(PacienteseguimientoPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            PacienteseguimientoPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(PacienteseguimientoPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(PacienteseguimientoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDCANALCOMUNICACION, CanalcomunicacionPeer::IDCANALCOMUNICACION, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDPACIENTE, PacientePeer::IDPACIENTE, $join_behavior);
 
@@ -1361,6 +1572,8 @@ abstract class BasePacienteseguimientoPeer
 
         $criteria->addJoin(PacienteseguimientoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1404,12 +1617,17 @@ abstract class BasePacienteseguimientoPeer
         EmpleadoPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
 
+        EstatusseguimientoPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + EstatusseguimientoPeer::NUM_HYDRATE_COLUMNS;
+
         PacientePeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + PacientePeer::NUM_HYDRATE_COLUMNS;
+        $startcol6 = $startcol5 + PacientePeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(PacienteseguimientoPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDPACIENTE, PacientePeer::IDPACIENTE, $join_behavior);
 
@@ -1469,22 +1687,41 @@ abstract class BasePacienteseguimientoPeer
 
             } // if joined row is not null
 
-                // Add objects for joined Paciente rows
+                // Add objects for joined Estatusseguimiento rows
 
-                $key4 = PacientePeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                $key4 = EstatusseguimientoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
                 if ($key4 !== null) {
-                    $obj4 = PacientePeer::getInstanceFromPool($key4);
+                    $obj4 = EstatusseguimientoPeer::getInstanceFromPool($key4);
                     if (!$obj4) {
 
-                        $cls = PacientePeer::getOMClass();
+                        $cls = EstatusseguimientoPeer::getOMClass();
 
                     $obj4 = new $cls();
                     $obj4->hydrate($row, $startcol4);
-                    PacientePeer::addInstanceToPool($obj4, $key4);
+                    EstatusseguimientoPeer::addInstanceToPool($obj4, $key4);
                 } // if $obj4 already loaded
 
-                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj4 (Paciente)
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj4 (Estatusseguimiento)
                 $obj4->addPacienteseguimiento($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Paciente rows
+
+                $key5 = PacientePeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = PacientePeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = PacientePeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    PacientePeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj5 (Paciente)
+                $obj5->addPacienteseguimiento($obj1);
 
             } // if joined row is not null
 
@@ -1526,12 +1763,17 @@ abstract class BasePacienteseguimientoPeer
         EmpleadoPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
 
+        EstatusseguimientoPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + EstatusseguimientoPeer::NUM_HYDRATE_COLUMNS;
+
         PacientePeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + PacientePeer::NUM_HYDRATE_COLUMNS;
+        $startcol6 = $startcol5 + PacientePeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(PacienteseguimientoPeer::IDCANALCOMUNICACION, CanalcomunicacionPeer::IDCANALCOMUNICACION, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDPACIENTE, PacientePeer::IDPACIENTE, $join_behavior);
 
@@ -1591,22 +1833,41 @@ abstract class BasePacienteseguimientoPeer
 
             } // if joined row is not null
 
-                // Add objects for joined Paciente rows
+                // Add objects for joined Estatusseguimiento rows
 
-                $key4 = PacientePeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                $key4 = EstatusseguimientoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
                 if ($key4 !== null) {
-                    $obj4 = PacientePeer::getInstanceFromPool($key4);
+                    $obj4 = EstatusseguimientoPeer::getInstanceFromPool($key4);
                     if (!$obj4) {
 
-                        $cls = PacientePeer::getOMClass();
+                        $cls = EstatusseguimientoPeer::getOMClass();
 
                     $obj4 = new $cls();
                     $obj4->hydrate($row, $startcol4);
-                    PacientePeer::addInstanceToPool($obj4, $key4);
+                    EstatusseguimientoPeer::addInstanceToPool($obj4, $key4);
                 } // if $obj4 already loaded
 
-                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj4 (Paciente)
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj4 (Estatusseguimiento)
                 $obj4->addPacienteseguimiento($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Paciente rows
+
+                $key5 = PacientePeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = PacientePeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = PacientePeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    PacientePeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj5 (Paciente)
+                $obj5->addPacienteseguimiento($obj1);
 
             } // if joined row is not null
 
@@ -1648,12 +1909,17 @@ abstract class BasePacienteseguimientoPeer
         ClinicaPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
 
+        EstatusseguimientoPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + EstatusseguimientoPeer::NUM_HYDRATE_COLUMNS;
+
         PacientePeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + PacientePeer::NUM_HYDRATE_COLUMNS;
+        $startcol6 = $startcol5 + PacientePeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(PacienteseguimientoPeer::IDCANALCOMUNICACION, CanalcomunicacionPeer::IDCANALCOMUNICACION, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDPACIENTE, PacientePeer::IDPACIENTE, $join_behavior);
 
@@ -1713,22 +1979,41 @@ abstract class BasePacienteseguimientoPeer
 
             } // if joined row is not null
 
-                // Add objects for joined Paciente rows
+                // Add objects for joined Estatusseguimiento rows
 
-                $key4 = PacientePeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                $key4 = EstatusseguimientoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
                 if ($key4 !== null) {
-                    $obj4 = PacientePeer::getInstanceFromPool($key4);
+                    $obj4 = EstatusseguimientoPeer::getInstanceFromPool($key4);
                     if (!$obj4) {
 
-                        $cls = PacientePeer::getOMClass();
+                        $cls = EstatusseguimientoPeer::getOMClass();
 
                     $obj4 = new $cls();
                     $obj4->hydrate($row, $startcol4);
-                    PacientePeer::addInstanceToPool($obj4, $key4);
+                    EstatusseguimientoPeer::addInstanceToPool($obj4, $key4);
                 } // if $obj4 already loaded
 
-                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj4 (Paciente)
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj4 (Estatusseguimiento)
                 $obj4->addPacienteseguimiento($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Paciente rows
+
+                $key5 = PacientePeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = PacientePeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = PacientePeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    PacientePeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj5 (Paciente)
+                $obj5->addPacienteseguimiento($obj1);
 
             } // if joined row is not null
 
@@ -1741,7 +2026,7 @@ abstract class BasePacienteseguimientoPeer
 
 
     /**
-     * Selects a collection of Pacienteseguimiento objects pre-filled with all related objects except Paciente.
+     * Selects a collection of Pacienteseguimiento objects pre-filled with all related objects except Estatusseguimiento.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1750,7 +2035,7 @@ abstract class BasePacienteseguimientoPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptPaciente(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptEstatusseguimiento(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1773,11 +2058,16 @@ abstract class BasePacienteseguimientoPeer
         EmpleadoPeer::addSelectColumns($criteria);
         $startcol5 = $startcol4 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
 
+        PacientePeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + PacientePeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(PacienteseguimientoPeer::IDCANALCOMUNICACION, CanalcomunicacionPeer::IDCANALCOMUNICACION, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
 
         $criteria->addJoin(PacienteseguimientoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDPACIENTE, PacientePeer::IDPACIENTE, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1851,6 +2141,171 @@ abstract class BasePacienteseguimientoPeer
 
                 // Add the $obj1 (Pacienteseguimiento) to the collection in $obj4 (Empleado)
                 $obj4->addPacienteseguimiento($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Paciente rows
+
+                $key5 = PacientePeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = PacientePeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = PacientePeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    PacientePeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj5 (Paciente)
+                $obj5->addPacienteseguimiento($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Pacienteseguimiento objects pre-filled with all related objects except Paciente.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Pacienteseguimiento objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPaciente(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PacienteseguimientoPeer::DATABASE_NAME);
+        }
+
+        PacienteseguimientoPeer::addSelectColumns($criteria);
+        $startcol2 = PacienteseguimientoPeer::NUM_HYDRATE_COLUMNS;
+
+        CanalcomunicacionPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + CanalcomunicacionPeer::NUM_HYDRATE_COLUMNS;
+
+        ClinicaPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        EstatusseguimientoPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + EstatusseguimientoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDCANALCOMUNICACION, CanalcomunicacionPeer::IDCANALCOMUNICACION, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $criteria->addJoin(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, EstatusseguimientoPeer::IDESTATUSSEGUIMIENTO, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PacienteseguimientoPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PacienteseguimientoPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PacienteseguimientoPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PacienteseguimientoPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Canalcomunicacion rows
+
+                $key2 = CanalcomunicacionPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = CanalcomunicacionPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = CanalcomunicacionPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    CanalcomunicacionPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj2 (Canalcomunicacion)
+                $obj2->addPacienteseguimiento($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Clinica rows
+
+                $key3 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ClinicaPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ClinicaPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ClinicaPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj3 (Clinica)
+                $obj3->addPacienteseguimiento($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Empleado rows
+
+                $key4 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = EmpleadoPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = EmpleadoPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    EmpleadoPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj4 (Empleado)
+                $obj4->addPacienteseguimiento($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Estatusseguimiento rows
+
+                $key5 = EstatusseguimientoPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = EstatusseguimientoPeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = EstatusseguimientoPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    EstatusseguimientoPeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (Pacienteseguimiento) to the collection in $obj5 (Estatusseguimiento)
+                $obj5->addPacienteseguimiento($obj1);
 
             } // if joined row is not null
 

@@ -321,14 +321,14 @@ class VentasController  extends AbstractActionController
                     
                 }
                 elseif(!is_null($detalle->getIdservicioclinica())){
-                    
+                  
                     $servicio_clinica = $detalle->getServicioclinica();
                     $dependencia = $servicio_clinica->getServicio()->getServicioDependencia();
                     //Si tiene dependencia con membresia
+                     
                     if($dependencia == 'membresia'){
-                        
                         //Eliminamos de membresia detalle y sumamos a pacientemembresia
-                        if(\PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaFechainicio($visita->getVisitaFechainicio())->exists()){
+                        if(\PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->exists()){
                             $membresia_detalle = \PacientemembresiadetalleQuery::create()->findOneByIdvisitadetalle($detalle->getIdvisitadetalle());
                             $paciente_membresia = $membresia_detalle->getPacientemembresia();
                             $current_servicios = $paciente_membresia->getPacientemembresiaServiciosdisponibles();

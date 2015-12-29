@@ -432,9 +432,7 @@
                 selectMonths: true,
                 selectYears: 25,
                 onSet: function(selected,evnt) {
-                     $('#calendar').fullCalendar('gotoDate', selected.select);
-
-                            
+                     $('#calendar').fullCalendar('gotoDate', selected.select);       
                 }
             });
             var picker = $container.find('input[name=agenda_fecha]').pickadate('picker');

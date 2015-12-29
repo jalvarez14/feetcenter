@@ -88,6 +88,7 @@ class AgendaController extends AbstractActionController
         return new ViewModel(array(
             'clinicas' => $clinicas,
             'idclinica' => $idclinica,
+            'successMessages' => $this->flashMessenger()->getSuccessMessages(),
         ));
     }
     

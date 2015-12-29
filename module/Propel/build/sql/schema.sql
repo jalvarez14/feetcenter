@@ -433,6 +433,20 @@ CREATE TABLE `encargadoclinica`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- estatusseguimiento
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `estatusseguimiento`;
+
+CREATE TABLE `estatusseguimiento`
+(
+    `idestatusseguimiento` INTEGER NOT NULL AUTO_INCREMENT,
+    `estatusseguimiento_nombre` VARCHAR(100),
+    `estatusseguimiento_color` VARCHAR(100),
+    PRIMARY KEY (`idestatusseguimiento`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- faltante
 -- ---------------------------------------------------------------------
 
@@ -748,6 +762,7 @@ CREATE TABLE `pacienteseguimiento`
     `idclinica` INTEGER NOT NULL,
     `idempleado` INTEGER NOT NULL,
     `idcanalcomunicacion` INTEGER NOT NULL,
+    `idestatusseguimiento` INTEGER NOT NULL,
     `pacienteseguimiento_fechacreacion` DATETIME NOT NULL,
     `pacienteseguimiento_comentario` TEXT NOT NULL,
     `pacienteseguimiento_fecha` DATE NOT NULL,
@@ -756,6 +771,7 @@ CREATE TABLE `pacienteseguimiento`
     INDEX `idempleado` (`idempleado`),
     INDEX `idclinica` (`idclinica`),
     INDEX `idcanalcomunicacion` (`idcanalcomunicacion`),
+    INDEX `idestatuseguimiento` (`idestatusseguimiento`),
     CONSTRAINT `idcanalcomunicacion_pacienteseguimiento`
         FOREIGN KEY (`idcanalcomunicacion`)
         REFERENCES `canalcomunicacion` (`idcanalcomunicacion`)
@@ -769,6 +785,11 @@ CREATE TABLE `pacienteseguimiento`
     CONSTRAINT `idempleado_pacienteseguimiento`
         FOREIGN KEY (`idempleado`)
         REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idestatusseguimiento_pacienteseguimiento`
+        FOREIGN KEY (`idestatusseguimiento`)
+        REFERENCES `estatusseguimiento` (`idestatusseguimiento`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idpaciente_pacienteseguimiento`
