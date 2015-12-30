@@ -158,10 +158,12 @@ class SeguimientoController extends AbstractActionController
             $entity = new \Pacienteseguimiento();
             
             foreach($post_data as $key => $value){
-                if(\PacienteseguimientoPeer::getTableMap()->hasColumn($key) && $key!='pacienteseguimiento_fecha'){
+                if(\PacienteseguimientoPeer::getTableMap()->hasColumn($key) && $key!='pacienteseguimiento_fecha' && $key!='pacienteseguimiento_hora'){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
+            
+            
             
             //Las fechas
             $entity->setPacienteseguimientoFechacreacion(new \DateTime());
@@ -176,7 +178,7 @@ class SeguimientoController extends AbstractActionController
             //el empleado y la fecha
             $entity->setIdempleado($sesion->getIdempleado());
             $entity->setIdclinica($idclinica);
-            
+            echo '<pre>';var_dump($entity->toArray()); echo '</pre>';exit();
             $entity->save();
             
             //Agregamos un mensaje
@@ -195,14 +197,20 @@ class SeguimientoController extends AbstractActionController
         
         $paciente = \PacienteQuery::create()->findPk($idpaciente);
         $canales = \CanalcomunicacionQuery::create()->find();
+        $estatus = \EstatusseguimientoQuery::create()->find();
 
         $canales_array = array();
         foreach ($canales as $canal){
             $idcanal = $canal->getIdcanalcomunicacion();
             $canales_array[$idcanal] = $canal->getCanalcomunicacionNombre(); 
         }
+        $estatus_array = array();
+        foreach ($estatus as $est){
+            $id = $est->getIdestatusseguimiento();
+            $estatus_array[$id] = $est->getEstatusseguimientoNombre(); 
+        }
         
-        $form = new \Pacientes\Form\SeguimientoForm($canales_array);
+        $form = new \Pacientes\Form\SeguimientoForm($canales_array,$estatus_array);
         $form->get('idpaciente')->setValue($paciente->getIdpaciente());
         
         

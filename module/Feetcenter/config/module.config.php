@@ -69,6 +69,17 @@ return array(
                         ),
                         
                     ),
+                    'estatusseguimiento' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/estatusseguimiento[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Estatusseguimiento',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
                     'membresias' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -656,6 +667,7 @@ return array(
             'Catalogos\Controller\Empleado' => 'Catalogos\Controller\EmpleadoController',
             'Catalogos\Controller\Incidencia' => 'Catalogos\Controller\IncidenciaController',
             'Catalogos\Controller\Membresia' => 'Catalogos\Controller\MembresiaController',
+            'Catalogos\Controller\Estatusseguimiento' => 'Catalogos\Controller\EstatusseguimientoController',
             //Compras
             'Compras\Controller\Compras' => 'Compras\Controller\ComprasController',
             //Login

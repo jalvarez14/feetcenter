@@ -95,7 +95,7 @@
                                 var data = settings.json.data;
                                 
                                 //Comenzamos con la la cabezera de los años
-                                var thead1 = $('<tr id="years"><th></th><th></th><th></th><th></th></tr>');
+                                var thead1 = $('<tr id="years"><th></th><th></th><th></th></tr>');
                                 var year_start = parseInt(settings.json.year_start);
                                 for(var i=0; i<=settings.json.interval; i++){
                                     thead1.append('<th class="year">'+year_start+'</th>');
@@ -106,24 +106,24 @@
                                 $container.find('.table-visitas thead').append(thead1);
                                 
                                 //La segunda cabezera, por cada año vamos agregar los 12 dias del mes
-                                var thead2 = $('<tr><th>Cliente</th><th>Celular</th><th>Clinica</th><th>Atendido por</th></tr>');
+                                var thead2 = $('<tr><th>Cliente</th><th>Celular</th><th>Atendido por</th></tr>');
                                 var years = $container.find('.table-visitas thead th.year').length;
                                 for(var i=0; i<years; i++){
 
                                     var th = $('<th>').addClass('th_year');
                                     var unit_row = $('<div class="units-row"  style="margin-bottom: 0px;">').appendTo(th);
-                                    unit_row.append('<div class="unit-month">Ene</div>');
-                                    unit_row.append('<div class="unit-month">Feb</div>');
-                                    unit_row.append('<div class="unit-month">Mar</div>');
-                                    unit_row.append('<div class="unit-month">Abr</div>');
-                                    unit_row.append('<div class="unit-month">May</div>');
-                                    unit_row.append('<div class="unit-month">Jun</div>');
-                                    unit_row.append('<div class="unit-month">Jul</div>');
-                                    unit_row.append('<div class="unit-month">Ago</div>');
-                                    unit_row.append('<div class="unit-month">Sep</div>');
-                                    unit_row.append('<div class="unit-month">Oct</div>');
-                                    unit_row.append('<div class="unit-month">Nov</div>');
-                                    unit_row.append('<div class="unit-month">Dic</div>');
+                                    unit_row.append('<div class="unit-month">E</div>');
+                                    unit_row.append('<div class="unit-month">F</div>');
+                                    unit_row.append('<div class="unit-month">M</div>');
+                                    unit_row.append('<div class="unit-month">A</div>');
+                                    unit_row.append('<div class="unit-month">M</div>');
+                                    unit_row.append('<div class="unit-month">J</div>');
+                                    unit_row.append('<div class="unit-month">J</div>');
+                                    unit_row.append('<div class="unit-month">A</div>');
+                                    unit_row.append('<div class="unit-month">S</div>');
+                                    unit_row.append('<div class="unit-month">O</div>');
+                                    unit_row.append('<div class="unit-month">N</div>');
+                                    unit_row.append('<div class="unit-month">D</div>');
 
                                     thead2.append(th);
                                 }
@@ -139,7 +139,7 @@
                                     tr.attr('id',this.idpaciente);
                                     tr.append('<td>'+this.paciente_nombre+'</td>');
                                     tr.append('<td>'+this.paciente_celular+'</td>');
-                                    tr.append('<td>'+this.clinica_nombre+'</td>');
+                                    //tr.append('<td>'+this.clinica_nombre+'</td>');
                                     tr.append('<td>'+this.empleado_nombre+'</td>');
                                     
                                     year_start = parseInt(settings.json.year_start);
@@ -173,8 +173,9 @@
                                                                     
                                     //Insertamos los datos
                                     $.each(data,function(){
+                                      
                                         $.each(this.visitas,function(){
-                               
+                                            
                                             var date = moment(this.visita_fechainicio,'YYYY-MM-DD');
                                             var year = date.get('year');
                                             var month = date.get('month') +1 ;
@@ -188,11 +189,12 @@
                                             //La columna (mes)
                                             var div = td.find('div[month='+month+']');
                                             
-                                        if(div.text().length > 1){
-                                            div.append('/'+day);
-                                        }else{
-                                             div.text(day);
-                                        }
+                                            div.text(day);
+//                                        if(div.text().length > 1){
+//                                            div.append('/'+day);
+//                                        }else{
+//                                             div.text(day);
+//                                        }
 
                                         //Sumamos a los totales
                                         var current = parseInt(tr.find('td#total').text());

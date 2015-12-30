@@ -81,7 +81,7 @@ class VisitasController extends AbstractActionController
                 $paciente_fecharegistro = new \DateTime($value->getPaciente()->getPacienteFecharegistro());
   
                 $tmp['DT_RowId'] = $value->getIdpaciente();
-                $tmp['clinica_nombre'] = $value->getPaciente()->getClinica()->getClinicaNombre();
+                //$tmp['clinica_nombre'] = $value->getPaciente()->getClinica()->getClinicaNombre();
                 $tmp['idpaciente'] = $value->getIdpaciente();
                 $tmp['paciente_fecharegistro'] = $paciente_fecharegistro->format('d/m/Y');
                 $tmp['paciente_nombre'] = $value->getPaciente()->getPacienteNombre();

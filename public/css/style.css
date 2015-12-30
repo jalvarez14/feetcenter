@@ -423,3 +423,7 @@ body.loading {
 body.loading .modal-loading {
     display: block;
 }
+
+.th_year{
+    padding: 0px !important;
+}

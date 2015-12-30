@@ -14,6 +14,7 @@ return array(
             'catalogos/concepto',
             'catalogos/incidencia',
             'catalogos/membresias',
+            'catalogos/estatusseguimiento',
             //Compras
             'compras',
             //Login
