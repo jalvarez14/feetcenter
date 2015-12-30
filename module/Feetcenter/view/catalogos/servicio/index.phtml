@@ -23,7 +23,7 @@
             <tr id="<?php echo $entity['idservicio']?>">
                  <td><?php echo $entity['servicio_nombre']?></td>
                 <td><?php echo $entity['servicio_descripcion']?></td>
-                <td class="tr_options"><a href="<?php echo '/catalogos/servicio/editar/'.$entity['idservicio']?>">Editar</a><a class="delete-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Advertencia</h2>" data-content="/catalogos/servicio/eliminar?html=true" >Eliminar</a></td>
+                <td class="tr_options"><a href="<?php echo '/catalogos/servicio/editar/'.$entity['idservicio']?>">Editar</a></td>
             </tr>
         <?php endforeach;?>
     </tbody>

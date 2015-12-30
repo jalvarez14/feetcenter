@@ -6243,7 +6243,7 @@ function ResourceView(element, calendar, viewName) {
      
 	      html +=
 					"<th class='" + classNames.join(' ') + "'>" +
-					'<a class="pedicurista_header" idempleado="'+resource.id+'" href="javascript:void(0)"><div><img width="150" height="150" style="width:150px;height:150px;" src="'+resource.img+'"><p>' + htmlEscape(resource.name) +
+					'<a class="pedicurista_header" idempleado="'+resource.id+'" href="javascript:void(0)"><div><p>' + htmlEscape(resource.name) +
 					"</p></div></a></th>";
 		}
 
