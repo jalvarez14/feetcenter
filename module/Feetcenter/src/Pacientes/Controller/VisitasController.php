@@ -38,6 +38,10 @@ class VisitasController extends AbstractActionController
             $query->filterByVisitaYear($post_data['year']);
             $query->filterByVisitaMonth($post_data['months']);
             $query->filterByVisitaEstatuspago('pagada');
+            if(isset($post_data['estatus'])){
+                $query->usePacienteQuery()->usePacienteseguimientoQuery()->filterByIdpacienteseguimiento($post_data['estatus'])->endUse()->endUse();
+            }
+
             $recordsFiltered = $query->count();
              
             if($post_data['order'][0] == 'asc'){
@@ -87,6 +91,22 @@ class VisitasController extends AbstractActionController
                 $tmp['paciente_nombre'] = $value->getPaciente()->getPacienteNombre();
                 $tmp['paciente_celular'] = $value->getPaciente()->getPacienteCelular();
                 $tmp['empleado_nombre'] = $value->getEmpleadoRelatedByIdempleado()->getEmpleadoNombre();
+                
+                //OBTENEMOS EL ULTIMO ESSTATUS DE SEGUIMIENTO
+                 $tmp['paciente_estatus'] = '<td>N/D</td>';
+                 if(\PacienteseguimientoQuery::create()->filterByIdpaciente($value->getIdpaciente())->exists()){
+                    $paciente_seguimiento = \PacienteseguimientoQuery::create()->filterByIdpaciente($value->getIdpaciente())->orderByPacienteseguimientoFecha(\Criteria::DESC)->findOne();
+                    $tmp['paciente_estatus'] = '<td><span class="badge" style="background:'.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoColor().'"></span> '.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoNombre().'</td>';
+                }
+                
+                //LA ULTIMA CITA
+                $tmp['paciente_visita'] = '<td>N/D</td>';
+                if(\VisitaQuery::create()->filterByIdpaciente($value->getIdpaciente())->filterByVisitaFechainicio(array('min' => new \DateTime()))->exists()){
+                    $paciente_visita = \VisitaQuery::create()->filterByIdpaciente($value->getIdpaciente())->filterByVisitaFechainicio(array('min' => new \DateTime()))->orderByVisitaFechainicio(\Criteria::ASC)->findOne();
+                    $tmp['paciente_visita'] = $paciente_visita->getVisitaFechainicio('d/m/Y H:i');
+                }
+                
+                
                 $tmp['visitas'] = \VisitaQuery::create()->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio($post_data['order'][0])->filterByIdpaciente($value->getIdpaciente())->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
                 
                 $data[] = $tmp;
@@ -267,6 +287,7 @@ class VisitasController extends AbstractActionController
         $empleados = \ClinicaempleadoQuery::create()->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
         $first_visita = \VisitaQuery::create()->orderByVisitaFechainicio('asc')->limit(1)->findOne();
         $now = new \DateTime();
+        $estatus = \EstatusseguimientoQuery::create()->find();
         
         $years = array(
             'from' =>(int) $first_visita->getVisitaFechainicio('Y'),
@@ -278,6 +299,7 @@ class VisitasController extends AbstractActionController
             'session' => $session->getData(),
             'clinicas' => $clinicas,
             'years' => $years,
+            'estatus' => $estatus,
         ));
     }
 }

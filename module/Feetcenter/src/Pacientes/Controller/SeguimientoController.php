@@ -287,6 +287,9 @@ class SeguimientoController extends AbstractActionController
             //WHERE
             $pacienteQuery->filterByIdclinica($post_data['clinicas']);
             $pacienteQuery->filterByIdempleado($post_data['empleados']);
+            
+            
+            
             $recordsFiltered = $pacienteQuery->count();
             //ORDER TODO
 
@@ -321,6 +324,7 @@ class SeguimientoController extends AbstractActionController
            
             //Damos el formato
             $data = array();
+           
             foreach ($pacienteQuery->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
                 
                 $paciente_fecharegistro = new \DateTime($value['paciente_fecharegistro']);
@@ -332,6 +336,14 @@ class SeguimientoController extends AbstractActionController
                 $tmp['paciente_nombre'] = $value['paciente_nombre'];
                 $tmp['paciente_celular'] = $value['paciente_celular'];
                 $tmp['empleado_nombre'] = $value['empleado_nombre'];
+                 
+                //POR CADA PACIENTE OBTENEMOS SU ULTIMO SEGUIMIENTO (ESTATUS)
+                $tmp['paciente_estatus'] = 'N/D';
+                if(\PacienteseguimientoQuery::create()->filterByIdpaciente($value['idpaciente'])->exists()){
+                    $paciente_seguimiento = \PacienteseguimientoQuery::create()->filterByIdpaciente($value['idpaciente'])->orderByPacienteseguimientoFecha(\Criteria::DESC)->findOne();
+                    $tmp['paciente_estatus'] = '<td><span class="badge" style="background:'.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoColor().'"></span> '.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoNombre().'</td>';
+                }
+
                 $tmp['opciones'] = '<a href="/pacientes/seguimiento/ver/'.$value['idpaciente'].'">Ver seguimiento</a>';
                 
                 $data[] = $tmp;

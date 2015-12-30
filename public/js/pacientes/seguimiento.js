@@ -78,6 +78,7 @@
                             { data: "paciente_nombre" },
                             { data: "paciente_celular" },
                             { data: "empleado_nombre" },
+                            { data: "paciente_estatus" },
                             { data: "opciones" },
                         ],
                         ajax: {

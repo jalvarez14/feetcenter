@@ -32,7 +32,6 @@
                 <?php endfor;?>
             </select>
         </div>
-        
          <div class="unit-20">
             Mes
             <select multiple="multiple" name="visita_mes" class="width-100">
@@ -57,6 +56,17 @@
                 <option value="desc">Descendente</option>
             </select>
         </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-20">
+            Estatus
+            <select multiple="multiple" name="visita_estatus" class="width-100">
+                <?php foreach ($estatus as $est) : ?>
+                    <option value="<?php echo $est->getIdestatusseguimiento()?>"><?php echo $est->getEstatusseguimientoNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+            
+        </div>    
     </div>
     <table class="table-visitas table-bordered">
         <thead> 

@@ -59,6 +59,7 @@
             var year = $("select[name=visita_year]").multipleSelect('getSelects');
             var months = $("select[name=visita_mes]").multipleSelect('getSelects');
             var order = $("select[name=visita_order]").multipleSelect('getSelects');
+            var estatus = $("select[name=visita_estatus]").multipleSelect('getSelects');
             
             $container.find('table.table-visitas thead tr').remove();
 
@@ -84,7 +85,7 @@
                             ajax: {
                                 url: '/pacientes/visitas/serverside',
                                 type: 'POST',
-                                data:{year:year,months:months,order:order,clinicas:clinicas_select,empleados:pedicuristas_select},
+                                data:{year:year,months:months,order:order,clinicas:clinicas_select,empleados:pedicuristas_select,estatus:estatus},
                             },
                             drawCallback: function( settings ) {
                                 
@@ -95,7 +96,7 @@
                                 var data = settings.json.data;
                                 
                                 //Comenzamos con la la cabezera de los años
-                                var thead1 = $('<tr id="years"><th></th><th></th><th></th></tr>');
+                                var thead1 = $('<tr id="years"><th></th><th></th><th></th><th></th><th></th></tr>');
                                 var year_start = parseInt(settings.json.year_start);
                                 for(var i=0; i<=settings.json.interval; i++){
                                     thead1.append('<th class="year">'+year_start+'</th>');
@@ -106,7 +107,7 @@
                                 $container.find('.table-visitas thead').append(thead1);
                                 
                                 //La segunda cabezera, por cada año vamos agregar los 12 dias del mes
-                                var thead2 = $('<tr><th>Cliente</th><th>Celular</th><th>Atendido por</th></tr>');
+                                var thead2 = $('<tr><th>Cliente</th><th>Estatus actual</th><th>Proxima visita</th><th>Celular</th><th>Atendido por</th></tr>');
                                 var years = $container.find('.table-visitas thead th.year').length;
                                 for(var i=0; i<years; i++){
 
@@ -137,7 +138,9 @@
                                     //VALIDAMOS SI YA EXISTE UNA ROW CON EL CLIENTE
                                     var tr = $('<tr>');
                                     tr.attr('id',this.idpaciente);
-                                    tr.append('<td>'+this.paciente_nombre+'</td>');
+                                    tr.append('<td>'+this.paciente_nombre+'<a href="/pacientes/seguimiento/'+this.idpaciente+'/nuevo"><i style="float:right" class="fa fa-plus-square"></i></a></td>');
+                                    tr.append(this.paciente_estatus);
+                                    tr.append(this.paciente_visita);                                  
                                     tr.append('<td>'+this.paciente_celular+'</td>');
                                     //tr.append('<td>'+this.clinica_nombre+'</td>');
                                     tr.append('<td>'+this.empleado_nombre+'</td>');
@@ -409,6 +412,13 @@
                 onUncheckAll:filter,
             });
             
+            //Inicializamos nuestro multiple select
+            $container.find("select[name=visita_estatus]").multipleSelect({
+                onClick : filter,
+                onCheckAll:filter,
+                onUncheckAll:filter,
+            });
+            
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.session.idclinica]);
             
             var empleados = new Array();
@@ -428,6 +438,12 @@
                 months.push($(this).val());
             });
             $container.find("select[name=visita_mes]").multipleSelect("setSelects", months);
+            
+//            var estatus = new Array();
+//             $container.find("select[name=visita_estatus] option").each(function(){
+//                estatus.push($(this).val());
+//            });
+//            $container.find("select[name=visita_estatus]").multipleSelect("setSelects", estatus);
 
             $container.find("select[name=visita_order]").multipleSelect("setSelects",['asc']);
             filter();
