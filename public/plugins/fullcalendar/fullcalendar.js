@@ -5209,7 +5209,7 @@ function AgendaEventRenderer() {
 					// not enough room for title, put it in the time (TODO: maybe make both display:inline instead)
 					eventElement.find('div.fc-event-time')
 						.text(
-							formatDate(event.start, opt('timeFormat')) + ' - ' + event.title
+							event.title
 						);
 					eventElement.find('div.fc-event-title')
 						.remove();
@@ -5256,9 +5256,7 @@ function AgendaEventRenderer() {
 				"'" +
 			">" +
 			"<div class='fc-event-inner'>" +
-			"<div class='fc-event-time'>" +
-			htmlEscape(t.getEventTimeText(event)) +
-			"</div>" +
+
 			"<div class='fc-event-title'>" +
 			htmlEscape(event.title || '') +
 			"</div>" +

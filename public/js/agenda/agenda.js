@@ -226,7 +226,7 @@
             var cssClass = cssClassMap[visita.visita_status];
             $('#calendar').fullCalendar('renderEvent', {
                 id:visita.idvisita,
-                title: visita.empleado_nombre + ' - ' + visita.paciente_nombre,
+                title: visita.paciente_nombre,
                 start: visita.visita_fechainicio,
                 end: visita.visita_fechafin,
                 allDay: false,
