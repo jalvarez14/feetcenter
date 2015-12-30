@@ -84,13 +84,14 @@ class SeguimientoController extends AbstractActionController
         $paciente = \PacienteQuery::create()->findPk($idpaciente);
         
         $id = $this->params()->fromRoute('id');
+        
         $entity = \PacienteseguimientoQuery::create()->findPk($id);
-   
+
         
         if($request->isPost()){
             
             $post_data = $request->getPost();
-            
+
             foreach ($post_data as $k => $v){
                 if(empty($v)){
                     unset($post_data[$k]);
@@ -99,14 +100,15 @@ class SeguimientoController extends AbstractActionController
             
             //Recorremos nuestro formulario y seteamos los valores a nuestro objeto Lugar
             foreach ($post_data as $key => $value) {
-                if (\PacienteseguimientoPeer::getTableMap()->hasColumn($key) && $key != 'pacienteseguimiento_fecha') {
+                if (\PacienteseguimientoPeer::getTableMap()->hasColumn($key) && $key != 'pacienteseguimiento_fecha' && $key != 'pacienteseguimiento_hora') {
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
             
-            //La fecha de nacimiento
+            //Las fechas
             if(isset($post_data['pacienteseguimiento_fecha_submit'])){
                 $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit']);
+                $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit'].' '.$post_data['pacienteseguimiento_hora']);
             }
             
             $entity->save();
@@ -121,18 +123,30 @@ class SeguimientoController extends AbstractActionController
         
         
         $canales = \CanalcomunicacionQuery::create()->find();
-
+        $estatus = \EstatusseguimientoQuery::create()->find();
+         
         $canales_array = array();
         foreach ($canales as $canal){
             $idcanal = $canal->getIdcanalcomunicacion();
             $canales_array[$idcanal] = $canal->getCanalcomunicacionNombre(); 
         }
         
-        $form = new \Pacientes\Form\SeguimientoForm($canales_array);
+        $estatus_array = array();
+        foreach ($estatus as $est){
+            $ides = $est->getIdestatusseguimiento();
+            $estatus_array[$ides] = $est->getEstatusseguimientoNombre(); 
+        }
+        
+        $form = new \Pacientes\Form\SeguimientoForm($canales_array,$estatus_array);
         $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
         
+        //ATOMIZAMOS LA HORA Y SETIAMOS LOS VALORES CORRECTAMENTE
+        $full_date = new \DateTime($entity->getPacienteseguimientoFecha());
+        $form->get('pacienteseguimiento_fecha')->setValue($full_date->format('d/m/Y'));
+        $form->get('pacienteseguimiento_hora')->setValue($full_date->format('h:i'));
+
         $entity->save();
-        
+       
         return new ViewModel(array(
             'id' => $id,
             'paciente' => $paciente,
@@ -165,9 +179,9 @@ class SeguimientoController extends AbstractActionController
             
             
             
-            //Las fechas
+            //Las fechas 
             $entity->setPacienteseguimientoFechacreacion(new \DateTime());
-            $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit']);
+            $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit'].' '.$post_data['pacienteseguimiento_hora']);
             
             if($sesion->getIdrol() == 1){
                 $idclinica = 1;
@@ -175,10 +189,10 @@ class SeguimientoController extends AbstractActionController
                 $idclinica = $sesion->getIdClinica();
             }
             
-            //el empleado y la fecha
+            //el empleado 
             $entity->setIdempleado($sesion->getIdempleado());
             $entity->setIdclinica($idclinica);
-            echo '<pre>';var_dump($entity->toArray()); echo '</pre>';exit();
+           
             $entity->save();
             
             //Agregamos un mensaje

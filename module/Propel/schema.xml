@@ -588,7 +588,7 @@
     <column name="idestatusseguimiento" phpName="Idestatusseguimiento" type="INTEGER" required="true"/>
     <column name="pacienteseguimiento_fechacreacion" phpName="PacienteseguimientoFechacreacion" type="TIMESTAMP" required="true"/>
     <column name="pacienteseguimiento_comentario" phpName="PacienteseguimientoComentario" type="LONGVARCHAR" required="true"/>
-    <column name="pacienteseguimiento_fecha" phpName="PacienteseguimientoFecha" type="DATE" required="true"/>
+    <column name="pacienteseguimiento_fecha" phpName="PacienteseguimientoFecha" type="TIMESTAMP" required="true"/>
     <foreign-key foreignTable="canalcomunicacion" name="idcanalcomunicacion_pacienteseguimiento" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idcanalcomunicacion" foreign="idcanalcomunicacion"/>
     </foreign-key>

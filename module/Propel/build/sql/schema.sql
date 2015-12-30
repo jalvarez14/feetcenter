@@ -765,7 +765,7 @@ CREATE TABLE `pacienteseguimiento`
     `idestatusseguimiento` INTEGER NOT NULL,
     `pacienteseguimiento_fechacreacion` DATETIME NOT NULL,
     `pacienteseguimiento_comentario` TEXT NOT NULL,
-    `pacienteseguimiento_fecha` DATE NOT NULL,
+    `pacienteseguimiento_fecha` DATETIME NOT NULL,
     PRIMARY KEY (`idpacienteseguimiento`),
     INDEX `idpaciente` (`idpaciente`),
     INDEX `idempleado` (`idempleado`),

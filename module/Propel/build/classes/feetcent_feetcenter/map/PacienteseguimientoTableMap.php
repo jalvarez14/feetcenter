@@ -46,7 +46,7 @@ class PacienteseguimientoTableMap extends TableMap
         $this->addForeignKey('idestatusseguimiento', 'Idestatusseguimiento', 'INTEGER', 'estatusseguimiento', 'idestatusseguimiento', true, null, null);
         $this->addColumn('pacienteseguimiento_fechacreacion', 'PacienteseguimientoFechacreacion', 'TIMESTAMP', true, null, null);
         $this->addColumn('pacienteseguimiento_comentario', 'PacienteseguimientoComentario', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('pacienteseguimiento_fecha', 'PacienteseguimientoFecha', 'DATE', true, null, null);
+        $this->addColumn('pacienteseguimiento_fecha', 'PacienteseguimientoFecha', 'TIMESTAMP', true, null, null);
         // validators
     } // initialize()
 
