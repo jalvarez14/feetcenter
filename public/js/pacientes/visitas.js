@@ -96,7 +96,7 @@
                                 var data = settings.json.data;
                                 
                                 //Comenzamos con la la cabezera de los años
-                                var thead1 = $('<tr id="years"><th></th><th></th><th></th><th></th><th></th></tr>');
+                                var thead1 = $('<tr id="years"><th></th><th></th><th></th><th></th></tr>');
                                 var year_start = parseInt(settings.json.year_start);
                                 for(var i=0; i<=settings.json.interval; i++){
                                     thead1.append('<th class="year">'+year_start+'</th>');
@@ -107,7 +107,7 @@
                                 $container.find('.table-visitas thead').append(thead1);
                                 
                                 //La segunda cabezera, por cada año vamos agregar los 12 dias del mes
-                                var thead2 = $('<tr><th>Cliente</th><th>Estatus actual</th><th>Proxima visita</th><th>Celular</th><th>Atendido por</th></tr>');
+                                var thead2 = $('<tr><th>Cliente</th><th>Estatus actual</th><th>Proxima visita</th><th>Celular</th></tr>');
                                 var years = $container.find('.table-visitas thead th.year').length;
                                 for(var i=0; i<years; i++){
 
@@ -225,7 +225,7 @@
                                     tr.append(this.paciente_visita);                                  
                                     tr.append('<td>'+this.paciente_celular+'</td>');
                                     //tr.append('<td>'+this.clinica_nombre+'</td>');
-                                    tr.append('<td>'+this.empleado_nombre+'</td>');
+//                                    tr.append('<td>'+this.empleado_nombre+'</td>');
                                     
                                     year_start = parseInt(settings.json.year_start);
                                     
