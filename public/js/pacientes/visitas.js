@@ -113,18 +113,18 @@
 
                                     var th = $('<th>').addClass('th_year');
                                     var unit_row = $('<div class="units-row"  style="margin-bottom: 0px;">').appendTo(th);
-                                    unit_row.append('<div class="unit-month">E</div>');
-                                    unit_row.append('<div class="unit-month">F</div>');
-                                    unit_row.append('<div class="unit-month">M</div>');
-                                    unit_row.append('<div class="unit-month">A</div>');
-                                    unit_row.append('<div class="unit-month">M</div>');
-                                    unit_row.append('<div class="unit-month">J</div>');
-                                    unit_row.append('<div class="unit-month">J</div>');
-                                    unit_row.append('<div class="unit-month">A</div>');
-                                    unit_row.append('<div class="unit-month">S</div>');
-                                    unit_row.append('<div class="unit-month">O</div>');
-                                    unit_row.append('<div class="unit-month">N</div>');
-                                    unit_row.append('<div class="unit-month">D</div>');
+                                    unit_row.append('<div class="unit-month">En</div>');
+                                    unit_row.append('<div class="unit-month">Fe</div>');
+                                    unit_row.append('<div class="unit-month">Ma</div>');
+                                    unit_row.append('<div class="unit-month">Ab</div>');
+                                    unit_row.append('<div class="unit-month">Ma</div>');
+                                    unit_row.append('<div class="unit-month">Jn</div>');
+                                    unit_row.append('<div class="unit-month">Jl</div>');
+                                    unit_row.append('<div class="unit-month">Ag</div>');
+                                    unit_row.append('<div class="unit-month">Se</div>');
+                                    unit_row.append('<div class="unit-month">Oc</div>');
+                                    unit_row.append('<div class="unit-month">No</div>');
+                                    unit_row.append('<div class="unit-month">Di</div>');
 
                                     thead2.append(th);
                                 }
