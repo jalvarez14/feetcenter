@@ -723,7 +723,7 @@
                             var d = event.start.diff(n,'minutes');
                            
                             if(!isOverlapping(event) && d > 0){
-                                if(event.className[0] == "visita_reprogramda" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso" || event.className[0] == "visita_terminado"){
+                                if(event.className[0] == "visita_enservicio",event.className[0] == "visita_reprogramda" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso" || event.className[0] == "visita_terminado"){
                                     revertFunc();
                                     return;
                                 }
