@@ -558,6 +558,16 @@ return array(
                            ),
                        ),
                    ),
+                    'quick' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/quick',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Seguimiento',
+                               'action'        => 'quick',
+                           ),
+                       ),
+                   ),
                     'ver' => array(
                        'type' => 'Segment',
                        'options' => array(

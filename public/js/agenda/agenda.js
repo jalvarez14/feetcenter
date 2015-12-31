@@ -722,11 +722,11 @@
                             var n = moment();
                             var d = event.start.diff(n,'minutes');
                            
-                            if(!isOverlapping(event) && d > 0){
-                                if(event.className[0] == "visita_reprogramda" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso" || event.className[0] == "visita_terminado"){
-                                    revertFunc();
-                                    return;
-                                }
+                            //if(!isOverlapping(event) && d > 0){
+//                                if(event.className[0] == "visita_reprogramda" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso" || event.className[0] == "visita_terminado"){
+//                                    revertFunc();
+//                                    return;
+//                                }
                                 
                                 if(event.className[0]!='receso'){
                                     //La peticion ajax
@@ -747,9 +747,9 @@
 
                                     });
                                 }
-                            }else{
-                                revertFunc();
-                            }
+                            //}//else{
+                                //revertFunc();
+                            //}
                         
                      
                  },
@@ -845,7 +845,7 @@
                                         modal.find('span.token-input-delete-token').remove();
                                         
                                     }
-                                    
+                           
                                    if(status == 'cancelo' || status == 'no se presento' || status == 'reprogramda'){
                                        
                                         pagarAction.prop('disabled',true);
@@ -1592,7 +1592,33 @@
                                
                              
                         }else{
-                            alert('Lo sentimos, esta vista ya no es editable debido a que han transcurrido 20 minutos desde su hora de inicio');
+                            $('body').addClass('loading');
+                            var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800); $modalLauncher.attr('data-title',event.title);
+                            $modalLauncher.unbind();
+                            var data_content = $modalLauncher.attr('data-content');
+                            data_content = '/editarevento?html=true';
+                            data_content += '&idvisita='+ event.id;
+                             
+                             $modalLauncher.attr('data-content',data_content);
+                             $modalLauncher.modal();
+                             $modalLauncher.trigger('click');
+                             $modalLauncher.unbind();
+//                             
+                             $modalLauncher.on('loading.tools.modal', function(modal){
+                                 
+                                 $('body').removeClass('loading');
+                                 modal.find('span.token-input-delete-token').remove();
+                                 modal.find('select,input,button').prop('disabled',true);
+                                 
+                                 var $modal = this ;
+                                 
+                                 var $modalHeader = this.$modalHeader;
+                                $modalHeader.addClass('modal_header_action');
+
+                               
+                              
+                                 
+                             });
                         }
                         
                     }

@@ -137,8 +137,90 @@
                                     
                                     //VALIDAMOS SI YA EXISTE UNA ROW CON EL CLIENTE
                                     var tr = $('<tr>');
+                                    var idpaciente = this.idpaciente;
+                                    var paciente_nombre = this.paciente_nombre;
                                     tr.attr('id',this.idpaciente);
-                                    tr.append('<td>'+this.paciente_nombre+'<a href="/pacientes/seguimiento/'+this.idpaciente+'/nuevo"><i style="float:right" class="fa fa-plus-square"></i></a></td>');
+                                    tr.append('<td>'+this.paciente_nombre+'<a class="nuevo_seguimiento" href="javascript:void(0)"><i style="float:right" class="fa fa-plus-square"></i></a></td>');
+                                    //ADJUNTAMOS EL EVENTO 
+                                    tr.find('a.nuevo_seguimiento').on('click',function(){
+                                        $('body').addClass('loading');
+                                        var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Nuevo seguimiento ('+paciente_nombre+')');
+                                        $modalLauncher.unbind();
+                                        
+                                        var data_content = $modalLauncher.attr('data-content');
+                                        data_content = '/pacientes/seguimiento/quick?html=true';
+                                         data_content += '&idpaciente='+ idpaciente;
+                                        $modalLauncher.attr('data-content',data_content);
+                                        
+                                        $modalLauncher.modal();
+                                        $modalLauncher.trigger('click');
+                                        $modalLauncher.unbind();
+                                        
+                                        $modalLauncher.on('loading.tools.modal', function(modal){
+                                            
+                                            $('body').removeClass('loading');
+                                            var $modal = this ;
+                                            
+                                            var $modalHeader = this.$modalHeader;
+                                            $modalHeader.addClass('modal_header_action');
+                                            
+                                            this.createCancelButton('Cancelar');
+                                            var guardarAction = this.createActionButton('Guardar');
+                                            
+                                            guardarAction.on('click', $.proxy(function(){
+                                                
+                                                var empty = false;
+                                                modal.find('span.error').remove();
+                                                
+                                                $.each(modal.find('input[required],select[required],textarea[required]'),function(){
+                                                     if($(this).val() == ""){
+                                                         empty = true;
+                                                         $(this).after('<span class="error"> campo obligatorio</span>');
+                                                   
+                                                     }
+                                                });
+                                                
+                                                if(!empty){
+                                                    
+                                                    var formData = new FormData();
+                                                    
+                                                    $.each(modal.find('input,select,textarea'),function(){
+                                                        formData.append($(this).attr('name'),$(this).val());
+                                                    });
+                                                    
+                                                     //Hacemos la peticion ajax
+                                                    $.ajax({
+                                                        dataType: 'json',
+                                                        type: "POST",
+                                                        url: '/pacientes/seguimiento/quick',
+                                                        data: formData,
+                                                        async: false,
+                                                        processData: false,
+                                                        contentType: false,
+                                                        success: function (data) {
+                                                            if (data.result) {
+                                                                alert('Registro guardado con exito!')
+                                                                $modal.close();
+                                                                filter();
+                                                                
+                                                            }
+                                                        }
+                                                    });
+                                                        
+                                                }
+    
+                                                
+                                                
+                                            }));
+                                        
+                                        
+                                            
+                                        
+                                        });
+                                    });
+                                    
+                                    
+                                    
                                     tr.append(this.paciente_estatus);
                                     tr.append(this.paciente_visita);                                  
                                     tr.append('<td>'+this.paciente_celular+'</td>');
