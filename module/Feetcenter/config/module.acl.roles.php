@@ -112,6 +112,7 @@ return array(
             'seguimiento/editar',
             'seguimiento/eliminar',
             'seguimiento/serverside',
+            'seguimiento/quick',
             'pacientes-visitas',
             //Agenda
             'agenda',
