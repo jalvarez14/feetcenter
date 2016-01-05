@@ -42,7 +42,7 @@ class VisitasController extends AbstractActionController
                 $query->usePacienteQuery()->usePacienteseguimientoQuery()->filterByIdestatusseguimiento($post_data['estatus'])->endUse()->endUse();
             }
 
-            $recordsFiltered = $query->count();
+            
              
             if($post_data['order'][0] == 'asc'){
                 $query->orderBy('visita_fechainicio', \Criteria::ASC);
@@ -52,13 +52,14 @@ class VisitasController extends AbstractActionController
             
             $query->groupByIdpaciente();
             
+            $recordsFiltered = $query->count();
+
+            
             $query->setOffset((int)$post_data['start']);
             $query->setLimit((int)$post_data['length']);
             
             //ORDER (TODO)
-             
-             
-             
+
             //SEARCH
             if(!empty($post_data['search']['value'])){
                 $search_value = $post_data['search']['value'];
@@ -78,7 +79,6 @@ class VisitasController extends AbstractActionController
 
             //Damos el formato
             $data = array();
-            
             
             foreach ($query->find() as $value){
                 
@@ -122,7 +122,7 @@ class VisitasController extends AbstractActionController
             }
             $fist_date_year = (int)$first_date->format('Y');
             $today = new \DateTime();
-
+            
             $today_year = (int)$today->format('Y');
             $interval = $today_year - $fist_date_year;
 
