@@ -232,7 +232,7 @@
                 allDay: false,
                 //resources: resource,
                 className: cssClass,
-                editable: false,
+                editable: true,
             });
         }
         
@@ -714,7 +714,7 @@
 
                 },
                 eventDrop:function(event, delta, revertFunc, jsEvent, ui, view ) {
-                    
+                           
                             //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
                             if(settings.idrol == 3){
                                  revertFunc();
@@ -723,11 +723,12 @@
                             var d = event.start.diff(n,'minutes');
                            
                             if(!isOverlapping(event) && d > 0){
-                                if(event.className[0] == "visita_enservicio",event.className[0] == "visita_reprogramda" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso" || event.className[0] == "visita_terminado"){
+                               
+                                if(event.className[0] == "visita_enservicio" || event.className[0] == "visita_reprogramda" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso" || event.className[0] == "visita_terminado"){
                                     revertFunc();
                                     return;
                                 }
-                                
+
                                 if(event.className[0]!='receso'){
                                     //La peticion ajax
                                     $.ajax({
@@ -757,9 +758,9 @@
                 eventClick: function( event, jsEvent, view ) { 
                     
                    
-                    if(view.name !== 'resourceDay'){
+                    /*if(view.name !== 'resourceDay'){
                         return;
-                    }
+                    }*/
                     var is_visita = true;
                     var className = event.className[0];
                     var type_array = className.split('_'); var type = type_array[0];
@@ -798,6 +799,8 @@
                             
                             $('body').addClass('loading');
                             
+                            
+                            
                             var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800); $modalLauncher.attr('data-title',event.title);
                             $modalLauncher.unbind();
                             var data_content = $modalLauncher.attr('data-content');
@@ -811,6 +814,41 @@
                              
                              $modalLauncher.on('loading.tools.modal', function(modal){
                                     var $modal = this ;
+                                    
+                                    
+                                /*
+                                 * 
+                                 *LOS EVENTOS PARA REPROGRAMAR LA FECHA
+                                 */
+
+                                //dateContainer.find('input[name=visita_siguiente_fecha]').unbind();
+                                var pickdate = modal.find('input[name=visita_reprogramar_fecha]').pickadate({
+                                    monthsFull: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+                                    monthsShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+                                    weekdaysFull: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+                                    weekdaysShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+                                    today: 'hoy',
+                                    clear: 'borrar',
+                                    close: 'cerrar',
+                                    firstDay: 1,
+                                    format: 'd !de mmmm !de yyyy',
+                                    formatSubmit: 'yyyy/mm/dd',
+                                    selectYears: true,
+                                    selectMonths: true,
+                                    min: new Date(),
+                                    selectYears: 25,
+                                });
+
+                                //dateContainer.find('input[name=visita_siguiente_hora]').unbind();
+                                modal.find('input[name=visita_reprogramar_hora]').timepicker({
+                                    minuteStep: 1,
+                                    template: 'modal',
+                                    showSeconds: false,
+                                    showMeridian: false,
+                                    defaultTime: false
+                                });
+                                
+                                
 
                                     var $modalHeader = this.$modalHeader;
                                     $modalHeader.addClass('modal_header_action');
@@ -829,7 +867,23 @@
                                     
                                     var status_pago = modal.find('div#visita_estatuspago').attr('value');
                                     var visita_tipo = modal.find('input[name=visita_tipo]:checked').val();
-                                    var status = modal.find('select[name=visita_status]').val();
+                                    
+                                 var status = modal.find('select[name=visita_status]').val();
+                                 //EL EVENTO DEL SELECT DE ESTATUS
+                                 var reprogramar = false;
+                                 modal.find('select[name=visita_status]').on('change',function(){
+                                     var value = $(this).val();
+                                     
+                                     if(value != 'reprogramda'){
+                                          reprogramar = false;
+                                         modal.find('#reprogramar_container').slideUp();
+                                     }else{
+                                        reprogramar = true;
+                                        modal.find('#reprogramar_container').slideDown();
+                                     }
+                       
+                                 });
+
                                     if(visita_tipo == 'servicio' && (status=='en servicio' || status=='terminado')){
                                          modal.find('input[name=visita_tipo]').prop('disabled',true);
                                     }
@@ -1374,6 +1428,12 @@
                                                        });
 
                                                        if(!empty){
+                                                           
+                                                           
+                                                           //SI SE ESTA REPROGRAMANDO REVISAMOS DISPONIBILIDAD
+                                                           if(reprogramar){
+                                                               
+                                                           }
 
                                                            var form_data = new FormData();
 
@@ -1548,15 +1608,30 @@
                                          
                                      };
                                      guardarAction.on('click', $.proxy(function(){
+                                         
+                                         
+                                         
+                                        
+                                         
                                         var empty = false;
                                         modal.find('span.error').remove();
                                         modal.find('#span_paciente').siblings('ul').css('border','1px solid #999');
                                         if(modal.find('input[name=idpaciente]').val() == ""){
                                              empty = true;
                                              modal.find('#span_paciente').after('<span class="error"> campo obligatorio</span>');
-                                             modal.find('#span_paciente').siblings('ul').css('border','1px solid red');
+                                             modal.find('#span_paciente').siblings('ul').css('border','1px solid red');                                 
                                          }
-                                         
+                                         //VALIDAMOS QUE SI SE ESTE REPOGRAMANDO 
+                                        if(reprogramar){
+                                            modal.find('input[name=visita_reprogramar_fecha],input[name=visita_reprogramar_hora]').filter(function(){
+
+                                                if($(this).val() == ''){
+                                                    empty = true;
+                                                    $(this).after('<span class="error"> campo obligatorio</span>');
+                                                }
+                                            });
+                                        }
+                                         return;
                                          if(!empty){
                                             var formData = new FormData();
                                              $.each(modal.find('input:not(:checkbox, :radio),select'),function(){

@@ -250,7 +250,7 @@ class AgendaController extends AbstractActionController
          
          if($request->isPost()){
              $post_data = $request->getPost();
-            
+
              $entity = \VisitaQuery::create()->findPk($post_data['idvisita']);
              
              foreach($post_data as $key => $value){
