@@ -22,7 +22,7 @@ class VisitasController extends AbstractActionController
         if($request->isPost()){
             
             $post_data = $request->getPost();
-
+            
             //Comenzamos hacer la query
             $query = new \VisitaQuery();
 
@@ -79,7 +79,7 @@ class VisitasController extends AbstractActionController
             //Damos el formato
             $data = array();
             
-            $value = new \Visita();
+            
             foreach ($query->find() as $value){
                 
                 $paciente_fecharegistro = new \DateTime($value->getPaciente()->getPacienteFecharegistro());
@@ -113,19 +113,19 @@ class VisitasController extends AbstractActionController
  
             } 
             
-            $visitas = $query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
+            $visitas = $query->orderByVisitaFechainicio(\Criteria::DESC)->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);;
             
             //Comparamos la fecha de hoy con el primer registro, para obtener las columnas (fechas)
             $first_date = new \DateTime();
             if(isset($visitas[0])){
                 $first_date = new \DateTime($visitas[0]['visita_fechainicio']);
             }
+            $fist_date_year = (int)$first_date->format('Y');
             $today = new \DateTime();
-            $interval = $first_date->diff($today);
-            
-           
-            
-            
+            $today_year = (int)$today->format('Y');
+            $interval = $today_year - $fist_date_year;
+
+                        
             //El arreglo que regresamos
             $json_data = array(
                 "draw"            => (int)$post_data['draw'],
@@ -133,13 +133,10 @@ class VisitasController extends AbstractActionController
                 "recordsFiltered" => $recordsFiltered,
                 "data"            => $data,
                 'year_start' =>(int) $first_date->format('Y'),
-                'interval' => (int)$interval->format('%y')
-             
-                
+                'interval' => (int)$interval,
             );
             
-
-            
+           
             return $this->getResponse()->setContent(json_encode($json_data));
            
             
