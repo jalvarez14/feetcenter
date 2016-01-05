@@ -39,7 +39,7 @@ class VisitasController extends AbstractActionController
             $query->filterByVisitaMonth($post_data['months']);
             $query->filterByVisitaEstatuspago('pagada');
             if(isset($post_data['estatus'])){
-                $query->usePacienteQuery()->usePacienteseguimientoQuery()->filterByIdpacienteseguimiento($post_data['estatus'])->endUse()->endUse();
+                $query->usePacienteQuery()->usePacienteseguimientoQuery()->filterByIdestatusseguimiento($post_data['estatus'])->endUse()->endUse();
             }
 
             $recordsFiltered = $query->count();
@@ -95,7 +95,7 @@ class VisitasController extends AbstractActionController
                 //OBTENEMOS EL ULTIMO ESSTATUS DE SEGUIMIENTO
                  $tmp['paciente_estatus'] = '<td>N/D</td>';
                  if(\PacienteseguimientoQuery::create()->filterByIdpaciente($value->getIdpaciente())->exists()){
-                    $paciente_seguimiento = \PacienteseguimientoQuery::create()->filterByIdpaciente($value->getIdpaciente())->orderByPacienteseguimientoFecha(\Criteria::DESC)->findOne();
+                    $paciente_seguimiento = \PacienteseguimientoQuery::create()->filterByIdpaciente($value->getIdpaciente())->orderByPacienteseguimientoFechacreacion(\Criteria::DESC)->findOne();
                     $tmp['paciente_estatus'] = '<td><span class="badge" style="background:'.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoColor().'"></span> '.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoNombre().'</td>';
                 }
                 
@@ -122,10 +122,12 @@ class VisitasController extends AbstractActionController
             }
             $fist_date_year = (int)$first_date->format('Y');
             $today = new \DateTime();
+
             $today_year = (int)$today->format('Y');
             $interval = $today_year - $fist_date_year;
 
                         
+
             //El arreglo que regresamos
             $json_data = array(
                 "draw"            => (int)$post_data['draw'],
