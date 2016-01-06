@@ -455,6 +455,7 @@
                     center: '',
                     right:  'today,agendaWeek,resourceDay,prev,next'
                 },
+                //aspectRatio:.5,
                  timezone:'local',
                  now:new Date(),
                  allDaySlot:false,
@@ -468,6 +469,7 @@
                  maxTime:'21:00:00',
                  columnFormat:'D/M',
                  titleFormat:'dddd D , MMMM YYYY',
+                 forceEventDuration: true,
                 viewRender: function (view, element){
                     $('#calendar').fullCalendar( 'removeEvents');
                     var viewName = view.name;
@@ -721,39 +723,73 @@
                             }
                             var n = moment();
                             var d = event.start.diff(n,'minutes');
-                           
-                            if(!isOverlapping(event)){
-                               
-                                if(event.className[0] == "visita_enservicio" || event.className[0] == "receso" || event.className[0] == "visita_terminado"){
+                            
+                            var view = view.name;
+                            
+                            switch (view){
+                                case 'resourceDay':
+
+                            if (!isOverlapping(event)) {
+
+                                if (event.className[0] == "visita_enservicio" || event.className[0] == "receso" || event.className[0] == "visita_terminado") {
                                     revertFunc();
                                     return;
                                 }
 
-                                if(event.className[0]!='receso'){
+                                if (event.className[0] != 'receso') {
                                     //La peticion ajax
                                     $.ajax({
-                                        dataType: 'json', 
+                                        dataType: 'json',
                                         type: "POST",
                                         url: '/dropevent',
-                                        data: {idvisita:event.id,idempeleado:event.resources[0],start:event.start.format('YYYY/MM/DD HH:mm:00'),end:event.end.format('YYYY/MM/DD HH:mm:00')},
-
+                                        data: {idvisita: event.id, idempeleado: event.resources[0], start: event.start.format('YYYY/MM/DD HH:mm:00'), end: event.end.format('YYYY/MM/DD HH:mm:00')},
                                     });
-                                }else{
-                                     //La peticion ajax
+                                } else {
+                                    //La peticion ajax
                                     $.ajax({
-                                        dataType: 'json', 
+                                        dataType: 'json',
                                         type: "POST",
                                         url: '/dropreceso',
-                                        data: {idempleadoreceso:event.id,idempeleado:event.resources[0],start:event.start.format('YYYY/MM/DD HH:mm:00'),end:event.end.format('YYYY/MM/DD HH:mm:00')},
+                                        data: {idempleadoreceso: event.id, idempeleado: event.resources[0], start: event.start.format('YYYY/MM/DD HH:mm:00'), end: event.end.format('YYYY/MM/DD HH:mm:00')},
+                                    });
+                                }
 
+                            } else {
+                                revertFunc();
+                            }
+
+                            break;
+                            
+                            case'agendaWeek':
+                                
+                                if (event.className[0] == "visita_enservicio" || event.className[0] == "receso" || event.className[0] == "visita_terminado") {
+                                    revertFunc();
+                                    return;
+                                }
+
+                                if (event.className[0] != 'receso') {
+                                    //La peticion ajax
+                                    $.ajax({
+                                        dataType: 'json',
+                                        type: "POST",
+                                        url: '/dropevent',
+                                        data: {idvisita: event.id, idempeleado: event.resources[0], start: event.start.format('YYYY/MM/DD HH:mm:00'), end: event.end.format('YYYY/MM/DD HH:mm:00')},
+                                    });
+                                } else {
+                                    //La peticion ajax
+                                    $.ajax({
+                                        dataType: 'json',
+                                        type: "POST",
+                                        url: '/dropreceso',
+                                        data: {idempleadoreceso: event.id, idempeleado: event.resources[0], start: event.start.format('YYYY/MM/DD HH:mm:00'), end: event.end.format('YYYY/MM/DD HH:mm:00')},
                                     });
                                 }
                                 
-                            }else{
-                                revertFunc();
+                                break;
+                                 
                             }
-                        
-                     
+                            
+
                  },
                 eventClick: function( event, jsEvent, view ) { 
 
