@@ -250,7 +250,9 @@ class AgendaController extends AbstractActionController
          
          if($request->isPost()){
              $post_data = $request->getPost();
-
+             
+           
+             
              $entity = \VisitaQuery::create()->findPk($post_data['idvisita']);
              
              foreach($post_data as $key => $value){
@@ -258,7 +260,29 @@ class AgendaController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
-            
+           
+            if(!empty($post_data['visita_reprogramar_fecha']) && !empty($post_data['visita_reprogramar_hora'])){
+                
+                $reprogramar_fecha_inicio = new \DateTime($post_data['visita_reprogramar_fecha_submit'].' '.$post_data['visita_reprogramar_hora']);
+
+                //VALIDAMOS DISPONIBILIDAD
+                $disponibilidad = $this->checkDisponibilidad($entity->getIdempleado(),$reprogramar_fecha_inicio->format('Y-m-d H:i'));
+                if(!$disponibilidad['result']){
+                    return $this->getResponse()->setContent(\Zend\Json\Json::encode($disponibilidad));
+                }
+                
+                $entity->setVisitaStatus('por confirmar');
+                
+                $reprogramar_fecha_fin = new \DateTime($post_data['visita_reprogramar_fecha_submit'].' '.$post_data['visita_reprogramar_hora']);
+                $reprogramar_fecha_fin->add(new \DateInterval('PT' . 30 . 'M'));
+                
+                $entity->setVisitaFechainicio($reprogramar_fecha_inicio);
+                $entity->setVisitaFechafin($reprogramar_fecha_fin);
+                
+                
+               
+            }
+
             $entity->save();
             
             $entity->getVisitadetalles()->delete();
@@ -1314,9 +1338,12 @@ class AgendaController extends AbstractActionController
         $request = $this->getRequest();
         if($request->isPost()){
             $post_data = $request->getPost();
-
+            
             $visita = \VisitaQuery::create()->findPk($post_data['idvisita']);
-            $visita->setIdempleado($post_data['idempeleado']);
+            if(isset($post_data['idempeleado'])){
+                $visita->setIdempleado($post_data['idempeleado']);
+            }
+            
             $visita->setVisitaFechainicio($post_data['start']);
             $visita->setVisitaFechafin($post_data['end']);
 

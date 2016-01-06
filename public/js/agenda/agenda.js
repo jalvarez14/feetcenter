@@ -722,9 +722,9 @@
                             var n = moment();
                             var d = event.start.diff(n,'minutes');
                            
-                            if(!isOverlapping(event) && d > 0){
+                            if(!isOverlapping(event)){
                                
-                                if(event.className[0] == "visita_enservicio" || event.className[0] == "visita_reprogramda" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso" || event.className[0] == "visita_terminado"){
+                                if(event.className[0] == "visita_enservicio" || event.className[0] == "receso" || event.className[0] == "visita_terminado"){
                                     revertFunc();
                                     return;
                                 }
@@ -756,11 +756,7 @@
                      
                  },
                 eventClick: function( event, jsEvent, view ) { 
-                    
-                   
-                    /*if(view.name !== 'resourceDay'){
-                        return;
-                    }*/
+
                     var is_visita = true;
                     var className = event.className[0];
                     var type_array = className.split('_'); var type = type_array[0];
@@ -813,9 +809,9 @@
                              $modalLauncher.unbind();
                              
                              $modalLauncher.on('loading.tools.modal', function(modal){
-                                    var $modal = this ;
-                                    
-                                    
+                                 
+                                var $modal = this ;
+                                
                                 /*
                                  * 
                                  *LOS EVENTOS PARA REPROGRAMAR LA FECHA
@@ -1602,10 +1598,7 @@
                   
                                             
                                         }
-                                         
-                                         
-                                         
-                                         
+
                                      };
                                      guardarAction.on('click', $.proxy(function(){
                                          
@@ -1631,7 +1624,6 @@
                                                 }
                                             });
                                         }
-                                         return;
                                          if(!empty){
                                             var formData = new FormData();
                                              $.each(modal.find('input:not(:checkbox, :radio),select'),function(){
@@ -1654,6 +1646,8 @@
                                                     if(data.result){
                                                         initCalendar();
                                                         $modal.close();
+                                                    }else{
+                                                        alert(data.msg);
                                                     }
                                                 }
                                             });
