@@ -697,14 +697,14 @@ function Calendar(element, instanceOptions) {
 	// -----------------------------------------------------------------------------------
 	
 
-	function changeView(newViewName) {
-		if (!currentView || newViewName != currentView.name) {
-			_changeView(newViewName);
-		}
+	function changeView(newViewName,idempleado) {
+            _changeView(newViewName,idempleado);
+                
 	}
 
 
-	function _changeView(newViewName) {
+	function _changeView(newViewName,idempleado) {
+            
 		ignoreWindowResize++;
 
 		if (currentView) {
@@ -723,7 +723,8 @@ function Calendar(element, instanceOptions) {
 				.appendTo(content),
 			t // the calendar object
 		);
-
+                currentView.idempleado = idempleado;
+                
 		renderView();
 		unfreezeContentHeight();
 
@@ -732,6 +733,7 @@ function Calendar(element, instanceOptions) {
 
 
 	function renderView(inc) {
+                
 		if (
 			!currentView.start || // never rendered before
 			inc || // explicit date window change
@@ -745,6 +747,7 @@ function Calendar(element, instanceOptions) {
 
 
 	function _renderView(inc) { // assumes elementVisible
+            
 		ignoreWindowResize++;
 
 		if (currentView.start) { // already been rendered?
@@ -2396,6 +2399,7 @@ function setOuterWidth(element, width, includeMargins) {
 
 
 function setOuterHeight(element, height, includeMargins) {
+    
 	for (var i=0, e; i<element.length; i++) {
 		e = $(element[i]);
 		e.height(Math.max(0, height - vsides(e, includeMargins)));
@@ -3906,9 +3910,7 @@ function AgendaWeekView(element, calendar) { // TODO: do a WeekView mixin
 	}
 
 
-}
-
-;;
+};
 
 fcViews.agendaDay = AgendaDayView;
 
@@ -3965,7 +3967,7 @@ setDefaults({
 	},
 	minTime: '00:00:00',
 	maxTime: '24:00:00',
-	slotEventOverlap: true
+	slotEventOverlap: false
 });
 
 
@@ -5143,8 +5145,8 @@ function AgendaEventRenderer() {
 
 			seg.top = top;
 			seg.left = left;
-			seg.outerWidth = width;
-			seg.outerHeight = bottom - top;
+			seg.outerWidth = width + 8 ;
+			seg.outerHeight = bottom - top + 2;
 			html += slotSegHtml(event, seg);
 		}
 
@@ -5207,7 +5209,7 @@ function AgendaEventRenderer() {
 					// not enough room for title, put it in the time (TODO: maybe make both display:inline instead)
 					eventElement.find('div.fc-event-time')
 						.text(
-							formatDate(event.start, opt('timeFormat')) + ' - ' + event.title
+							event.title
 						);
 					eventElement.find('div.fc-event-title')
 						.remove();
@@ -5249,14 +5251,12 @@ function AgendaEventRenderer() {
 				"'" +
 				"position:absolute;" +
 				"top:" + seg.top + "px;" +
-				"left:" + seg.left + "px;" +
+				"left:" + seg.left  + "px;" +
 				skinCss +
 				"'" +
 			">" +
 			"<div class='fc-event-inner'>" +
-			"<div class='fc-event-time'>" +
-			htmlEscape(t.getEventTimeText(event)) +
-			"</div>" +
+
 			"<div class='fc-event-title'>" +
 			htmlEscape(event.title || '') +
 			"</div>" +
@@ -5863,7 +5863,7 @@ function ResourceDayView(element, calendar) { // TODO: make a DayView mixin
 	// imports
 	ResourceView.call(t, element, calendar, 'resourceDay');
 	var getResources = t.getResources;
-
+        
 	function incrementDate(date, delta) {
 		var out = date.clone().stripTime().add(delta, 'days');
 		out = t.skipHiddenDays(out, delta < 0 ? -1 : 1);
@@ -5903,7 +5903,7 @@ setDefaults({
 	},
 	minTime: '00:00:00',
 	maxTime: '24:00:00',
-	slotEventOverlap: true
+	slotEventOverlap: false
 });
 
 
@@ -6201,6 +6201,7 @@ function ResourceView(element, calendar, viewName) {
 
 
 	function buildDayTableHeadHTML() {
+                
 		var headerClass = tm + "-widget-header";
 		var date;
 		var html = '';
@@ -6226,9 +6227,9 @@ function ResourceView(element, calendar, viewName) {
 				"</th>";
 		}
 		else {
-			html += "<th class='fc-agenda-axis " + headerClass + "'>&nbsp;</th>";
+                    html += "<th class='fc-agenda-axis " + headerClass + "'>&nbsp;</th>";
 		}
-
+                 
 		for (col=0; col<colCnt; col++) {
 		  var resource = resources()[col];
 
@@ -6237,11 +6238,11 @@ function ResourceView(element, calendar, viewName) {
 	          resource.className,
 	          headerClass
 	        ];
-
+     
 	      html +=
 					"<th class='" + classNames.join(' ') + "'>" +
-					htmlEscape(resource.name) +
-					"</th>";
+					'<a class="pedicurista_header" idempleado="'+resource.id+'" href="javascript:void(0)"><div><p>' + htmlEscape(resource.name) +
+					"</p></div></a></th>";
 		}
 
 		html +=
@@ -6737,7 +6738,7 @@ function ResourceView(element, calendar, viewName) {
 					if (selectionHelper) {
 						slotBind(selectionHelper);
 						slotContainer.append(selectionHelper);
-						setOuterWidth(selectionHelper, rect.width, true); // needs to be after appended
+						setOuterWidth(selectionHelper, rect.width + 3, true); // needs to be after appended
 						setOuterHeight(selectionHelper, rect.height, true);
 					}
 				}
@@ -7166,9 +7167,9 @@ function ResourceEventRenderer() {
 			width = right - left;
 
 			seg.top = top;
-			seg.left = left;
-			seg.outerWidth = width;
-			seg.outerHeight = bottom - top;
+			seg.left = left - 2;
+			seg.outerWidth = width + 15;
+			seg.outerHeight = bottom - top + 3;
 			html += slotSegHtml(event, seg);
 		}
 
@@ -8593,7 +8594,7 @@ function DayEventRenderer() {
 		// Set each row's height by setting height of first inner div
 		if (doRowHeights) {
 			for (i=0; i<rowContentElements.length; i++) {
-				rowContentElements[i].height(rowContentHeights[i]);
+				rowContentElements[i].height(rowContentHeights[i]) ;
 			}
 		}
 
