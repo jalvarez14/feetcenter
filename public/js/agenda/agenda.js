@@ -461,7 +461,7 @@
                  allDaySlot:false,
                  defaultView: 'resourceDay',
                  scrollTime: '08:00:00',
-                 slotDuration: '00:15:01:00',
+                 slotDuration: '00:15:00:00',
                  selectHelper: true,
                  selectable: true,
                  resources: '/getpedicuristasbyclinica/'+settings.idclinica,
