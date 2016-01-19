@@ -1030,6 +1030,8 @@
                                         //El evento atras de la venta de pagar
                                         atrasAction.unbind();
                                         atrasAction.prop('disabled',false);
+                                        guardarAction.prop('disabled',true);
+                                        guardarAction.prop('disabled','not-allowed');
                                         atrasAction.css('cursor','pointer');
                                         atrasAction.on('click', $.proxy(function(){
                                             payDetailsContainer.hide();
@@ -1058,19 +1060,21 @@
                                         pagarAction.text('Pagar');
                                         pagarAction.prop('disabled',false);
                                         pagarAction.unbind();
-                                        
+                                       
                                         pagarAction.on('click', $.proxy(function(){
+
+                                            $('body').addClass('loading');
                                             setTimeout(function(){
                                                 if(typeof settings.folio_valido != 'undefined'){
-
                                                     if(settings.folio_valido){
                                                         pay($modal);
                                                     }
                                                 }else{
                                                     pay($modal);
                                                 }
-                                            },100);
-
+                                                $('body').removeClass('loading');
+                                            },1000);
+                                            
                                          }));
                                      }
                                      
