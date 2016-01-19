@@ -716,7 +716,7 @@ class AgendaController extends AbstractActionController
                                                        ->setIdvisitadetalle($visitadetalle->getIdvisitadetalle())
                                                        ->setPacientemembresiadetalleFecha(new \DateTime())
                                                        ->save();
-                        }
+                        }   
                         
                         /*
                          * Descontamos los insumos del inventario

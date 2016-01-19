@@ -75,7 +75,7 @@
                    
                    var max_servicios = $container.find('.table-membresias th#servicios .unit-custom').length;
                    var max_cupones = $container.find('.table-membresias th#cupones .unit-custom').length;
-
+                   
                    $.each(data,function(){
                        
                         var tr = $('<tr>');
@@ -111,16 +111,25 @@
                            td.find('.unit-custom').eq(i).removeClass('no_aplica').html('<span style="visibility:hidden">N/D</span>');
                        }
                        
+        
                         //Los detalles 
                         $.each(this.detalles,function(index){
                             var date = moment(this.pacientemembresiadetalle_fecha,'MM/DD/YY');
                             if(this.tipo == 'membresia'){
-                                tr.find('td#servicios .units-row').find('div').last().remove();
-                                tr.find('td#servicios .units-row').prepend('<div class="unit-custom" style="width:'+settings.width_servicios+'%" >'+date.format('DD/MM/YY')+'</div>');
+                                var div = tr.find('td#servicios .units-row').find('div').not('.no_aplica').eq(0);
+                                div.addClass('no_aplica');
+                                div.css('color','black');
+                                div.text(date.format('DD/MM'));
+                                div.attr('title',date.format('DD/MM/YYYY'));
                             }else{
-                                tr.find('td#cupones .units-row').find('div').last().remove();
-                                tr.find('td#cupones .units-row').prepend('<div class="unit-custom" style="width:'+settings.width_servicios+'%" >'+date.format('DD/MM/YY')+'</div>');
+                                var div = tr.find('td#cupones .units-row').find('div').not('.no_aplica').eq(0);
+                                div.addClass('no_aplica');
+                                div.css('color','black');
+                                div.text(date.format('DD/MM'));
+                                div.attr('title',date.format('DD/MM/YYYY'));
+                               
                             }
+                            return;
                         });
 
                         //Insertamos
