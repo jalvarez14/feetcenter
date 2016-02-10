@@ -234,7 +234,7 @@ table.dataTable tbody tr.warning{
     }
     
     .visita_cancelo{
-        background: #f4511e;
+        background: red;
     }
     
     .visita_nosepresento{

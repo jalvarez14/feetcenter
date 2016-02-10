@@ -55,6 +55,7 @@ return array(
             'seguimiento/eliminar',
             'seguimiento/serverside',
             'seguimiento/quick',
+            'seguimiento/historial',
             'pacientes-visitas',
             'pacientes/serverside',
             //Agenda
@@ -113,6 +114,7 @@ return array(
             'seguimiento/eliminar',
             'seguimiento/serverside',
             'seguimiento/quick',
+            'seguimiento/historial',
             'pacientes-visitas',
             //Agenda
             'agenda',

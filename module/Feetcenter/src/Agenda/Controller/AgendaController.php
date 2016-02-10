@@ -48,9 +48,6 @@ class AgendaController extends AbstractActionController
             }else{
                 return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'Folio invalido')));
             }
-            
-            
-           
         }
     }
     
@@ -888,6 +885,9 @@ class AgendaController extends AbstractActionController
                                            ->save();
                         
                         
+                        $membresia_paciente = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->orderByPacientemembresiaFechainicio(\Criteria::ASC)->findOne();
+
+                        
                          /*
                          * COMISIONES
                          */
@@ -920,7 +920,6 @@ class AgendaController extends AbstractActionController
                  * Esos servicios le sean descontados de la membresia que compraron
                  */
                 //Si se compro alguna membresia
-                
                 if(\VisitadetalleQuery::create()->filterByIdvisita($visita->getIdvisita())->filterByIdmembresia(NULL,\Criteria::NOT_EQUAL)->exists()){
                     //Si tiene servicios que tieenen dependencia com mebresia
                     $visita_detalle = \VisitadetalleQuery::create()->filterByIdvisita($visita->getIdvisita())->filterByIdservicioclinica(NUll,  \Criteria::NOT_EQUAL)->find();    
@@ -950,8 +949,7 @@ class AgendaController extends AbstractActionController
                         }
                     }
                 }
-                
-                
+
                 /*
                  * Verificamos que si existe en la orden de compra servicios que dependen de membresia
                  */
@@ -959,7 +957,7 @@ class AgendaController extends AbstractActionController
                      //Si tiene servicios que tieenen dependencia com mebresia
                     $visita_detalle = \VisitadetalleQuery::create()->filterByIdvisita($visita->getIdvisita())->filterByIdservicioclinica(NUll,  \Criteria::NOT_EQUAL)->find();
                     //La membresia del paciente
-                    $membresia_paciente = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->findOne();
+                    $membresia_paciente = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->orderByPacientemembresiaFechainicio(\Criteria::ASC)->findOne();
                     foreach ($visita_detalle as $detalle){
                         if($detalle->getServicioclinica()->getServicio()->getServicioDependencia() == 'membresia'){
                             //for($i=0; $i<(int)$detalle->getVisitadetalleCantidad();$i++){

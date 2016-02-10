@@ -68,6 +68,7 @@ class ExpedienteController extends AbstractActionController
         $clinicas = \ClinicaQuery::create()->find();
         
         return new ViewModel(array(
+            'successMessages' => $this->flashMessenger()->getSuccessMessages(),
             'clinicas' => $clinicas,
             'session' => $session->getData(),
         ));

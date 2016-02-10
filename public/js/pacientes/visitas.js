@@ -60,7 +60,7 @@
             var months = $("select[name=visita_mes]").multipleSelect('getSelects');
             var order = $("select[name=visita_order]").multipleSelect('getSelects');
             var estatus = $("select[name=visita_estatus]").multipleSelect('getSelects');
-            
+            var estatusfecha = {from:$container.find('input[name=seguimiento_from_submit]').val(),to:$container.find('input[name=seguimiento_to_submit]').val()};
             $container.find('table.table-visitas thead tr').remove();
 
             $container.find('table.table-visitas tbody tr').remove();
@@ -75,7 +75,7 @@
                 dataType: 'json',
                 async:false,
                  success: function(data){
-                      $table = container.find('table').DataTable({
+                      $table = container.find('table.table-visitas').DataTable({
                             serverSide: true,
                             language:data,
                             processing: true,
@@ -85,7 +85,7 @@
                             ajax: {
                                 url: '/pacientes/visitas/serverside',
                                 type: 'POST',
-                                data:{year:year,months:months,order:order,clinicas:clinicas_select,empleados:pedicuristas_select,estatus:estatus},
+                                data:{year:year,months:months,order:order,clinicas:clinicas_select,empleados:pedicuristas_select,estatus:estatus,estatusfecha:estatusfecha},
                             },
                             drawCallback: function( settings ) {
                                 
@@ -96,7 +96,7 @@
                                 var data = settings.json.data;
                                 
                                 //Comenzamos con la la cabezera de los años
-                                var thead1 = $('<tr id="years"><th></th><th></th><th></th><th></th></tr>');
+                                var thead1 = $('<tr id="years"><th></th><th></th><th></th><th></th><th></th></tr>');
                                 var year_start = parseInt(settings.json.year_start);
                                 for(var i=0; i<=settings.json.interval; i++){
                                     thead1.append('<th class="year">'+year_start+'</th>');
@@ -107,7 +107,7 @@
                                 $container.find('.table-visitas thead').append(thead1);
                                 
                                 //La segunda cabezera, por cada año vamos agregar los 12 dias del mes
-                                var thead2 = $('<tr><th>Cliente</th><th>Estatus actual</th><th>Proxima visita</th><th>Celular</th></tr>');
+                                var thead2 = $('<tr><th>Cliente</th><th>Estatus actual</th><th>Fecha estatus</th><th>Proxima visita</th><th>Celular</th></tr>');
                                 var years = $container.find('.table-visitas thead th.year').length;
                                 for(var i=0; i<years; i++){
 
@@ -134,7 +134,7 @@
                                 
                                 // El esqueleto
                                 $.each(data,function(){
-                                    
+                         
                                     //VALIDAMOS SI YA EXISTE UNA ROW CON EL CLIENTE
                                     var tr = $('<tr>');
                                     var idpaciente = this.idpaciente;
@@ -149,7 +149,7 @@
                                         
                                         var data_content = $modalLauncher.attr('data-content');
                                         data_content = '/pacientes/seguimiento/quick?html=true';
-                                         data_content += '&idpaciente='+ idpaciente;
+                                        data_content += '&idpaciente='+ idpaciente;
                                         $modalLauncher.attr('data-content',data_content);
                                         
                                         $modalLauncher.modal();
@@ -218,10 +218,34 @@
                                         
                                         });
                                     });
-                                    
-                                    
-                                    
                                     tr.append(this.paciente_estatus);
+                                    tr.append('<td>'+this.paciente_fechaestatus+'</td>');
+                                    tr.find('a.ver_seguimientos').on('click',function(){
+                                        $('body').addClass('loading');
+                                        var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Historial seguimiento ('+paciente_nombre+')');
+                                        $modalLauncher.unbind();
+                                        
+                                        var data_content = $modalLauncher.attr('data-content');
+                                        data_content = '/pacientes/seguimiento/historial?html=true';
+                                        data_content += '&idpaciente='+ idpaciente;
+                                        $modalLauncher.attr('data-content',data_content);
+                                        
+                                        $modalLauncher.modal();
+                                        $modalLauncher.trigger('click');
+                                        $modalLauncher.unbind();
+                                        
+                                        $modalLauncher.on('loading.tools.modal', function(modal){
+                                            
+                                            $('body').removeClass('loading');
+                                            
+                                            var $modalHeader = this.$modalHeader;
+                                            $modalHeader.addClass('modal_header_action');
+                                            
+                                            this.createCancelButton('Cancelar');
+                                            
+                                            
+                                        });
+                                    });
                                     tr.append(this.paciente_visita);                                  
                                     tr.append('<td>'+this.paciente_celular+'</td>');
                                     //tr.append('<td>'+this.clinica_nombre+'</td>');
@@ -293,7 +317,7 @@
 
                                     });
                                 
-                                console.log(settings);
+                                
                             }
                       });
                  }
@@ -529,6 +553,47 @@
 
             $container.find("select[name=visita_order]").multipleSelect("setSelects",['asc']);
             filter();
+            
+            //INICIALIZAMOS NUESTROS CALENDARIOS
+            $container.find('input[name=seguimiento_to],input[name=seguimiento_from]').pickadate({
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                //selectYears: true,
+                selectMonths: true,
+                selectYears: 25,
+            });
+            
+            $container.find('#filter_fechaestatus').on('click',function(){
+                //Validamos que los campos no esten vacios
+                
+                var empty = false;
+                var from =  $container.find('input[name=seguimiento_from]').val();
+                var to =  $container.find('input[name=seguimiento_to]').val();
+                
+                if(from == ""){
+                    empty = true;
+                    $container.find('input[name=seguimiento_from]').addClass('input-error');
+                }
+                if(to == ""){
+                    empty = true;
+                    $container.find('input[name=seguimiento_to]').addClass('input-error');
+                }
+                
+                if(!empty){
+                    filter();
+                }
+                
+                
+                
+            });
         }
 
         /*

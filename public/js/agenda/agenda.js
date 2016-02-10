@@ -205,6 +205,8 @@
         
             if(pago == 'pagada'){
                 title+= ' - PAGADO';
+            }else if(status == 'cancelo'){
+                title+= ' - CANCELADA';
             }
             
             var cssClass = cssClassMap[status];

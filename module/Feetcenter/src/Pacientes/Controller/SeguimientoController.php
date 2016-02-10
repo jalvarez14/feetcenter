@@ -339,9 +339,11 @@ class SeguimientoController extends AbstractActionController
                  
                 //POR CADA PACIENTE OBTENEMOS SU ULTIMO SEGUIMIENTO (ESTATUS)
                 $tmp['paciente_estatus'] = 'N/D';
+
                 if(\PacienteseguimientoQuery::create()->filterByIdpaciente($value['idpaciente'])->exists()){
                     $paciente_seguimiento = \PacienteseguimientoQuery::create()->filterByIdpaciente($value['idpaciente'])->orderByPacienteseguimientoFecha(\Criteria::DESC)->findOne();
                     $tmp['paciente_estatus'] = '<td><span class="badge" style="background:'.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoColor().'"></span> '.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoNombre().'</td>';
+                   
                 }
 
                 $tmp['opciones'] = '<a href="/pacientes/seguimiento/ver/'.$value['idpaciente'].'">Ver seguimiento</a>';
@@ -448,5 +450,34 @@ class SeguimientoController extends AbstractActionController
             
             return $viewModel;
         }
+    }
+    
+    public function historialAction(){
+        
+        $sesion = new \Shared\Session\AouthSession();
+        $request = $this->request;
+        
+        if($this->params()->fromQuery('html')) {
+            
+            $idpaciente = $this->params()->fromQuery('idpaciente');
+            $paciente = \PacienteQuery::create()->findPk($idpaciente);
+            
+            $to = new \DateTime();
+            $from = new \DateTime("-6 months");
+
+            $seguimiento = \PacienteseguimientoQuery::create()->filterByIdpaciente($idpaciente)->filterByPacienteseguimientoFecha(array('min' => $from,'max' => $to))->orderByPacienteseguimientoFecha(\Criteria::DESC)->find();
+             
+            $viewModel = new ViewModel();
+            $viewModel->setTerminal(true);
+            $viewModel->setVariables(array(
+                'paciente' => $paciente,
+                'seguimientos' => $seguimiento,
+            ));
+
+            return $viewModel;
+        }
+        
+        
+        
     }
 }

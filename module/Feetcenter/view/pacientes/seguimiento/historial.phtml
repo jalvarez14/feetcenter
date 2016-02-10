@@ -1,0 +1,26 @@
+<div id="clinica_container">
+    <div class="units-row">
+        <div class="unit-100">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Estatus</th>
+                        <th>Comentario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $seguimiento = new Pacienteseguimiento()?>
+                    <?php foreach ($seguimientos as $seguimiento) :?>
+                    <tr>
+                        <td><?php echo $seguimiento->getPacienteseguimientoFecha('d/m/Y')?></td>
+                        <td><?php echo $seguimiento->getEstatusseguimiento()->getEstatusseguimientoNombre()?></td>
+                        <td><?php echo $seguimiento->getPacienteseguimientoComentario()?></td>
+                    </tr>
+                    <?php endforeach;?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

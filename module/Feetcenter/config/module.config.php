@@ -568,6 +568,16 @@ return array(
                            ),
                        ),
                    ),
+                    'historial' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/historial',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Seguimiento',
+                               'action'        => 'historial',
+                           ),
+                       ),
+                   ),
                     'ver' => array(
                        'type' => 'Segment',
                        'options' => array(
