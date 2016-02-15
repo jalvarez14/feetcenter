@@ -168,7 +168,7 @@
                 data: {dia: date.format('YYYY-MM-DD')},
                 success: function (data) {
                     $.each(data, function (index, element) {
-                        renderEvento(element.idvisita,element.visita_fechainicio,element.visita_fechafin,element.idempleado,element.paciente_nombre,element.visita_status,element.visita_estatuspago);
+                        renderEvento(element.idvisita,element.visita_fechainicio,element.visita_fechafin,element.idempleado,element.paciente_nombre,element.visita_status,element.visita_estatuspago,element.servicio,element.color);
                     });
                 }
             });
@@ -201,14 +201,14 @@
             });
         }
         
-        var renderEvento = function(id,start,end,resource,title,status,pago){
+        var renderEvento = function(id,start,end,resource,title,status,pago,servicio,color){
         
             if(pago == 'pagada'){
-                title+= ' - PAGADO';
+                title+= ' - PAGADO - '+servicio;
             }else if(status == 'cancelo'){
                 title+= ' - CANCELADA';
             }
-            
+    
             var cssClass = cssClassMap[status];
             $('#calendar').fullCalendar('renderEvent', {
                 id:id,
@@ -219,6 +219,7 @@
                 resources: resource,
                 className: cssClass,
                 editable: true,
+                backgroundColor: color,
             });
             
         }

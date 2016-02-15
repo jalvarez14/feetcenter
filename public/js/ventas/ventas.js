@@ -120,10 +120,14 @@
                                     total+=parseFloat(this.visita_total);
                                 }
                             });
-                            
+  
                             $container.find('#total_efectivo').text(accounting.formatMoney(total_efectivo));
                             $container.find('#total_tarjeta').text(accounting.formatMoney(total_tarjeta));
                             $container.find('#total').text(accounting.formatMoney(total));
+                            
+                            $container.find('#grantotal_efectivo').text(accounting.formatMoney(settings.json.totales.visita_efectivo));
+                            $container.find('#grantotal_tarjeta').text(accounting.formatMoney(settings.json.totales.visita_tarjeta));
+                             $container.find('#grantotal').text(accounting.formatMoney(settings.json.totales.visita_efectivo + settings.json.totales.visita_tarjeta));
                             
                             //LOS EVENTOS
                             

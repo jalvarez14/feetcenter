@@ -1,0 +1,33 @@
+<h1>Colores estatus de visitas</h1>
+<?php if(count($successMessages)) :?>
+    <div class="units-row">
+        <?php foreach ($successMessages as $message) :?>
+            <div class="unit-100">    
+                <div class="tools-alert tools-alert-green">
+                    <?php echo $message?>
+                </div> 
+            </div>
+        <?php endforeach;?>
+    </div>
+<?php endif;?>
+<form method="POST" action='/catalogos/colorestatus'>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Color</th> 
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($collection as $entity) : ?>
+            <tr id="<?php echo $entity['idestatusvisita']?>">
+                <td><?php echo $entity['estatusvisita_nombre']?></td>
+                <td><input name="color[<?php echo $entity['idestatusvisita']?>]"type="color" value="<?php echo $entity['estatusvisita_color']?>"></td>
+            </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>
+<div class="units-row">
+    <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green width-100">Guardar</button></div>
+</div>
+</form>

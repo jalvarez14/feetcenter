@@ -73,6 +73,8 @@ class VisitaTableMap extends TableMap
         $this->addColumn('visita_year', 'VisitaYear', 'INTEGER', false, null, null);
         $this->addColumn('visita_month', 'VisitaMonth', 'INTEGER', false, null, null);
         $this->addColumn('visita_day', 'VisitaDay', 'INTEGER', false, null, null);
+        $this->addColumn('visita_foliomembresia', 'VisitaFoliomembresia', 'VARCHAR', false, 45, null);
+        $this->addColumn('visita_cuponmembresia', 'VisitaCuponmembresia', 'VARCHAR', false, 45, null);
         // validators
     } // initialize()
 

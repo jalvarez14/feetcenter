@@ -80,6 +80,17 @@ return array(
                         ),
                         
                     ),
+                    'colores' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/colorestatus[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Colorestatus',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
                     'membresias' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -688,6 +699,7 @@ return array(
             'Catalogos\Controller\Incidencia' => 'Catalogos\Controller\IncidenciaController',
             'Catalogos\Controller\Membresia' => 'Catalogos\Controller\MembresiaController',
             'Catalogos\Controller\Estatusseguimiento' => 'Catalogos\Controller\EstatusseguimientoController',
+            'Catalogos\Controller\Colorestatus' => 'Catalogos\Controller\ColorestatusController',
             //Compras
             'Compras\Controller\Compras' => 'Compras\Controller\ComprasController',
             //Login

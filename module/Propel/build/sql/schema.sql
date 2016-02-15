@@ -447,6 +447,21 @@ CREATE TABLE `estatusseguimiento`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- estatusvisita
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `estatusvisita`;
+
+CREATE TABLE `estatusvisita`
+(
+    `idestatusvisita` INTEGER NOT NULL AUTO_INCREMENT,
+    `estatusvisita_nombre` VARCHAR(100) NOT NULL,
+    `estatusvisita_color` VARCHAR(100) NOT NULL,
+    `estatusvisita_cssname` VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`idestatusvisita`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- faltante
 -- ---------------------------------------------------------------------
 
@@ -1103,6 +1118,8 @@ CREATE TABLE `visita`
     `visita_year` INTEGER,
     `visita_month` INTEGER,
     `visita_day` INTEGER,
+    `visita_foliomembresia` VARCHAR(45),
+    `visita_cuponmembresia` VARCHAR(45),
     PRIMARY KEY (`idvisita`),
     INDEX `idempleadocreador` (`idempleadocreador`),
     INDEX `idempleado` (`idempleado`),

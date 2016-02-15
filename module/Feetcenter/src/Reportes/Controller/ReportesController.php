@@ -240,4 +240,49 @@ class ReportesController extends AbstractActionController
             'session' => $session->getData(),
         ));
     }
+    
+    
+    public function ventasAction(){
+        $session = new \Shared\Session\AouthSession();
+        $idrol = $session->getIdrol();
+        
+         if($idrol == 1){ //Admnistrador
+            $clinicas = \ClinicaQuery::create()->find();
+         }else{
+            $clinicas = \ClinicaQuery::create()->filterByIdclinica($session->getIdclinica())->find();
+         }
+        
+       return new ViewModel(array(
+            'clinicas' => $clinicas,
+            'session' => $session->getData(),
+        ));
+    }
+    
+    public function ventasfilterAction(){
+        
+        $request = $this->getRequest();
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+           
+            $result = array();
+            
+            $clinicas = \ClinicaQuery::create()->filterByIdclinica($post_data['clinicas'])->find();
+            $clinica = new \Clinica();
+            foreach ($clinicas as $clinica){
+                $tmp['idclinica'] = $clinica->getIdclinica();
+                
+                $tmp['productos'] = !is_null(\VisitadetalleQuery::create()->filterByIdproductoclinica(NULL,  \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByVisitaFechainicio(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->filterByIdclinica($clinica->getIdclinica())->withColumn('SUM(visitadetalle_subtotal)','total')->endUse()->select('total')->findOne()) ? \VisitadetalleQuery::create()->filterByIdproductoclinica(NULL,  \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByVisitaFechainicio(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->filterByIdclinica($clinica->getIdclinica())->withColumn('SUM(visitadetalle_subtotal)','total')->endUse()->select('total')->findOne():0;
+                $servicios = !is_null(\VisitadetalleQuery::create()->filterByIdservicioclinica(NULL,  \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByVisitaFechainicio(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->filterByIdclinica($clinica->getIdclinica())->withColumn('SUM(visitadetalle_subtotal)','total')->endUse()->select('total')->findOne()) ? \VisitadetalleQuery::create()->filterByIdservicioclinica(NULL,  \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByVisitaFechainicio(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->filterByIdclinica($clinica->getIdclinica())->withColumn('SUM(visitadetalle_subtotal)','total')->endUse()->select('total')->findOne():0;
+                $membresias = !is_null(\VisitadetalleQuery::create()->filterByIdmembresia(NULL,  \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByVisitaFechainicio(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->filterByIdclinica($clinica->getIdclinica())->withColumn('SUM(visitadetalle_subtotal)','total')->endUse()->select('total')->findOne()) ? \VisitadetalleQuery::create()->filterByIdmembresia(NULL,  \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByVisitaEstatuspago('pagada')->filterByVisitaFechainicio(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'))->filterByIdclinica($clinica->getIdclinica())->withColumn('SUM(visitadetalle_subtotal)','total')->endUse()->select('total')->findOne():0;
+                $tmp['servicios'] = $servicios + $membresias;     
+                
+                $result[] =$tmp;
+               
+            }
+            
+             return $this->getResponse()->setContent(json_encode($result));
+            
+        }
+    }
 }

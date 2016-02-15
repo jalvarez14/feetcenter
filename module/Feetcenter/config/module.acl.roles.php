@@ -15,6 +15,7 @@ return array(
             'catalogos/incidencia',
             'catalogos/membresias',
             'catalogos/estatusseguimiento',
+            'catalogos/colores',
             //Compras
             'compras',
             //Login

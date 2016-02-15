@@ -342,6 +342,15 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="estatusvisita" phpName="Estatusvisita" idMethod="native">
+    <column name="idestatusvisita" phpName="Idestatusvisita" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="estatusvisita_nombre" phpName="EstatusvisitaNombre" type="VARCHAR" size="100" required="true"/>
+    <column name="estatusvisita_color" phpName="EstatusvisitaColor" type="VARCHAR" size="100" required="true"/>
+    <column name="estatusvisita_cssname" phpName="EstatusvisitaCssname" type="VARCHAR" size="100" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="faltante" phpName="Faltante" idMethod="native">
     <column name="idfaltante" phpName="Idfaltante" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
@@ -854,6 +863,8 @@
     <column name="visita_year" phpName="VisitaYear" type="INTEGER" required="false"/>
     <column name="visita_month" phpName="VisitaMonth" type="INTEGER" required="false"/>
     <column name="visita_day" phpName="VisitaDay" type="INTEGER" required="false"/>
+    <column name="visita_foliomembresia" phpName="VisitaFoliomembresia" type="VARCHAR" size="45" required="false"/>
+    <column name="visita_cuponmembresia" phpName="VisitaCuponmembresia" type="VARCHAR" size="45" required="false"/>
     <foreign-key foreignTable="clinica" name="idclinica_visita" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
     </foreign-key>

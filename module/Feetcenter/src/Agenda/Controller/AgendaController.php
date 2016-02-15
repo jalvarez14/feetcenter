@@ -186,8 +186,48 @@ class AgendaController extends AbstractActionController
         $dia = $this->params()->fromQuery('dia');
         
         $visitas = \VisitaQuery::create()->joinPaciente()->withColumn('paciente_nombre')->filterByIdclinica($idclinica)->filterByVisitaFechainicio(array('min' => $dia.' 00:00:00', 'max' => $dia. ' 23:59:59'))->find();
+        $visita = new \Visita();
+        $array = array();
+        foreach ($visitas as $visita){
+            $entity_array = $visita->toArray(\BasePeer::TYPE_FIELDNAME);
+            $entity_array['servicio'] = '';
+            if($visita->getVisitaEstatuspago() == 'pagada'){
+                //Obtenemos los detalles
+                $visita_detalles = $visita->getVisitadetalles();
+                $detalle = new \Visitadetalle();
+                $dependencia_membresia = false;
+                $dependencia_cupon = false;
+                foreach ($visita_detalles as $detalle){
+                    if(!is_null($detalle->getIdproductoclinica())){
+                        $entity_array['servicio'].=$detalle->getProductoclinica()->getProducto()->getProductoNombre().'; ';
+                    }else if(!is_null($detalle->getIdservicioclinica())){
+                        $entity_array['servicio'].=$detalle->getServicioclinica()->getServicio()->getServicioNombre().';';
+                        if($detalle->getServicioclinica()->getServicio()->getServicioDependencia() == 'membresia'){
+                            $dependencia_membresia = true;
+                            
+                        }elseif($detalle->getServicioclinica()->getServicio()->getServicioDependencia() == 'cupon'){
+                            $dependencia_cupon = true;
+                        }
+                    }else if(!is_null($detalle->getIdmembresia())){
+                        $entity_array['servicio'].=$detalle->getMembresia()->getMembresiaNombre().';';
+                    }
+                }
+                if($dependencia_membresia){
+                    $entity_array['servicio'].=' M: '.$visita->getVisitaFoliomembresia();
+                }
+                if($dependencia_cupon){
+                    $entity_array['servicio'].=' C: '.$visita->getVisitaCuponmembresia();
+                }
+            }
+            $status = $visita->getVisitaStatus();
+            $color = \EstatusvisitaQuery::create()->findOneByEstatusvisitaCssname($status);
+            $entity_array['color'] = $color->getEstatusvisitaColor();
+            
+            $array[] = $entity_array; 
+        }
         
-        return $this->response->setContent(json_encode($visitas->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
+        
+        return $this->response->setContent(json_encode($array));
     }
     
     public function geteventosbyclinicaweekAction(){
@@ -732,7 +772,6 @@ class AgendaController extends AbstractActionController
                              
                              $insumo_clinica->setInsumoclinicaExistencia($new_stock)
                                             ->save();
-
                          }
                          
                          /*
@@ -741,7 +780,6 @@ class AgendaController extends AbstractActionController
                          
                          if($serivicio->getServicioDependencia() == 'cupon'){
                              $paciente_membresia = \PacientemembresiaQuery::create()->findPk($detalle['idpacientemembresia']);
-                             
                              
                              $current_cupones = $paciente_membresia->getPacientemembresiaCuponesdisponibles();
                              $new_cupones = $current_cupones - $detalle['cantidad'];
@@ -752,6 +790,9 @@ class AgendaController extends AbstractActionController
                                  $paciente_membresia->setPacientemembresiaEstatus('terminada')->save();
                              }
                              
+                             //SETEAMOS LA MEMBRESIA EN LA VISITA
+                             $visita->setVisitaCuponmembresia($paciente_membresia->getPacientemembresiaFolio())->save();
+
                          }
                          
                          /*
@@ -976,6 +1017,8 @@ class AgendaController extends AbstractActionController
                                 if($new_servicios == 0 && $current_cupones == 0){
                                     $membresia_paciente->setPacientemembresiaEstatus('terminada')->save();
                                 }
+                                //SETEAMOS LA MEMBRESIA EN LA VISITA
+                                $visita->setVisitaFoliomembresia($membresia_paciente->getPacientemembresiaFolio())->save();
                             //}
                         }
                     }

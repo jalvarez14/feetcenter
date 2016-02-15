@@ -53,6 +53,21 @@ class VentasController  extends AbstractActionController
             $query->filterByVisitaFechainicio(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'));
             $recordsFiltered = $query->count();
             
+            $totales = array();
+            $totales['visita_efectivo']  = 0;
+            $totales['visita_tarjeta'] = 0;
+            foreach ($query->find() as $visita){                
+                //Efectivo
+                foreach ($visita->getVisitapagos() as $pago){
+                    if($pago->getVisitapagoTipo() == 'efectivo'){
+                        $totales['visita_efectivo']+=(float)$pago->getVisitapagoCantidad();
+                    }else{
+                        $totales['visita_tarjeta']+=(float)$pago->getVisitapagoCantidad();
+                    }
+                }
+   
+            }
+            
             //LIMIT
             $query->setOffset((int)$post_data['start']);
             $query->setLimit((int)$post_data['length']);
@@ -109,7 +124,8 @@ class VentasController  extends AbstractActionController
                 "draw"            => (int)$post_data['draw'],
                 //"recordsTotal"    => 100,
                 "recordsFiltered" => $recordsFiltered,
-                "data"            => $data
+                "data"            => $data,
+                "totales"         => $totales,
             );
             
             return $this->getResponse()->setContent(json_encode($json_data));
@@ -336,6 +352,7 @@ class VentasController  extends AbstractActionController
                             $new_servicios = (int)$current_servicios + (int) $detalle->getVisitadetalleCantidad();
                             $paciente_membresia->setPacientemembresiaServiciosdisponibles($new_servicios)->setPacientemembresiaEstatus('activa')->save();
                             $membresia_detalle->delete();
+                            //$visita->setVisitaFoliomembresia(NULL)->save();
                         }
 
                        
@@ -350,6 +367,7 @@ class VentasController  extends AbstractActionController
                             $new_cupones = (int)$current_cupones + (int) $detalle->getVisitadetalleCantidad();
                             $paciente_membresia->setPacientemembresiaCuponesdisponibles($new_cupones)->setPacientemembresiaEstatus('activa')->save();
                             $membresia_detalle->delete();
+                            //$visita->setVisitaCuponmembresia(NULL)->save();
                         }
 
                     }

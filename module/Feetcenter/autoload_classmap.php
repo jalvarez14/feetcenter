@@ -6,6 +6,7 @@ return array(
     'Agenda\Form\EventoForm'                            => __DIR__ . '/src/Agenda/Form/EventoForm.php',
     'Catalogos\Controller\CanalController'              => __DIR__ . '/src/Catalogos/Controller/CanalController.php',
     'Catalogos\Controller\ClinicaController'            => __DIR__ . '/src/Catalogos/Controller/ClinicaController.php',
+    'Catalogos\Controller\ColorestatusController'       => __DIR__ . '/src/Catalogos/Controller/ColorestatusController.php',
     'Catalogos\Controller\ConceptoController'           => __DIR__ . '/src/Catalogos/Controller/ConceptoController.php',
     'Catalogos\Controller\EmpleadoController'           => __DIR__ . '/src/Catalogos/Controller/EmpleadoController.php',
     'Catalogos\Controller\EstatusseguimientoController' => __DIR__ . '/src/Catalogos/Controller/EstatusseguimientoController .php',
