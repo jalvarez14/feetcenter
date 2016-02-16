@@ -327,10 +327,12 @@
                   if(data.empleados.length > 0){
                       
                       //LIMPIAMOS NUESTRA TABLA
-                      $table.clear();
-                      $container.find('table.table-comisiones thead tr').remove();
-                      $container.find('table.table-comisiones tfoot tr').remove();
-                      $table.destroy();
+                      if(typeof $table != 'undefined'){
+                        $table.clear();
+                        $container.find('table.table-comisiones thead tr').remove();
+                        $container.find('table.table-comisiones tfoot tr').remove();
+                        $table.destroy();
+                    }
                       
                       
                       var $thead1 = $('<tr class="row_empleados"><th>Fecha</th></tr>');
