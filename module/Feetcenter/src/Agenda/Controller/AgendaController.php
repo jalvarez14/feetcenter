@@ -986,6 +986,7 @@ class AgendaController extends AbstractActionController
                                 if($new_servicios == 0 && $current_cupones == 0){
                                     $membresia_paciente->setPacientemembresiaEstatus('terminada')->save();
                                 }
+                                $visita->setVisitaFoliomembresia($membresia_paciente->getPacientemembresiaFolio())->save();
                             //}
                         }
                     }
