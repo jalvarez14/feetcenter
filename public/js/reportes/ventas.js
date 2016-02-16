@@ -83,6 +83,15 @@
                    });
                },
            });
+           
+           //LA SUMAGTORIA DE LOS TOTALES
+           $container.find('table.table-balance tbody tr#ingreso_efectivo td:not(:first-child)').filter(function(){
+               var idclinica = $(this).attr('idclinica');
+               var servicios = accounting.unformat($(this).text());
+               var productos = accounting.unformat($('table.table-balance tbody tr#ingreso_tarjeta td[idclinica='+idclinica+']').text());
+               var sum = servicios + productos;
+               $('table.table-balance tfoot tr td[idclinica='+idclinica+']').text(accounting.formatMoney(sum));
+           });
             
        }
        

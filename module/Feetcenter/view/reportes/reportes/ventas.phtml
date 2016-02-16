@@ -40,6 +40,12 @@
             </tr>
         </tbody>
         <tfoot>
+            <tr>
+                <td>Totales</td>
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <td idclinica="<?php echo $clinica->getIdclinica() ?>"></td>
+                <?php endforeach; ?>
+            </tr>
         </tfoot>
     </table>
 </div>
