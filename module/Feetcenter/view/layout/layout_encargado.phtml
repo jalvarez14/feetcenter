@@ -29,6 +29,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+                ->prependFile('http://cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js')
                 ->prependFile($this->basePath('js/check_browser_close.js'))
                 ->prependFile($this->basePath('plugins/bootstrap-timepicker-0.5.1/js/bootstrap-timepicker.js'))
                 ->prependFile($this->basePath('plugins/fancyBox/source/jquery.fancybox.js'))
