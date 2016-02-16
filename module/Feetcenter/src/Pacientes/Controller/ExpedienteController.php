@@ -37,8 +37,9 @@ class ExpedienteController extends AbstractActionController
         $paciente = \PacienteQuery::create()->findPk($idpaciente);
         
         //El historial de visitas
-        $visitas = \VisitaQuery::create()->filterByIdpaciente($idpaciente)->find();
+        $visitas = \VisitaQuery::create()->filterByIdpaciente($idpaciente)->orderByVisitaFechainicio(\Criteria::ASC)->find();
         
+
         return new ViewModel(array(
             'paciente' => $paciente,
             'visitas' => $visitas,

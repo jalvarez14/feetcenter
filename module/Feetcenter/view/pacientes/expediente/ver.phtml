@@ -46,6 +46,9 @@
         success: function(data){
             var table = $('table').DataTable({
                 language:data,
+                columnDefs: [
+                    { type: 'date-eu', targets: 0 }
+                ]
             });
             table.on( 'draw', function () {
                 $('[data-tools="modal"]').unbind();
