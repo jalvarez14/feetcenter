@@ -39,8 +39,7 @@
        var defaults = {
            
        };
-       var $table;
-       
+
        /* 
         * Important Components
         */ 
@@ -122,6 +121,7 @@
                    //Las cabeceras de nuestros headers
                    
                     if(data.empleados.length > 0 && data.comisiones.length > 0){
+                      
                         if(typeof $table != 'undefined'){
                             $table.clear();
                             $table.destroy();
@@ -195,7 +195,7 @@
                             dataType: 'json',
                             async:false,
                             success: function(data){
-                                $table = container.find('table').DataTable({
+                                $table = container.find('table.table-comisiones').DataTable({
                                     language:data,
                                     searching: false,
                                     ordering:  false,
@@ -264,7 +264,7 @@
                             dataType: 'json',
                             async:false,
                             success: function(data){
-                                $table = container.find('table').DataTable({
+                                $table = container.find('table.table-comisiones').DataTable({
                                     language:data,
                                     searching: false,
                                     ordering:  false,
@@ -407,7 +407,7 @@
                 dataType: 'json',
                 async:false,
                 success: function(data){
-                    $table = container.find('table').DataTable({
+                    $table = container.find('table.table-comisiones').DataTable({
                         language:data,
                         searching: false,
                         ordering:  false,
@@ -518,7 +518,7 @@
                 dataType: 'json',
                 async:false,
                 success: function(data){
-                    $table = container.find('table').DataTable({
+                    $table = container.find('table.table-comisiones').DataTable({
                         language:data,
                         searching: false,
                         ordering:  false,
