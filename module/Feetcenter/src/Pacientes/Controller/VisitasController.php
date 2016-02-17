@@ -39,15 +39,13 @@ class VisitasController extends AbstractActionController
             $query->filterByVisitaMonth($post_data['months']);
             $query->filterByVisitaEstatuspago('pagada');
             if(isset($post_data['estatus'])){
-                $query->usePacienteQuery()->usePacienteseguimientoQuery()->filterByIdestatusseguimiento($post_data['estatus'])->endUse()->endUse();
+               $query->usePacienteQuery()->usePacienteseguimientoQuery()->groupByIdpaciente()->orderByPacienteseguimientoFecha(\Criteria::ASC)->filterByIdestatusseguimiento($post_data['estatus'])->endUse()->endUse();
             }
             if(isset($post_data['estatusfecha']) && !empty($post_data['estatusfecha']['from']))  {
-                $query->usePacienteQuery()->usePacienteseguimientoQuery()->orderByPacienteseguimientoFecha(\Criteria::ASC)->filterByPacienteseguimientoFecha(array('min' => $post_data['estatusfecha']['from'],'max' => $post_data['estatusfecha']['to']))->endUse()->endUse();
+                $query->usePacienteQuery()->usePacienteseguimientoQuery()->groupByIdpaciente()->withColumn('pacienteseguimiento_fecha')->orderByPacienteseguimientoFecha(\Criteria::ASC)->filterByPacienteseguimientoFecha(array('min' => $post_data['estatusfecha']['from'],'max' => $post_data['estatusfecha']['to']))->endUse()->endUse();
             }
-
-            
-
-             
+           
+           
             if($post_data['order'][0] == 'asc'){
                 $query->orderBy('visita_fechainicio', \Criteria::ASC);
             }else{
@@ -84,6 +82,7 @@ class VisitasController extends AbstractActionController
             //Damos el formato
             $data = array();
             
+   
             foreach ($query->find() as $value){
                 
                 $paciente_fecharegistro = new \DateTime($value->getPaciente()->getPacienteFecharegistro());
@@ -99,8 +98,8 @@ class VisitasController extends AbstractActionController
                 //OBTENEMOS EL ULTIMO ESSTATUS DE SEGUIMIENTO
                  $tmp['paciente_estatus'] = '<td>N/D</td>';
                  $tmp['paciente_fechaestatus'] = 'N/D';
-                 if(\PacienteseguimientoQuery::create()->filterByIdpaciente($value->getIdpaciente())->exists()){
-                    $paciente_seguimiento = \PacienteseguimientoQuery::create()->filterByIdpaciente($value->getIdpaciente())->orderByPacienteseguimientoFechacreacion(\Criteria::DESC)->findOne();
+                 if(\PacienteseguimientoQuery::create()->filterByIdpaciente($value->getIdpaciente())->orderByPacienteseguimientoFecha(\Criteria::ASC)->exists()){
+                    $paciente_seguimiento = \PacienteseguimientoQuery::create()->filterByIdpaciente($value->getIdpaciente())->orderByPacienteseguimientoFecha(\Criteria::ASC)->findOne();
                     $tmp['paciente_estatus'] = '<td><span class="badge" style="background:'.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoColor().'"></span><a class="ver_seguimientos" href="javascript:void(0)"><i class="fa fa-plus-square" style="float:right"></i></a></td>';
                     $tmp['paciente_fechaestatus'] = $paciente_seguimiento->getPacienteseguimientoFecha('d/m/Y');
                 }
