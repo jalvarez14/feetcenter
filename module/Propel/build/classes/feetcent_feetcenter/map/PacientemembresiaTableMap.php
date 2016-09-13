@@ -50,6 +50,7 @@ class PacientemembresiaTableMap extends TableMap
         $this->getColumn('pacientemembresia_estatus', false)->setValueSet(array (
   0 => 'activa',
   1 => 'terminada',
+  2 => 'cancelada',
 ));
         // validators
     } // initialize()

@@ -544,7 +544,7 @@
     <column name="pacientemembresia_fechainicio" phpName="PacientemembresiaFechainicio" type="TIMESTAMP" required="true"/>
     <column name="pacientemembresia_serviciosdisponibles" phpName="PacientemembresiaServiciosdisponibles" type="INTEGER" required="true"/>
     <column name="pacientemembresia_cuponesdisponibles" phpName="PacientemembresiaCuponesdisponibles" type="INTEGER" required="true"/>
-    <column name="pacientemembresia_estatus" phpName="PacientemembresiaEstatus" type="CHAR" sqlType="enum('activa','terminada')" required="true"/>
+    <column name="pacientemembresia_estatus" phpName="PacientemembresiaEstatus" type="CHAR" sqlType="enum('activa','terminada','cancelada')" required="true"/>
     <foreign-key foreignTable="clinica" name="idclinica_pacientemembresia" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
     </foreign-key>

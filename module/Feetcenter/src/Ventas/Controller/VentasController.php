@@ -477,9 +477,10 @@ class VentasController  extends AbstractActionController
                 elseif(!is_null($detalle->getIdmembresia())){
                     
                     //Eliminamos la membresia del paciente
-                    if(\PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaFechainicio($visita->getVisitaFechainicio())->exists()){
-                        $paciente_membresia = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaFechainicio($visita->getVisitaFechainicio())->findOne();
-                        $paciente_membresia->delete();
+                    if(\PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->exists()){
+                        $paciente_membresia = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->findOne();
+                        $paciente_membresia->setPacientemembresiaEstatus('cancelada');
+                        $paciente_membresia->save();
                     }
                     
                     

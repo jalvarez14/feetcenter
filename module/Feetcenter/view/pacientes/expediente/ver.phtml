@@ -20,7 +20,7 @@
                 <?php 
                     $estatus_pago = '';
                     if($visita->getVisitaEstatuspago() == 'cancelada'){
-                        $estatus_pago = 'cancelada';
+                        $estatus_pago = 'cancelada '."(".$visita->getVisitaCanceladaen('d/m/Y H:i').")";
                     }
                 ?>
                 <tr id="<?php echo $visita->getIdvisita()?>">

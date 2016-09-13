@@ -715,7 +715,7 @@ CREATE TABLE `pacientemembresia`
     `pacientemembresia_fechainicio` DATETIME NOT NULL,
     `pacientemembresia_serviciosdisponibles` INTEGER NOT NULL,
     `pacientemembresia_cuponesdisponibles` INTEGER NOT NULL,
-    `pacientemembresia_estatus` enum('activa','terminada') NOT NULL,
+    `pacientemembresia_estatus` enum('activa','terminada','cancelada') NOT NULL,
     PRIMARY KEY (`idpacientemembresia`),
     INDEX `idmembresia` (`idmembresia`),
     INDEX `idpaciente` (`idpaciente`),
