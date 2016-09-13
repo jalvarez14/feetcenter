@@ -234,7 +234,7 @@ table.dataTable tbody tr.warning{
     }
     
     .visita_cancelo{
-        background: #f4511e;
+        background: #CC0000;
     }
     
     .visita_nosepresento{
@@ -380,10 +380,73 @@ table.dataTable tbody tr.warning{
     }
     
     .fc-event-title{
-        font-size: 8px;
+        font-size: 12px;
+        color:black;
+    }
+    
+    .fc-event-time, .fc-event-inner{
+        font-size: 12px;
+        color:black;
     }
     
    .label.label-error, .badge.label-error, .label.badge-error, .badge.badge-error {
     background: #d11149 none repeat scroll 0 0;
     color: #ffffff;
 }
+
+table.fc-agenda-slots tbody tr {
+    //height: 30px;
+}
+
+.fc-widget-content{
+    //height: 30px;
+}
+
+/*.fc-agenda-slots td div {
+         height: 30px !important;
+         
+    }  
+    
+    .fc-agenda-axis{
+        font-size: 12px !important;
+        height: 10px !important;
+        line-height: 10px !important;
+    }*/
+
+
+
+h1{
+    text-align: center;
+    font-size: 40px;
+}
+
+.fc-header-title h2{
+  font-size: 22px;  
+}
+
+.modal-loading{
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+body.loading {
+    overflow: hidden;   
+}
+
+body.loading .modal-loading {
+    display: block;
+}
+
+.th_year{
+    padding: 0px !important;
+}
+

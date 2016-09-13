@@ -39,7 +39,7 @@
                     <div><span><b>Total de visitas: </b></span><span id="visita_total"></span></div>
                 </div>
                 <div class="unit-60">
-                     <div><span><b>Ultima visita: </b></span><span id="visita_ultima"></span></div>
+                     <div><span><b>Última visita: </b></span><span id="visita_ultima"></span></div>
                 </div>
             </div>
         </div>
@@ -162,14 +162,14 @@
             <label><b>Servicio / Producto</b> <span class="req">*</span>
                 <select  class="width-100" id="visitadetalle_tipo">
                     <option value="">Seleccione el producto/servicio...</option>
-                    <optgroup label="Productos">
-                        <?php foreach ($productos as $producto) :?>
-                            <option data-name="<?php echo $producto['producto_nombre']?>" data-existencias="<?php echo (int)$producto['productoclinica_existencia']?>" data-price="<?php echo $producto['producto_precio']?>" data-type="producto" value="<?php echo $producto['idproductoclinica']?>"><?php echo $producto['producto_nombre']?></option>
-                        <?php endforeach;?>
-                    </optgroup>
                     <optgroup label="Servicios">
                          <?php foreach ($servicios as $servicio) :?>
                             <option data-dependencia="<?php echo $servicio['servicio_dependencia']?>" data-available="<?php echo $servicio['disponible'] ?>" data-name="<?php echo $servicio['servicio_nombre']?>"  data-price="<?php echo $servicio['servicioclinica_precio']?>" data-type="servicio" value="<?php echo $servicio['idservicioclinica']?>"><?php echo $servicio['servicio_nombre']?></option>
+                        <?php endforeach;?>
+                    </optgroup>
+                    <optgroup label="Productos">
+                        <?php foreach ($productos as $producto) :?>
+                            <option data-name="<?php echo $producto['producto_nombre']?>" data-existencias="<?php echo (int)$producto['productoclinica_existencia']?>" data-price="<?php echo $producto['producto_precio']?>" data-type="producto" value="<?php echo $producto['idproductoclinica']?>"><?php echo $producto['producto_nombre']?></option>
                         <?php endforeach;?>
                     </optgroup>
                     <optgroup label="Membresías">
@@ -180,10 +180,10 @@
                 </select>
             </label>
         </div>
-        <div class="unit-20">
+        <div class="unit-20" style="display: none">
             <label>
                 <b>Cantidad</b> <span class="req">*</span>
-                <input class="width-100" type="text"  name="visitadetalle_cantidad">
+                <input  value="1" class="width-100" type="text"  name="visitadetalle_cantidad">
             </label>
         </div>
         <div class="unit-20" style="margin-top: 22px;">

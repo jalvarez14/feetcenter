@@ -53,6 +53,21 @@ class VentasController  extends AbstractActionController
             $query->filterByVisitaFechainicio(array('min' => $post_data['from'].' 00:00:00', 'max' => $post_data['to'].' 23:59:59'));
             $recordsFiltered = $query->count();
             
+            $totales = array();
+            $totales['visita_efectivo']  = 0;
+            $totales['visita_tarjeta'] = 0;
+            foreach ($query->find() as $visita){                
+                //Efectivo
+                foreach ($visita->getVisitapagos() as $pago){
+                    if($pago->getVisitapagoTipo() == 'efectivo'){
+                        $totales['visita_efectivo']+=(float)$pago->getVisitapagoCantidad();
+                    }else{
+                        $totales['visita_tarjeta']+=(float)$pago->getVisitapagoCantidad();
+                    }
+                }
+   
+            }
+            
             //LIMIT
             $query->setOffset((int)$post_data['start']);
             $query->setLimit((int)$post_data['length']);
@@ -109,7 +124,8 @@ class VentasController  extends AbstractActionController
                 "draw"            => (int)$post_data['draw'],
                 //"recordsTotal"    => 100,
                 "recordsFiltered" => $recordsFiltered,
-                "data"            => $data
+                "data"            => $data,
+                "totales"         => $totales,
             );
             
             return $this->getResponse()->setContent(json_encode($json_data));
@@ -200,7 +216,7 @@ class VentasController  extends AbstractActionController
             }
             $pdf->addCadreTVAs($visita->getVisitaTotal());  
             $pdf->Output($_SERVER['DOCUMENT_ROOT'].'/img/ventas/'.$target,'F');
-            $base64 = base64_encode(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/img/ventas/'.$target));
+            $base64 = base64_encode(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/'.'img/ventas/'.$target));
             return $this->getResponse()->setContent(json_encode($base64));
         }
         
@@ -321,20 +337,22 @@ class VentasController  extends AbstractActionController
                     
                 }
                 elseif(!is_null($detalle->getIdservicioclinica())){
-                    
+                  
                     $servicio_clinica = $detalle->getServicioclinica();
                     $dependencia = $servicio_clinica->getServicio()->getServicioDependencia();
                     //Si tiene dependencia con membresia
+                     
                     if($dependencia == 'membresia'){
-                        
+                      
                         //Eliminamos de membresia detalle y sumamos a pacientemembresia
-                        if(\PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaFechainicio($visita->getVisitaFechainicio())->exists()){
+                        if(\PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->exists()){
                             $membresia_detalle = \PacientemembresiadetalleQuery::create()->findOneByIdvisitadetalle($detalle->getIdvisitadetalle());
                             $paciente_membresia = $membresia_detalle->getPacientemembresia();
                             $current_servicios = $paciente_membresia->getPacientemembresiaServiciosdisponibles();
                             $new_servicios = (int)$current_servicios + (int) $detalle->getVisitadetalleCantidad();
                             $paciente_membresia->setPacientemembresiaServiciosdisponibles($new_servicios)->setPacientemembresiaEstatus('activa')->save();
                             $membresia_detalle->delete();
+                            //$visita->setVisitaFoliomembresia(NULL)->save();
                         }
 
                        
@@ -349,6 +367,7 @@ class VentasController  extends AbstractActionController
                             $new_cupones = (int)$current_cupones + (int) $detalle->getVisitadetalleCantidad();
                             $paciente_membresia->setPacientemembresiaCuponesdisponibles($new_cupones)->setPacientemembresiaEstatus('activa')->save();
                             $membresia_detalle->delete();
+                            //$visita->setVisitaCuponmembresia(NULL)->save();
                         }
 
                     }

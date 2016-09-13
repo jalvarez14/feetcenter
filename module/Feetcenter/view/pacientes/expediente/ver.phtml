@@ -4,10 +4,12 @@
         <thead>
             <tr>
                 <th>Fecha</th>
-                <th>Clinica</th>
+                <th>Hora</th>
+                <th>Clínica</th>
                 <th>Atendió</th>
                 <th>Tipo</th>
                 <th>Estatus</th>
+                <th>Estatus pago</th>
                 <th>Total</th>
                 <th>Opciones</th>
             </tr>
@@ -15,12 +17,20 @@
         <tbody>
             <?php $visita = new Visita()?>
             <?php foreach ($visitas as $visita) :?>
+                <?php 
+                    $estatus_pago = '';
+                    if($visita->getVisitaEstatuspago() == 'cancelada'){
+                        $estatus_pago = 'cancelada';
+                    }
+                ?>
                 <tr id="<?php echo $visita->getIdvisita()?>">
-                    <td><?php echo $visita->getVisitaCreadaen('d/m/Y')?></td>
+                    <td><?php echo $visita->getVisitaFechainicio('d/m/Y')?></td>
+                    <td><?php echo $visita->getVisitaFechainicio('H:i')?></td>
                     <td><?php echo $visita->getClinica()->getClinicaNombre()?></td>
                     <td><?php echo $visita->getEmpleadoRelatedByIdempleado()->getEmpleadoNombre()?></td>
                     <td><?php echo $visita->getVisitaTipo()?></td>
                     <td><?php echo $visita->getVisitaStatus()?></td>
+                    <td><?php echo $estatus_pago ?></td>
                     <td class="visita_total"><?php echo $visita->getVisitaTotal()?></td>
                     <td><a class="detalles-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2><?php echo 'Visita #'. $visita->getIdvisita()?></h2>" data-content="/pacientes/expediente/detalles?html=true&idvisita=<?php echo $visita->getIdvisita()?>" href="javascript:void(0)">Detalles</a></td>
                 </tr>
@@ -36,6 +46,9 @@
         success: function(data){
             var table = $('table').DataTable({
                 language:data,
+                columnDefs: [
+                    { type: 'date-eu', targets: 0 }
+                ]
             });
             table.on( 'draw', function () {
                 $('[data-tools="modal"]').unbind();

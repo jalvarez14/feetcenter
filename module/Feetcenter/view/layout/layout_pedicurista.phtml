@@ -14,7 +14,9 @@
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('fonts/font-awesome-4.4.0/css/font-awesome.css'))
                          ->prependStylesheet($this->basePath('css/style.css'))
-                         
+                                                 ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input-facebook.css'))
+                        ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input-mac.css'))
+                        ->prependStylesheet($this->basePath('plugins/tokeninput/styles/token-input.css'))
                          ->prependStylesheet($this->basePath('plugins/fullcalendar/fullcalendar.css'))
                         ->prependStylesheet($this->basePath('plugins/bootstrap-timepicker-0.5.1/css/timepicker.css'))
                         ->prependStylesheet($this->basePath('plugins/fancyBox/source/jquery.fancybox.css'))
@@ -27,6 +29,7 @@
                         
         <!-- Scripts -->
         <?php echo $this->headScript()
+                ->prependFile($this->basePath('plugins/tokeninput/src/jquery.tokeninput.js'))
                 ->prependFile($this->basePath('js/check_browser_close.js'))
                 ->prependFile($this->basePath('plugins/fancyBox/source/jquery.fancybox.js'))
             ->prependFile($this->basePath('/js/plugin/multiple.js'))
@@ -62,7 +65,7 @@
         <ul id="dropdown-empleados" class="dropdown">
             <li><a href="/empleados">Horarios</a></li>
             <li><a href="/empleados/reportes">Reportes</a></li>
-            <li><a href="/empleados/comisiones">Comisiónes</a></li>
+            <li><a href="/empleados/comisiones">Comisiones</a></li>
             <li><a href="/empleados/vendidos">Productos y servicios vendidos</a></li>
         </ul>
         <ul id="dropdown-profile" class="dropdown">
@@ -96,7 +99,7 @@
             <li><a href="/compras/nuevo">Nueva compra</a></li>
         </ul>
         <ul id="dropdown-catalogos" class="dropdown">
-            <li><a href="/catalogos/clinica">Clinicas</a></li>
+            <li><a href="/catalogos/clinica">Clínicas</a></li>
             <li><a href="/catalogos/empleado">Empleados</a></li>
             <li><a href="/catalogos/servicio">Servicios</a></li>
             <li><a href="/catalogos/producto">Productos</a></li>
@@ -118,4 +121,5 @@
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>
     </body>
+    <div class="modal-loading"><!-- Place at bottom of page --></div>
 </html>

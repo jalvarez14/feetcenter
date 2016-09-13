@@ -48,9 +48,6 @@ class AgendaController extends AbstractActionController
             }else{
                 return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'Folio invalido')));
             }
-            
-            
-           
         }
     }
     
@@ -70,7 +67,7 @@ class AgendaController extends AbstractActionController
     
     public function indexAction()
     {
-        echo '<pre>';var_dump($_SESSION);echo '</pre>';exit();
+        //echo '<pre>';var_dump($_SESSION);echo '</pre>';exit();
         $sesion = new \Shared\Session\AouthSession();
         $idrol = $sesion->getIdrol();
         
@@ -88,6 +85,7 @@ class AgendaController extends AbstractActionController
         return new ViewModel(array(
             'clinicas' => $clinicas,
             'idclinica' => $idclinica,
+            'successMessages' => $this->flashMessenger()->getSuccessMessages(),
         ));
     }
     
@@ -188,8 +186,48 @@ class AgendaController extends AbstractActionController
         $dia = $this->params()->fromQuery('dia');
         
         $visitas = \VisitaQuery::create()->joinPaciente()->withColumn('paciente_nombre')->filterByIdclinica($idclinica)->filterByVisitaFechainicio(array('min' => $dia.' 00:00:00', 'max' => $dia. ' 23:59:59'))->find();
+        $visita = new \Visita();
+        $array = array();
+        foreach ($visitas as $visita){
+            $entity_array = $visita->toArray(\BasePeer::TYPE_FIELDNAME);
+            $entity_array['servicio'] = '';
+            if($visita->getVisitaEstatuspago() == 'pagada'){
+                //Obtenemos los detalles
+                $visita_detalles = $visita->getVisitadetalles();
+                $detalle = new \Visitadetalle();
+                $dependencia_membresia = false;
+                $dependencia_cupon = false;
+                foreach ($visita_detalles as $detalle){
+                    if(!is_null($detalle->getIdproductoclinica())){
+                        $entity_array['servicio'].=$detalle->getProductoclinica()->getProducto()->getProductoNombre().'; ';
+                    }else if(!is_null($detalle->getIdservicioclinica())){
+                        $entity_array['servicio'].=$detalle->getServicioclinica()->getServicio()->getServicioNombre().';';
+                        if($detalle->getServicioclinica()->getServicio()->getServicioDependencia() == 'membresia'){
+                            $dependencia_membresia = true;
+                            
+                        }elseif($detalle->getServicioclinica()->getServicio()->getServicioDependencia() == 'cupon'){
+                            $dependencia_cupon = true;
+                        }
+                    }else if(!is_null($detalle->getIdmembresia())){
+                        $entity_array['servicio'].=$detalle->getMembresia()->getMembresiaNombre().';';
+                    }
+                }
+                if($dependencia_membresia){
+                    $entity_array['servicio'].=' M: '.$visita->getVisitaFoliomembresia();
+                }
+                if($dependencia_cupon){
+                    $entity_array['servicio'].=' C: '.$visita->getVisitaCuponmembresia();
+                }
+            }
+            $status = $visita->getVisitaStatus();
+            $color = \EstatusvisitaQuery::create()->findOneByEstatusvisitaCssname($status);
+            $entity_array['color'] = $color->getEstatusvisitaColor();
+            
+            $array[] = $entity_array; 
+        }
         
-        return $this->response->setContent(json_encode($visitas->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
+        
+        return $this->response->setContent(json_encode($array));
     }
     
     public function geteventosbyclinicaweekAction(){
@@ -215,8 +253,6 @@ class AgendaController extends AbstractActionController
        
         return $this->response->setContent(json_encode($visitas->toArray(null,false,  \BasePeer::TYPE_FIELDNAME)));
     }
-    
-    
     
     public function getrecesosbyclinicaAction(){
         
@@ -251,7 +287,9 @@ class AgendaController extends AbstractActionController
          
          if($request->isPost()){
              $post_data = $request->getPost();
-            
+             
+           
+             
              $entity = \VisitaQuery::create()->findPk($post_data['idvisita']);
              
              foreach($post_data as $key => $value){
@@ -259,7 +297,29 @@ class AgendaController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
-            
+           
+            if(!empty($post_data['visita_reprogramar_fecha']) && !empty($post_data['visita_reprogramar_hora'])){
+                
+                $reprogramar_fecha_inicio = new \DateTime($post_data['visita_reprogramar_fecha_submit'].' '.$post_data['visita_reprogramar_hora']);
+
+                //VALIDAMOS DISPONIBILIDAD
+                $disponibilidad = $this->checkDisponibilidad($entity->getIdempleado(),$reprogramar_fecha_inicio->format('Y-m-d H:i'));
+                if(!$disponibilidad['result']){
+                    return $this->getResponse()->setContent(\Zend\Json\Json::encode($disponibilidad));
+                }
+                
+                $entity->setVisitaStatus('por confirmar');
+                
+                $reprogramar_fecha_fin = new \DateTime($post_data['visita_reprogramar_fecha_submit'].' '.$post_data['visita_reprogramar_hora']);
+                $reprogramar_fecha_fin->add(new \DateInterval('PT' . 30 . 'M'));
+                
+                $entity->setVisitaFechainicio($reprogramar_fecha_inicio);
+                $entity->setVisitaFechafin($reprogramar_fecha_fin);
+                
+                
+               
+            }
+
             $entity->save();
             
             $entity->getVisitadetalles()->delete();
@@ -306,6 +366,21 @@ class AgendaController extends AbstractActionController
              
              $idvisita = $this->params()->fromQuery('idvisita');
              $entity = \VisitaQuery::create()->findPk($idvisita);
+             
+             
+             //Validamos si tiene el evento ya agendada una proxima cita
+             $anticipado = 'false';
+             $next_date = \VisitaQuery::create()->filterByIdclinica($entity->getIdclinica())->filterByIdpaciente($entity->getIdpaciente())->filterByVisitaFechainicio(array('min' => $entity->getVisitaFechafin()))->exists();
+             if($next_date){
+                 $next_date = \VisitaQuery::create()->filterByIdclinica($entity->getIdclinica())->filterByIdpaciente($entity->getIdpaciente())->filterByVisitaFechainicio(array('min' => $entity->getVisitaFechafin()))->findOne();
+                 $anticipado = \VisitadetalleQuery::create()->filterByIdvisita($entity->getIdvisita())->filterByIdmembresia(NULL, \Criteria::NOT_EQUAL)->exists();
+                 if($anticipado){
+                     $anticipado ='true' ;
+                 }
+             }else{
+                 $next_date = false;
+             }
+             
            
              //Instanciamos nuestro formulario
              $form = new \Agenda\Form\EventoForm($entity->getIdempleadocreador(), $entity->getIdclinica(), $entity->getIdempleado(), $entity->getVisitaCreadaen(), $entity->getVisitaFechainicio(), $entity->getVisitaFechafin());
@@ -314,9 +389,10 @@ class AgendaController extends AbstractActionController
              $form->setAttribute('novalidate', true);
              $form->setAttribute('class', 'forms');
              $form->get('visita_estatuspago')->setValue($entity->getVisitaEstatuspago());
+            
              
              $status = $entity->getVisitaStatus();
-            
+
             if($status == 'confimada'){ 
                 //Modificamos nuestro select del estatus
                 $form->add(array(
@@ -324,12 +400,11 @@ class AgendaController extends AbstractActionController
                     'name' => 'visita_status',
                     'options' => array(
                        'value_options' => array(
-                            'por confirmar' => 'Por confirmar',
-                            'confimada' => 'Confimada',
+                            'confimada' => 'Confirmada',
                             'en servicio' => 'En servicio',
                             'cancelo' => 'Cancelo',
-                            'no se presento' => 'No se presento',
-                            'reprogramda' => 'Reprogramda',
+                            'no se presento' => 'No se presentó',
+                            'reprogramda' => 'Reprogramada',
                        ),
                     ),
                    'attributes' => array(
@@ -343,7 +418,7 @@ class AgendaController extends AbstractActionController
                     'options' => array(
                        'value_options' => array(
                                'en servicio' => 'En servicio',
-                                'terminado' => 'Terminado',
+                               'terminado' => 'Terminado',
                        ),
                     ),
                    'attributes' => array(
@@ -364,6 +439,24 @@ class AgendaController extends AbstractActionController
                        'class' => 'width-100',
                    ),
                 ));
+            }
+            elseif($status == 'por confirmar'){
+                $form->add(array(
+                    'type' => 'Select',
+                    'name' => 'visita_status',
+                    'options' => array(
+                       'value_options' => array(
+                               'por confirmar' => 'Por confirmar',
+                               'confimada' => 'Confirmada',
+                               'cancelo' => 'Cancelo',
+                               'no se presento' => 'No se presentó',
+                               'reprogramda' => 'Reprogramada',
+                       ),
+                    ),
+                   'attributes' => array(
+                       'class' => 'width-100',
+                   ),
+                ));
             }else{
                 $form->add(array(
                     'type' => 'Select',
@@ -371,8 +464,11 @@ class AgendaController extends AbstractActionController
                     'options' => array(
                        'value_options' => array(
                                'por confirmar' => 'Por confirmar',
-                               'confimada' => 'Confimada',
+                               'confimada' => 'Confirmada',
                                'en servicio' => 'En servicio',
+                                'cancelo' => 'Cancelo',
+                                'reprogramda' => 'Reprogramada',
+                           'no se presento' => 'No se presentó',
                        ),
                     ),
                    'attributes' => array(
@@ -391,8 +487,11 @@ class AgendaController extends AbstractActionController
             $servicios_array = array();
             $servicios = \ServicioclinicaQuery::create()->filterByIdclinica($entity->getIdclinica())->useServicioQuery()->filterByServicioDependencia('membresia',  \Criteria::NOT_EQUAL)->endUse()->withColumn('servicio_nombre')->find();
             if(\VisitadetalleQuery::create()->filterByIdvisita($entity->getIdvisita())->filterByIdmembresia(NULL,\Criteria::NOT_EQUAL)->exists()){
+               
                 $servicios = \ServicioclinicaQuery::create()->filterByIdclinica($entity->getIdclinica())->useServicioQuery()->endUse()->withColumn('servicio_nombre')->find();
+                
             }
+           
             //Validamos si se tienen los insumos suficentes para realizar el servicio
             $servicio = new \Servicioclinica();
 
@@ -447,9 +546,10 @@ class AgendaController extends AbstractActionController
                 $paciente_membresia = \PacientemembresiaQuery::create()->joinMembresia()->withColumn('membresia_nombre')->withColumn('membresia_servicios')->withColumn('membresia_cupones')->filterByIdpaciente($paciente->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->findOne();
                 $paciente_array['membresia'] = $paciente_membresia->toArray(\BasePeer::TYPE_FIELDNAME);
             }  
-           
+
             $viewModel = new ViewModel();
             $viewModel->setVariables(array(
+                'next_date' => $next_date, 
                 'form' => $form,
                 'visita' => $entity,
                 'productos' => $productos,
@@ -457,6 +557,7 @@ class AgendaController extends AbstractActionController
                 'paciente' => json_encode($paciente_array),
                 'empleados' => $empleados,
                 'membresias' => $membresias,
+                'anticipado' => $anticipado
             ));
             $viewModel->setTerminal(true);
             return $viewModel;
@@ -652,7 +753,7 @@ class AgendaController extends AbstractActionController
                                                        ->setIdvisitadetalle($visitadetalle->getIdvisitadetalle())
                                                        ->setPacientemembresiadetalleFecha(new \DateTime())
                                                        ->save();
-                        }
+                        }   
                         
                         /*
                          * Descontamos los insumos del inventario
@@ -671,7 +772,6 @@ class AgendaController extends AbstractActionController
                              
                              $insumo_clinica->setInsumoclinicaExistencia($new_stock)
                                             ->save();
-
                          }
                          
                          /*
@@ -680,7 +780,6 @@ class AgendaController extends AbstractActionController
                          
                          if($serivicio->getServicioDependencia() == 'cupon'){
                              $paciente_membresia = \PacientemembresiaQuery::create()->findPk($detalle['idpacientemembresia']);
-                             
                              
                              $current_cupones = $paciente_membresia->getPacientemembresiaCuponesdisponibles();
                              $new_cupones = $current_cupones - $detalle['cantidad'];
@@ -691,6 +790,9 @@ class AgendaController extends AbstractActionController
                                  $paciente_membresia->setPacientemembresiaEstatus('terminada')->save();
                              }
                              
+                             //SETEAMOS LA MEMBRESIA EN LA VISITA
+                             $visita->setVisitaCuponmembresia($paciente_membresia->getPacientemembresiaFolio())->save();
+
                          }
                          
                          /*
@@ -824,6 +926,9 @@ class AgendaController extends AbstractActionController
                                            ->save();
                         
                         
+                        $membresia_paciente = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->orderByPacientemembresiaFechainicio(\Criteria::ASC)->findOne();
+
+                        
                          /*
                          * COMISIONES
                          */
@@ -856,7 +961,6 @@ class AgendaController extends AbstractActionController
                  * Esos servicios le sean descontados de la membresia que compraron
                  */
                 //Si se compro alguna membresia
-                
                 if(\VisitadetalleQuery::create()->filterByIdvisita($visita->getIdvisita())->filterByIdmembresia(NULL,\Criteria::NOT_EQUAL)->exists()){
                     //Si tiene servicios que tieenen dependencia com mebresia
                     $visita_detalle = \VisitadetalleQuery::create()->filterByIdvisita($visita->getIdvisita())->filterByIdservicioclinica(NUll,  \Criteria::NOT_EQUAL)->find();    
@@ -882,12 +986,12 @@ class AgendaController extends AbstractActionController
                                 if($new_servicios == 0 && $current_cupones == 0){
                                     $membresia_paciente->setPacientemembresiaEstatus('terminada')->save();
                                 }
+                                $visita->setVisitaFoliomembresia($membresia_paciente->getPacientemembresiaFolio())->save();
                             //}
                         }
                     }
                 }
-                
-                
+
                 /*
                  * Verificamos que si existe en la orden de compra servicios que dependen de membresia
                  */
@@ -895,7 +999,7 @@ class AgendaController extends AbstractActionController
                      //Si tiene servicios que tieenen dependencia com mebresia
                     $visita_detalle = \VisitadetalleQuery::create()->filterByIdvisita($visita->getIdvisita())->filterByIdservicioclinica(NUll,  \Criteria::NOT_EQUAL)->find();
                     //La membresia del paciente
-                    $membresia_paciente = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->findOne();
+                    $membresia_paciente = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->orderByPacientemembresiaFechainicio(\Criteria::ASC)->findOne();
                     foreach ($visita_detalle as $detalle){
                         if($detalle->getServicioclinica()->getServicio()->getServicioDependencia() == 'membresia'){
                             //for($i=0; $i<(int)$detalle->getVisitadetalleCantidad();$i++){
@@ -914,6 +1018,8 @@ class AgendaController extends AbstractActionController
                                 if($new_servicios == 0 && $current_cupones == 0){
                                     $membresia_paciente->setPacientemembresiaEstatus('terminada')->save();
                                 }
+                                //SETEAMOS LA MEMBRESIA EN LA VISITA
+                                $visita->setVisitaFoliomembresia($membresia_paciente->getPacientemembresiaFolio())->save();
                             //}
                         }
                     }
@@ -965,9 +1071,12 @@ class AgendaController extends AbstractActionController
                 }
             }
             $entity->setVisitaEstatuspago('no pagada');
+            $entity->setVisitaYear($entity->getVisitaFechainicio('Y'));
+            $entity->setVisitaMonth($entity->getVisitaFechainicio('m'));
+            $entity->setVisitaDay($entity->getVisitaFechainicio('d'));
             
             $entity->save();
-            
+          
             //Ahora los detalles
             if(isset($post_data['vistadetalle'])){
                 foreach ($post_data['vistadetalle'] as $detalle){
@@ -1031,7 +1140,7 @@ class AgendaController extends AbstractActionController
                 'options' => array(
                    'value_options' => array(
                            'por confirmar' => 'Por confirmar',
-                           'confimada' => 'Confimada',
+                           'confimada' => 'Confirmada',
                            'en servicio' => 'En servicio',
                    ),
                 ),
@@ -1271,9 +1380,12 @@ class AgendaController extends AbstractActionController
         $request = $this->getRequest();
         if($request->isPost()){
             $post_data = $request->getPost();
-
+            
             $visita = \VisitaQuery::create()->findPk($post_data['idvisita']);
-            $visita->setIdempleado($post_data['idempeleado']);
+            if(isset($post_data['idempeleado'])){
+                $visita->setIdempleado($post_data['idempeleado']);
+            }
+            
             $visita->setVisitaFechainicio($post_data['start']);
             $visita->setVisitaFechafin($post_data['end']);
 

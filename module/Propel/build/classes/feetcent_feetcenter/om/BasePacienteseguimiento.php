@@ -60,6 +60,12 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
     protected $idcanalcomunicacion;
 
     /**
+     * The value for the idestatusseguimiento field.
+     * @var        int
+     */
+    protected $idestatusseguimiento;
+
+    /**
      * The value for the pacienteseguimiento_fechacreacion field.
      * @var        string
      */
@@ -91,6 +97,11 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
      * @var        Empleado
      */
     protected $aEmpleado;
+
+    /**
+     * @var        Estatusseguimiento
+     */
+    protected $aEstatusseguimiento;
 
     /**
      * @var        Paciente
@@ -173,6 +184,17 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [idestatusseguimiento] column value.
+     *
+     * @return int
+     */
+    public function getIdestatusseguimiento()
+    {
+
+        return $this->idestatusseguimiento;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [pacienteseguimiento_fechacreacion] column value.
      *
      *
@@ -229,16 +251,16 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getPacienteseguimientoFecha($format = '%x')
+    public function getPacienteseguimientoFecha($format = 'Y-m-d H:i:s')
     {
         if ($this->pacienteseguimiento_fecha === null) {
             return null;
         }
 
-        if ($this->pacienteseguimiento_fecha === '0000-00-00') {
+        if ($this->pacienteseguimiento_fecha === '0000-00-00 00:00:00') {
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
@@ -385,6 +407,31 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
     } // setIdcanalcomunicacion()
 
     /**
+     * Set the value of [idestatusseguimiento] column.
+     *
+     * @param  int $v new value
+     * @return Pacienteseguimiento The current object (for fluent API support)
+     */
+    public function setIdestatusseguimiento($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idestatusseguimiento !== $v) {
+            $this->idestatusseguimiento = $v;
+            $this->modifiedColumns[] = PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO;
+        }
+
+        if ($this->aEstatusseguimiento !== null && $this->aEstatusseguimiento->getIdestatusseguimiento() !== $v) {
+            $this->aEstatusseguimiento = null;
+        }
+
+
+        return $this;
+    } // setIdestatusseguimiento()
+
+    /**
      * Sets the value of [pacienteseguimiento_fechacreacion] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -439,8 +486,8 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
         if ($this->pacienteseguimiento_fecha !== null || $dt !== null) {
-            $currentDateAsString = ($this->pacienteseguimiento_fecha !== null && $tmpDt = new DateTime($this->pacienteseguimiento_fecha)) ? $tmpDt->format('Y-m-d') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
+            $currentDateAsString = ($this->pacienteseguimiento_fecha !== null && $tmpDt = new DateTime($this->pacienteseguimiento_fecha)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->pacienteseguimiento_fecha = $newDateAsString;
                 $this->modifiedColumns[] = PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHA;
@@ -488,9 +535,10 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
             $this->idclinica = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->idempleado = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->idcanalcomunicacion = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->pacienteseguimiento_fechacreacion = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->pacienteseguimiento_comentario = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->pacienteseguimiento_fecha = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->idestatusseguimiento = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->pacienteseguimiento_fechacreacion = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->pacienteseguimiento_comentario = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->pacienteseguimiento_fecha = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -500,7 +548,7 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 8; // 8 = PacienteseguimientoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = PacienteseguimientoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Pacienteseguimiento object", $e);
@@ -534,6 +582,9 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
         }
         if ($this->aCanalcomunicacion !== null && $this->idcanalcomunicacion !== $this->aCanalcomunicacion->getIdcanalcomunicacion()) {
             $this->aCanalcomunicacion = null;
+        }
+        if ($this->aEstatusseguimiento !== null && $this->idestatusseguimiento !== $this->aEstatusseguimiento->getIdestatusseguimiento()) {
+            $this->aEstatusseguimiento = null;
         }
     } // ensureConsistency
 
@@ -577,6 +628,7 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
             $this->aCanalcomunicacion = null;
             $this->aClinica = null;
             $this->aEmpleado = null;
+            $this->aEstatusseguimiento = null;
             $this->aPaciente = null;
         } // if (deep)
     }
@@ -717,6 +769,13 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
                 $this->setEmpleado($this->aEmpleado);
             }
 
+            if ($this->aEstatusseguimiento !== null) {
+                if ($this->aEstatusseguimiento->isModified() || $this->aEstatusseguimiento->isNew()) {
+                    $affectedRows += $this->aEstatusseguimiento->save($con);
+                }
+                $this->setEstatusseguimiento($this->aEstatusseguimiento);
+            }
+
             if ($this->aPaciente !== null) {
                 if ($this->aPaciente->isModified() || $this->aPaciente->isNew()) {
                     $affectedRows += $this->aPaciente->save($con);
@@ -776,6 +835,9 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
         if ($this->isColumnModified(PacienteseguimientoPeer::IDCANALCOMUNICACION)) {
             $modifiedColumns[':p' . $index++]  = '`idcanalcomunicacion`';
         }
+        if ($this->isColumnModified(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO)) {
+            $modifiedColumns[':p' . $index++]  = '`idestatusseguimiento`';
+        }
         if ($this->isColumnModified(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHACREACION)) {
             $modifiedColumns[':p' . $index++]  = '`pacienteseguimiento_fechacreacion`';
         }
@@ -810,6 +872,9 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
                         break;
                     case '`idcanalcomunicacion`':
                         $stmt->bindValue($identifier, $this->idcanalcomunicacion, PDO::PARAM_INT);
+                        break;
+                    case '`idestatusseguimiento`':
+                        $stmt->bindValue($identifier, $this->idestatusseguimiento, PDO::PARAM_INT);
                         break;
                     case '`pacienteseguimiento_fechacreacion`':
                         $stmt->bindValue($identifier, $this->pacienteseguimiento_fechacreacion, PDO::PARAM_STR);
@@ -937,6 +1002,12 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->aEstatusseguimiento !== null) {
+                if (!$this->aEstatusseguimiento->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aEstatusseguimiento->getValidationFailures());
+                }
+            }
+
             if ($this->aPaciente !== null) {
                 if (!$this->aPaciente->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aPaciente->getValidationFailures());
@@ -1000,12 +1071,15 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
                 return $this->getIdcanalcomunicacion();
                 break;
             case 5:
-                return $this->getPacienteseguimientoFechacreacion();
+                return $this->getIdestatusseguimiento();
                 break;
             case 6:
-                return $this->getPacienteseguimientoComentario();
+                return $this->getPacienteseguimientoFechacreacion();
                 break;
             case 7:
+                return $this->getPacienteseguimientoComentario();
+                break;
+            case 8:
                 return $this->getPacienteseguimientoFecha();
                 break;
             default:
@@ -1042,9 +1116,10 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
             $keys[2] => $this->getIdclinica(),
             $keys[3] => $this->getIdempleado(),
             $keys[4] => $this->getIdcanalcomunicacion(),
-            $keys[5] => $this->getPacienteseguimientoFechacreacion(),
-            $keys[6] => $this->getPacienteseguimientoComentario(),
-            $keys[7] => $this->getPacienteseguimientoFecha(),
+            $keys[5] => $this->getIdestatusseguimiento(),
+            $keys[6] => $this->getPacienteseguimientoFechacreacion(),
+            $keys[7] => $this->getPacienteseguimientoComentario(),
+            $keys[8] => $this->getPacienteseguimientoFecha(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1060,6 +1135,9 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
             }
             if (null !== $this->aEmpleado) {
                 $result['Empleado'] = $this->aEmpleado->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aEstatusseguimiento) {
+                $result['Estatusseguimiento'] = $this->aEstatusseguimiento->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aPaciente) {
                 $result['Paciente'] = $this->aPaciente->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1114,12 +1192,15 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
                 $this->setIdcanalcomunicacion($value);
                 break;
             case 5:
-                $this->setPacienteseguimientoFechacreacion($value);
+                $this->setIdestatusseguimiento($value);
                 break;
             case 6:
-                $this->setPacienteseguimientoComentario($value);
+                $this->setPacienteseguimientoFechacreacion($value);
                 break;
             case 7:
+                $this->setPacienteseguimientoComentario($value);
+                break;
+            case 8:
                 $this->setPacienteseguimientoFecha($value);
                 break;
         } // switch()
@@ -1151,9 +1232,10 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setIdclinica($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setIdempleado($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setIdcanalcomunicacion($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setPacienteseguimientoFechacreacion($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setPacienteseguimientoComentario($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setPacienteseguimientoFecha($arr[$keys[7]]);
+        if (array_key_exists($keys[5], $arr)) $this->setIdestatusseguimiento($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setPacienteseguimientoFechacreacion($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setPacienteseguimientoComentario($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setPacienteseguimientoFecha($arr[$keys[8]]);
     }
 
     /**
@@ -1170,6 +1252,7 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
         if ($this->isColumnModified(PacienteseguimientoPeer::IDCLINICA)) $criteria->add(PacienteseguimientoPeer::IDCLINICA, $this->idclinica);
         if ($this->isColumnModified(PacienteseguimientoPeer::IDEMPLEADO)) $criteria->add(PacienteseguimientoPeer::IDEMPLEADO, $this->idempleado);
         if ($this->isColumnModified(PacienteseguimientoPeer::IDCANALCOMUNICACION)) $criteria->add(PacienteseguimientoPeer::IDCANALCOMUNICACION, $this->idcanalcomunicacion);
+        if ($this->isColumnModified(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO)) $criteria->add(PacienteseguimientoPeer::IDESTATUSSEGUIMIENTO, $this->idestatusseguimiento);
         if ($this->isColumnModified(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHACREACION)) $criteria->add(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHACREACION, $this->pacienteseguimiento_fechacreacion);
         if ($this->isColumnModified(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_COMENTARIO)) $criteria->add(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_COMENTARIO, $this->pacienteseguimiento_comentario);
         if ($this->isColumnModified(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHA)) $criteria->add(PacienteseguimientoPeer::PACIENTESEGUIMIENTO_FECHA, $this->pacienteseguimiento_fecha);
@@ -1240,6 +1323,7 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
         $copyObj->setIdclinica($this->getIdclinica());
         $copyObj->setIdempleado($this->getIdempleado());
         $copyObj->setIdcanalcomunicacion($this->getIdcanalcomunicacion());
+        $copyObj->setIdestatusseguimiento($this->getIdestatusseguimiento());
         $copyObj->setPacienteseguimientoFechacreacion($this->getPacienteseguimientoFechacreacion());
         $copyObj->setPacienteseguimientoComentario($this->getPacienteseguimientoComentario());
         $copyObj->setPacienteseguimientoFecha($this->getPacienteseguimientoFecha());
@@ -1458,6 +1542,58 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a Estatusseguimiento object.
+     *
+     * @param                  Estatusseguimiento $v
+     * @return Pacienteseguimiento The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setEstatusseguimiento(Estatusseguimiento $v = null)
+    {
+        if ($v === null) {
+            $this->setIdestatusseguimiento(NULL);
+        } else {
+            $this->setIdestatusseguimiento($v->getIdestatusseguimiento());
+        }
+
+        $this->aEstatusseguimiento = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Estatusseguimiento object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPacienteseguimiento($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Estatusseguimiento object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Estatusseguimiento The associated Estatusseguimiento object.
+     * @throws PropelException
+     */
+    public function getEstatusseguimiento(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aEstatusseguimiento === null && ($this->idestatusseguimiento !== null) && $doQuery) {
+            $this->aEstatusseguimiento = EstatusseguimientoQuery::create()->findPk($this->idestatusseguimiento, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aEstatusseguimiento->addPacienteseguimientos($this);
+             */
+        }
+
+        return $this->aEstatusseguimiento;
+    }
+
+    /**
      * Declares an association between this object and a Paciente object.
      *
      * @param                  Paciente $v
@@ -1519,6 +1655,7 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
         $this->idclinica = null;
         $this->idempleado = null;
         $this->idcanalcomunicacion = null;
+        $this->idestatusseguimiento = null;
         $this->pacienteseguimiento_fechacreacion = null;
         $this->pacienteseguimiento_comentario = null;
         $this->pacienteseguimiento_fecha = null;
@@ -1553,6 +1690,9 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
             if ($this->aEmpleado instanceof Persistent) {
               $this->aEmpleado->clearAllReferences($deep);
             }
+            if ($this->aEstatusseguimiento instanceof Persistent) {
+              $this->aEstatusseguimiento->clearAllReferences($deep);
+            }
             if ($this->aPaciente instanceof Persistent) {
               $this->aPaciente->clearAllReferences($deep);
             }
@@ -1563,6 +1703,7 @@ abstract class BasePacienteseguimiento extends BaseObject implements Persistent
         $this->aCanalcomunicacion = null;
         $this->aClinica = null;
         $this->aEmpleado = null;
+        $this->aEstatusseguimiento = null;
         $this->aPaciente = null;
     }
 

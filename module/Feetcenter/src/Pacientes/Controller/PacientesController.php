@@ -128,9 +128,7 @@ class PacientesController extends AbstractActionController
         
         if($sesion->getIdrol() != 1){
             $form->get('paciente_nombre')->setAttribute('disabled', true);
-            $form->get('paciente_celular')->setAttribute('disabled', true);
-
-            
+            $form->get('paciente_celular')->setAttribute('disabled', true);            
         }
         
         //Le ponemos los datos de nuestro lugar a nuestro formulario
@@ -219,8 +217,11 @@ class PacientesController extends AbstractActionController
             $pacienteQuery->joinClinica()->withColumn('clinica_nombre');
 
             //WHERE
+            $empleados_array = $post_data['empleados'];
+            array_push($empleados_array, "1");
+
             $pacienteQuery->filterByIdclinica($post_data['clinicas']);
-            $pacienteQuery->filterByIdempleado($post_data['empleados']);
+            $pacienteQuery->filterByIdempleado($empleados_array);
             $recordsFiltered = $pacienteQuery->count();
             //ORDER TODO
 
@@ -271,9 +272,7 @@ class PacientesController extends AbstractActionController
                 if($session->getIdrol() != 1){
                      $tmp['opciones'] = '<a href="/pacientes/editar/'.$value['idpaciente'].'">Editar</a>';
                 }
-                
-               
-                
+
                 $data[] = $tmp;
  
             }   

@@ -1,10 +1,10 @@
 
 <div id="empleados_comisiones_container">
     
-    <h1>Comisiónes</h1>
+    <h1>Comisiones</h1>
     <div class="units-row">
         <div class="unit-30">
-            Clinica
+            Clínica
             <select multiple="multiple" name="idclinica" class="width-100">
                 <?php foreach ($clinicas as $clinica) : ?>
                     <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>

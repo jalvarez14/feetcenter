@@ -14,10 +14,12 @@
     <thead>
         <tr>
             <th>Clínica</th>
-            <th>Fecha registro</th>
+            <th>Fecha</th>
+            <th>Hora</th>
             <th>Empleado</th>
             <th>Canal de comunicación</th>
             <th>Comentario</th>
+            <th>Estado</th>
             <th>Opciones</th>
         </tr>
     </thead>
@@ -27,9 +29,11 @@
             <tr id="<?php echo $seguimiento->getIdpacienteseguimiento()?>">
                 <td><?php echo $seguimiento->getClinica()->getClinicaNombre()?></td>
                 <td><?php echo $seguimiento->getPacienteseguimientoFecha('d/m/Y')?></td>
+                <td><?php echo $seguimiento->getPacienteseguimientoFecha('H:i') .' hrs'?></td>
                 <td><?php echo $seguimiento->getEmpleado()->getEmpleadoNombre()?></td>
                 <td><?php echo $seguimiento->getCanalcomunicacion()->getCanalcomunicacionNombre()?></td>
                 <td><?php echo $seguimiento->getPacienteseguimientoComentario()?></td>
+                <td><span class="badge" style="background: <?php echo $seguimiento->getEstatusseguimiento()->getEstatusseguimientoColor()?>"></span> <?php echo $seguimiento->getEstatusseguimiento()->getEstatusseguimientoNombre()?></td>
                 <td class="tr_options"><a href="<?php echo '/pacientes/seguimiento/'.$paciente->getIdpaciente()?>/editar/<?php echo $seguimiento->getIdpacienteseguimiento()?>">Editar</a><a class="delete-modal" href="javascript:void(0)" data-tools="modal" data-width="700" data-title="<h2>Advertencia</h2>" data-content="<?php echo urldecode('/pacientes/seguimiento/'.$paciente->getIdpaciente().'/eliminar/'.$seguimiento->getIdpacienteseguimiento().'?html=true')?>" >Eliminar</a></td>
             </tr>
         <?php endforeach;?>

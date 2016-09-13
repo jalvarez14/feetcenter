@@ -1,5 +1,5 @@
 <div id="clinica_container">
-    <h1>Clinica: <?php echo $form->get('clinica_nombre')->getValue()?></h1>
+    <h1>Clínica: <?php echo $form->get('clinica_nombre')->getValue()?></h1>
     <?php 
         $form->setAttribute('action', '/catalogos/clinica/editar/'.$id);
         $form->setAttribute('novalidate', true);
@@ -31,7 +31,7 @@
         </div>
         <div class="unit-50">
             <label>
-                Telefono
+                Teléfono
                 <?php echo $this->formText($form->get('clinica_telefono')); ?>
             </label>
         </div>

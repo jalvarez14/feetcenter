@@ -120,10 +120,14 @@
                                     total+=parseFloat(this.visita_total);
                                 }
                             });
-                            
+  
                             $container.find('#total_efectivo').text(accounting.formatMoney(total_efectivo));
                             $container.find('#total_tarjeta').text(accounting.formatMoney(total_tarjeta));
                             $container.find('#total').text(accounting.formatMoney(total));
+                            
+                            $container.find('#grantotal_efectivo').text(accounting.formatMoney(settings.json.totales.visita_efectivo));
+                            $container.find('#grantotal_tarjeta').text(accounting.formatMoney(settings.json.totales.visita_tarjeta));
+                             $container.find('#grantotal').text(accounting.formatMoney(settings.json.totales.visita_efectivo + settings.json.totales.visita_tarjeta));
                             
                             //LOS EVENTOS
                             
@@ -197,18 +201,19 @@
 //                        */
 //                        
                             tr.find('a.nota_remision').on('click',function(){
-
+                                $('body').addClass('loading');
                                 $.ajax({
                                     method:'get',
                                     url:'/ventas/generarnota',
                                     dataType:'json',
+                                    async: false,
                                     data:{idvisita:idvisita},
                                     success:function(data){
                                         download('data:application/pdf;base64,'+data, "nota_de_remision.pdf", "application/pdf");
                                     }
 
                                 });
-
+                                $('body').removeClass('loading');
 
                             });
                                 

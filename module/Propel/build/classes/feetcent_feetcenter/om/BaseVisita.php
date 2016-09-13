@@ -114,6 +114,36 @@ abstract class BaseVisita extends BaseObject implements Persistent
     protected $visita_nota;
 
     /**
+     * The value for the visita_year field.
+     * @var        int
+     */
+    protected $visita_year;
+
+    /**
+     * The value for the visita_month field.
+     * @var        int
+     */
+    protected $visita_month;
+
+    /**
+     * The value for the visita_day field.
+     * @var        int
+     */
+    protected $visita_day;
+
+    /**
+     * The value for the visita_foliomembresia field.
+     * @var        string
+     */
+    protected $visita_foliomembresia;
+
+    /**
+     * The value for the visita_cuponmembresia field.
+     * @var        string
+     */
+    protected $visita_cuponmembresia;
+
+    /**
      * @var        Clinica
      */
     protected $aClinica;
@@ -448,6 +478,61 @@ abstract class BaseVisita extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [visita_year] column value.
+     *
+     * @return int
+     */
+    public function getVisitaYear()
+    {
+
+        return $this->visita_year;
+    }
+
+    /**
+     * Get the [visita_month] column value.
+     *
+     * @return int
+     */
+    public function getVisitaMonth()
+    {
+
+        return $this->visita_month;
+    }
+
+    /**
+     * Get the [visita_day] column value.
+     *
+     * @return int
+     */
+    public function getVisitaDay()
+    {
+
+        return $this->visita_day;
+    }
+
+    /**
+     * Get the [visita_foliomembresia] column value.
+     *
+     * @return string
+     */
+    public function getVisitaFoliomembresia()
+    {
+
+        return $this->visita_foliomembresia;
+    }
+
+    /**
+     * Get the [visita_cuponmembresia] column value.
+     *
+     * @return string
+     */
+    public function getVisitaCuponmembresia()
+    {
+
+        return $this->visita_cuponmembresia;
+    }
+
+    /**
      * Set the value of [idvisita] column.
      *
      * @param  int $v new value
@@ -766,6 +851,111 @@ abstract class BaseVisita extends BaseObject implements Persistent
     } // setVisitaNota()
 
     /**
+     * Set the value of [visita_year] column.
+     *
+     * @param  int $v new value
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitaYear($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->visita_year !== $v) {
+            $this->visita_year = $v;
+            $this->modifiedColumns[] = VisitaPeer::VISITA_YEAR;
+        }
+
+
+        return $this;
+    } // setVisitaYear()
+
+    /**
+     * Set the value of [visita_month] column.
+     *
+     * @param  int $v new value
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitaMonth($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->visita_month !== $v) {
+            $this->visita_month = $v;
+            $this->modifiedColumns[] = VisitaPeer::VISITA_MONTH;
+        }
+
+
+        return $this;
+    } // setVisitaMonth()
+
+    /**
+     * Set the value of [visita_day] column.
+     *
+     * @param  int $v new value
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitaDay($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->visita_day !== $v) {
+            $this->visita_day = $v;
+            $this->modifiedColumns[] = VisitaPeer::VISITA_DAY;
+        }
+
+
+        return $this;
+    } // setVisitaDay()
+
+    /**
+     * Set the value of [visita_foliomembresia] column.
+     *
+     * @param  string $v new value
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitaFoliomembresia($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->visita_foliomembresia !== $v) {
+            $this->visita_foliomembresia = $v;
+            $this->modifiedColumns[] = VisitaPeer::VISITA_FOLIOMEMBRESIA;
+        }
+
+
+        return $this;
+    } // setVisitaFoliomembresia()
+
+    /**
+     * Set the value of [visita_cuponmembresia] column.
+     *
+     * @param  string $v new value
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitaCuponmembresia($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->visita_cuponmembresia !== $v) {
+            $this->visita_cuponmembresia = $v;
+            $this->modifiedColumns[] = VisitaPeer::VISITA_CUPONMEMBRESIA;
+        }
+
+
+        return $this;
+    } // setVisitaCuponmembresia()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -811,6 +1001,11 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $this->visita_estatuspago = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->visita_total = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->visita_nota = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->visita_year = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
+            $this->visita_month = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->visita_day = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->visita_foliomembresia = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->visita_cuponmembresia = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -820,7 +1015,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 14; // 14 = VisitaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 19; // 19 = VisitaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Visita object", $e);
@@ -1161,6 +1356,21 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_NOTA)) {
             $modifiedColumns[':p' . $index++]  = '`visita_nota`';
         }
+        if ($this->isColumnModified(VisitaPeer::VISITA_YEAR)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_year`';
+        }
+        if ($this->isColumnModified(VisitaPeer::VISITA_MONTH)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_month`';
+        }
+        if ($this->isColumnModified(VisitaPeer::VISITA_DAY)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_day`';
+        }
+        if ($this->isColumnModified(VisitaPeer::VISITA_FOLIOMEMBRESIA)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_foliomembresia`';
+        }
+        if ($this->isColumnModified(VisitaPeer::VISITA_CUPONMEMBRESIA)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_cuponmembresia`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `visita` (%s) VALUES (%s)',
@@ -1213,6 +1423,21 @@ abstract class BaseVisita extends BaseObject implements Persistent
                         break;
                     case '`visita_nota`':
                         $stmt->bindValue($identifier, $this->visita_nota, PDO::PARAM_STR);
+                        break;
+                    case '`visita_year`':
+                        $stmt->bindValue($identifier, $this->visita_year, PDO::PARAM_INT);
+                        break;
+                    case '`visita_month`':
+                        $stmt->bindValue($identifier, $this->visita_month, PDO::PARAM_INT);
+                        break;
+                    case '`visita_day`':
+                        $stmt->bindValue($identifier, $this->visita_day, PDO::PARAM_INT);
+                        break;
+                    case '`visita_foliomembresia`':
+                        $stmt->bindValue($identifier, $this->visita_foliomembresia, PDO::PARAM_STR);
+                        break;
+                    case '`visita_cuponmembresia`':
+                        $stmt->bindValue($identifier, $this->visita_cuponmembresia, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1436,6 +1661,21 @@ abstract class BaseVisita extends BaseObject implements Persistent
             case 13:
                 return $this->getVisitaNota();
                 break;
+            case 14:
+                return $this->getVisitaYear();
+                break;
+            case 15:
+                return $this->getVisitaMonth();
+                break;
+            case 16:
+                return $this->getVisitaDay();
+                break;
+            case 17:
+                return $this->getVisitaFoliomembresia();
+                break;
+            case 18:
+                return $this->getVisitaCuponmembresia();
+                break;
             default:
                 return null;
                 break;
@@ -1479,6 +1719,11 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $keys[11] => $this->getVisitaEstatuspago(),
             $keys[12] => $this->getVisitaTotal(),
             $keys[13] => $this->getVisitaNota(),
+            $keys[14] => $this->getVisitaYear(),
+            $keys[15] => $this->getVisitaMonth(),
+            $keys[16] => $this->getVisitaDay(),
+            $keys[17] => $this->getVisitaFoliomembresia(),
+            $keys[18] => $this->getVisitaCuponmembresia(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1580,6 +1825,21 @@ abstract class BaseVisita extends BaseObject implements Persistent
             case 13:
                 $this->setVisitaNota($value);
                 break;
+            case 14:
+                $this->setVisitaYear($value);
+                break;
+            case 15:
+                $this->setVisitaMonth($value);
+                break;
+            case 16:
+                $this->setVisitaDay($value);
+                break;
+            case 17:
+                $this->setVisitaFoliomembresia($value);
+                break;
+            case 18:
+                $this->setVisitaCuponmembresia($value);
+                break;
         } // switch()
     }
 
@@ -1618,6 +1878,11 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if (array_key_exists($keys[11], $arr)) $this->setVisitaEstatuspago($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setVisitaTotal($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setVisitaNota($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setVisitaYear($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setVisitaMonth($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setVisitaDay($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setVisitaFoliomembresia($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setVisitaCuponmembresia($arr[$keys[18]]);
     }
 
     /**
@@ -1643,6 +1908,11 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_ESTATUSPAGO)) $criteria->add(VisitaPeer::VISITA_ESTATUSPAGO, $this->visita_estatuspago);
         if ($this->isColumnModified(VisitaPeer::VISITA_TOTAL)) $criteria->add(VisitaPeer::VISITA_TOTAL, $this->visita_total);
         if ($this->isColumnModified(VisitaPeer::VISITA_NOTA)) $criteria->add(VisitaPeer::VISITA_NOTA, $this->visita_nota);
+        if ($this->isColumnModified(VisitaPeer::VISITA_YEAR)) $criteria->add(VisitaPeer::VISITA_YEAR, $this->visita_year);
+        if ($this->isColumnModified(VisitaPeer::VISITA_MONTH)) $criteria->add(VisitaPeer::VISITA_MONTH, $this->visita_month);
+        if ($this->isColumnModified(VisitaPeer::VISITA_DAY)) $criteria->add(VisitaPeer::VISITA_DAY, $this->visita_day);
+        if ($this->isColumnModified(VisitaPeer::VISITA_FOLIOMEMBRESIA)) $criteria->add(VisitaPeer::VISITA_FOLIOMEMBRESIA, $this->visita_foliomembresia);
+        if ($this->isColumnModified(VisitaPeer::VISITA_CUPONMEMBRESIA)) $criteria->add(VisitaPeer::VISITA_CUPONMEMBRESIA, $this->visita_cuponmembresia);
 
         return $criteria;
     }
@@ -1719,6 +1989,11 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $copyObj->setVisitaEstatuspago($this->getVisitaEstatuspago());
         $copyObj->setVisitaTotal($this->getVisitaTotal());
         $copyObj->setVisitaNota($this->getVisitaNota());
+        $copyObj->setVisitaYear($this->getVisitaYear());
+        $copyObj->setVisitaMonth($this->getVisitaMonth());
+        $copyObj->setVisitaDay($this->getVisitaDay());
+        $copyObj->setVisitaFoliomembresia($this->getVisitaFoliomembresia());
+        $copyObj->setVisitaCuponmembresia($this->getVisitaCuponmembresia());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2560,6 +2835,11 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $this->visita_estatuspago = null;
         $this->visita_total = null;
         $this->visita_nota = null;
+        $this->visita_year = null;
+        $this->visita_month = null;
+        $this->visita_day = null;
+        $this->visita_foliomembresia = null;
+        $this->visita_cuponmembresia = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

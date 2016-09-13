@@ -8,22 +8,70 @@
 <div id="clientes_visitas_container">
     <h1>Visitas</h1>
     <div class="units-row">
-        <div class="unit-30">
-            Clinica
+        <div class="unit-20">
+            Clínica
             <select multiple="multiple" name="idclinica" class="width-100">
                 <?php foreach ($clinicas as $clinica) : ?>
                     <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="unit-30">
-           
+        <div class="unit-20">
             Pedicurista
             <select multiple="multiple" name="idempleado" class="width-100">
                 <?php foreach ($empleados as $empleado) : ?>
                 <option value="<?php echo $empleado->getIdempleado()?>"><?php echo $empleado->getEmpleado()->getEmpleadoNombre() ?></option>
                 <?php endforeach; ?>
             </select>
+        </div>
+        <div class="unit-20">
+            Año
+            <select multiple="multiple" name="visita_year" class="width-100">
+                <?php for($i=$years['from'];$i<=$years['to'];$i++) :?>
+                    <option value="<?php echo $i?>"><?php echo $i?></option>
+                <?php endfor;?>
+            </select>
+        </div>
+         <div class="unit-20">
+            Mes
+            <select multiple="multiple" name="visita_mes" class="width-100">
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+        </div>
+        <div class="unit-20">
+            Orden
+            <select multiple="multiple" name="visita_order" class="width-100">
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
+            </select>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-20">
+            Estatus
+            <select multiple="multiple" name="visita_estatus" class="width-100">
+                <?php foreach ($estatus as $est) : ?>
+                    <option value="<?php echo $est->getIdestatusseguimiento()?>"><?php echo $est->getEstatusseguimientoNombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+            
+        </div>
+        <div class="unit-40" >
+            <label style="display: block">Estatus fecha</label>
+            <input style="float: left"class="width-40" type="text" value="" placeholder="Desde" name="seguimiento_from">
+            <input style="float: left" class="width-40  " type="text" value="" name="seguimiento_to" placeholder="Hasta">
+            <a id="filter_fechaestatus" href="javascript:;"class="btn btn-blue width-10 " style="float: left; font-size: 10px; text-align: center" ><i class="fa fa-search"></i></a>
         </div>
     </div>
     <table class="table-visitas table-bordered">

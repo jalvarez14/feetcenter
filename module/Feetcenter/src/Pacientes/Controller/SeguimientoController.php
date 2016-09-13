@@ -84,13 +84,14 @@ class SeguimientoController extends AbstractActionController
         $paciente = \PacienteQuery::create()->findPk($idpaciente);
         
         $id = $this->params()->fromRoute('id');
+        
         $entity = \PacienteseguimientoQuery::create()->findPk($id);
-   
+
         
         if($request->isPost()){
             
             $post_data = $request->getPost();
-            
+
             foreach ($post_data as $k => $v){
                 if(empty($v)){
                     unset($post_data[$k]);
@@ -99,14 +100,15 @@ class SeguimientoController extends AbstractActionController
             
             //Recorremos nuestro formulario y seteamos los valores a nuestro objeto Lugar
             foreach ($post_data as $key => $value) {
-                if (\PacienteseguimientoPeer::getTableMap()->hasColumn($key) && $key != 'pacienteseguimiento_fecha') {
+                if (\PacienteseguimientoPeer::getTableMap()->hasColumn($key) && $key != 'pacienteseguimiento_fecha' && $key != 'pacienteseguimiento_hora') {
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
             
-            //La fecha de nacimiento
+            //Las fechas
             if(isset($post_data['pacienteseguimiento_fecha_submit'])){
                 $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit']);
+                $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit'].' '.$post_data['pacienteseguimiento_hora']);
             }
             
             $entity->save();
@@ -121,18 +123,30 @@ class SeguimientoController extends AbstractActionController
         
         
         $canales = \CanalcomunicacionQuery::create()->find();
-
+        $estatus = \EstatusseguimientoQuery::create()->find();
+         
         $canales_array = array();
         foreach ($canales as $canal){
             $idcanal = $canal->getIdcanalcomunicacion();
             $canales_array[$idcanal] = $canal->getCanalcomunicacionNombre(); 
         }
         
-        $form = new \Pacientes\Form\SeguimientoForm($canales_array);
+        $estatus_array = array();
+        foreach ($estatus as $est){
+            $ides = $est->getIdestatusseguimiento();
+            $estatus_array[$ides] = $est->getEstatusseguimientoNombre(); 
+        }
+        
+        $form = new \Pacientes\Form\SeguimientoForm($canales_array,$estatus_array);
         $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
         
+        //ATOMIZAMOS LA HORA Y SETIAMOS LOS VALORES CORRECTAMENTE
+        $full_date = new \DateTime($entity->getPacienteseguimientoFecha());
+        $form->get('pacienteseguimiento_fecha')->setValue($full_date->format('d/m/Y'));
+        $form->get('pacienteseguimiento_hora')->setValue($full_date->format('h:i'));
+
         $entity->save();
-        
+       
         return new ViewModel(array(
             'id' => $id,
             'paciente' => $paciente,
@@ -158,14 +172,16 @@ class SeguimientoController extends AbstractActionController
             $entity = new \Pacienteseguimiento();
             
             foreach($post_data as $key => $value){
-                if(\PacienteseguimientoPeer::getTableMap()->hasColumn($key) && $key!='pacienteseguimiento_fecha'){
+                if(\PacienteseguimientoPeer::getTableMap()->hasColumn($key) && $key!='pacienteseguimiento_fecha' && $key!='pacienteseguimiento_hora'){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
             
-            //Las fechas
+            
+            
+            //Las fechas 
             $entity->setPacienteseguimientoFechacreacion(new \DateTime());
-            $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit']);
+            $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit'].' '.$post_data['pacienteseguimiento_hora']);
             
             if($sesion->getIdrol() == 1){
                 $idclinica = 1;
@@ -173,10 +189,10 @@ class SeguimientoController extends AbstractActionController
                 $idclinica = $sesion->getIdClinica();
             }
             
-            //el empleado y la fecha
+            //el empleado 
             $entity->setIdempleado($sesion->getIdempleado());
             $entity->setIdclinica($idclinica);
-            
+           
             $entity->save();
             
             //Agregamos un mensaje
@@ -195,14 +211,20 @@ class SeguimientoController extends AbstractActionController
         
         $paciente = \PacienteQuery::create()->findPk($idpaciente);
         $canales = \CanalcomunicacionQuery::create()->find();
+        $estatus = \EstatusseguimientoQuery::create()->find();
 
         $canales_array = array();
         foreach ($canales as $canal){
             $idcanal = $canal->getIdcanalcomunicacion();
             $canales_array[$idcanal] = $canal->getCanalcomunicacionNombre(); 
         }
+        $estatus_array = array();
+        foreach ($estatus as $est){
+            $id = $est->getIdestatusseguimiento();
+            $estatus_array[$id] = $est->getEstatusseguimientoNombre(); 
+        }
         
-        $form = new \Pacientes\Form\SeguimientoForm($canales_array);
+        $form = new \Pacientes\Form\SeguimientoForm($canales_array,$estatus_array);
         $form->get('idpaciente')->setValue($paciente->getIdpaciente());
         
         
@@ -265,6 +287,9 @@ class SeguimientoController extends AbstractActionController
             //WHERE
             $pacienteQuery->filterByIdclinica($post_data['clinicas']);
             $pacienteQuery->filterByIdempleado($post_data['empleados']);
+            
+            
+            
             $recordsFiltered = $pacienteQuery->count();
             //ORDER TODO
 
@@ -299,6 +324,7 @@ class SeguimientoController extends AbstractActionController
            
             //Damos el formato
             $data = array();
+           
             foreach ($pacienteQuery->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
                 
                 $paciente_fecharegistro = new \DateTime($value['paciente_fecharegistro']);
@@ -310,6 +336,16 @@ class SeguimientoController extends AbstractActionController
                 $tmp['paciente_nombre'] = $value['paciente_nombre'];
                 $tmp['paciente_celular'] = $value['paciente_celular'];
                 $tmp['empleado_nombre'] = $value['empleado_nombre'];
+                 
+                //POR CADA PACIENTE OBTENEMOS SU ULTIMO SEGUIMIENTO (ESTATUS)
+                $tmp['paciente_estatus'] = 'N/D';
+
+                if(\PacienteseguimientoQuery::create()->filterByIdpaciente($value['idpaciente'])->exists()){
+                    $paciente_seguimiento = \PacienteseguimientoQuery::create()->filterByIdpaciente($value['idpaciente'])->orderByPacienteseguimientoFecha(\Criteria::DESC)->findOne();
+                    $tmp['paciente_estatus'] = '<td><span class="badge" style="background:'.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoColor().'"></span> '.$paciente_seguimiento->getEstatusseguimiento()->getEstatusseguimientoNombre().'</td>';
+                   
+                }
+
                 $tmp['opciones'] = '<a href="/pacientes/seguimiento/ver/'.$value['idpaciente'].'">Ver seguimiento</a>';
                 
                 $data[] = $tmp;
@@ -332,5 +368,116 @@ class SeguimientoController extends AbstractActionController
            
             
         }
+    }
+    
+    
+    public function quickAction(){
+        
+        $sesion = new \Shared\Session\AouthSession();
+        $request = $this->request;
+        
+        if($request->isPost()){
+            $post_data = $request->getPost();
+            
+            foreach ($post_data as $k => $v){
+                if(empty($v)){
+                    unset($post_data[$k]);
+                }
+            }
+            
+            $entity = new \Pacienteseguimiento();
+            
+            foreach($post_data as $key => $value){
+                if(\PacienteseguimientoPeer::getTableMap()->hasColumn($key) && $key!='pacienteseguimiento_fecha' && $key!='pacienteseguimiento_hora'){
+                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                }
+            }
+            
+            //Las fechas 
+            $entity->setPacienteseguimientoFechacreacion(new \DateTime());
+            $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit'].' '.$post_data['pacienteseguimiento_hora']);
+            
+            if($sesion->getIdrol() == 1){
+                $idclinica = 1;
+            }else{
+                $idclinica = $sesion->getIdClinica();
+            }
+            
+            //el empleado 
+            $entity->setIdempleado($sesion->getIdempleado());
+            $entity->setIdclinica($idclinica);
+           
+            $entity->save();
+            
+            //Agregamos un mensaje
+            //$this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
+                
+            //Redireccionamos a nuestro list
+            return $this->getResponse()->setContent(json_encode(array('result' => true)));
+            
+         
+            
+        }
+        
+        if ($this->params()->fromQuery('html')) {
+
+            $idpaciente = $this->params()->fromQuery('idpaciente');
+
+            $paciente = \PacienteQuery::create()->findPk($idpaciente);
+            $canales = \CanalcomunicacionQuery::create()->find();
+            $estatus = \EstatusseguimientoQuery::create()->find();
+
+            $canales_array = array();
+            foreach ($canales as $canal) {
+                $idcanal = $canal->getIdcanalcomunicacion();
+                $canales_array[$idcanal] = $canal->getCanalcomunicacionNombre();
+            }
+            $estatus_array = array();
+            foreach ($estatus as $est) {
+                $id = $est->getIdestatusseguimiento();
+                $estatus_array[$id] = $est->getEstatusseguimientoNombre();
+            }
+
+            $form = new \Pacientes\Form\SeguimientoForm($canales_array, $estatus_array);
+            $form->get('idpaciente')->setValue($paciente->getIdpaciente());
+            
+            $viewModel = new ViewModel();
+            $viewModel->setTerminal(true);
+            $viewModel->setVariables(array(
+                'paciente' => $paciente,
+                'form' => $form,
+            ));
+            
+            return $viewModel;
+        }
+    }
+    
+    public function historialAction(){
+        
+        $sesion = new \Shared\Session\AouthSession();
+        $request = $this->request;
+        
+        if($this->params()->fromQuery('html')) {
+            
+            $idpaciente = $this->params()->fromQuery('idpaciente');
+            $paciente = \PacienteQuery::create()->findPk($idpaciente);
+            
+            $to = new \DateTime();
+            $from = new \DateTime("-6 months");
+
+            $seguimiento = \PacienteseguimientoQuery::create()->filterByIdpaciente($idpaciente)->filterByPacienteseguimientoFecha(array('min' => $from,'max' => $to))->orderByPacienteseguimientoFecha(\Criteria::DESC)->find();
+             
+            $viewModel = new ViewModel();
+            $viewModel->setTerminal(true);
+            $viewModel->setVariables(array(
+                'paciente' => $paciente,
+                'seguimientos' => $seguimiento,
+            ));
+
+            return $viewModel;
+        }
+        
+        
+        
     }
 }

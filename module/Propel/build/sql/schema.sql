@@ -433,6 +433,35 @@ CREATE TABLE `encargadoclinica`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- estatusseguimiento
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `estatusseguimiento`;
+
+CREATE TABLE `estatusseguimiento`
+(
+    `idestatusseguimiento` INTEGER NOT NULL AUTO_INCREMENT,
+    `estatusseguimiento_nombre` VARCHAR(100),
+    `estatusseguimiento_color` VARCHAR(100),
+    PRIMARY KEY (`idestatusseguimiento`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- estatusvisita
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `estatusvisita`;
+
+CREATE TABLE `estatusvisita`
+(
+    `idestatusvisita` INTEGER NOT NULL AUTO_INCREMENT,
+    `estatusvisita_nombre` VARCHAR(100) NOT NULL,
+    `estatusvisita_color` VARCHAR(100) NOT NULL,
+    `estatusvisita_cssname` VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`idestatusvisita`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- faltante
 -- ---------------------------------------------------------------------
 
@@ -598,6 +627,10 @@ CREATE TABLE `membresia`
     `membresia_servicios` DECIMAL(10,2) NOT NULL,
     `membresia_cupones` DECIMAL(10,2) NOT NULL,
     `membresia_precio` DECIMAL(10,2) NOT NULL,
+    `servicio_generaingreso` TINYINT(1),
+    `servicio_generacomision` TINYINT(1),
+    `servicio_tipocomision` enum('porcentaje','cantidad'),
+    `servicio_comision` DECIMAL(10,2),
     PRIMARY KEY (`idmembresia`)
 ) ENGINE=InnoDB;
 
@@ -744,14 +777,16 @@ CREATE TABLE `pacienteseguimiento`
     `idclinica` INTEGER NOT NULL,
     `idempleado` INTEGER NOT NULL,
     `idcanalcomunicacion` INTEGER NOT NULL,
+    `idestatusseguimiento` INTEGER NOT NULL,
     `pacienteseguimiento_fechacreacion` DATETIME NOT NULL,
     `pacienteseguimiento_comentario` TEXT NOT NULL,
-    `pacienteseguimiento_fecha` DATE NOT NULL,
+    `pacienteseguimiento_fecha` DATETIME NOT NULL,
     PRIMARY KEY (`idpacienteseguimiento`),
     INDEX `idpaciente` (`idpaciente`),
     INDEX `idempleado` (`idempleado`),
     INDEX `idclinica` (`idclinica`),
     INDEX `idcanalcomunicacion` (`idcanalcomunicacion`),
+    INDEX `idestatuseguimiento` (`idestatusseguimiento`),
     CONSTRAINT `idcanalcomunicacion_pacienteseguimiento`
         FOREIGN KEY (`idcanalcomunicacion`)
         REFERENCES `canalcomunicacion` (`idcanalcomunicacion`)
@@ -765,6 +800,11 @@ CREATE TABLE `pacienteseguimiento`
     CONSTRAINT `idempleado_pacienteseguimiento`
         FOREIGN KEY (`idempleado`)
         REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idestatusseguimiento_pacienteseguimiento`
+        FOREIGN KEY (`idestatusseguimiento`)
+        REFERENCES `estatusseguimiento` (`idestatusseguimiento`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idpaciente_pacienteseguimiento`
@@ -1075,6 +1115,11 @@ CREATE TABLE `visita`
     `visita_estatuspago` enum('pagada','no pagada','cancelada'),
     `visita_total` DECIMAL(10,2),
     `visita_nota` TEXT,
+    `visita_year` INTEGER,
+    `visita_month` INTEGER,
+    `visita_day` INTEGER,
+    `visita_foliomembresia` VARCHAR(45),
+    `visita_cuponmembresia` VARCHAR(45),
     PRIMARY KEY (`idvisita`),
     INDEX `idempleadocreador` (`idempleadocreador`),
     INDEX `idempleado` (`idempleado`),

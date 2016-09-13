@@ -44,6 +44,7 @@
         * Important Components
         */ 
         var $container = $(container);  
+        var $payContainer = $container.find('#pay_container');
         
         var settings;
         var pacientes_array = new Array();
@@ -223,12 +224,29 @@
            var id = row.find('input[name*=id]').val();
            var type = row.find('input[name*=type]').val();
            $container.find('#visitadetalle_tipo option[data-type='+type+'][value='+id+']').removeClass('hide');
+           var index = row.index();
            row.remove();
+           
            
            if($('#visita_container table#visita_detalles tbody input[name*=type][value=membresia]').length == 0){
                $container.find('option[data-dependencia=membresia]').remove();
            }
+           
+           if(type == 'membresia'){
+               $container.find('input[name=anticipado]').val('false');
+               $container.find('input[name=visita_pagoanticipado]').prop('disabled',false);
+               $container.find('input[name=visita_pagoanticipado]').prop('checked',false);
+               $container.find('#pay_date_anticipado_input').hide();
+               
+               console.log($container.find('tr[depenencia=membresia]').remove())
+               
+           }
+           
+           
+           //Removemos de la lista de pay
+           $container.find('table#pay_details tbody tr').eq(index).remove();
 
+           
             //Calculamos el total
             var total = 0;
             $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
@@ -236,13 +254,15 @@
                 total += subtotal;
             });
             $container.find('input[name=visita_total]').val(total);
-           $container.find('#total').text(accounting.formatMoney(total));
+            $container.find('#total').text(accounting.formatMoney(total));
            
        }
         
        var addProduct = function(){
-           var itemCount = $container.find('table#visita_detalles tbody tr').length;
            
+          
+           var itemCount = $container.find('table#visita_detalles tbody tr').length;
+           var d = new Date();
            $container.find('#addproduct_container input,#addproduct_container select').removeClass('input-error');
            //Validamos que la el campo cantidad no este vacio
            var empty = false
@@ -263,17 +283,21 @@
                var type = selected.attr('data-type');
 
                if(type == 'producto'){
+                   
+                   //$container.find('input[name=visitadetalle_cantidad]').closest('div').show();
                    var existencias = selected.attr('data-existencias');
                    if(cantidad<=existencias){
                         var id = selected.val();
                         var price = selected.attr('data-price');
                         var subtotal = parseInt(cantidad) * parseInt(price);
-                        var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'">');
+                        var inputs = $('<input type="hidden" name="vistadetalle['+d.getTime()+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][subtotal]" value="'+subtotal+'">');
+                        var inputs2 = $('<input type="hidden" name="vistadetallepay['+d.getTime()+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][type]" value="'+type+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][subtotal]" value="'+subtotal+'">');
                         var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
                         opciones.find('a').on('click',deleteProduct);
 
 
-                        //Nuestra row
+                        //Nuestra row del modal principal
+                        
                         var tr = $('<tr>');
                         tr.append(inputs);
                         tr.append('<td>'+cantidad+'</td>');
@@ -281,7 +305,17 @@
                         tr.append(opciones);
                         tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
                         $container.find('table#visita_detalles tbody').append(tr);
-
+                        
+                        
+                        //Nuestra row de la pantalla de pago
+                        var tr2 = $('<tr>');
+                        tr2.append(inputs2);
+                        tr2.append('<td>'+cantidad+'</td>');
+                        tr2.append('<td>'+item+'</td>');
+                        tr2.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+                        $payContainer.find('table#pay_details tbody').append(tr2);
+                        
+                        
                         //Calculamos el total
                         var total = 0;
                         
@@ -299,8 +333,9 @@
                        $container.find('input[name=visitadetalle_cantidad]').addClass('input-error');
                        alert('La cantidad debe de ser menor o igual al numero de existencias');
                    }
-               }else if(type == 'servicio'){
-
+               }
+               else if(type == 'servicio'){
+                    //$container.find('input[name=visitadetalle_cantidad]').closest('div').hide();
                     var data_dependencia = selected.attr('data-dependencia');
                     if(data_dependencia == 'membresia'){
                         var error = false;
@@ -324,7 +359,7 @@
                                         var id = selected.val();
                                         var price = selected.attr('data-price');
                                         var subtotal = parseInt(cantidad) * parseInt(price);
-                                        var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'"><input type="hidden" name="vistadetalle['+itemCount+'][idpacientemembresia]" value="'+data.idpacientemembresia+'">');
+                                        var inputs = $('<input type="hidden" name="vistadetalle['+d.getTime()+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][subtotal]" value="'+subtotal+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][idpacientemembresia]" value="'+data.idpacientemembresia+'">');
                                         var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
                                         opciones.find('a').on('click',deleteProduct);
 
@@ -336,7 +371,7 @@
                                         tr.append(opciones);
                                         tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
                                         $container.find('table#visita_detalles tbody').append(tr);
-
+                                        
                                         //Calculamos el total
                                         var total = 0;
                                         $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
@@ -366,19 +401,29 @@
                         var id = selected.val();
                         var price = selected.attr('data-price');
                         var subtotal = parseInt(cantidad) * parseInt(price);
-                        var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'">');
-                        var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
+                       var inputs = $('<input type="hidden" name="vistadetalle['+d.getTime()+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][subtotal]" value="'+subtotal+'">');
+                       var inputs2 = $('<input type="hidden" name="vistadetallepay['+d.getTime()+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][type]" value="'+type+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][subtotal]" value="'+subtotal+'">'); 
+                       var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
                         opciones.find('a').on('click',deleteProduct);
 
                         //Nuestra row
-                        var tr = $('<tr>');
+                        var tr = $('<tr>').attr('depenencia','membresia');
                         tr.append(inputs);
                         tr.append('<td>'+cantidad+'</td>');
                         tr.append('<td>'+item+'</td>');
                         tr.append(opciones);
                         tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
                         $container.find('table#visita_detalles tbody').append(tr);
-
+                        
+                        //Nuestra row de la pantalla de pago
+                        var tr2 = $('<tr>').attr('depenencia','membresia');
+                        tr2.append(inputs2);
+                        tr2.append('<td>'+cantidad+'</td>');
+                        tr2.append('<td>'+item+'</td>');
+                        tr2.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+                        $payContainer.find('table#pay_details tbody').append(tr2);
+                        
+                        
                         //Calculamos el total
                         var total = 0;
                         $.each($container.find('#visita_container table#visita_detalles tbody tr'),function(){
@@ -392,7 +437,9 @@
                         selected.addClass('hide');
                         $('#addproduct_container input,#addproduct_container select').val('');
                     }
-               }else{
+               }
+               else{
+                   //$container.find('input[name=visitadetalle_cantidad]').closest('div').hide();
                    var idmembresia = selected.val();
                    var idclinica = container.find('input[name=idclinica]').val();
                    //Obtenemos los servicios de la membresia seleccionada y los insertamos en nuestro select de productos/servicios
@@ -418,11 +465,13 @@
                     var id = selected.val();
                     var price = selected.attr('data-price');
                     var subtotal = parseInt(cantidad) * parseInt(price);
-                    var inputs = $('<input type="hidden" name="vistadetalle['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+itemCount+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+itemCount+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+itemCount+'][subtotal]" value="'+subtotal+'">');
+                    var inputs = $('<input type="hidden" name="vistadetalle['+d.getTime()+'][id]" value="'+id+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][type]" value="'+type+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][price]" value="'+price+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetalle['+d.getTime()+'][subtotal]" value="'+subtotal+'">');
+                    var inputs2 = $('<input type="hidden" name="vistadetallepay['+d.getTime()+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][type]" value="'+type+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][cantidad]" value="'+cantidad+'"><input type="hidden" name="vistadetallepay['+d.getTime()+'][subtotal]" value="'+subtotal+'">');
+                    
                     var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
                     opciones.find('a').on('click',deleteProduct);
 
-                    //Nuestra row
+                    //Nuestra row de modal principal
                     var tr = $('<tr>');
                     tr.append(inputs);
                     tr.append('<td>'+cantidad+'</td>');
@@ -430,6 +479,66 @@
                     tr.append(opciones);
                     tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
                     $container.find('table#visita_detalles tbody').append(tr);
+                    
+                    //Nuestra row de la pantalla de pago
+                    
+                    var tr2 = $('<tr>');
+                    tr2.append(inputs2);
+                    tr2.append('<td>'+cantidad+'</td>');
+                    tr2.append('<td>'+item+'</td>');
+                    tr2.append('<td><input type="text" name="vistadetallepay['+d.getTime()+'][folio]" required="" style="cursor: auto;"></td>');
+                    tr2.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+                    
+                   //Contamos el numero de columnas de nuestra tabla de pago
+                   if($payContainer.find('table#pay_details thead th').length == 3){
+                        $payContainer.find('table#pay_details thead th').eq(1).after('<th>Folio</th>');
+                        $payContainer.find('table#pay_details tbody tr').each(function(){
+                            $(this).find('td').eq(1).after('<td></td>');
+                        });
+                        $payContainer.find('table#pay_details tfoot tr td').eq(0).after('<td></td>');
+                        $payContainer.find('table#pay_details tbody').append(tr2);
+                   }else{
+                        $payContainer.find('table#pay_details tbody').append(tr2);
+                   }
+                   
+                   
+                   //
+                   
+                   
+                   
+                   
+//                   <tr>
+//<input type="hidden" name="vistadetallepay[2][price]" value="2200.00" style="cursor: auto;">
+//<input type="hidden" name="vistadetallepay[2][subtotal]" value="2200.00" style="cursor: auto;">
+//<input type="hidden" name="vistadetallepay[2][id]" value="1" style="cursor: auto;">
+//<input type="hidden" name="vistadetallepay[2][cantidad]" value="1.00" style="cursor: auto;">
+//<input type="hidden" name="vistadetallepay[2][type]" value="membresia" style="cursor: auto;">
+//<td>1</td>
+//<td>Membresía anual</td>
+//<td>
+//<input type="text" name="vistadetallepay[2][folio]" required="" style="cursor: auto;">
+//</td>
+//<td class="visitadetalle_subtotal">$ 2,200.00</td>
+//</tr>
+//     
+//
+//
+//<tr>
+//<input type="hidden" value="1" name="vistadetallepay[2][id]">
+//<input type="hidden" value="membresia" name="vistadetallepay[2][type]">
+//<input type="hidden" value="2200.00" name="vistadetallepay[2][price]">
+//<input type="hidden" value="1" name="vistadetallepay[2][cantidad]">
+//<input type="hidden" value="2200" name="vistadetallepay[2][subtotal]">
+//<td>1</td>
+//<td>Membresía anual</td>
+//<td>
+//<input class="input-error" type="text" style="cursor: auto;" required="" name="vistadetallepay[2][folio]">
+//</td>
+//<td>$ 2,200.00</td>
+//</tr>
+                   
+                   
+                    
 
                     //Calculamos el total
                     var total = 0;
@@ -446,6 +555,7 @@
 
                }
                
+               $container.find('input[name=visitadetalle_cantidad]').val(1);
 
            }
        }
@@ -456,10 +566,11 @@
         plugin.init = function(){
             
             settings = plugin.settings = $.extend({}, defaults, options);
-                    
+                   
             formatoCatalogo(); //Damos formato al catalogo 
 
             //Inicializamos al autocomplete
+            
             $container.find('input[name=paciente_autocomplete]').tokenInput('/findpacientes',{
                 //propertyToSearch: 'paciente_nombre',
                 hintText: "Comience a escribir...",
@@ -619,6 +730,22 @@
                  }
                  $container.find('input[name=paciente_autocomplete]').tokenInput('add',{id:settings.paciente.idpaciente,visita_total:settings.paciente.visita_total,visita_ultima:settings.paciente.visita_ultima,relacionados:settings.paciente.relacionados,name:settings.paciente.paciente_nombre + ' - Celular: ' + settings.paciente.paciente_celular + ' - Telefono: ' + telefono,membresia:settings.paciente.membresia});
             }
+            
+            $container.find('#visitadetalle_tipo').on('change',function(){
+                var selected = $('#visitadetalle_tipo option:selected');
+                var item = selected.attr('data-name');
+                var type = selected.attr('data-type');
+                
+                if(type == 'producto'){
+                    $container.find('input[name=visitadetalle_cantidad]').closest('div').show();
+                }else{
+                    $container.find('input[name=visitadetalle_cantidad]').val(1);
+                    $container.find('input[name=visitadetalle_cantidad]').closest('div').hide();
+                }
+                console.log(type);
+            });
+            
+            
             
            
 

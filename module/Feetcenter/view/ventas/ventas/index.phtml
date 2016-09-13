@@ -13,7 +13,7 @@
 <?php endif;?>
     <div class="units-row">
         <div class="unit-20">
-            Clinica
+            Clínica
             <select multiple="multiple" name="idclinica" class="width-100">
                 <?php foreach ($clinicas as $clinica) : ?>
                     <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
@@ -47,7 +47,7 @@
         <thead>
             <tr>
                 <th>Fecha</th>
-                <th>Clinica</th>
+                <th>Clínica</th>
                 <th>Cliente</th>
                 <th>Pedicurista</th>
                 <th>Estatus</th>
@@ -61,10 +61,17 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="5">Totales</td>
+                <td colspan="5">Totales x pagina</td>
                 <td id="total_efectivo">0</td>
                 <td id="total_tarjeta">0</td>
                 <td id="total">0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="5">Totales x periodo</td>
+                <td id="grantotal_efectivo">0</td>
+                <td id="grantotal_tarjeta">0</td>
+                <td id="grantotal">0</td>
                 <td></td>
             </tr>
         </tfoot>

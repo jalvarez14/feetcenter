@@ -39,8 +39,7 @@
        var defaults = {
            
        };
-       var $table;
-       
+
        /* 
         * Important Components
         */ 
@@ -122,6 +121,7 @@
                    //Las cabeceras de nuestros headers
                    
                     if(data.empleados.length > 0 && data.comisiones.length > 0){
+                      
                         if(typeof $table != 'undefined'){
                             $table.clear();
                             $table.destroy();
@@ -195,7 +195,7 @@
                             dataType: 'json',
                             async:false,
                             success: function(data){
-                                $table = container.find('table').DataTable({
+                                $table = container.find('table.table-comisiones').DataTable({
                                     language:data,
                                     searching: false,
                                     ordering:  false,
@@ -264,7 +264,7 @@
                             dataType: 'json',
                             async:false,
                             success: function(data){
-                                $table = container.find('table').DataTable({
+                                $table = container.find('table.table-comisiones').DataTable({
                                     language:data,
                                     searching: false,
                                     ordering:  false,
@@ -327,10 +327,12 @@
                   if(data.empleados.length > 0){
                       
                       //LIMPIAMOS NUESTRA TABLA
-                      $table.clear();
-                      $container.find('table.table-comisiones thead tr').remove();
-                      $container.find('table.table-comisiones tfoot tr').remove();
-                      $table.destroy();
+                      if(typeof $table != 'undefined'){
+                        $table.clear();
+                        $container.find('table.table-comisiones thead tr').remove();
+                        $container.find('table.table-comisiones tfoot tr').remove();
+                        $table.destroy();
+                    }
                       
                       
                       var $thead1 = $('<tr class="row_empleados"><th>Fecha</th></tr>');
@@ -407,7 +409,7 @@
                 dataType: 'json',
                 async:false,
                 success: function(data){
-                    $table = container.find('table').DataTable({
+                    $table = container.find('table.table-comisiones').DataTable({
                         language:data,
                         searching: false,
                         ordering:  false,
@@ -518,7 +520,7 @@
                 dataType: 'json',
                 async:false,
                 success: function(data){
-                    $table = container.find('table').DataTable({
+                    $table = container.find('table.table-comisiones').DataTable({
                         language:data,
                         searching: false,
                         ordering:  false,

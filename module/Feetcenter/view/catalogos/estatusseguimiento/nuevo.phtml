@@ -1,0 +1,29 @@
+<div id="clinica_container">
+    <h1>Nuevo estatus de seguimiento</h1>
+    <?php 
+        $form->setAttribute('action', '/catalogos/estatusseguimiento/nuevo');
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('estatusseguimiento_nombre')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <label>
+                Color <span class="req">*</span>
+                <?php echo $this->formColor($form->get('estatusseguimiento_color')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>

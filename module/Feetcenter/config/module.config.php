@@ -69,6 +69,28 @@ return array(
                         ),
                         
                     ),
+                    'estatusseguimiento' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/estatusseguimiento[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Estatusseguimiento',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
+                    'colores' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/colorestatus[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Colorestatus',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
                     'membresias' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -547,6 +569,26 @@ return array(
                            ),
                        ),
                    ),
+                    'quick' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/quick',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Seguimiento',
+                               'action'        => 'quick',
+                           ),
+                       ),
+                   ),
+                    'historial' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/historial',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Seguimiento',
+                               'action'        => 'historial',
+                           ),
+                       ),
+                   ),
                     'ver' => array(
                        'type' => 'Segment',
                        'options' => array(
@@ -607,6 +649,21 @@ return array(
             ),
         ),
     ),
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'cron-autologout' => array(
+                    'options' => array(
+                        'route' => 'autologout',
+                        'defaults' => array(
+                            'controller' => 'Feetcenter\Controller\Cronjob',
+                            'action' => 'autologout',
+                        ),
+                    ),
+                ),
+            )
+        )
+    ),
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -641,6 +698,8 @@ return array(
             'Catalogos\Controller\Empleado' => 'Catalogos\Controller\EmpleadoController',
             'Catalogos\Controller\Incidencia' => 'Catalogos\Controller\IncidenciaController',
             'Catalogos\Controller\Membresia' => 'Catalogos\Controller\MembresiaController',
+            'Catalogos\Controller\Estatusseguimiento' => 'Catalogos\Controller\EstatusseguimientoController',
+            'Catalogos\Controller\Colorestatus' => 'Catalogos\Controller\ColorestatusController',
             //Compras
             'Compras\Controller\Compras' => 'Compras\Controller\ComprasController',
             //Login
@@ -678,6 +737,8 @@ return array(
             'Reportes\Controller\Reportes' => 'Reportes\Controller\ReportesController',
             //Mi cuenta
             'Feetcenter\Controller\Micuenta' => 'Feetcenter\Controller\MicuentaController',
+            //Cronjobs 
+            'Feetcenter\Controller\Cronjob' => 'Feetcenter\Controller\CronjobController',
             
         ),
     ),
@@ -697,11 +758,5 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
-    // Placeholder for console routes
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-            ),
-        ),
-    ),
+
 );

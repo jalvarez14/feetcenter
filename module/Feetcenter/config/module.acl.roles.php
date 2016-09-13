@@ -14,6 +14,8 @@ return array(
             'catalogos/concepto',
             'catalogos/incidencia',
             'catalogos/membresias',
+            'catalogos/estatusseguimiento',
+            'catalogos/colores',
             //Compras
             'compras',
             //Login
@@ -53,6 +55,8 @@ return array(
             'seguimiento/editar',
             'seguimiento/eliminar',
             'seguimiento/serverside',
+            'seguimiento/quick',
+            'seguimiento/historial',
             'pacientes-visitas',
             'pacientes/serverside',
             //Agenda
@@ -64,7 +68,8 @@ return array(
             'configuracion',
             //reportes
             'reportes',
-            
+            //Cronjobs
+            'cron-autologout',
         ),
         "deny"=>array(
              
@@ -109,6 +114,8 @@ return array(
             'seguimiento/editar',
             'seguimiento/eliminar',
             'seguimiento/serverside',
+            'seguimiento/quick',
+            'seguimiento/historial',
             'pacientes-visitas',
             //Agenda
             'agenda',
@@ -119,6 +126,8 @@ return array(
             'reportes',
             //mi cuenta
             'micuenta',
+            //Cronjobs
+            'cron-autologout',
         ),
         "deny"=>array(
             //Inventarios
@@ -165,6 +174,8 @@ return array(
             'agenda',
             //mi cuenta
             'micuenta',
+            //Cronjobs
+            'cron-autologout',
             
         ),
         "deny"=>array(

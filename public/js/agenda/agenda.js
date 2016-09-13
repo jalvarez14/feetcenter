@@ -160,8 +160,6 @@
             });
         }
         
-        
-        
         var renderEventos = function(date) {
            
             $.ajax({
@@ -170,7 +168,7 @@
                 data: {dia: date.format('YYYY-MM-DD')},
                 success: function (data) {
                     $.each(data, function (index, element) {
-                        renderEvento(element.idvisita,element.visita_fechainicio,element.visita_fechafin,element.idempleado,element.paciente_nombre,element.visita_status,element.visita_estatuspago);
+                        renderEvento(element.idvisita,element.visita_fechainicio,element.visita_fechafin,element.idempleado,element.paciente_nombre,element.visita_status,element.visita_estatuspago,element.servicio,element.color);
                     });
                 }
             });
@@ -187,8 +185,7 @@
                     });
                 }
             });
-        }
-        
+        }   
         
         var crearNodisponible = function(start,end,resource){
             $('#calendar').fullCalendar('renderEvent', {
@@ -204,12 +201,14 @@
             });
         }
         
-        var renderEvento = function(id,start,end,resource,title,status,pago){
+        var renderEvento = function(id,start,end,resource,title,status,pago,servicio,color){
         
             if(pago == 'pagada'){
-                title+= ' - PAGADO';
+                title+= ' - PAGADO - '+servicio;
+            }else if(status == 'cancelo'){
+                title+= ' - CANCELADA';
             }
-            
+    
             var cssClass = cssClassMap[status];
             $('#calendar').fullCalendar('renderEvent', {
                 id:id,
@@ -220,6 +219,7 @@
                 resources: resource,
                 className: cssClass,
                 editable: true,
+                backgroundColor: color,
             });
             
         }
@@ -229,13 +229,13 @@
             var cssClass = cssClassMap[visita.visita_status];
             $('#calendar').fullCalendar('renderEvent', {
                 id:visita.idvisita,
-                title: visita.empleado_nombre + ' - ' + visita.paciente_nombre,
+                title: visita.paciente_nombre,
                 start: visita.visita_fechainicio,
                 end: visita.visita_fechafin,
                 allDay: false,
                 //resources: resource,
                 className: cssClass,
-                editable: false,
+                editable: true,
             });
         }
         
@@ -261,14 +261,16 @@
              settings.idclinica = clinica_select[0];
 
              //Destruimos nuestro calendario
+        
              $container.find('#calendar').fullCalendar('destroy');
-             
+
              var picker = $container.find('input[name=agenda_fecha]').pickadate('picker');
              var date = moment(picker.get('select').obj);
              
              //Inicializamos nuestro calendario
              var json = getjsonCalendar(date);
              $('#calendar').fullCalendar(json);
+             $('#calendar').fullCalendar('gotoDate', date);
         }
         
         function newMethodPay(){
@@ -343,6 +345,7 @@
                             if(data.result){
                                 initCalendar();
                                 modal.close();
+                                alert('Venta exitosa!');
                             }
                         }
                     });
@@ -389,8 +392,10 @@
              
             // "calendar" on line below should ref the element on which fc has been called 
             var array = $('#calendar').fullCalendar('clientEvents');
-            
+      
             for(var i in array){
+                var event_end = event.end
+                event_end = event_end.second(0);
                 if (event.resources[0] == array[i].resources[0] && event.end > array[i].start && event.start < array[i].end && event.id !==array[i].id){
                    return true;
                 }
@@ -430,17 +435,18 @@
                 selectMonths: true,
                 selectYears: 25,
                 onSet: function(selected,evnt) {
-                     initCalendar();
-               }
+                     $('#calendar').fullCalendar('gotoDate', selected.select);       
+                }
             });
             var picker = $container.find('input[name=agenda_fecha]').pickadate('picker');
-            picker.set('select', new Date());
-
+            picker.set('select',  new Date());
+            
+            
             $('#calendar:not(".fc-event")').on('contextmenu', function (e) {
                 e.preventDefault();
             });
             
-            
+            initCalendar();
 
 
         }
@@ -452,28 +458,40 @@
                     center: '',
                     right:  'today,agendaWeek,resourceDay,prev,next'
                 },
+                //aspectRatio:.5,
                  timezone:'local',
-                 now:date,
+                 now:new Date(),
                  allDaySlot:false,
                  defaultView: 'resourceDay',
                  scrollTime: '08:00:00',
-                 slotDuration: '00:15:00',
+                 slotDuration: '00:15:00:00',
                  selectHelper: true,
                  selectable: true,
                  resources: '/getpedicuristasbyclinica/'+settings.idclinica,
-                 minTime:'09:00:00',
+                 minTime:'10:00:00',
                  maxTime:'21:00:00',
                  columnFormat:'D/M',
                  titleFormat:'dddd D , MMMM YYYY',
-                viewRender: function (view, element) {
+                 forceEventDuration: true,
+                viewRender: function (view, element){
                     $('#calendar').fullCalendar( 'removeEvents');
                     var viewName = view.name;
                     switch (viewName) {
                             case 'resourceDay':
                             {
+                                
+                               
+
                                 $container.find('.fc-header-center').text('');
-                                 $container.find('#filter_container').show();
+                                $container.find('#filter_container').show();
                                 var date = view.end._d;
+                                
+                                //cambiamos la fecha de nuestro selector
+                               var picker = $container.find('input[name=agenda_fecha]').pickadate('picker');
+                                picker.set('select',  date);
+                              
+                                //$container.find('input[name=agenda_fecha]').pickadate('picker').set('select', new Date(2015, 3, 30));
+                               
                                 renderDescansos(moment(date));
                                 renderEventos(moment(date));
                                 renderRecesos(moment(date));
@@ -519,7 +537,14 @@
 
                 },
                 select: function(start, end, event,view) {
-
+                    
+                    //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
+                    if(settings.idrol == 3){
+                         unselect();
+                         return false;
+                    }
+                   
+                    
                     var viewName = view.name;
                     switch (viewName) {
                         case 'resourceDay':
@@ -531,8 +556,9 @@
                             
                             var n = moment();
                             var d = start.diff(n,'minutes');
-                                
+
                             if(d < 0){
+                               
                                 alert('No es posible crear una cita en una fecha/hora anterior a la actual!');
                                 unselect();
                                 return;
@@ -542,6 +568,9 @@
                                 var eventCheck = {resources:{0:parseInt(event.data.id)},start:start,end:end,id:0};
                                 //Que no se traslapen
                                 if(!isOverlapping(eventCheck)){
+                                    
+                                    $('body').addClass('loading');
+                                    
                                     var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Nueva visita');
 
                                     $modalLauncher.unbind();
@@ -559,6 +588,8 @@
                                     $modalLauncher.unbind();
 
                                     $modalLauncher.on('loading.tools.modal', function(modal){
+                                        
+                                         $('body').removeClass('loading');
                                         var $modal = this ;
 
                                         var $modalHeader = this.$modalHeader;
@@ -634,7 +665,10 @@
                                         }));
 
                                     });
+                                    
+                                   
                                 }else{
+          
                                      unselect();
                                 }
                             }else{
@@ -648,11 +682,15 @@
 
 
                 },
-                eventResize:function( event, delta, revertFunc, jsEvent, ui, view ) { 
+                eventResize:function( event, delta, revertFunc, jsEvent, ui, view ) {
+                    //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
+                    if(settings.idrol == 3){
+                         revertFunc();
+                    }
                     var viewName = view.name;
                            
                             if(!isOverlapping(event)){
-                                if(event.className[0] == "visita_terminado" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso"){
+                                if(event.className[0] == "visita_reprogramda" || event.className[0] == "visita_terminado" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso" || event.className[0] == "visita_terminado") {
                                     revertFunc();
                                     return;
                                 }
@@ -681,55 +719,100 @@
 
                 },
                 eventDrop:function(event, delta, revertFunc, jsEvent, ui, view ) {
-                             console.log(event);
+                           
+                            //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
+                            if(settings.idrol == 3){
+                                 revertFunc();
+                            }
                             var n = moment();
                             var d = event.start.diff(n,'minutes');
                             
-                            if(!isOverlapping(event) && d > 0){
-                                if(event.className[0] == "visita_terminado" || event.className[0] == "visita_cancelo" || event.className[0] == "visita_nosepresento" || event.className[0] == "receso"){
+                            var view = view.name;
+                            
+                            switch (view){
+                                case 'resourceDay':
+
+                            if (!isOverlapping(event)) {
+
+                                if (event.className[0] == "visita_enservicio" || event.className[0] == "receso" || event.className[0] == "visita_terminado") {
                                     revertFunc();
                                     return;
                                 }
-                                
-                                if(event.className[0]!='receso'){
+
+                                if (event.className[0] != 'receso') {
                                     //La peticion ajax
                                     $.ajax({
-                                        dataType: 'json', 
+                                        dataType: 'json',
                                         type: "POST",
                                         url: '/dropevent',
-                                        data: {idvisita:event.id,idempeleado:event.resources[0],start:event.start.format('YYYY/MM/DD HH:mm:00'),end:event.end.format('YYYY/MM/DD HH:mm:00')},
-
+                                        data: {idvisita: event.id, idempeleado: event.resources[0], start: event.start.format('YYYY/MM/DD HH:mm:00'), end: event.end.format('YYYY/MM/DD HH:mm:00')},
                                     });
-                                }else{
-                                     //La peticion ajax
+                                } else {
+                                    //La peticion ajax
                                     $.ajax({
-                                        dataType: 'json', 
+                                        dataType: 'json',
                                         type: "POST",
                                         url: '/dropreceso',
-                                        data: {idempleadoreceso:event.id,idempeleado:event.resources[0],start:event.start.format('YYYY/MM/DD HH:mm:00'),end:event.end.format('YYYY/MM/DD HH:mm:00')},
-
+                                        data: {idempleadoreceso: event.id, idempeleado: event.resources[0], start: event.start.format('YYYY/MM/DD HH:mm:00'), end: event.end.format('YYYY/MM/DD HH:mm:00')},
                                     });
                                 }
-                            }else{
+
+                            } else {
                                 revertFunc();
                             }
-                        
-                     
+
+                            break;
+                            
+                            case'agendaWeek':
+                                
+                                if (event.className[0] == "visita_enservicio" || event.className[0] == "receso" || event.className[0] == "visita_terminado") {
+                                    revertFunc();
+                                    return;
+                                }
+
+                                if (event.className[0] != 'receso') {
+                                    //La peticion ajax
+                                    $.ajax({
+                                        dataType: 'json',
+                                        type: "POST",
+                                        url: '/dropevent',
+                                        data: {idvisita: event.id, idempeleado: event.resources[0], start: event.start.format('YYYY/MM/DD HH:mm:00'), end: event.end.format('YYYY/MM/DD HH:mm:00')},
+                                    });
+                                } else {
+                                    //La peticion ajax
+                                    $.ajax({
+                                        dataType: 'json',
+                                        type: "POST",
+                                        url: '/dropreceso',
+                                        data: {idempleadoreceso: event.id, idempeleado: event.resources[0], start: event.start.format('YYYY/MM/DD HH:mm:00'), end: event.end.format('YYYY/MM/DD HH:mm:00')},
+                                    });
+                                }
+                                
+                                break;
+                                 
+                            }
+                            
+
                  },
                 eventClick: function( event, jsEvent, view ) { 
-                    if(view.name !== 'resourceDay'){
-                        return;
-                    }
+
                     var is_visita = true;
                     var className = event.className[0];
                     var type_array = className.split('_'); var type = type_array[0];
+                    
+                    //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
+                    if(settings.idrol == 3){
+                         return false;
+                    }
                     
                     if(type != 'visita'){
                         is_visita = false;
                     }
                     
                     if(is_visita){
-    
+                        
+                        
+                        
                         var status = type_array[1];
                         $.each(cssClassMap,function(index,element){
                             if('visita_'+status==element){
@@ -743,13 +826,15 @@
                         var start = moment(event.start);
                         var diff = now.diff(start,'minutes');
           
-                        if(diff > 15 && $.inArray(status,['en servicio', 'terminado']) < 0){
+                        if(diff > 20 && $.inArray(status,['en servicio', 'terminado']) < 0){
                             is_editable = false;
                         }
                         
                         if(is_editable){
                             
-                           
+                            $('body').addClass('loading');
+                            
+                            
                             
                             var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800); $modalLauncher.attr('data-title',event.title);
                             $modalLauncher.unbind();
@@ -763,7 +848,42 @@
                              $modalLauncher.unbind();
                              
                              $modalLauncher.on('loading.tools.modal', function(modal){
-                                    var $modal = this ;
+                                 
+                                var $modal = this ;
+                                
+                                /*
+                                 * 
+                                 *LOS EVENTOS PARA REPROGRAMAR LA FECHA
+                                 */
+
+                                //dateContainer.find('input[name=visita_siguiente_fecha]').unbind();
+                                var pickdate = modal.find('input[name=visita_reprogramar_fecha]').pickadate({
+                                    monthsFull: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+                                    monthsShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+                                    weekdaysFull: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+                                    weekdaysShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+                                    today: 'hoy',
+                                    clear: 'borrar',
+                                    close: 'cerrar',
+                                    firstDay: 1,
+                                    format: 'd !de mmmm !de yyyy',
+                                    formatSubmit: 'yyyy/mm/dd',
+                                    selectYears: true,
+                                    selectMonths: true,
+                                    min: new Date(),
+                                    selectYears: 25,
+                                });
+
+                                //dateContainer.find('input[name=visita_siguiente_hora]').unbind();
+                                modal.find('input[name=visita_reprogramar_hora]').timepicker({
+                                    minuteStep: 1,
+                                    template: 'modal',
+                                    showSeconds: false,
+                                    showMeridian: false,
+                                    defaultTime: false
+                                });
+                                
+                                
 
                                     var $modalHeader = this.$modalHeader;
                                     $modalHeader.addClass('modal_header_action');
@@ -781,8 +901,43 @@
                                     pagarAction.css('background','#4caf50');
                                     
                                     var status_pago = modal.find('div#visita_estatuspago').attr('value');
-                                    var status = modal.find('select[name=visita_status]').val();
+                                    var visita_tipo = modal.find('input[name=visita_tipo]:checked').val();
+                                    
+                                 var status = modal.find('select[name=visita_status]').val();
+                                 //EL EVENTO DEL SELECT DE ESTATUS
+                                 var reprogramar = false;
+                                 modal.find('select[name=visita_status]').on('change',function(){
+                                     var value = $(this).val();
+                                     
+                                     if(value != 'reprogramda'){
+                                          reprogramar = false;
+                                         modal.find('#reprogramar_container').slideUp();
+                                     }else{
+                                        reprogramar = true;
+                                        modal.find('#reprogramar_container').slideDown();
+                                     }
+                       
+                                 });
+
+                                    if(visita_tipo == 'servicio' && (status=='en servicio' || status=='terminado')){
+                                         modal.find('input[name=visita_tipo]').prop('disabled',true);
+                                    }
+                                    
                                     if(status_pago == 'pagada' || status_pago == 'cancelada'){
+                                        pagarAction.prop('disabled',true);
+                                        guardarAction.prop('disabled',true);
+                                        modal.find('input,select,button').prop('disabled',true);
+                                        modal.find('table#visita_detalles th').eq(2).remove();
+                                        modal.find('table#visita_detalles tbody tr').filter(function(){
+                                            $(this).find('td').eq(2).remove();
+                                        });
+                                        modal.find('table#visita_detalles tfoot tr').find('td').eq(0).attr('colspan',2);
+                                        modal.find('span.token-input-delete-token').remove();
+                                        
+                                    }
+                           
+                                   if(status == 'cancelo' || status == 'no se presento' || status == 'reprogramda'){
+                                       
                                         pagarAction.prop('disabled',true);
                                         guardarAction.prop('disabled',true);
                                         modal.find('input,select,button').prop('disabled',true);
@@ -794,15 +949,7 @@
                                         modal.find('span.token-input-delete-token').remove();
                                     }
                                     
-                                   if(status == 'cancelo' || status == 'no se presento' || status == 'reprogramda'){
-                                        pagarAction.prop('disabled',true);
-                                        guardarAction.prop('disabled',true);
-                                        modal.find('input,select,button').prop('disabled',true);
-                                        modal.find('table#visita_detalles th').eq(2).remove();
-                                        modal.find('table#visita_detalles tbody tr').filter(function(){
-                                            $(this).find('td').eq(2).remove();
-                                        });
-                                        modal.find('table#visita_detalles tfoot tr').find('td').eq(0).attr('colspan',2);
+                                    if(status == 'en servicio' || status == 'terminado'){
                                         modal.find('span.token-input-delete-token').remove();
                                     }
 
@@ -816,8 +963,8 @@
 
                                     if(status == 'terminado' && status_pay == 'no pagada'){
                                         modal.find('span.token-input-delete-token').hide();
-                                        modalEventContainer.find('input,button,select:not(select[name=visita_status])').prop('disabled',true);
-                                        modalEventContainer.find('input,button,select:not(select[name=visita_status])').css('cursor','not-allowed');
+                                        modalEventContainer.find('input:not(input[name=visita_tipo]),button,select:not(select[name=visita_status])').prop('disabled',false);
+                                        modalEventContainer.find('input:not(input[name=visita_tipo]),button,select:not(select[name=visita_status])').css('cursor','auto');
                                         pagarAction.prop('disabled',false);
                                     }
                                      
@@ -825,14 +972,14 @@
                                         var status =  modal.find('select[name=visita_status]').val();
                                         if(status == 'terminado' && status_pay == 'no pagada'){
                                             modal.find('span.token-input-delete-token').hide();
-                                            modalEventContainer.find('input,button,select:not(select[name=visita_status])').prop('disabled',true);
-                                            modalEventContainer.find('input,button,select:not(select[name=visita_status])').css('cursor','not-allowed');
-                                             pagarAction.prop('disabled',false);
+                                            modalEventContainer.find('input:not(input[name=visita_tipo]),button,select:not(select[name=visita_status])').prop('disabled',false);
+                                            modalEventContainer.find('input,button,select:not(select[name=visita_status])').css('cursor','auto');
+                                            pagarAction.prop('disabled',false);
                                         }
                                         else{
                                              modal.find('span.token-input-delete-token').show();
                                              modalEventContainer.find('input,button,select:not(select[name=visita_status])').css('cursor','auto');
-                                             modalEventContainer.find('input,button,select').prop('disabled',false);
+                                             modalEventContainer.find('input:not(input[name=visita_tipo]),button,select').prop('disabled',false);
                                              pagarAction.prop('disabled',true);
                                         }
                                     });
@@ -842,10 +989,367 @@
                                      var payDetailsContainer = modal.find('#pay_details_container');
                                      var payMethodContainer = modal.find('#pay_method_container');
                                      
-                                     
                                      pagarAction.on('click', $.proxy(function(){
-                                        event1();
+                                        eventoProximaCita();
                                      }));
+                                     
+                                   /*
+                                    * LA VENTANA Principal
+                                    */
+                                     var eventoPrincipal = function(next){
+                                         
+                                         //El evento atras de la venta de pagar
+                                        atrasAction.unbind();
+                                        atrasAction.prop('disabled',true);
+                                        atrasAction.css('cursor','auto');
+                                        
+                                        if(typeof next != 'undefined'){
+                                            pagarAction.text('Pagar');
+                                            pagarAction.unbind();
+                                            pagarAction.prop('disabled',false);
+                                            pagarAction.css('cursor','pointer');
+                                            pagarAction.on('click', $.proxy(function(){
+                                                modalEventContainer.children(':not(:last-child)').hide();
+                                                eventoPagar();
+                                            }));
+                                        }else{
+                                            
+                                            pagarAction.text('Pagar');
+                                            pagarAction.unbind();
+                                            pagarAction.prop('disabled',false);
+                                            pagarAction.css('cursor','pointer');
+                                            pagarAction.on('click', $.proxy(function(){
+                                                eventoProximaCita();
+                                            }));
+                                        }
+                                     }
+                                     
+                                     
+                                   /*
+                                    * LA VENTANA DE PAGAR
+                                    */
+                                     var eventoPagar = function(){
+                                         
+                                        //El evento atras de la venta de pagar
+                                        atrasAction.unbind();
+                                        atrasAction.prop('disabled',false);
+                                        guardarAction.prop('disabled',true);
+                                        guardarAction.prop('disabled','not-allowed');
+                                        atrasAction.css('cursor','pointer');
+                                        atrasAction.on('click', $.proxy(function(){
+                                            payDetailsContainer.hide();
+                                            payMethodContainer.hide();
+                                            eventoProximaCita();
+                                        }));
+                                        
+                          
+                                        //Calculamos el total
+                                        var total = 0;
+                                        $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
+                                            var subtotal = accounting.unformat($(this).find('td').last().text());
+                                            total += subtotal;
+                                        });
+                                        
+                                        payDetailsContainer.find('input[name=visita_total]').val(total);
+                                        payDetailsContainer.find('#total').text(accounting.formatMoney(total));
+                                        payMethodContainer.find('#addMethodPay').unbind();
+                                        payMethodContainer.find('#addMethodPay').on('click',newMethodPay);
+                                        payMethodContainer.find('input').val(total);
+                                        payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
+                                        payDetailsContainer.slideDown();
+                                        payMethodContainer.slideDown();
+
+                                        //dateContainer.slideUp();
+                                        pagarAction.text('Pagar');
+                                        pagarAction.prop('disabled',false);
+                                        pagarAction.unbind();
+                                       
+                                        pagarAction.on('click', $.proxy(function(){
+
+                                            $('body').addClass('loading');
+                                            setTimeout(function(){
+                                                if(typeof settings.folio_valido != 'undefined'){
+                                                    if(settings.folio_valido){
+                                                        pay($modal);
+                                                    }
+                                                }else{
+                                                    pay($modal);
+                                                }
+                                                $('body').removeClass('loading');
+                                            },1000);
+                                            
+                                         }));
+                                     }
+                                     
+                                    /*
+                                     *  LA VENTANA DE PROXIMA CITA Y PAGO ANTICIPADO
+                                     */ 
+                                    
+                                    var eventoProximaCita = function(){
+                                        
+                                        //¿Anticipado?
+                                        var anticipado = modalEventContainer.find('input[name=anticipado]').val();
+                                        if(anticipado == 'true'){
+                                            dateContainer.find('input[name=visita_pagoanticipado]').prop('disabled',true);
+                                        }else{
+                                            dateContainer.find('input[name=visita_pagoanticipado]').prop('disabled',false);
+                                        }
+                                        
+                                        dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]').unbind();
+                                        dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]').on('change',function(){
+                                            var anticipado = dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]:checked').val();
+                                            if(anticipado == 'si'){
+                                                dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideDown();
+                                                pagarAction.prop('disabled',false);
+
+                                            }else{
+                                                dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideUp();
+                                                pagarAction.prop('disabled',false);
+                                            }
+
+//       
+                                        });
+                                        
+                                        //El evento atras de la venta de pagar
+                                        atrasAction.unbind();
+                                        atrasAction.prop('disabled',false);
+                                        atrasAction.css('cursor','pointer');
+                                        atrasAction.on('click', $.proxy(function(){
+                    
+                                            nextDateContainer.hide();
+                                            dateContainer.hide();
+                                            modalEventContainer.children(':not(:last-child)').slideDown();
+                                            eventoPrincipal();
+                                        }));
+                                        
+                                        dateContainer.find('#addAnticipado').unbind();
+                                        dateContainer.find('#addAnticipado').prop('disabled',false);
+                                        dateContainer.find('#addAnticipado').css('cursor','pointer');
+                                        dateContainer.find('#addAnticipado').on('click', $.proxy(function(){
+                    
+                                            nextDateContainer.hide();
+                                            dateContainer.hide();
+                                            modalEventContainer.children(':not(:last-child)').slideDown();
+                                            eventoPrincipal('pago');
+                                        }));
+                                        
+                                        var next_date = nextDateContainer.find('input[name=visita_siguiente]:checked').val();
+                                         
+                                         
+                                         //RENOMBRAMOS BOTON
+                                         pagarAction.text('Continuar');
+                                         pagarAction.unbind();
+                                         
+                                         modalEventContainer.children(':not(:last-child)').hide();
+                                         nextDateContainer.slideDown();
+                                         
+                                         //SI NO SE HA AGENDADO UNA CITA PREVIAMENTE
+                                         if(typeof next_date == 'undefined' || next_date == 'no'){
+                                             
+                                            pagarAction.prop('disabled',false);
+                                            pagarAction.unbind();
+                                            pagarAction.prop('disabled',false);
+                                            pagarAction.css('cursor','pointer');
+                                            pagarAction.on('click', $.proxy(function(){
+                                                dateContainer.hide();
+                                                nextDateContainer.hide();
+                                                eventoPagar();
+                                            }));
+                                             
+                                            //El evento para generar una nueva cita
+                                            nextDateContainer.find('input[name=visita_siguiente]').on('change',function(){
+                                                next_date = nextDateContainer.find('input[name=visita_siguiente]:checked').val();
+                                                if(next_date == 'si'){
+                                                    pagarAction.prop('disabled',true);
+                                                    dateContainer.find('[btn-action=submit_visita_siguiente]').unbind();
+                                                    dateContainer.slideDown();
+                                                    
+                                                    //dateContainer.find('input[name=visita_siguiente_fecha]').unbind();
+                                                    var pickdate = dateContainer.find('input[name=visita_siguiente_fecha]').pickadate({
+                                                       monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                                                       monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                                                       weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                                                       weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                                                       today: 'hoy',
+                                                       clear: 'borrar',
+                                                       close: 'cerrar',
+                                                       firstDay: 1,
+                                                       format: 'd !de mmmm !de yyyy',
+                                                       formatSubmit: 'yyyy/mm/dd',
+                                                       selectYears: true,
+                                                       selectMonths: true,
+                                                       min: new Date(),
+                                                       selectYears: 25,
+                                                   });
+                                                   
+                                                   //dateContainer.find('input[name=visita_siguiente_hora]').unbind();
+                                                   dateContainer.find('input[name=visita_siguiente_hora]').timepicker({
+                                                        minuteStep: 1,
+                                                        template: 'modal',
+
+                                                        showSeconds: false,
+                                                        showMeridian: false,
+                                                        defaultTime: false
+                                                   });
+                                                   /////
+                                                   
+                                                   dateContainer.find('[btn-action=submit_visita_siguiente]').unbind();
+                                                   dateContainer.find('[btn-action=submit_visita_siguiente]').on('click',function(){
+
+                                                       var empty = false;
+                                                       var avaliable = true;
+
+                                                       dateContainer.find('span.error').remove();
+                                                       dateContainer.find('[required]').removeClass('input-error');
+
+                                                       $.each(dateContainer.find('input:visible'),function(){
+                                                           if($(this).val() == ""){
+                                                               empty = true;
+                                                               $(this).addClass('input-error');
+                                                               var $span = $(this).siblings('span.req');
+                                                               $span.after('<span class="error"> campo obligatorio</span>');
+
+                                                           } 
+                                                       });
+
+                                                       if(!empty){
+
+                                                           var form_data = new FormData();
+
+                                                           form_data.append('idpaciente',modal.find('input[name=idpaciente]').val());
+                                                           form_data.append('idclinica',modal.find('input[name=idclinica]').val());
+                                                           form_data.append('idempleado',modal.find('select[name=visita_siguiente_empleado]').val());
+
+                                                           var fechainicio = modal.find('input[name=visita_siguiente_fecha_submit]').val() + ' ' + modal.find('input[name=visita_siguiente_hora]').val();
+                                                           form_data.append('visita_fechainicio',fechainicio);
+
+                                                           fechainicio = moment(fechainicio,"YYYY-MM-DD HH:mm");
+
+                                                           var n = moment();
+                                                           var d = fechainicio.diff(n,'minutes');
+
+                                                           if(d < 0){
+                                                               alert('No es posible crear una cita en una fecha/hora anterior a la actual!');
+                                                               return;
+                                                           }
+
+                                                           var fechafin = fechainicio.add(30, 'm'); //dureacion por default 30 minutos
+                                                           fechafin = moment(fechafin.format('YYYY-MM-DD HH:mm'));
+                                                           form_data.append('visita_fechafin',fechafin.format('YYYY-MM-DD HH:mm'));
+
+                                                               //Hacemos nuestra peticion ajax (quickaddvisita)
+                                                               $.ajax({
+                                                                   url:'/quickaddvisita',
+                                                                   method:'POST',
+                                                                   dataType:'json',
+                                                                   data:form_data,
+                                                                   processData: false,
+                                                                   contentType: false,
+                                                                   success: function(data){
+                                                                       if(!data.result){
+                                                                            alert(data.msg);
+                                                                       }else{
+                                                                            alert('Cita agendada con exito!');
+                                                                            nextDateContainer.find('input,button,select').css('cursor','not-allowed');
+                                                                            nextDateContainer.find('input,button,select').prop('disabled',true);
+                                                                            dateContainer.find('fieldset').find('div').eq(0).remove();dateContainer.find('fieldset').find('div').eq(1).remove();
+                                                                            dateContainer.find('fieldset').prepend('<div class="units-row" style="margin-bottom: 0px;"><div class="unit-100"><b>Pedicurista: </b>'+data.empleado+'</div>');
+                                                                            dateContainer.find('fieldset').prepend('<div class="units-row" style="margin-bottom: 0px;"><div class="unit-100"><b>Fecha y hora: </b>'+data.fecha+'</div>');
+                                                                            dateContainer.find('fieldset').find('#pay_date_anticipado_selector').slideDown();
+                                                                            //El evento de pago anticipado
+                                                                            dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]').on('change',function(){
+                                                                                var anticipado = dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]:checked').val();
+                                                                                if(anticipado == 'si'){
+                                                                                    dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideDown();
+                                                                                    pagarAction.prop('disabled',false);
+
+                                                                                }else{
+                                                                                    dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideUp();
+                                                                                    pagarAction.prop('disabled',false);
+                                                                                }
+                                                                                
+//       
+                                                                            });
+                                                                            
+                                                                            pagarAction.unbind();
+                                                                            pagarAction.on('click', $.proxy(function(){
+                                                                                
+                                                                                payDetailsContainer.find('table#pay_details tbody').find('.anticipado').remove();
+                                                                                var anticipado = dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]:checked').val();
+ 
+                                                                                if(anticipado == 'si'){
+                                                                                    var itemCount = payDetailsContainer.find('tbody tr').length;
+                                                                                    var selected = dateContainer.find('select[name=pay_date_anticipado_servicio] option:selected');
+                                                                                    
+                                                                                    var id = selected.val();
+                                                                                    var item = selected.attr('data-name');
+                                                                                    var price = selected.attr('data-price');
+                                                                                    var subtotal = parseInt(price);
+                                                                                    var inputs = $('<input type="hidden" name="vistadetallepay['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+itemCount+'][type]" value="servicio"><input type="hidden" name="vistadetallepay['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+itemCount+'][cantidad]" value="1"><input type="hidden" name="vistadetallepay['+itemCount+'][subtotal]" value="'+subtotal+'">');
+                                                                                    
+                                                                                    //Nuestra row
+                                                                                    var tr = $('<tr>').addClass('anticipado');
+                                                                                     tr.append(inputs);
+                                                                                     tr.append('<td>1</td>');
+                                                                                     tr.append('<td>'+item+'</td>');
+                                                                                     if(payDetailsContainer.find('th').length == 4){
+                                                                                        tr.append('<td></td>');
+                                                                                     }
+                                                                                     tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+                                                                                    
+                                                                                    payDetailsContainer.find('table#pay_details tbody').append(tr);
+                                                                                                                                                                          
+                                                                                     
+                                                                                }
+                                                                                
+                                                                                dateContainer.hide();
+                                                                                nextDateContainer.hide();
+                                                                                eventoPagar();
+                                                                            }));
+                                                                       }
+                                                                   }
+                                                               });
+                                                       }
+                                                   });
+                                                    
+                                                }else{
+                                                    dateContainer.slideUp();
+                                                    pagarAction.unbind();
+                                                    pagarAction.prop('disabled',false);
+                                                    pagarAction.css('cursor','pointer');
+                                                    pagarAction.on('click', $.proxy(function(){
+                                                        dateContainer.hide();
+                                                        nextDateContainer.hide();
+                                                        eventoPagar();
+                                                    }));
+                                                }
+                                            });
+                                             
+                                             
+                                            
+                                         }else{
+                                            
+                                            nextDateContainer.find('input[name=visita_siguiente]').css('cursor','not-allowed');
+                                            nextDateContainer.find('input[name=visita_siguiente]').prop('disabled',true);
+                                            dateContainer.slideDown();
+                                            dateContainer.find('div#next_date_form').hide();
+                                            dateContainer.find('div#next_date_form').next().hide();
+                                            pagarAction.unbind();
+                                            pagarAction.prop('disabled',false);
+                                            pagarAction.css('cursor','pointer');
+                                            pagarAction.on('click', $.proxy(function(){
+                                                dateContainer.hide();
+                                                nextDateContainer.hide();
+                                                eventoPagar();
+                                            }));
+                                            
+                                         }
+
+                                    }
+                                     
+                                     
+                                     
+                                     
                                      var event1 = function(){
                                          
                                          /*
@@ -854,7 +1358,7 @@
                                         atrasAction.prop('disabled',false);
                                         atrasAction.css('cursor','pointer');
 
-                                          atrasAction.on('click', $.proxy(function(){
+                                        atrasAction.on('click', $.proxy(function(){
                                                 nextDateContainer.slideUp();
                                                 modalEventContainer.children(':not(:last-child)').show();
                                                 pagarAction.text('Pagar');
@@ -873,293 +1377,296 @@
                                           }));
                                          
                                          
+                                         /*
+                                          * ESTA ES LA PANTALLA DONDE ELEGIMOS SI DESEAMOS UNA NUVA CITA
+                                          */
+                                         
+                                         
+                                         var next_date = nextDateContainer.find('input[name=visita_siguiente]:checked').val();
+                                         
+                                         
                                          //RENOMBRAMOS BOTON
                                          pagarAction.text('Continuar');
-                                         //HABILITAMOS INPUTS
-                                         nextDateContainer.find('input,button,select').css('cursor','auto');
-                                         nextDateContainer.find('input,button,select').prop('disabled',false);
-                                         dateContainer.find('input,button,select').css('cursor','auto');
-                                         dateContainer.find('input,button,select').prop('disabled',false);
-                                         payMethodContainer.find('input,button,select').css('cursor','auto');
-                                         payMethodContainer.find('input,button,select').prop('disabled',false);
-                                         payMethodContainer.find('input').numeric();
-                                         payDetailsContainer.find('input').prop('disabled',false);
-                                         payDetailsContainer.find('input').css('cursor','auto');
-                                         //Eventos method pay
-                                         payMethodContainer.find('#addMethodPay').on('click',newMethodPay);
-
-                                         pagarAction.prop('disabled',true);
-                                         guardarAction.prop('disabled',true);
                                          modalEventContainer.children(':not(:last-child)').hide();
                                          nextDateContainer.slideDown();
+                                 
+                                         //SI NO SE HA AGENDADO UNA CITA PREVIAMENTE
+                                         if(typeof next_date == 'undefined'){
                                          
-                                         //El evento para generar una nueva cita
-                                         nextDateContainer.find('input[name=visita_siguiente]').on('change',function(){
-                                             var is_next_date = nextDateContainer.find('input[name=visita_siguiente]:checked').val();
-                                             if(is_next_date == 'si'){
-                                                 pagarAction.prop('disabled',true);
-                                                dateContainer.find('[btn-action=submit_visita_siguiente]').unbind();
-                                                dateContainer.slideDown();
-                                                /*Inicializamos nuestros calendarios*/
-                                                 var pickdate = dateContainer.find('input[name=visita_siguiente_fecha]').pickadate({
-                                                    monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
-                                                    monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
-                                                    weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
-                                                    weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
-                                                    today: 'hoy',
-                                                    clear: 'borrar',
-                                                    close: 'cerrar',
-                                                    firstDay: 1,
-                                                    format: 'd !de mmmm !de yyyy',
-                                                    formatSubmit: 'yyyy/mm/dd',
-                                                    selectYears: true,
-                                                    selectMonths: true,
-                                                    min: new Date(),
-                                                    selectYears: 25,
-                                                });
-                                                
-                                                /*El componente de hota*/
-                                                dateContainer.find('input[name=visita_siguiente_hora]').timepicker({
-                                                            minuteStep: 1,
-                                                            template: 'modal',
-                                                            
-                                                            showSeconds: false,
-                                                            showMeridian: false,
-                                                            defaultTime: false
-                                                });
-                                                //El evento submit
-                         
-                                                dateContainer.find('[btn-action=submit_visita_siguiente]').on('click',function(){
+                                            //HABILITAMOS INPUTS
+                                            nextDateContainer.find('input,button,select').css('cursor','auto');
+                                            nextDateContainer.find('input,button,select').prop('disabled',false);
+                                            dateContainer.find('input,button,select').css('cursor','auto');
+                                            dateContainer.find('input,button,select').prop('disabled',false);
+                                            payMethodContainer.find('input,button,select').css('cursor','auto');
+                                            payMethodContainer.find('input,button,select').prop('disabled',false);
+                                            payMethodContainer.find('input').numeric();
+                                            payDetailsContainer.find('input').prop('disabled',false);
+                                            payDetailsContainer.find('input').css('cursor','auto');
+                                            
+                                            //Eventos method pay
+                                            payMethodContainer.find('#addMethodPay').on('click',newMethodPay);
 
-                                                    var empty = false;
-                                                    var avaliable = true;
-                                                    
-                                                    dateContainer.find('span.error').remove();
-                                                    dateContainer.find('[required]').removeClass('input-error');
-                                                        
-                                                    $.each(dateContainer.find('input:visible'),function(){
-                                                        if($(this).val() == ""){
-                                                            empty = true;
-                                                            $(this).addClass('input-error');
-                                                            var $span = $(this).siblings('span.req');
-                                                            $span.after('<span class="error"> campo obligatorio</span>');
-
-                                                        } 
-                                                    });
-                                                    
-                                                    if(!empty){
-                                                        
-                                                        var form_data = new FormData();
-                                                        
-                                                        form_data.append('idpaciente',modal.find('input[name=idpaciente]').val());
-                                                        form_data.append('idclinica',modal.find('input[name=idclinica]').val());
-                                                        form_data.append('idempleado',modal.find('select[name=visita_siguiente_empleado]').val());
-                                                        
-                                                        var fechainicio = modal.find('input[name=visita_siguiente_fecha_submit]').val() + ' ' + modal.find('input[name=visita_siguiente_hora]').val();
-                                                        form_data.append('visita_fechainicio',fechainicio);
-                                                        
-                                                        fechainicio = moment(fechainicio,"YYYY-MM-DD HH:mm");
-                                                        
-                                                        var n = moment();
-                                                        var d = fechainicio.diff(n,'minutes');
-
-                                                        if(d < 0){
-                                                            alert('No es posible crear una cita en una fecha/hora anterior a la actual!');
-                                                            return;
-                                                        }
-                                                        
-                                                        var fechafin = fechainicio.add(30, 'm'); //dureacion por default 30 minutos
-                                                        fechafin = moment(fechafin.format('YYYY-MM-DD HH:mm'));
-                                                        form_data.append('visita_fechafin',fechafin.format('YYYY-MM-DD HH:mm'));
-                                                            
-                                                            //Hacemos nuestra peticion ajax (quickaddvisita)
-                                                            $.ajax({
-                                                                url:'/quickaddvisita',
-                                                                method:'POST',
-                                                                dataType:'json',
-                                                                data:form_data,
-                                                                processData: false,
-                                                                contentType: false,
-                                                                success: function(data){
-                                                                    if(!data.result){
-                                                                         alert(data.msg);
-                                                                    }else{
-                                                                         alert('Cita agendada con exito!');
-                                                                         nextDateContainer.find('input,button,select').css('cursor','not-allowed');
-                                                                         nextDateContainer.find('input,button,select').prop('disabled',true);
-                                                                         dateContainer.find('fieldset').find('div').eq(0).remove();dateContainer.find('fieldset').find('div').eq(1).remove();
-                                                                         dateContainer.find('fieldset').prepend('<div class="units-row" style="margin-bottom: 0px;"><div class="unit-100"><b>Pedicurista: </b>'+data.empleado+'</div>');
-                                                                         dateContainer.find('fieldset').prepend('<div class="units-row" style="margin-bottom: 0px;"><div class="unit-100"><b>Fecha y hora: </b>'+data.fecha+'</div>');
-                                                                         dateContainer.find('fieldset').find('#pay_date_anticipado_selector').slideDown();
-                                                                         //El evento de pago anticipado
-                                                                         dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]').on('change',function(){
-                                                                             var anticipado = dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]:checked').val();
-                                                                             if(anticipado == 'si'){
-                                                                                 dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideDown();
-                                                                                 pagarAction.prop('disabled',false);
-                                                                                 
-                                                                             }else{
-                                                                                 dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideUp();
-                                                                                 pagarAction.prop('disabled',false);
-                                                                             }
-                                                                             pagarAction.unbind();
-                                                                             pagarAction.on('click', $.proxy(function(){
-                                                                             
-                                                                               pagarAction.text('Pagar');
-                                                                               pagarAction.prop('disabled',true);
-                                                                               dateContainer.hide();
-                                                                               nextDateContainer.hide();
-                                                                               payDetailsContainer.slideDown();
-                                                                               if(anticipado == 'si'){
-                                                                                     pagarAction.text('Pagar');
-                                                                                     pagarAction.unbind();
-                                                                                     var itemCount = payDetailsContainer.find('tbody tr').length;
-                                                                                     var selected = dateContainer.find('select[name=pay_date_anticipado_servicio] option:selected');
-                                                                                     
-                                                                                     //                                                                                 
-                                                                                     var id = selected.val();
-                                                                                     var item = selected.attr('data-name');
-                                                                                     var price = selected.attr('data-price');
-                                                                                     var subtotal = parseInt(price);
-                                                                                     var inputs = $('<input type="hidden" name="vistadetallepay['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+itemCount+'][type]" value="servicio"><input type="hidden" name="vistadetallepay['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+itemCount+'][cantidad]" value="1"><input type="hidden" name="vistadetallepay['+itemCount+'][subtotal]" value="'+subtotal+'">');
-
-                                                                                    //Nuestra row
-                                                                                    var tr = $('<tr>');
-                                                                                    tr.append(inputs);
-                                                                                    tr.append('<td>1</td>');
-                                                                                    tr.append('<td>'+item+'</td>');
-                                                                                    if(payDetailsContainer.find('th').length == 4){
-                                                                                        tr.append('<td></td>');
-                                                                                    }
-                                                                                    tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
-
-                                                                                    payDetailsContainer.find('table#pay_details tbody').append(tr);
-
-                                                                                    //Calculamos el total
-                                                                                    var total = 0;
-                                                                                    $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
-                                                                                        var subtotal = accounting.unformat($(this).find('td').last().text());
-                                                                                       
-                                                                                        total += subtotal;
-                                                                                    });
-                                                                                    payDetailsContainer.find('input[name=visita_total]').val(total);
-                                                                                    payDetailsContainer.find('#total').text(accounting.formatMoney(total));
-                                                                                    
-                                                                                    payMethodContainer.find('input').val(total);
-                                                                                    payMethodContainer.slideDown();
-                                                                                    
-                                                                                    pagarAction.on('click', $.proxy(function(){
-                            
-                                                                                        pay($modal);
-                                                                                   
-                                                                                    }));
-                                                                                     
-                                                                               }
-                                                                               else{
-                                                                                   
-                                                                                   
-                                                                                   
-                                                                                   pagarAction.text('Pagar');
-                                                                                   payDetailsContainer.slideDown();
-                                                                                   
-                                                                                   
-                                                                                   payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
-                                                                                   
-                                                                                   //Calculamos el total
-                                                                                    var total = 0;
-                                                                                    $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
-                                                                                        var subtotal = accounting.unformat($(this).find('td').last().text());
-                                
-                                                                                        total += subtotal;
-                                                                                    });
-                                                                                    payDetailsContainer.find('input[name=visita_total]').val(total);
-                                                                                    payDetailsContainer.find('#total').text(accounting.formatMoney(total));
-                                                                                    
-                                                                                    
-                                                                                    
-                                                                                    payMethodContainer.find('input').val(total);
-                                                                                    payMethodContainer.slideDown();
-                   
-                                                                               }
-                                                                               pagarAction.unbind();
-                                                                               pagarAction.prop('disabled',false);
-                                                                               pagarAction.on('click', $.proxy(function(){
-                                  
-                                                                                       pay($modal);
-                                                                                   
-
-                                                                               }));
-                                                                               
-                                                                             }));
-                                                                         });
-                                                                    }
-                                                                }
-                                                            });
-                                                    }
-                                                });
-                                             }
-                                             else{
-                                                
-                                                 dateContainer.slideUp();
-                                                 pagarAction.prop('disabled',false);
-                                                 pagarAction.unbind();
-                                                 pagarAction.on('click', $.proxy(function(){
-                                                     
-                                                     //console.log($modal);
-                                                     //console.log($modal.$modal.find('.modal-close-btn').remove());
-                                                    
-                                                     //var atrasAction = $modal.createActionButton('Atras');
-                                                     
-                                                     pagarAction.text('Pagar');
-                                                     pagarAction.unbind();
-                                                     dateContainer.hide();
-                                                     nextDateContainer.hide();
-                                                     
-                                                     //Calculamos el total
-                                                    var total = 0;
-                                                    $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
-                                                        var subtotal = accounting.unformat($(this).find('td').last().text());
-                                                        total += subtotal;
-                                                    });
-                                                    payDetailsContainer.find('input[name=visita_total]').val(total);
-                                                    payDetailsContainer.find('#total').text(accounting.formatMoney(total));
-                                                                                    
-                                                    payMethodContainer.find('input').val(total);
-                                                    
-                                                    payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
-                                                    
-                                                    payDetailsContainer.slideDown();
-                                                    payMethodContainer.slideDown();
-                                                     
-                                                     pagarAction.on('click', $.proxy(function(){
-                                                        setTimeout(function(){
-                                                            if(typeof settings.folio_valido != 'undefined'){
-
-                                                                if(settings.folio_valido){
-                                                                    pay($modal);
-                                                                }
-                                                            }else{
-                                                                pay($modal);
-                                                            }
-                                                        },100);
-                                                        
-                                                     }));
-                                                 }));
-                                                 
-                                             }
-                                         });
+                                            pagarAction.prop('disabled',true);
+                                            guardarAction.prop('disabled',true);
+                                            //modalEventContainer.children(':not(:last-child)').hide();
+                                            //nextDateContainer.slideDown();
                                          
+                                            //El evento para generar una nueva cita
+                                            nextDateContainer.find('input[name=visita_siguiente]').on('change',function(){
+                                                var is_next_date = nextDateContainer.find('input[name=visita_siguiente]:checked').val();
+                                                if(is_next_date == 'si'){
+                                                    pagarAction.prop('disabled',true);
+                                                   dateContainer.find('[btn-action=submit_visita_siguiente]').unbind();
+                                                   dateContainer.slideDown();
+                                                   /*Inicializamos nuestros calendarios*/
+                                                    var pickdate = dateContainer.find('input[name=visita_siguiente_fecha]').pickadate({
+                                                       monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                                                       monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                                                       weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                                                       weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                                                       today: 'hoy',
+                                                       clear: 'borrar',
+                                                       close: 'cerrar',
+                                                       firstDay: 1,
+                                                       format: 'd !de mmmm !de yyyy',
+                                                       formatSubmit: 'yyyy/mm/dd',
+                                                       selectYears: true,
+                                                       selectMonths: true,
+                                                       min: new Date(),
+                                                       selectYears: 25,
+                                                   });
+
+                                                   /*El componente de hora*/
+                                                   dateContainer.find('input[name=visita_siguiente_hora]').timepicker({
+                                                               minuteStep: 1,
+                                                               template: 'modal',
+
+                                                               showSeconds: false,
+                                                               showMeridian: false,
+                                                               defaultTime: false
+                                                   });
+                                                   //El evento submit
+
+                                                   dateContainer.find('[btn-action=submit_visita_siguiente]').on('click',function(){
+
+                                                       var empty = false;
+                                                       var avaliable = true;
+
+                                                       dateContainer.find('span.error').remove();
+                                                       dateContainer.find('[required]').removeClass('input-error');
+
+                                                       $.each(dateContainer.find('input:visible'),function(){
+                                                           if($(this).val() == ""){
+                                                               empty = true;
+                                                               $(this).addClass('input-error');
+                                                               var $span = $(this).siblings('span.req');
+                                                               $span.after('<span class="error"> campo obligatorio</span>');
+
+                                                           } 
+                                                       });
+
+                                                       if(!empty){
+                                                           
+                                                           
+                                                           //SI SE ESTA REPROGRAMANDO REVISAMOS DISPONIBILIDAD
+                                                           if(reprogramar){
+                                                               
+                                                           }
+
+                                                           var form_data = new FormData();
+
+                                                           form_data.append('idpaciente',modal.find('input[name=idpaciente]').val());
+                                                           form_data.append('idclinica',modal.find('input[name=idclinica]').val());
+                                                           form_data.append('idempleado',modal.find('select[name=visita_siguiente_empleado]').val());
+
+                                                           var fechainicio = modal.find('input[name=visita_siguiente_fecha_submit]').val() + ' ' + modal.find('input[name=visita_siguiente_hora]').val();
+                                                           form_data.append('visita_fechainicio',fechainicio);
+
+                                                           fechainicio = moment(fechainicio,"YYYY-MM-DD HH:mm");
+
+                                                           var n = moment();
+                                                           var d = fechainicio.diff(n,'minutes');
+
+                                                           if(d < 0){
+                                                               alert('No es posible crear una cita en una fecha/hora anterior a la actual!');
+                                                               return;
+                                                           }
+
+                                                           var fechafin = fechainicio.add(30, 'm'); //dureacion por default 30 minutos
+                                                           fechafin = moment(fechafin.format('YYYY-MM-DD HH:mm'));
+                                                           form_data.append('visita_fechafin',fechafin.format('YYYY-MM-DD HH:mm'));
+
+                                                               //Hacemos nuestra peticion ajax (quickaddvisita)
+                                                               $.ajax({
+                                                                   url:'/quickaddvisita',
+                                                                   method:'POST',
+                                                                   dataType:'json',
+                                                                   data:form_data,
+                                                                   processData: false,
+                                                                   contentType: false,
+                                                                   success: function(data){
+                                                                       if(!data.result){
+                                                                            alert(data.msg);
+                                                                       }else{
+                                                                            alert('Cita agendada con exito!');
+                                                                            nextDateContainer.find('input,button,select').css('cursor','not-allowed');
+                                                                            nextDateContainer.find('input,button,select').prop('disabled',true);
+                                                                            dateContainer.find('fieldset').find('div').eq(0).remove();dateContainer.find('fieldset').find('div').eq(1).remove();
+                                                                            dateContainer.find('fieldset').prepend('<div class="units-row" style="margin-bottom: 0px;"><div class="unit-100"><b>Pedicurista: </b>'+data.empleado+'</div>');
+                                                                            dateContainer.find('fieldset').prepend('<div class="units-row" style="margin-bottom: 0px;"><div class="unit-100"><b>Fecha y hora: </b>'+data.fecha+'</div>');
+                                                                            dateContainer.find('fieldset').find('#pay_date_anticipado_selector').slideDown();
+                                                                            //El evento de pago anticipado
+                                                                            dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]').on('change',function(){
+                                                                                var anticipado = dateContainer.find('fieldset').find('#pay_date_anticipado_selector').find('input[name=visita_pagoanticipado]:checked').val();
+                                                                                if(anticipado == 'si'){
+                                                                                    dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideDown();
+                                                                                    pagarAction.prop('disabled',false);
+
+                                                                                }else{
+                                                                                    dateContainer.find('fieldset').find('#pay_date_anticipado_input').slideUp();
+                                                                                    pagarAction.prop('disabled',false);
+                                                                                }
+                                                                                pagarAction.unbind();
+                                                                                pagarAction.on('click', $.proxy(function(){
+
+                                                                                  pagarAction.text('Pagar');
+                                                                                  pagarAction.prop('disabled',true);
+                                                                                  dateContainer.hide();
+                                                                                  nextDateContainer.hide();
+                                                                                  payDetailsContainer.slideDown();
+                                                                                  if(anticipado == 'si'){
+                                                                                        pagarAction.text('Pagar');
+                                                                                        pagarAction.unbind();
+                                                                                        var itemCount = payDetailsContainer.find('tbody tr').length;
+                                                                                        var selected = dateContainer.find('select[name=pay_date_anticipado_servicio] option:selected');
+
+                                                                                        //                                                                                 
+                                                                                        var id = selected.val();
+                                                                                        var item = selected.attr('data-name');
+                                                                                        var price = selected.attr('data-price');
+                                                                                        var subtotal = parseInt(price);
+                                                                                        var inputs = $('<input type="hidden" name="vistadetallepay['+itemCount+'][id]" value="'+id+'"><input type="hidden" name="vistadetallepay['+itemCount+'][type]" value="servicio"><input type="hidden" name="vistadetallepay['+itemCount+'][price]" value="'+price+'"><input type="hidden" name="vistadetallepay['+itemCount+'][cantidad]" value="1"><input type="hidden" name="vistadetallepay['+itemCount+'][subtotal]" value="'+subtotal+'">');
+
+                                                                                       //Nuestra row
+                                                                                       var tr = $('<tr>');
+                                                                                       tr.append(inputs);
+                                                                                       tr.append('<td>1</td>');
+                                                                                       tr.append('<td>'+item+'</td>');
+                                                                                       if(payDetailsContainer.find('th').length == 4){
+                                                                                           tr.append('<td></td>');
+                                                                                       }
+                                                                                       tr.append('<td>'+accounting.formatMoney(subtotal)+'</td>');
+
+                                                                                       payDetailsContainer.find('table#pay_details tbody').append(tr);
+
+                                                                                       //Calculamos el total
+                                                                                       var total = 0;
+                                                                                       $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
+                                                                                           var subtotal = accounting.unformat($(this).find('td').last().text());
+
+                                                                                           total += subtotal;
+                                                                                       });
+                                                                                       payDetailsContainer.find('input[name=visita_total]').val(total);
+                                                                                       payDetailsContainer.find('#total').text(accounting.formatMoney(total));
+
+                                                                                       payMethodContainer.find('input').val(total);
+                                                                                       payMethodContainer.slideDown();
+
+                                                                                       pagarAction.on('click', $.proxy(function(){
+
+                                                                                           pay($modal);
+
+                                                                                       }));
+
+                                                                                  }
+                                                                                  else{
+
+
+
+                                                                                      pagarAction.text('Pagar');
+                                                                                      payDetailsContainer.slideDown();
+
+
+                                                                                      payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
+
+                                                                                      //Calculamos el total
+                                                                                       var total = 0;
+                                                                                       $.each(payDetailsContainer.find('table#pay_details tbody tr'),function(){
+                                                                                           var subtotal = accounting.unformat($(this).find('td').last().text());
+
+                                                                                           total += subtotal;
+                                                                                       });
+                                                                                       payDetailsContainer.find('input[name=visita_total]').val(total);
+                                                                                       payDetailsContainer.find('#total').text(accounting.formatMoney(total));
+
+
+
+                                                                                       payMethodContainer.find('input').val(total);
+                                                                                       payMethodContainer.slideDown();
+
+                                                                                  }
+                                                                                  pagarAction.unbind();
+                                                                                  pagarAction.prop('disabled',false);
+                                                                                  pagarAction.on('click', $.proxy(function(){
+
+                                                                                          pay($modal);
+
+
+                                                                                  }));
+
+                                                                                }));
+                                                                            });
+                                                                       }
+                                                                   }
+                                                               });
+                                                       }
+                                                   });
+                                                }
+                                                else{
+
+                                                  
+
+                                                }
+                                            });
+
+                                        }else{
+                                            
+                                            nextDateContainer.find('input[name=visita_siguiente]').css('cursor','not-allowed');
+                                            nextDateContainer.find('input[name=visita_siguiente]').prop('disabled',true);
+                                            dateContainer.slideDown();
+                                            dateContainer.find('div#next_date_form').hide();
+                                            dateContainer.find('div#next_date_form').next().hide();
+                                            eventoPagar();
+                  
+                                            
+                                        }
+
                                      };
-                                    guardarAction.on('click', $.proxy(function(){
+                                     guardarAction.on('click', $.proxy(function(){
+                                         
+                                         
+                                         
+                                        
+                                         
                                         var empty = false;
                                         modal.find('span.error').remove();
                                         modal.find('#span_paciente').siblings('ul').css('border','1px solid #999');
                                         if(modal.find('input[name=idpaciente]').val() == ""){
                                              empty = true;
                                              modal.find('#span_paciente').after('<span class="error"> campo obligatorio</span>');
-                                             modal.find('#span_paciente').siblings('ul').css('border','1px solid red');
+                                             modal.find('#span_paciente').siblings('ul').css('border','1px solid red');                                 
                                          }
-                                         
+                                         //VALIDAMOS QUE SI SE ESTE REPOGRAMANDO 
+                                        if(reprogramar){
+                                            modal.find('input[name=visita_reprogramar_fecha],input[name=visita_reprogramar_hora]').filter(function(){
+
+                                                if($(this).val() == ''){
+                                                    empty = true;
+                                                    $(this).after('<span class="error"> campo obligatorio</span>');
+                                                }
+                                            });
+                                        }
                                          if(!empty){
                                             var formData = new FormData();
                                              $.each(modal.find('input:not(:checkbox, :radio),select'),function(){
@@ -1182,6 +1689,8 @@
                                                     if(data.result){
                                                         initCalendar();
                                                         $modal.close();
+                                                    }else{
+                                                        alert(data.msg);
                                                     }
                                                 }
                                             });
@@ -1189,15 +1698,45 @@
                                         
                                     }));
                                     
+                                    $('body').removeClass('loading');
+                                    
                              });
                              
+                               
+                             
                         }else{
-                            alert('Lo sentimos, esta vista ya no es editable debido a que han transcurrido 15 minutos desde su hora de inicio');
+                            $('body').addClass('loading');
+                            var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800); $modalLauncher.attr('data-title',event.title);
+                            $modalLauncher.unbind();
+                            var data_content = $modalLauncher.attr('data-content');
+                            data_content = '/editarevento?html=true';
+                            data_content += '&idvisita='+ event.id;
+                             
+                             $modalLauncher.attr('data-content',data_content);
+                             $modalLauncher.modal();
+                             $modalLauncher.trigger('click');
+                             $modalLauncher.unbind();
+//                             
+                             $modalLauncher.on('loading.tools.modal', function(modal){
+                                 
+                                 $('body').removeClass('loading');
+                                 modal.find('span.token-input-delete-token').remove();
+                                 modal.find('select,input,button').prop('disabled',true);
+                                 
+                                 var $modal = this ;
+                                 
+                                 var $modalHeader = this.$modalHeader;
+                                $modalHeader.addClass('modal_header_action');
+
+                               
+                              
+                                 
+                             });
                         }
                         
                     }
                     
-                    
+                   
                 },
                 eventRender: function(event, element, view) {
                     if(view.name == 'agendaWeek'){

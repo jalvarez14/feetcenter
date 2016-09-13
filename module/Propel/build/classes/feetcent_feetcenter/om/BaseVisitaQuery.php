@@ -20,6 +20,11 @@
  * @method VisitaQuery orderByVisitaEstatuspago($order = Criteria::ASC) Order by the visita_estatuspago column
  * @method VisitaQuery orderByVisitaTotal($order = Criteria::ASC) Order by the visita_total column
  * @method VisitaQuery orderByVisitaNota($order = Criteria::ASC) Order by the visita_nota column
+ * @method VisitaQuery orderByVisitaYear($order = Criteria::ASC) Order by the visita_year column
+ * @method VisitaQuery orderByVisitaMonth($order = Criteria::ASC) Order by the visita_month column
+ * @method VisitaQuery orderByVisitaDay($order = Criteria::ASC) Order by the visita_day column
+ * @method VisitaQuery orderByVisitaFoliomembresia($order = Criteria::ASC) Order by the visita_foliomembresia column
+ * @method VisitaQuery orderByVisitaCuponmembresia($order = Criteria::ASC) Order by the visita_cuponmembresia column
  *
  * @method VisitaQuery groupByIdvisita() Group by the idvisita column
  * @method VisitaQuery groupByIdempleado() Group by the idempleado column
@@ -35,6 +40,11 @@
  * @method VisitaQuery groupByVisitaEstatuspago() Group by the visita_estatuspago column
  * @method VisitaQuery groupByVisitaTotal() Group by the visita_total column
  * @method VisitaQuery groupByVisitaNota() Group by the visita_nota column
+ * @method VisitaQuery groupByVisitaYear() Group by the visita_year column
+ * @method VisitaQuery groupByVisitaMonth() Group by the visita_month column
+ * @method VisitaQuery groupByVisitaDay() Group by the visita_day column
+ * @method VisitaQuery groupByVisitaFoliomembresia() Group by the visita_foliomembresia column
+ * @method VisitaQuery groupByVisitaCuponmembresia() Group by the visita_cuponmembresia column
  *
  * @method VisitaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method VisitaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -80,6 +90,11 @@
  * @method Visita findOneByVisitaEstatuspago(string $visita_estatuspago) Return the first Visita filtered by the visita_estatuspago column
  * @method Visita findOneByVisitaTotal(string $visita_total) Return the first Visita filtered by the visita_total column
  * @method Visita findOneByVisitaNota(string $visita_nota) Return the first Visita filtered by the visita_nota column
+ * @method Visita findOneByVisitaYear(int $visita_year) Return the first Visita filtered by the visita_year column
+ * @method Visita findOneByVisitaMonth(int $visita_month) Return the first Visita filtered by the visita_month column
+ * @method Visita findOneByVisitaDay(int $visita_day) Return the first Visita filtered by the visita_day column
+ * @method Visita findOneByVisitaFoliomembresia(string $visita_foliomembresia) Return the first Visita filtered by the visita_foliomembresia column
+ * @method Visita findOneByVisitaCuponmembresia(string $visita_cuponmembresia) Return the first Visita filtered by the visita_cuponmembresia column
  *
  * @method array findByIdvisita(int $idvisita) Return Visita objects filtered by the idvisita column
  * @method array findByIdempleado(int $idempleado) Return Visita objects filtered by the idempleado column
@@ -95,6 +110,11 @@
  * @method array findByVisitaEstatuspago(string $visita_estatuspago) Return Visita objects filtered by the visita_estatuspago column
  * @method array findByVisitaTotal(string $visita_total) Return Visita objects filtered by the visita_total column
  * @method array findByVisitaNota(string $visita_nota) Return Visita objects filtered by the visita_nota column
+ * @method array findByVisitaYear(int $visita_year) Return Visita objects filtered by the visita_year column
+ * @method array findByVisitaMonth(int $visita_month) Return Visita objects filtered by the visita_month column
+ * @method array findByVisitaDay(int $visita_day) Return Visita objects filtered by the visita_day column
+ * @method array findByVisitaFoliomembresia(string $visita_foliomembresia) Return Visita objects filtered by the visita_foliomembresia column
+ * @method array findByVisitaCuponmembresia(string $visita_cuponmembresia) Return Visita objects filtered by the visita_cuponmembresia column
  *
  * @package    propel.generator.feetcent_feetcenter.om
  */
@@ -202,7 +222,7 @@ abstract class BaseVisitaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_canceladaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total`, `visita_nota` FROM `visita` WHERE `idvisita` = :p0';
+        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_canceladaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total`, `visita_nota`, `visita_year`, `visita_month`, `visita_day`, `visita_foliomembresia`, `visita_cuponmembresia` FROM `visita` WHERE `idvisita` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -837,6 +857,190 @@ abstract class BaseVisitaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(VisitaPeer::VISITA_NOTA, $visitaNota, $comparison);
+    }
+
+    /**
+     * Filter the query on the visita_year column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaYear(1234); // WHERE visita_year = 1234
+     * $query->filterByVisitaYear(array(12, 34)); // WHERE visita_year IN (12, 34)
+     * $query->filterByVisitaYear(array('min' => 12)); // WHERE visita_year >= 12
+     * $query->filterByVisitaYear(array('max' => 12)); // WHERE visita_year <= 12
+     * </code>
+     *
+     * @param     mixed $visitaYear The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaYear($visitaYear = null, $comparison = null)
+    {
+        if (is_array($visitaYear)) {
+            $useMinMax = false;
+            if (isset($visitaYear['min'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_YEAR, $visitaYear['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visitaYear['max'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_YEAR, $visitaYear['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_YEAR, $visitaYear, $comparison);
+    }
+
+    /**
+     * Filter the query on the visita_month column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaMonth(1234); // WHERE visita_month = 1234
+     * $query->filterByVisitaMonth(array(12, 34)); // WHERE visita_month IN (12, 34)
+     * $query->filterByVisitaMonth(array('min' => 12)); // WHERE visita_month >= 12
+     * $query->filterByVisitaMonth(array('max' => 12)); // WHERE visita_month <= 12
+     * </code>
+     *
+     * @param     mixed $visitaMonth The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaMonth($visitaMonth = null, $comparison = null)
+    {
+        if (is_array($visitaMonth)) {
+            $useMinMax = false;
+            if (isset($visitaMonth['min'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_MONTH, $visitaMonth['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visitaMonth['max'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_MONTH, $visitaMonth['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_MONTH, $visitaMonth, $comparison);
+    }
+
+    /**
+     * Filter the query on the visita_day column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaDay(1234); // WHERE visita_day = 1234
+     * $query->filterByVisitaDay(array(12, 34)); // WHERE visita_day IN (12, 34)
+     * $query->filterByVisitaDay(array('min' => 12)); // WHERE visita_day >= 12
+     * $query->filterByVisitaDay(array('max' => 12)); // WHERE visita_day <= 12
+     * </code>
+     *
+     * @param     mixed $visitaDay The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaDay($visitaDay = null, $comparison = null)
+    {
+        if (is_array($visitaDay)) {
+            $useMinMax = false;
+            if (isset($visitaDay['min'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_DAY, $visitaDay['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visitaDay['max'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_DAY, $visitaDay['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_DAY, $visitaDay, $comparison);
+    }
+
+    /**
+     * Filter the query on the visita_foliomembresia column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaFoliomembresia('fooValue');   // WHERE visita_foliomembresia = 'fooValue'
+     * $query->filterByVisitaFoliomembresia('%fooValue%'); // WHERE visita_foliomembresia LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $visitaFoliomembresia The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaFoliomembresia($visitaFoliomembresia = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($visitaFoliomembresia)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $visitaFoliomembresia)) {
+                $visitaFoliomembresia = str_replace('*', '%', $visitaFoliomembresia);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_FOLIOMEMBRESIA, $visitaFoliomembresia, $comparison);
+    }
+
+    /**
+     * Filter the query on the visita_cuponmembresia column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaCuponmembresia('fooValue');   // WHERE visita_cuponmembresia = 'fooValue'
+     * $query->filterByVisitaCuponmembresia('%fooValue%'); // WHERE visita_cuponmembresia LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $visitaCuponmembresia The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaCuponmembresia($visitaCuponmembresia = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($visitaCuponmembresia)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $visitaCuponmembresia)) {
+                $visitaCuponmembresia = str_replace('*', '%', $visitaCuponmembresia);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_CUPONMEMBRESIA, $visitaCuponmembresia, $comparison);
     }
 
     /**

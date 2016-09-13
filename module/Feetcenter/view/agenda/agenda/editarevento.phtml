@@ -8,7 +8,8 @@
     <?php echo $this->formHidden($form->get('visita_creadaen')); ?>
     <?php echo $this->formHidden($form->get('visita_fechainicio')); ?>
     <?php echo $this->formHidden($form->get('visita_fechafin')); ?>
-
+    <?php echo $this->formHidden($form->get('visita_tipo')); ?>
+    <input name="anticipado" value="<?php echo $anticipado?>" type="hidden">
     
    
     <div class="units-row" style="margin-bottom: 0px;">
@@ -33,7 +34,7 @@
                     <div><span><b>Total de visitas: </b></span><span id="visita_total"></span></div>
                 </div>
                 <div class="unit-60">
-                     <div><span><b>Ultima visita: </b></span><span id="visita_ultima"></span></div>
+                     <div><span><b>Última visita: </b></span><span id="visita_ultima"></span></div>
                 </div>
             </div>
         </div>
@@ -151,19 +152,40 @@
             </label>
         </div>
     </div>
+        <div class="units-row" id="reprogramar_container" style="display: none">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Reprogramar cita</legend>
+                <div class="units-row">
+                    <div class="unit-50">
+                        <label style="margin-bottom: 0px">
+                            Fecha <span class="req">*</span>
+                        </label>
+                        <input required name="visita_reprogramar_fecha" type="text" class="width-100">
+                    </div>
+                    <div class="unit-50">
+                        <label>
+                            Hora (Formato 24 horas)<span class="req">*</span>
+                            <input required name="visita_reprogramar_hora" type="text" class="width-100">
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
     <div class="units-row" id="addproduct_container">
         <div class="unit-60">
             <label><b>Servicio / Producto</b> <span class="req">*</span>
                 <select  class="width-100" id="visitadetalle_tipo">
                     <option value="">Seleccione el producto/servicio...</option>
-                    <optgroup label="Productos">
-                        <?php foreach ($productos as $producto) :?>
-                            <option data-name="<?php echo $producto['producto_nombre']?>" data-existencias="<?php echo (int)$producto['productoclinica_existencia']?>" data-price="<?php echo $producto['producto_precio']?>" data-type="producto" value="<?php echo $producto['idproductoclinica']?>"><?php echo $producto['producto_nombre']?></option>
-                        <?php endforeach;?>
-                    </optgroup>
                     <optgroup label="Servicios">
                          <?php foreach ($servicios as $servicio) :?>
                             <option data-dependencia="<?php echo $servicio['servicio_dependencia']?>" data-available="<?php echo $servicio['disponible'] ?>" data-name="<?php echo $servicio['servicio_nombre']?>"  data-price="<?php echo $servicio['servicioclinica_precio']?>" data-type="servicio" value="<?php echo $servicio['idservicioclinica']?>"><?php echo $servicio['servicio_nombre']?></option>
+                        <?php endforeach;?>
+                    </optgroup>
+                    <optgroup label="Productos">
+                        <?php foreach ($productos as $producto) :?>
+                            <option data-name="<?php echo $producto['producto_nombre']?>" data-existencias="<?php echo (int)$producto['productoclinica_existencia']?>" data-price="<?php echo $producto['producto_precio']?>" data-type="producto" value="<?php echo $producto['idproductoclinica']?>"><?php echo $producto['producto_nombre']?></option>
                         <?php endforeach;?>
                     </optgroup>
                     <optgroup label="Membresías">
@@ -174,10 +196,10 @@
                 </select>
             </label>
         </div>
-        <div class="unit-20">
+        <div class="unit-20" style="display: none">
             <label>
                 <b>Cantidad</b> <span class="req">*</span>
-                <input class="width-100" type="text"  name="visitadetalle_cantidad">
+                <input  value="1" class="width-100" type="text"  name="visitadetalle_cantidad">
             </label>
         </div>
         <div class="unit-20" style="margin-top: 22px;">
@@ -196,8 +218,20 @@
         <tbody>
             <?php $value = new Visitadetalle()?>
             <?php foreach ($visita->getVisitadetalles() as $key => $value) :?>
-           
-            <tr>
+            <!--VALIDAMOS SI SE TRATA DE UN SERVICIO CON DEPENDENCIA EN MEMBRESIA-->
+            <?php 
+            $dependencia = false;
+                if(!is_null($value->getIdservicioclinica())){
+                    if($value->getServicioclinica()->getServicio()->getServicioDependencia() == 'membresia'){
+                         $dependencia = true;
+                    }
+                }
+            ?>
+            <?php if($dependencia) :?>
+                <tr depenencia="membresia">
+            <?php else :?>
+                <tr>
+            <?php endif;?>
                 <?php if ($value->getIdproductoclinica() != NULL) :?>
                     <input type="hidden" value="<?php echo $value->getIdproductoclinica()?>" name="vistadetalle[<?php echo $key?>][id]">
                     <input type="hidden" value="producto" name="vistadetalle[<?php echo $key?>][type]">
@@ -246,27 +280,53 @@
             <div class="unit-100">
                 <fieldset>
                     <legend>
-                        ¿Agendar una proxima cita?
+                        ¿Agendar una próxima cita?
                     </legend>
-                    <ul class="forms-inline-list">
-                        <li>
-                            <input type="radio" name="visita_siguiente" value="si">
-                            <label>Si</label>
-                            <input type="radio" name="visita_siguiente" value="no">
-                            <label>No</label>
+                    <?php if($next_date) :?>
+                        <ul class="forms-inline-list">
+                            <li>
+                                <input  disabled="disabled" checked type="radio" name="visita_siguiente" value="si">
+                                <label>Si</label>
+                                <input disabled="disabled"  type="radio" name="visita_siguiente" value="no">
+                                <label>No</label>
 
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    <?php else :?>
+                        <ul class="forms-inline-list">
+                            <li>
+                                <input  type="radio" name="visita_siguiente" value="si">
+                                <label>Si</label>
+                                <input  type="radio" name="visita_siguiente" value="no">
+                                <label>No</label>
+
+                            </li>
+                        </ul>
+                    <?php endif;?>
                 </fieldset>
             </div>
         </div>
         <div id="pay_date_container"class="units-row" style="margin-bottom: 0px; display: none">
             <div class="unit-100">
                 <fieldset>
+                    <?php if($next_date) :?>
+                    
+                    <div class="unit-100">
+                    <b>Fecha y hora: </b>
+                    <?php echo $next_date->getVisitaFechainicio('d/m/Y')?>
+                    </div>
+             
+                    <div class="units-row" style="margin-bottom: 0px;">
+                    <div class="unit-100">
+                    <b>Pedicurista: </b>
+                    <?php echo $next_date->getEmpleadoRelatedByIdempleado()->getEmpleadoNombre()?>
+                    </div>
+                    </div>
+                <?php endif;?>
                     <legend>
                         Detalles cita
                     </legend>
-                    <div class="units-row">
+                    <div id="next_date_form" class="units-row">
                         <div class="unit-33">
                            <label class="forms-inline-list">
                                 <b>Pedicurista</b> <span class="req">*</span>
@@ -292,11 +352,31 @@
                         </div>
                     </div>
                     <div class="units-row">
-                    <div class="unit-40 centered">
-                        <a href="javascript:void(0)" btn-action="submit_visita_siguiente" class="btn btn-green width-100">Guardar</a>
+                        <div class="unit-40 centered">
+                            <a href="javascript:void(0)" btn-action="submit_visita_siguiente" class="btn btn-green width-100">Guardar</a>
+                        </div>
                     </div>
-                </div>
-                    <div id="pay_date_anticipado_selector"class="units-row" style="margin-bottom: 0px;  display: none">
+                    <?php if($anticipado == 'true') :?>
+                        <div id="pay_date_anticipado_selector"class="units-row" style="margin-bottom: 0px;  display: block">
+                        <div class="unit-100">
+                            <b>¿Pago anticipado?</b>
+                            <ul class="forms-inline-list">
+                                <li>
+                                    <input disabled="disabled" checked type="radio" name="visita_pagoanticipado" value="si">
+                                    <label>Si</label>
+                                    <input disabled="disabled" type="radio" name="visita_pagoanticipado" value="no">
+                                    <label>No</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="pay_date_anticipado_input"class="units-row" style="margin-bottom: 0px;  display: none">
+                        <div class="unit-100">
+                            <a id="addAnticipado" class="btn btn-blue">Agregar pago anticipado</a>
+                        </div>
+                    </div>
+                    <?php else :?>
+                        <div id="pay_date_anticipado_selector"class="units-row" style="margin-bottom: 0px;  display: block">
                         <div class="unit-100">
                             <b>¿Pago anticipado?</b>
                             <ul class="forms-inline-list">
@@ -312,16 +392,11 @@
                     </div>
                     <div id="pay_date_anticipado_input"class="units-row" style="margin-bottom: 0px;  display: none">
                         <div class="unit-100">
-                            <label>
-                                <b>Servicio</b> <span class="req">*</span>
-                                <select class="width-100" name="pay_date_anticipado_servicio">
-                                    <?php foreach($servicios as $servicio) :?> 
-                                     <option data-name="<?php echo $servicio['servicio_nombre']?>"  data-price="<?php echo $servicio['servicioclinica_precio']?>" data-type="servicio" value="<?php echo $servicio['idservicioclinica']?>"><?php echo $servicio['servicio_nombre']?></option>
-                                   <?php endforeach;?>
-                                </select>
-                            </label>
+                            <a id="addAnticipado" class="btn btn-blue">Agregar pago anticipado</a>
                         </div>
                     </div>
+                    <?php endif;?>
+                    
                 </fieldset>
             </div>
         </div>
@@ -462,7 +537,7 @@
             <div class="unit-100">
                 <fieldset>
                     <legend>
-                        Metodo de pago
+                        Método de pago
                     </legend>
                     <div class="units-row">
                         <div class="unit-60">
@@ -495,7 +570,7 @@
 <script src="/js/agenda/modalEvent.js"></script>
 
 <script>
-    console.log('entro');
+   
     //Nuestro checkbox de tipo de servicio
     var visita_tipo = "<?php echo $visita->getVisitaTipo() ?>";
     $('#modal_event_container').find('input[name=visita_tipo]').prop('checked',false);
@@ -512,3 +587,4 @@
         paciente:<?php echo $paciente?>,
     });
 </script>
+

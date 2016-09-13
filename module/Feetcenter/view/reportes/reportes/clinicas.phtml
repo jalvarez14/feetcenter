@@ -1,8 +1,8 @@
 <div id="reportes_clinicas_container">
-    <h1>Reporte por clinica</h1>
+    <h1>Reporte por clínica</h1>
     <div class="units-row">
         <div class="unit-30">
-            Clinica
+            Clínica
             <select multiple="multiple" name="idclinica" class="width-100">
                 <?php foreach ($clinicas as $clinica) : ?>
                     <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>

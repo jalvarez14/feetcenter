@@ -9,10 +9,10 @@
     }
 </style>
 <div id="clientes_membresias_container">
-    <h1>Membresias</h1>
+    <h1>Membresías</h1>
     <div class="units-row">
         <div class="unit-30">
-            Clinica
+            Clínica
             <select multiple="multiple" name="idclinica" class="width-100">
                 <?php foreach ($clinicas as $clinica) : ?>
                     <option value="<?php echo $clinica->getIdclinica()?>"><?php echo $clinica->getClinicaNombre() ?></option>
@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <th>Cliente</th>
-                <th>Clinica</th>
+                <th>Clínica</th>
                 <th>Folio</th>
                 <th id="servicios">
                 <div class="units-row" style="margin-bottom: 0px;">
