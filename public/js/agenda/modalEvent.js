@@ -395,7 +395,7 @@
                         }
                     }
                     
-                    if(data_dependencia != 'cupon'){
+                    if(data_dependencia == 'ninguno'){
                     
                         var id = selected.val();
                         var price = selected.attr('data-price');
