@@ -84,6 +84,8 @@
                         tr.append('<td>'+this.paciente_nombre+'</td>');
                         tr.append('<td>'+this.clinica_nombre+'</td>');
                         tr.append('<td>'+this.pacientemembresia_folio+'</td>');
+                        tr.append('<td>'+this.pacientemembresia_estatus+'</td>');
+                        
                         
                         //El esqueleto(No aplica)
                        var td = $('<td>',{id:'servicios'});

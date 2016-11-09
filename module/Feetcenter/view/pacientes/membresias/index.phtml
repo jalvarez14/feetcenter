@@ -24,12 +24,14 @@
             <select multiple="multiple" name="pacientemembresia_estatus" class="width-100">
                 <option value="activa">Activa</option>
                  <option value="terminada">Terminada</option>
+                  <option value="cancelada">Cancelada</option>
             </select>
         </div>
     </div>
     <table class="table-membresias table-bordered">
         <thead>
             <tr>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -40,6 +42,7 @@
                 <th>Cliente</th>
                 <th>Clínica</th>
                 <th>Folio</th>
+                <th>Estatus</th>
                 <th id="servicios">
                 <div class="units-row" style="margin-bottom: 0px;">
                     <?php for($i=1;$i<=$max_servicios;$i++) :?>

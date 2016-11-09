@@ -62,6 +62,7 @@ abstract class BasePacientemembresiaPeer
     /** The enumerated values for the pacientemembresia_estatus field */
     const PACIENTEMEMBRESIA_ESTATUS_ACTIVA = 'activa';
     const PACIENTEMEMBRESIA_ESTATUS_TERMINADA = 'terminada';
+    const PACIENTEMEMBRESIA_ESTATUS_CANCELADA = 'cancelada';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -110,6 +111,7 @@ abstract class BasePacientemembresiaPeer
         PacientemembresiaPeer::PACIENTEMEMBRESIA_ESTATUS => array(
             PacientemembresiaPeer::PACIENTEMEMBRESIA_ESTATUS_ACTIVA,
             PacientemembresiaPeer::PACIENTEMEMBRESIA_ESTATUS_TERMINADA,
+            PacientemembresiaPeer::PACIENTEMEMBRESIA_ESTATUS_CANCELADA,
         ),
     );
 
