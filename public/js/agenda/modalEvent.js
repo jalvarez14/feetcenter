@@ -343,6 +343,45 @@
                         if(cantidad > serviciosdisponibles){
                           error = true;
                           alert('Sin servicios disponibles en la membresia');
+                        } else {
+                            var id = selected.val();
+                            var price = selected.attr('data-price');
+                            var subtotal = parseInt(cantidad) * parseInt(price);
+                            var inputs = $('<input type="hidden" name="vistadetalle[' + d.getTime() + '][id]" value="' + id + '"><input type="hidden" name="vistadetalle[' + d.getTime() + '][type]" value="' + type + '"><input type="hidden" name="vistadetalle[' + d.getTime() + '][price]" value="' + price + '"><input type="hidden" name="vistadetalle[' + d.getTime() + '][cantidad]" value="' + cantidad + '"><input type="hidden" name="vistadetalle[' + d.getTime() + '][subtotal]" value="' + subtotal + '">');
+                            var inputs2 = $('<input type="hidden" name="vistadetallepay[' + d.getTime() + '][id]" value="' + id + '"><input type="hidden" name="vistadetallepay[' + d.getTime() + '][type]" value="' + type + '"><input type="hidden" name="vistadetallepay[' + d.getTime() + '][price]" value="' + price + '"><input type="hidden" name="vistadetallepay[' + d.getTime() + '][cantidad]" value="' + cantidad + '"><input type="hidden" name="vistadetallepay[' + d.getTime() + '][subtotal]" value="' + subtotal + '">');
+                            var opciones = $('<td><a href="javascript:void(0)">Eliminar</a></td>');
+                            opciones.find('a').on('click', deleteProduct);
+
+                            //Nuestra row
+                            var tr = $('<tr>').attr('depenencia', 'membresia');
+                            tr.append(inputs);
+                            tr.append('<td>' + cantidad + '</td>');
+                            tr.append('<td>' + item + '</td>');
+                            tr.append(opciones);
+                            tr.append('<td>' + accounting.formatMoney(subtotal) + '</td>');
+                            $container.find('table#visita_detalles tbody').append(tr);
+
+                            //Nuestra row de la pantalla de pago
+                            var tr2 = $('<tr>').attr('depenencia', 'membresia');
+                            tr2.append(inputs2);
+                            tr2.append('<td>' + cantidad + '</td>');
+                            tr2.append('<td>' + item + '</td>');
+                            tr2.append('<td>' + accounting.formatMoney(subtotal) + '</td>');
+                            $payContainer.find('table#pay_details tbody').append(tr2);
+
+
+                            //Calculamos el total
+                            var total = 0;
+                            $.each($container.find('#visita_container table#visita_detalles tbody tr'), function () {
+                                var subtotal = accounting.unformat($(this).find('td').eq(3).text());
+                                total += subtotal;
+                            });
+                            $container.find('input[name=visita_total]').val(total);
+                            $container.find('#total').text(accounting.formatMoney(total));
+
+
+                            selected.addClass('hide');
+                            $('#addproduct_container input,#addproduct_container select').val('');
                         }
                     }
                     if(data_dependencia == 'cupon'){
