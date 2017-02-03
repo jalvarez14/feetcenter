@@ -107,7 +107,7 @@
                                 $container.find('.table-visitas thead').append(thead1);
                                 
                                 //La segunda cabezera, por cada año vamos agregar los 12 dias del mes
-                                var thead2 = $('<tr><th>Cliente</th><th>Estatus actual</th><th>Fecha estatus</th><th>Proxima visita</th><th>Celular</th></tr>');
+                                var thead2 = $('<tr><th>Activos</th><th>Cliente</th><th>Estatus actual</th><th>Fecha estatus</th><th>Proxima visita</th><th>Celular</th></tr>');
                                 var years = $container.find('.table-visitas thead th.year').length;
                                 for(var i=0; i<years; i++){
 
@@ -140,7 +140,7 @@
                                     var idpaciente = this.idpaciente;
                                     var paciente_nombre = this.paciente_nombre;
                                     tr.attr('id',this.idpaciente);
-                                    tr.append('<td>'+this.paciente_nombre+'<a class="nuevo_seguimiento" href="javascript:void(0)"><i style="float:right" class="fa fa-plus-square"></i></a></td>');
+                                    tr.append('<td>'+this.paciente_pago+this.paciente_membresia+'<td>'+this.paciente_nombre+'<a class="nuevo_seguimiento" href="javascript:void(0)"><i style="float:right" class="fa fa-plus-square"></i></a></td>');
                                     //ADJUNTAMOS EL EVENTO 
                                     tr.find('a.nuevo_seguimiento').on('click',function(){
                                         $('body').addClass('loading');
