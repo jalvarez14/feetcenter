@@ -1,0 +1,126 @@
+<div id="clinica_container">
+    <h1>Clínica: <?php echo $form->get('clinica_nombre')->getValue()?></h1>
+    <?php 
+        $form->setAttribute('action', '/catalogos/clinica/editar/'.$id);
+        $form->setAttribute('novalidate', true);
+        $form->setAttribute('class', 'forms');
+        $form->prepare();
+        echo $this->form()->openTag($form); 
+    ?>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('clinica_nombre')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Dirección <span class="req">*</span>
+                <?php echo $this->formText($form->get('clinica_direccion')); ?>
+            </label>
+        </div>
+
+    </div>
+    <div class="units-row">
+        <div class="unit-50">
+            <label>
+                Registro patronal <span class="req">*</span>
+                <?php echo $this->formText($form->get('clinica_registropatronal')); ?>
+            </label>
+        </div>
+        <div class="unit-50">
+            <label>
+                Teléfono
+                <?php echo $this->formText($form->get('clinica_telefono')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Asignar encargado (a)</legend>
+                <label>
+                    <div class="unit-80">
+                        Encargado (a)
+                        <select name="clinica_encargado" class="width-100">
+                            <option value="">Selecione un empleado...</option>
+                            <?php foreach ($encargados as $encargado) : ?>
+                                <option value="<?php echo $encargado['idempleado']?>"><?php echo $encargado['empleado_nombre'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="unit-20" style="margin-top: 6px;">
+                        <a data-action="addEncargado" class="btn btn-blue" style="height: 30px; margin-top: 20px; width: 100%;">Agregar</a>
+                    </div>
+                </label>
+                <table id="table_encargado">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($clinica_encargados as $encargado) : ?>
+                            <tr id="<?php echo $encargado['idempleado']?>">
+                                <input type="hidden" value="<?php echo $encargado['idempleado']?>" name="clinica_encargado[]">
+                                <td><?php echo $encargado['empleado_nombre']?></td>
+                                <td><a href="javascript:void(0)">Eliminar</a></td>
+
+
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <fieldset>
+                <legend>Asignar empleado (a)</legend>
+                <label>
+                    <div class="unit-80">
+                        Empleado (a)
+                        <select name="clinica_empleado" class="width-100">
+                            <option value="">Selecione un empleado...</option>
+                            <?php foreach ($empleados as $empleado) : ?>
+                                <option value="<?php echo $empleado['idempleado']?>" ><?php echo $empleado['empleado_nombre'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="unit-20" style="margin-top: 6px;">
+                        <a data-action="addEmpleado" class="btn btn-blue" style="height: 30px; margin-top: 20px; width: 100%;">Agregar</a>
+                    </div>
+                </label>
+                <table id="table_empleado">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($clinica_empleados as $empleado) : ?>
+                            <tr id="<?php echo $empleado['idempleado']?>">
+                                <input type="hidden" value="<?php echo $empleado['idempleado']?>" name="clinica_empleado[]">
+                                <td><?php echo $empleado['empleado_nombre']?></td>
+                                <td><a href="javascript:void(0)">Eliminar</a></td>
+
+
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-centered unit-40"><button data-action="submit" class="btn btn-green">Guardar</button></div>
+    </div>
+</div>
+<script src="/js/catalogos/clinica.js"></script>
+<script>
+    $('#clinica_container').clinica();
+</script>

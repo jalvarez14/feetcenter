@@ -88,6 +88,29 @@ class VisitasController extends AbstractActionController
                 $paciente_fecharegistro = new \DateTime($value->getPaciente()->getPacienteFecharegistro());
   
                 $tmp['DT_RowId'] = $value->getIdpaciente();
+                
+                ////Obtener si tiene membresía activa y/o pago anticipado
+                    $tmp['paciente_pago'] = '';
+                    $tmp['paciente_membresia']='';
+                    $pacientemembresias = \PacientemembresiaQuery::create()->filterByIdpaciente($value->getIdpaciente())->filterByPacientemembresiaEstatus("activa")->find();
+                    $pacientemembresia= new \Pacientemembresia();
+                    foreach($pacientemembresias as $pacientemembresia )
+                    {
+                        
+                        if( strpos($pacientemembresia->getMembresia()->getMembresiaNombre(),"PAGO")!== false)
+                        {
+                            $haspago=true;
+                            $tmp['paciente_pago'] ='<span class="badge" style="background:black;color:white">P</span>';
+                        }
+                        if( strpos($pacientemembresia->getMembresia()->getMembresiaNombre(),"MEMBRESIA")!== false)
+                        {
+                            $hasmembresia=true;
+                            $tmp['paciente_membresia'] ='<span class="badge" style="background:black;color:white">M</span>';
+                        }
+                    }
+                ////
+                
+                
                 //$tmp['clinica_nombre'] = $value->getPaciente()->getClinica()->getClinicaNombre();
                 $tmp['idpaciente'] = $value->getIdpaciente();
                 $tmp['paciente_fecharegistro'] = $paciente_fecharegistro->format('d/m/Y');
@@ -211,13 +234,32 @@ class VisitasController extends AbstractActionController
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
                 
                 $paciente_fecharegistro = new \DateTime($value['paciente_fecharegistro']);
-                
+                 ////Obtener si tiene membresía activa y/o pago anticipado
+                    $pago=str_repeat('&nbsp;', 7);
+                    $membresia=str_repeat('&nbsp;', 7);
+                    $pacientemembresias = \PacientemembresiaQuery::create()->filterByIdpaciente($value['idpaciente'])->filterByPacientemembresiaEstatus("activa")->find();
+                    $pacientemembresia= new \Pacientemembresia();
+                    foreach($pacientemembresias as $pacientemembresia )
+                    {
+                        
+                        if( strpos($pacientemembresia->getMembresia()->getMembresiaNombre(),"PAGO")!== false)
+                        {
+                            $haspago=true;
+                            $pago=" - P -";
+                        }
+                        if( strpos($pacientemembresia->getMembresia()->getMembresiaNombre(),"MEMBRESIA")!== false)
+                        {
+                            $hasmembresia=true;
+                            $membresia=" - M -";
+                        }
+                    }
+                ////
                
                 $tmp['DT_RowId'] = $value['idpaciente'];
                 $tmp['clinica_nombre'] = $value['clinica_nombre'];
                 $tmp['idpaciente'] = $value['idpaciente'];
                 $tmp['paciente_fecharegistro'] = $paciente_fecharegistro->format('d/m/Y');
-                $tmp['paciente_nombre'] = $value['paciente_nombre'];
+                $tmp['paciente_nombre'] = $pago.$membresia.$value['paciente_nombre'];
                 $tmp['paciente_celular'] = $value['paciente_celular'];
                 $tmp['empleado_nombre'] = $value['empleado_nombre'];
                 $tmp['visitas'] = \VisitaQuery::create()->filterByVisitaYear($post_data['year'])->filterByVisitaMonth($post_data['months'])->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio($post_data['order'][0])->filterByIdpaciente($value['idpaciente'])->filterByIdclinica($post_data['clinicas'])->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
