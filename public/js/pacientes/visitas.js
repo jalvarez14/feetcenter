@@ -201,7 +201,7 @@
                                                             if (data.result) {
                                                                 alert('Registro guardado con exito!')
                                                                 $modal.close();
-                                                                filter();
+                                                               // filter();
                                                                 
                                                             }
                                                         }
