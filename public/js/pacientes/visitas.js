@@ -96,7 +96,7 @@
                                 var data = settings.json.data;
                                 
                                 //Comenzamos con la la cabezera de los años
-                                var thead1 = $('<tr id="years"><th></th><th></th><th></th><th></th><th></th></tr>');
+                                var thead1 = $('<tr id="years"><th></th><th></th><th></th><th></th><th></th><th></th></tr>');
                                 var year_start = parseInt(settings.json.year_start);
                                 for(var i=0; i<=settings.json.interval; i++){
                                     thead1.append('<th class="year">'+year_start+'</th>');
