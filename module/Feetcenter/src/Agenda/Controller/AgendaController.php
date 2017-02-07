@@ -219,7 +219,12 @@ class AgendaController extends AbstractActionController
                     $entity_array['servicio'].=' C: '.$visita->getVisitaCuponmembresia();
                 }
             }
+            
             $status = $visita->getVisitaStatus();
+            if($visita->getVisitaEstatuspago()=="pagada")
+            {
+                $status= "pagado";
+            }
             $color = \EstatusvisitaQuery::create()->findOneByEstatusvisitaCssname($status);
             $entity_array['color'] = $color->getEstatusvisitaColor();
             
@@ -319,7 +324,23 @@ class AgendaController extends AbstractActionController
                 
                
             }
-
+            
+            //para definir la duración de las citas de acuerdo al estatus de la visita
+            if($post_data['visita_status']=="en servicio")
+            {
+               $entity->setVisitaHorainicio(date('Y-m-d H:i:s'));
+            }
+            if($post_data['visita_status']=="terminado")
+            {
+                
+                $entity->setVisitaHorafin(date('Y-m-d H:i:s'));
+                $horainicio =  $entity->getVisitaHorainicio();
+                $segundos= strtotime('now')-strtotime($horainicio);
+                $duracion=intval($segundos/60);
+                $entity->setVisitaDuracion($duracion);
+                
+            }
+            
             $entity->save();
             
             $entity->getVisitadetalles()->delete();
@@ -530,10 +551,25 @@ class AgendaController extends AbstractActionController
             $paciente_array = $paciente->toArray(\BasePeer::TYPE_FIELDNAME);
             $paciente_array['visita_total'] = \VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->count();
             $paciente_array['visita_ultima'] = '';
-            if(\VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
+           /* if(\VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
                  $visitas = \VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
+                 
                  $paciente_array['visita_ultima'] = $visitas->getVisitaFechainicio('d/m/Y - H:i:s');
             }
+            */
+            if(\VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists() && $paciente_array['visita_total']>1){
+                 $visitas = \VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->limit(2)->find();
+                 
+                 $paciente_array['visita_ultima'] = $visitas[1]->getVisitaFechainicio('d/m/Y - H:i:s');
+                
+            }
+            else if (\VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
+                 $visita = \VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
+                 
+                 $paciente_array['visita_ultima'] = $visita->getVisitaFechainicio('d/m/Y - H:i:s');
+                
+            }
+            
             $paciente_array['relacionados'] = \GrupopersonalQuery::create()->joinPacienteRelatedByIdpacienteagregado()->filterByIdpaciente($paciente->getIdpaciente())->withColumn('paciente_nombre')->withColumn('paciente_celular')->withColumn('paciente_telefono')->withColumn('idclinica')->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
             foreach ($paciente_array['relacionados'] as $key => $value){
                 $cliniva = \ClinicaQuery::create()->findPk($value['idclinica']);
@@ -1070,10 +1106,28 @@ class AgendaController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
+            
             $entity->setVisitaEstatuspago('no pagada');
             $entity->setVisitaYear($entity->getVisitaFechainicio('Y'));
             $entity->setVisitaMonth($entity->getVisitaFechainicio('m'));
             $entity->setVisitaDay($entity->getVisitaFechainicio('d'));
+            
+            //para definir la duración de las citas de acuerdo al estatus de la visita
+            if($post_data['visita_status']=="en servicio")
+            {
+               $entity->setVisitaHorainicio(date('Y-m-d H:i:s'));
+            }
+            if($post_data['visita_status']=="terminado")
+            {
+                
+                $entity->setVisitaHorafin(date('Y-m-d H:i:s'));
+                $horainicio =  $entity->getVisitaHorainicio();
+                $segundos=strtotime($horainicio) - strtotime('now');
+                $duracion=intval($segundos/60);
+                $entity->setVisitaDuracion($duracion);
+                
+            }
+            
             
             $entity->save();
           
@@ -1210,7 +1264,7 @@ class AgendaController extends AbstractActionController
         $query = $this->params()->fromQuery('q');
         
         $result = \PacienteQuery::create()->joinClinica()->withColumn('clinica_nombre')->filterByPacienteNombre('%'. $query .'%', \Criteria::LIKE)->_or()->filterByPacienteCelular('%'. $query .'%')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
-
+        
         //Damos el formato
         $result_array = array();
         foreach ($result as $r){
@@ -1223,9 +1277,17 @@ class AgendaController extends AbstractActionController
             //adicional
             $tmp['visita_total'] = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->count();
             $tmp['visita_ultima'] = '';
-            if(\VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
-                 $visitas = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
-                 $tmp['visita_ultima'] = $visitas->getVisitaFechainicio('d/m/Y - H:i:s');
+            if(\VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists() && $tmp['visita_total']>1){
+                 $visitas = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->limit(2)->find();
+                 
+                 $tmp['visita_ultima'] = $visitas[1]->getVisitaFechainicio('d/m/Y - H:i:s');
+                
+            }
+            else if (\VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
+                 $visita = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
+                 
+                 $tmp['visita_ultima'] = $visita->getVisitaFechainicio('d/m/Y - H:i:s');
+                
             }
             //Los relacionados
             $tmp['relacionados'] = \GrupopersonalQuery::create()->joinPacienteRelatedByIdpacienteagregado()->filterByIdpaciente($r['idpaciente'])->withColumn('paciente_nombre')->withColumn('paciente_celular')->withColumn('paciente_telefono')->withColumn('idclinica')->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
@@ -1247,6 +1309,7 @@ class AgendaController extends AbstractActionController
 
             $result_array[] = $tmp;
         }
+        
         
         return $this->getResponse()->setContent(\Zend\Json\Json::encode($result_array));
         

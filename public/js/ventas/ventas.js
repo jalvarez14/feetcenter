@@ -355,7 +355,7 @@
             });
             
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.session.idclinica]);
-            $container.find("select[name=visita_estatuspago]").multipleSelect("setSelects", ['pagada','cancelada']);
+            $container.find("select[name=visita_estatuspago]").multipleSelect("setSelects", ['pagada','no pagada','cancelada']);
             $container.find("select[name=idempleado]").multipleSelect("checkAll");
 
             //Inicializamos nuestros calendarios del filtro de fechas

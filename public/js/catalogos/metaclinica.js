@@ -5,9 +5,9 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.clinica = function(data){
+    $.fn.metaclinica = function(data){
         var _this = $(this);
-        var plugin = _this.data('clinica');
+        var plugin = _this.data('metaclinica');
         
         /*Inicializado ?*/
         if (!plugin) {
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.clinica = function(container, options){
+    $.metaclinica = function(container, options){
         
         var plugin = this;
         
