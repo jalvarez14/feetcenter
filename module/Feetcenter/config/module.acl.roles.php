@@ -4,6 +4,7 @@ return array(
         "allow"=>array(
             //Catalogos
             'catalogos/clinica',
+            'catalogos/metaclinica',
             'catalogos/insumo',
             'catalogos/proveedor',
             'catalogos/canal',
@@ -11,6 +12,7 @@ return array(
             'catalogos/producto',
             'catalogos/servicio',
             'catalogos/empleado',
+            'catalogos/metaempleado',
             'catalogos/concepto',
             'catalogos/incidencia',
             'catalogos/membresias',

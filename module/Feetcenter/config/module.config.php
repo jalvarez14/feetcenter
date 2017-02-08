@@ -113,6 +113,17 @@ return array(
                         ),
                         
                     ),
+                    'metaclinica' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/metaclinica[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Metaclinica',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        
+                    ),
                     'concepto' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -193,6 +204,16 @@ return array(
                             'route'    => '/empleado[/:action][/:id]',
                             'defaults' => array(
                                 'controller'    => 'Catalogos\Controller\Empleado',
+                                'action'        => 'index',
+                            ),
+                        ),
+                    ),
+                    'metaempleado' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/metaempleado[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Catalogos\Controller\Metaempleado',
                                 'action'        => 'index',
                             ),
                         ),
@@ -689,6 +710,7 @@ return array(
             //Catalogos
             'Catalogos\Controller\Concepto' => 'Catalogos\Controller\ConceptoController',
             'Catalogos\Controller\Clinica' => 'Catalogos\Controller\ClinicaController',
+            'Catalogos\Controller\Metaclinica' => 'Catalogos\Controller\MetaclinicaController',
             'Catalogos\Controller\Insumo' => 'Catalogos\Controller\InsumoController',
             'Catalogos\Controller\Proveedor' => 'Catalogos\Controller\ProveedorController',
             'Catalogos\Controller\Canal' => 'Catalogos\Controller\CanalController',
@@ -696,6 +718,7 @@ return array(
             'Catalogos\Controller\Producto' => 'Catalogos\Controller\ProductoController',
             'Catalogos\Controller\Servicio' => 'Catalogos\Controller\ServicioController',
             'Catalogos\Controller\Empleado' => 'Catalogos\Controller\EmpleadoController',
+            'Catalogos\Controller\Metaempleado' => 'Catalogos\Controller\MetaempleadoController',
             'Catalogos\Controller\Incidencia' => 'Catalogos\Controller\IncidenciaController',
             'Catalogos\Controller\Membresia' => 'Catalogos\Controller\MembresiaController',
             'Catalogos\Controller\Estatusseguimiento' => 'Catalogos\Controller\EstatusseguimientoController',
