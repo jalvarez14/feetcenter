@@ -300,11 +300,18 @@ class ReportesController extends AbstractActionController
             $today_from = new \DateTime();
             $today_from->setTime('0','0','0');
             $today_to = new \DateTime();
-            $today_to->setTime('23','59' , '29');
             $diff_days = $today_from->diff($to)->days + ($today_from->diff($to)->y*12);
-            $diff_days2 = $from->diff($to)->days + ($today_from->diff($to)->y*12);
+            //$diff_days2 = $from->diff($to)->days + ($from->diff($to)->y*12);
             $diff_days3 = $from->diff($today_to)->days + ($from->diff($today_to)->y*12);
-           
+            if($today_from > $to){
+                $diff_days = 0;
+            }
+            if($today_to > $to){
+                $diff_days3 = $from->diff($to)->days + ($from->diff($to)->y*12);
+            }
+            
+         
+
 
             $respone = array();
 
@@ -381,6 +388,7 @@ class ReportesController extends AbstractActionController
                  $total_servicios = \VisitadetalleQuery::create()->filterByIdservicioclinica(NULL, \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->count();
                  if($total_servicios>0){
                        $tmp['servicios_por_dia'] = $total_servicios / $diff_days3;
+                       $tmp['servicios_por_dia'] = number_format($tmp['servicios_por_dia'], 2, '.', ',');
                   }
                  
                  //PRODUCTOS POR CLIENTE
@@ -388,6 +396,7 @@ class ReportesController extends AbstractActionController
                  $total_producto = \VisitadetalleQuery::create()->filterByIdproductoclinica(NULL, \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->count();
                  if($total_producto>0){
                        $tmp['productos_por_cliente'] = $total_producto / $diff_days3;
+                       $tmp['productos_por_cliente'] = number_format($tmp['productos_por_cliente'], 2, '.', ',');
                   }
                  
                   //VENTA PROMEDIO POR CLIENTE
@@ -398,6 +407,7 @@ class ReportesController extends AbstractActionController
                   $tmp['empleado_acumulado'] = $total_vendido;
                   if($total_vendido>0){
                        $tmp['venta_promedio_por_cliente'] = $total_vendido / $clientes_count;
+                       $tmp['venta_promedio_por_cliente'] = number_format($tmp['venta_promedio_por_cliente'], 2, '.', ',');
                   }
                  
                   
@@ -411,6 +421,7 @@ class ReportesController extends AbstractActionController
                   $total_duracion = !is_null($query_array[0]['acumulado']) ? $query_array[0]['acumulado'] : 0;
                   if($total_duracion > 0){
                      $tmp['tiempo_promedio_servicio'] = $total_duracion / $query_count;
+                     $tmp['tiempo_promedio_servicio'] = number_format($tmp['tiempo_promedio_servicio'], 2, '.', ',');
                   }
                  
                 

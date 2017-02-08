@@ -397,7 +397,7 @@
                              $container.find('#table_indicadores thead').append('<th>'+value.empleado_nombre+'</th>');
 
                              $container.find('#table_indicadores tbody tr').eq(0).find('td').eq(index+1).text(value.servicios_por_dia);
-                             $container.find('#table_indicadores tbody tr').eq(1).find('td').eq(index+1).text(value.venta_promedio_por_cliente);
+                             $container.find('#table_indicadores tbody tr').eq(1).find('td').eq(index+1).text(accounting.formatMoney(value.venta_promedio_por_cliente));
                              $container.find('#table_indicadores tbody tr').eq(2).find('td').eq(index+1).text(value.productos_por_cliente);
                              $container.find('#table_indicadores tbody tr').eq(3).find('td').eq(index+1).text(value.tiempo_promedio_servicio);
                              $container.find('#table_indicadores tbody tr').eq(4).find('td').eq(index+1).text(value.clientes_nuevos);
