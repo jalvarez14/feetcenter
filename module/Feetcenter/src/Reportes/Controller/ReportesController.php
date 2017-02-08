@@ -414,10 +414,11 @@ class ReportesController extends AbstractActionController
                   //TIEMPO PROMEDIO DE SERVICIO
                   $tmp['tiempo_promedio_servicio'] = 0;
                   $query = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaDuracion)','acumulado')->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->find();
+                  $querycount = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->find();
                   $query_array = $query->toArray();
-                  $query_count = $query->count();
+                  $query_count = $querycount->count();
                 
-
+                 
                   $total_duracion = !is_null($query_array[0]['acumulado']) ? $query_array[0]['acumulado'] : 0;
                   if($total_duracion > 0){
                      $tmp['tiempo_promedio_servicio'] = $total_duracion / $query_count;
