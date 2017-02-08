@@ -11,22 +11,22 @@
  * @method MembresiaQuery orderByMembresiaDescripcion($order = Criteria::ASC) Order by the membresia_descripcion column
  * @method MembresiaQuery orderByMembresiaServicios($order = Criteria::ASC) Order by the membresia_servicios column
  * @method MembresiaQuery orderByMembresiaCupones($order = Criteria::ASC) Order by the membresia_cupones column
- * @method MembresiaQuery orderByMembresiaPrecio($order = Criteria::ASC) Order by the membresia_precio column
  * @method MembresiaQuery orderByServicioGeneraingreso($order = Criteria::ASC) Order by the servicio_generaingreso column
  * @method MembresiaQuery orderByServicioGeneracomision($order = Criteria::ASC) Order by the servicio_generacomision column
  * @method MembresiaQuery orderByServicioTipocomision($order = Criteria::ASC) Order by the servicio_tipocomision column
  * @method MembresiaQuery orderByServicioComision($order = Criteria::ASC) Order by the servicio_comision column
+ * @method MembresiaQuery orderByMembresiaPrecio($order = Criteria::ASC) Order by the membresia_precio column
  *
  * @method MembresiaQuery groupByIdmembresia() Group by the idmembresia column
  * @method MembresiaQuery groupByMembresiaNombre() Group by the membresia_nombre column
  * @method MembresiaQuery groupByMembresiaDescripcion() Group by the membresia_descripcion column
  * @method MembresiaQuery groupByMembresiaServicios() Group by the membresia_servicios column
  * @method MembresiaQuery groupByMembresiaCupones() Group by the membresia_cupones column
- * @method MembresiaQuery groupByMembresiaPrecio() Group by the membresia_precio column
  * @method MembresiaQuery groupByServicioGeneraingreso() Group by the servicio_generaingreso column
  * @method MembresiaQuery groupByServicioGeneracomision() Group by the servicio_generacomision column
  * @method MembresiaQuery groupByServicioTipocomision() Group by the servicio_tipocomision column
  * @method MembresiaQuery groupByServicioComision() Group by the servicio_comision column
+ * @method MembresiaQuery groupByMembresiaPrecio() Group by the membresia_precio column
  *
  * @method MembresiaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method MembresiaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -51,22 +51,22 @@
  * @method Membresia findOneByMembresiaDescripcion(string $membresia_descripcion) Return the first Membresia filtered by the membresia_descripcion column
  * @method Membresia findOneByMembresiaServicios(string $membresia_servicios) Return the first Membresia filtered by the membresia_servicios column
  * @method Membresia findOneByMembresiaCupones(string $membresia_cupones) Return the first Membresia filtered by the membresia_cupones column
- * @method Membresia findOneByMembresiaPrecio(string $membresia_precio) Return the first Membresia filtered by the membresia_precio column
  * @method Membresia findOneByServicioGeneraingreso(boolean $servicio_generaingreso) Return the first Membresia filtered by the servicio_generaingreso column
  * @method Membresia findOneByServicioGeneracomision(boolean $servicio_generacomision) Return the first Membresia filtered by the servicio_generacomision column
  * @method Membresia findOneByServicioTipocomision(string $servicio_tipocomision) Return the first Membresia filtered by the servicio_tipocomision column
  * @method Membresia findOneByServicioComision(string $servicio_comision) Return the first Membresia filtered by the servicio_comision column
+ * @method Membresia findOneByMembresiaPrecio(string $membresia_precio) Return the first Membresia filtered by the membresia_precio column
  *
  * @method array findByIdmembresia(int $idmembresia) Return Membresia objects filtered by the idmembresia column
  * @method array findByMembresiaNombre(string $membresia_nombre) Return Membresia objects filtered by the membresia_nombre column
  * @method array findByMembresiaDescripcion(string $membresia_descripcion) Return Membresia objects filtered by the membresia_descripcion column
  * @method array findByMembresiaServicios(string $membresia_servicios) Return Membresia objects filtered by the membresia_servicios column
  * @method array findByMembresiaCupones(string $membresia_cupones) Return Membresia objects filtered by the membresia_cupones column
- * @method array findByMembresiaPrecio(string $membresia_precio) Return Membresia objects filtered by the membresia_precio column
  * @method array findByServicioGeneraingreso(boolean $servicio_generaingreso) Return Membresia objects filtered by the servicio_generaingreso column
  * @method array findByServicioGeneracomision(boolean $servicio_generacomision) Return Membresia objects filtered by the servicio_generacomision column
  * @method array findByServicioTipocomision(string $servicio_tipocomision) Return Membresia objects filtered by the servicio_tipocomision column
  * @method array findByServicioComision(string $servicio_comision) Return Membresia objects filtered by the servicio_comision column
+ * @method array findByMembresiaPrecio(string $membresia_precio) Return Membresia objects filtered by the membresia_precio column
  *
  * @package    propel.generator.feetcent_feetcenter.om
  */
@@ -174,7 +174,7 @@ abstract class BaseMembresiaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idmembresia`, `membresia_nombre`, `membresia_descripcion`, `membresia_servicios`, `membresia_cupones`, `membresia_precio`, `servicio_generaingreso`, `servicio_generacomision`, `servicio_tipocomision`, `servicio_comision` FROM `membresia` WHERE `idmembresia` = :p0';
+        $sql = 'SELECT `idmembresia`, `membresia_nombre`, `membresia_descripcion`, `membresia_servicios`, `membresia_cupones`, `servicio_generaingreso`, `servicio_generacomision`, `servicio_tipocomision`, `servicio_comision`, `membresia_precio` FROM `membresia` WHERE `idmembresia` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -448,48 +448,6 @@ abstract class BaseMembresiaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the membresia_precio column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByMembresiaPrecio(1234); // WHERE membresia_precio = 1234
-     * $query->filterByMembresiaPrecio(array(12, 34)); // WHERE membresia_precio IN (12, 34)
-     * $query->filterByMembresiaPrecio(array('min' => 12)); // WHERE membresia_precio >= 12
-     * $query->filterByMembresiaPrecio(array('max' => 12)); // WHERE membresia_precio <= 12
-     * </code>
-     *
-     * @param     mixed $membresiaPrecio The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return MembresiaQuery The current query, for fluid interface
-     */
-    public function filterByMembresiaPrecio($membresiaPrecio = null, $comparison = null)
-    {
-        if (is_array($membresiaPrecio)) {
-            $useMinMax = false;
-            if (isset($membresiaPrecio['min'])) {
-                $this->addUsingAlias(MembresiaPeer::MEMBRESIA_PRECIO, $membresiaPrecio['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($membresiaPrecio['max'])) {
-                $this->addUsingAlias(MembresiaPeer::MEMBRESIA_PRECIO, $membresiaPrecio['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(MembresiaPeer::MEMBRESIA_PRECIO, $membresiaPrecio, $comparison);
-    }
-
-    /**
      * Filter the query on the servicio_generaingreso column
      *
      * Example usage:
@@ -612,6 +570,48 @@ abstract class BaseMembresiaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(MembresiaPeer::SERVICIO_COMISION, $servicioComision, $comparison);
+    }
+
+    /**
+     * Filter the query on the membresia_precio column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByMembresiaPrecio(1234); // WHERE membresia_precio = 1234
+     * $query->filterByMembresiaPrecio(array(12, 34)); // WHERE membresia_precio IN (12, 34)
+     * $query->filterByMembresiaPrecio(array('min' => 12)); // WHERE membresia_precio >= 12
+     * $query->filterByMembresiaPrecio(array('max' => 12)); // WHERE membresia_precio <= 12
+     * </code>
+     *
+     * @param     mixed $membresiaPrecio The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return MembresiaQuery The current query, for fluid interface
+     */
+    public function filterByMembresiaPrecio($membresiaPrecio = null, $comparison = null)
+    {
+        if (is_array($membresiaPrecio)) {
+            $useMinMax = false;
+            if (isset($membresiaPrecio['min'])) {
+                $this->addUsingAlias(MembresiaPeer::MEMBRESIA_PRECIO, $membresiaPrecio['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($membresiaPrecio['max'])) {
+                $this->addUsingAlias(MembresiaPeer::MEMBRESIA_PRECIO, $membresiaPrecio['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(MembresiaPeer::MEMBRESIA_PRECIO, $membresiaPrecio, $comparison);
     }
 
     /**

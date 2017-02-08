@@ -47,9 +47,6 @@ abstract class BaseMembresiaPeer
     /** the column name for the membresia_cupones field */
     const MEMBRESIA_CUPONES = 'membresia.membresia_cupones';
 
-    /** the column name for the membresia_precio field */
-    const MEMBRESIA_PRECIO = 'membresia.membresia_precio';
-
     /** the column name for the servicio_generaingreso field */
     const SERVICIO_GENERAINGRESO = 'membresia.servicio_generaingreso';
 
@@ -61,6 +58,9 @@ abstract class BaseMembresiaPeer
 
     /** the column name for the servicio_comision field */
     const SERVICIO_COMISION = 'membresia.servicio_comision';
+
+    /** the column name for the membresia_precio field */
+    const MEMBRESIA_PRECIO = 'membresia.membresia_precio';
 
     /** The enumerated values for the servicio_tipocomision field */
     const SERVICIO_TIPOCOMISION_PORCENTAJE = 'porcentaje';
@@ -85,11 +85,11 @@ abstract class BaseMembresiaPeer
      * e.g. MembresiaPeer::$fieldNames[MembresiaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idmembresia', 'MembresiaNombre', 'MembresiaDescripcion', 'MembresiaServicios', 'MembresiaCupones', 'MembresiaPrecio', 'ServicioGeneraingreso', 'ServicioGeneracomision', 'ServicioTipocomision', 'ServicioComision', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia', 'membresiaNombre', 'membresiaDescripcion', 'membresiaServicios', 'membresiaCupones', 'membresiaPrecio', 'servicioGeneraingreso', 'servicioGeneracomision', 'servicioTipocomision', 'servicioComision', ),
-        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA, MembresiaPeer::MEMBRESIA_NOMBRE, MembresiaPeer::MEMBRESIA_DESCRIPCION, MembresiaPeer::MEMBRESIA_SERVICIOS, MembresiaPeer::MEMBRESIA_CUPONES, MembresiaPeer::MEMBRESIA_PRECIO, MembresiaPeer::SERVICIO_GENERAINGRESO, MembresiaPeer::SERVICIO_GENERACOMISION, MembresiaPeer::SERVICIO_TIPOCOMISION, MembresiaPeer::SERVICIO_COMISION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA', 'MEMBRESIA_NOMBRE', 'MEMBRESIA_DESCRIPCION', 'MEMBRESIA_SERVICIOS', 'MEMBRESIA_CUPONES', 'MEMBRESIA_PRECIO', 'SERVICIO_GENERAINGRESO', 'SERVICIO_GENERACOMISION', 'SERVICIO_TIPOCOMISION', 'SERVICIO_COMISION', ),
-        BasePeer::TYPE_FIELDNAME => array ('idmembresia', 'membresia_nombre', 'membresia_descripcion', 'membresia_servicios', 'membresia_cupones', 'membresia_precio', 'servicio_generaingreso', 'servicio_generacomision', 'servicio_tipocomision', 'servicio_comision', ),
+        BasePeer::TYPE_PHPNAME => array ('Idmembresia', 'MembresiaNombre', 'MembresiaDescripcion', 'MembresiaServicios', 'MembresiaCupones', 'ServicioGeneraingreso', 'ServicioGeneracomision', 'ServicioTipocomision', 'ServicioComision', 'MembresiaPrecio', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia', 'membresiaNombre', 'membresiaDescripcion', 'membresiaServicios', 'membresiaCupones', 'servicioGeneraingreso', 'servicioGeneracomision', 'servicioTipocomision', 'servicioComision', 'membresiaPrecio', ),
+        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA, MembresiaPeer::MEMBRESIA_NOMBRE, MembresiaPeer::MEMBRESIA_DESCRIPCION, MembresiaPeer::MEMBRESIA_SERVICIOS, MembresiaPeer::MEMBRESIA_CUPONES, MembresiaPeer::SERVICIO_GENERAINGRESO, MembresiaPeer::SERVICIO_GENERACOMISION, MembresiaPeer::SERVICIO_TIPOCOMISION, MembresiaPeer::SERVICIO_COMISION, MembresiaPeer::MEMBRESIA_PRECIO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA', 'MEMBRESIA_NOMBRE', 'MEMBRESIA_DESCRIPCION', 'MEMBRESIA_SERVICIOS', 'MEMBRESIA_CUPONES', 'SERVICIO_GENERAINGRESO', 'SERVICIO_GENERACOMISION', 'SERVICIO_TIPOCOMISION', 'SERVICIO_COMISION', 'MEMBRESIA_PRECIO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idmembresia', 'membresia_nombre', 'membresia_descripcion', 'membresia_servicios', 'membresia_cupones', 'servicio_generaingreso', 'servicio_generacomision', 'servicio_tipocomision', 'servicio_comision', 'membresia_precio', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
@@ -100,11 +100,11 @@ abstract class BaseMembresiaPeer
      * e.g. MembresiaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idmembresia' => 0, 'MembresiaNombre' => 1, 'MembresiaDescripcion' => 2, 'MembresiaServicios' => 3, 'MembresiaCupones' => 4, 'MembresiaPrecio' => 5, 'ServicioGeneraingreso' => 6, 'ServicioGeneracomision' => 7, 'ServicioTipocomision' => 8, 'ServicioComision' => 9, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia' => 0, 'membresiaNombre' => 1, 'membresiaDescripcion' => 2, 'membresiaServicios' => 3, 'membresiaCupones' => 4, 'membresiaPrecio' => 5, 'servicioGeneraingreso' => 6, 'servicioGeneracomision' => 7, 'servicioTipocomision' => 8, 'servicioComision' => 9, ),
-        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA => 0, MembresiaPeer::MEMBRESIA_NOMBRE => 1, MembresiaPeer::MEMBRESIA_DESCRIPCION => 2, MembresiaPeer::MEMBRESIA_SERVICIOS => 3, MembresiaPeer::MEMBRESIA_CUPONES => 4, MembresiaPeer::MEMBRESIA_PRECIO => 5, MembresiaPeer::SERVICIO_GENERAINGRESO => 6, MembresiaPeer::SERVICIO_GENERACOMISION => 7, MembresiaPeer::SERVICIO_TIPOCOMISION => 8, MembresiaPeer::SERVICIO_COMISION => 9, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA' => 0, 'MEMBRESIA_NOMBRE' => 1, 'MEMBRESIA_DESCRIPCION' => 2, 'MEMBRESIA_SERVICIOS' => 3, 'MEMBRESIA_CUPONES' => 4, 'MEMBRESIA_PRECIO' => 5, 'SERVICIO_GENERAINGRESO' => 6, 'SERVICIO_GENERACOMISION' => 7, 'SERVICIO_TIPOCOMISION' => 8, 'SERVICIO_COMISION' => 9, ),
-        BasePeer::TYPE_FIELDNAME => array ('idmembresia' => 0, 'membresia_nombre' => 1, 'membresia_descripcion' => 2, 'membresia_servicios' => 3, 'membresia_cupones' => 4, 'membresia_precio' => 5, 'servicio_generaingreso' => 6, 'servicio_generacomision' => 7, 'servicio_tipocomision' => 8, 'servicio_comision' => 9, ),
+        BasePeer::TYPE_PHPNAME => array ('Idmembresia' => 0, 'MembresiaNombre' => 1, 'MembresiaDescripcion' => 2, 'MembresiaServicios' => 3, 'MembresiaCupones' => 4, 'ServicioGeneraingreso' => 5, 'ServicioGeneracomision' => 6, 'ServicioTipocomision' => 7, 'ServicioComision' => 8, 'MembresiaPrecio' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia' => 0, 'membresiaNombre' => 1, 'membresiaDescripcion' => 2, 'membresiaServicios' => 3, 'membresiaCupones' => 4, 'servicioGeneraingreso' => 5, 'servicioGeneracomision' => 6, 'servicioTipocomision' => 7, 'servicioComision' => 8, 'membresiaPrecio' => 9, ),
+        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA => 0, MembresiaPeer::MEMBRESIA_NOMBRE => 1, MembresiaPeer::MEMBRESIA_DESCRIPCION => 2, MembresiaPeer::MEMBRESIA_SERVICIOS => 3, MembresiaPeer::MEMBRESIA_CUPONES => 4, MembresiaPeer::SERVICIO_GENERAINGRESO => 5, MembresiaPeer::SERVICIO_GENERACOMISION => 6, MembresiaPeer::SERVICIO_TIPOCOMISION => 7, MembresiaPeer::SERVICIO_COMISION => 8, MembresiaPeer::MEMBRESIA_PRECIO => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA' => 0, 'MEMBRESIA_NOMBRE' => 1, 'MEMBRESIA_DESCRIPCION' => 2, 'MEMBRESIA_SERVICIOS' => 3, 'MEMBRESIA_CUPONES' => 4, 'SERVICIO_GENERAINGRESO' => 5, 'SERVICIO_GENERACOMISION' => 6, 'SERVICIO_TIPOCOMISION' => 7, 'SERVICIO_COMISION' => 8, 'MEMBRESIA_PRECIO' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('idmembresia' => 0, 'membresia_nombre' => 1, 'membresia_descripcion' => 2, 'membresia_servicios' => 3, 'membresia_cupones' => 4, 'servicio_generaingreso' => 5, 'servicio_generacomision' => 6, 'servicio_tipocomision' => 7, 'servicio_comision' => 8, 'membresia_precio' => 9, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
@@ -237,22 +237,22 @@ abstract class BaseMembresiaPeer
             $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_DESCRIPCION);
             $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_SERVICIOS);
             $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_CUPONES);
-            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_PRECIO);
             $criteria->addSelectColumn(MembresiaPeer::SERVICIO_GENERAINGRESO);
             $criteria->addSelectColumn(MembresiaPeer::SERVICIO_GENERACOMISION);
             $criteria->addSelectColumn(MembresiaPeer::SERVICIO_TIPOCOMISION);
             $criteria->addSelectColumn(MembresiaPeer::SERVICIO_COMISION);
+            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_PRECIO);
         } else {
             $criteria->addSelectColumn($alias . '.idmembresia');
             $criteria->addSelectColumn($alias . '.membresia_nombre');
             $criteria->addSelectColumn($alias . '.membresia_descripcion');
             $criteria->addSelectColumn($alias . '.membresia_servicios');
             $criteria->addSelectColumn($alias . '.membresia_cupones');
-            $criteria->addSelectColumn($alias . '.membresia_precio');
             $criteria->addSelectColumn($alias . '.servicio_generaingreso');
             $criteria->addSelectColumn($alias . '.servicio_generacomision');
             $criteria->addSelectColumn($alias . '.servicio_tipocomision');
             $criteria->addSelectColumn($alias . '.servicio_comision');
+            $criteria->addSelectColumn($alias . '.membresia_precio');
         }
     }
 

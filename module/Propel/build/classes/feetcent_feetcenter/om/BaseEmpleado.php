@@ -234,6 +234,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     protected $collFaltantesRelatedByIdempleadogeneradorPartial;
 
     /**
+     * @var        PropelObjectCollection|Metaempleado[] Collection to store aggregation of Metaempleado objects.
+     */
+    protected $collMetaempleados;
+    protected $collMetaempleadosPartial;
+
+    /**
      * @var        PropelObjectCollection|Paciente[] Collection to store aggregation of Paciente objects.
      */
     protected $collPacientes;
@@ -360,6 +366,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $faltantesRelatedByIdempleadogeneradorScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $metaempleadosScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1312,6 +1324,8 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
             $this->collFaltantesRelatedByIdempleadogenerador = null;
 
+            $this->collMetaempleados = null;
+
             $this->collPacientes = null;
 
             $this->collPacienteseguimientos = null;
@@ -1646,6 +1660,23 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
             if ($this->collFaltantesRelatedByIdempleadogenerador !== null) {
                 foreach ($this->collFaltantesRelatedByIdempleadogenerador as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->metaempleadosScheduledForDeletion !== null) {
+                if (!$this->metaempleadosScheduledForDeletion->isEmpty()) {
+                    MetaempleadoQuery::create()
+                        ->filterByPrimaryKeys($this->metaempleadosScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->metaempleadosScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collMetaempleados !== null) {
+                foreach ($this->collMetaempleados as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2118,6 +2149,14 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collMetaempleados !== null) {
+                    foreach ($this->collMetaempleados as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPacientes !== null) {
                     foreach ($this->collPacientes as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -2360,6 +2399,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
             if (null !== $this->collFaltantesRelatedByIdempleadogenerador) {
                 $result['FaltantesRelatedByIdempleadogenerador'] = $this->collFaltantesRelatedByIdempleadogenerador->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collMetaempleados) {
+                $result['Metaempleados'] = $this->collMetaempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPacientes) {
                 $result['Pacientes'] = $this->collPacientes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2722,6 +2764,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getMetaempleados() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addMetaempleado($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPacientes() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPaciente($relObj->copy($deepCopy));
@@ -2854,6 +2902,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         }
         if ('FaltanteRelatedByIdempleadogenerador' == $relationName) {
             $this->initFaltantesRelatedByIdempleadogenerador();
+        }
+        if ('Metaempleado' == $relationName) {
+            $this->initMetaempleados();
         }
         if ('Paciente' == $relationName) {
             $this->initPacientes();
@@ -5650,31 +5701,6 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         return $this;
     }
 
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Empleado is new, it will return
-     * an empty collection; or if this Empleado has previously
-     * been saved, it will retrieve related FaltantesRelatedByIdempleadodeudor from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Empleado.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Faltante[] List of Faltante objects
-     */
-    public function getFaltantesRelatedByIdempleadodeudorJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = FaltanteQuery::create(null, $criteria);
-        $query->joinWith('Clinica', $join_behavior);
-
-        return $this->getFaltantesRelatedByIdempleadodeudor($query, $con);
-    }
-
     /**
      * Clears out the collFaltantesRelatedByIdempleadogenerador collection
      *
@@ -5900,29 +5926,229 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         return $this;
     }
 
+    /**
+     * Clears out the collMetaempleados collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addMetaempleados()
+     */
+    public function clearMetaempleados()
+    {
+        $this->collMetaempleados = null; // important to set this to null since that means it is uninitialized
+        $this->collMetaempleadosPartial = null;
+
+        return $this;
+    }
 
     /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Empleado is new, it will return
-     * an empty collection; or if this Empleado has previously
-     * been saved, it will retrieve related FaltantesRelatedByIdempleadogenerador from storage.
+     * reset is the collMetaempleados collection loaded partially
      *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Empleado.
+     * @return void
+     */
+    public function resetPartialMetaempleados($v = true)
+    {
+        $this->collMetaempleadosPartial = $v;
+    }
+
+    /**
+     * Initializes the collMetaempleados collection.
+     *
+     * By default this just sets the collMetaempleados collection to an empty array (like clearcollMetaempleados());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initMetaempleados($overrideExisting = true)
+    {
+        if (null !== $this->collMetaempleados && !$overrideExisting) {
+            return;
+        }
+        $this->collMetaempleados = new PropelObjectCollection();
+        $this->collMetaempleados->setModel('Metaempleado');
+    }
+
+    /**
+     * Gets an array of Metaempleado objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Faltante[] List of Faltante objects
+     * @return PropelObjectCollection|Metaempleado[] List of Metaempleado objects
+     * @throws PropelException
      */
-    public function getFaltantesRelatedByIdempleadogeneradorJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getMetaempleados($criteria = null, PropelPDO $con = null)
     {
-        $query = FaltanteQuery::create(null, $criteria);
-        $query->joinWith('Clinica', $join_behavior);
+        $partial = $this->collMetaempleadosPartial && !$this->isNew();
+        if (null === $this->collMetaempleados || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collMetaempleados) {
+                // return empty collection
+                $this->initMetaempleados();
+            } else {
+                $collMetaempleados = MetaempleadoQuery::create(null, $criteria)
+                    ->filterByEmpleado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collMetaempleadosPartial && count($collMetaempleados)) {
+                      $this->initMetaempleados(false);
 
-        return $this->getFaltantesRelatedByIdempleadogenerador($query, $con);
+                      foreach ($collMetaempleados as $obj) {
+                        if (false == $this->collMetaempleados->contains($obj)) {
+                          $this->collMetaempleados->append($obj);
+                        }
+                      }
+
+                      $this->collMetaempleadosPartial = true;
+                    }
+
+                    $collMetaempleados->getInternalIterator()->rewind();
+
+                    return $collMetaempleados;
+                }
+
+                if ($partial && $this->collMetaempleados) {
+                    foreach ($this->collMetaempleados as $obj) {
+                        if ($obj->isNew()) {
+                            $collMetaempleados[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collMetaempleados = $collMetaempleados;
+                $this->collMetaempleadosPartial = false;
+            }
+        }
+
+        return $this->collMetaempleados;
+    }
+
+    /**
+     * Sets a collection of Metaempleado objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $metaempleados A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setMetaempleados(PropelCollection $metaempleados, PropelPDO $con = null)
+    {
+        $metaempleadosToDelete = $this->getMetaempleados(new Criteria(), $con)->diff($metaempleados);
+
+
+        $this->metaempleadosScheduledForDeletion = $metaempleadosToDelete;
+
+        foreach ($metaempleadosToDelete as $metaempleadoRemoved) {
+            $metaempleadoRemoved->setEmpleado(null);
+        }
+
+        $this->collMetaempleados = null;
+        foreach ($metaempleados as $metaempleado) {
+            $this->addMetaempleado($metaempleado);
+        }
+
+        $this->collMetaempleados = $metaempleados;
+        $this->collMetaempleadosPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Metaempleado objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Metaempleado objects.
+     * @throws PropelException
+     */
+    public function countMetaempleados(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collMetaempleadosPartial && !$this->isNew();
+        if (null === $this->collMetaempleados || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collMetaempleados) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getMetaempleados());
+            }
+            $query = MetaempleadoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleado($this)
+                ->count($con);
+        }
+
+        return count($this->collMetaempleados);
+    }
+
+    /**
+     * Method called to associate a Metaempleado object to this object
+     * through the Metaempleado foreign key attribute.
+     *
+     * @param    Metaempleado $l Metaempleado
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addMetaempleado(Metaempleado $l)
+    {
+        if ($this->collMetaempleados === null) {
+            $this->initMetaempleados();
+            $this->collMetaempleadosPartial = true;
+        }
+
+        if (!in_array($l, $this->collMetaempleados->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddMetaempleado($l);
+
+            if ($this->metaempleadosScheduledForDeletion and $this->metaempleadosScheduledForDeletion->contains($l)) {
+                $this->metaempleadosScheduledForDeletion->remove($this->metaempleadosScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Metaempleado $metaempleado The metaempleado object to add.
+     */
+    protected function doAddMetaempleado($metaempleado)
+    {
+        $this->collMetaempleados[]= $metaempleado;
+        $metaempleado->setEmpleado($this);
+    }
+
+    /**
+     * @param	Metaempleado $metaempleado The metaempleado object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeMetaempleado($metaempleado)
+    {
+        if ($this->getMetaempleados()->contains($metaempleado)) {
+            $this->collMetaempleados->remove($this->collMetaempleados->search($metaempleado));
+            if (null === $this->metaempleadosScheduledForDeletion) {
+                $this->metaempleadosScheduledForDeletion = clone $this->collMetaempleados;
+                $this->metaempleadosScheduledForDeletion->clear();
+            }
+            $this->metaempleadosScheduledForDeletion[]= clone $metaempleado;
+            $metaempleado->setEmpleado(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -7709,6 +7935,11 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collMetaempleados) {
+                foreach ($this->collMetaempleados as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPacientes) {
                 foreach ($this->collPacientes as $o) {
                     $o->clearAllReferences($deep);
@@ -7791,6 +8022,10 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->collFaltantesRelatedByIdempleadogenerador->clearIterator();
         }
         $this->collFaltantesRelatedByIdempleadogenerador = null;
+        if ($this->collMetaempleados instanceof PropelCollection) {
+            $this->collMetaempleados->clearIterator();
+        }
+        $this->collMetaempleados = null;
         if ($this->collPacientes instanceof PropelCollection) {
             $this->collPacientes->clearIterator();
         }

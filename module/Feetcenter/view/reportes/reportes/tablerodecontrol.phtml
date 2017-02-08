@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style>
+.ui-datepicker-calendar {
+    display: none;
+    }
+</style>
+<div id="tablero_container">
+    <h1>Tablero de control</h1>
+    <div class="units-row">
+        <div class="unit-30">
+            Clinica
+            <select multiple="multiple" name="idclinica" class="width-100">
+                <?php $clinica = new clinica()?>;
+                <?php foreach ($clinicas as $key => $value) : ?>
+                <option idclinica="<?php echo$key ?>" value="<?php echo $key?>"><?php echo $value ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-70" id="filter_container">
+            <label style="display: block">Periodo de tiempo</label>
+            <input placeholder="Desde" type="email" name="filter_from" class="width-6" />
+            <input type="hidden" name="filter_from_hidden" class="width-6" />
+            <input placeholder="Hasta" type="text" name="filter_to" class="width-6" />
+            <input type="hidden" name="filter_to_hidden" class="width-6" />
+            <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <table class="table-bordered" id="table_clinica">
+            <thead>
+            <th>Venta por sucursal</th>
+            <th>Meta</th>
+            <th>Acumulado</th>
+            <th>Hoy</th>
+             <th>Dias restantes</th>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            <table class="table-bordered" id="table_empleado">
+            <thead>
+            <th>Venta individual</th>
+            <th>Meta</th>
+            <th>Acumulado</th>
+            <th>Hoy</th>
+             <th>Dias restantes</th>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="units-row">
+        <div class="unit-100">
+            <table class="table-bordered" id="table_indicadores">
+            <thead>
+            <th>Indicadores</th>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+            </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="/plugins/accounting.js"></script>
+<script src="/plugins/fullcalendar/moment.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="/js/datepicker-es.js"></script>
+<script src="/js/reportes/tablerodecontrol.js"></script>
+<script>
+    $('#tablero_container').tablerodecontrol();
+</script>

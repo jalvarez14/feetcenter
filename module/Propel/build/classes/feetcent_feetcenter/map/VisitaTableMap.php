@@ -49,7 +49,7 @@ class VisitaTableMap extends TableMap
   1 => 'servicio',
 ));
         $this->addColumn('visita_creadaen', 'VisitaCreadaen', 'TIMESTAMP', true, null, null);
-        $this->addColumn('visita_canceladaen', 'VisitaCanceladaen', 'TIMESTAMP', false, null, null);
+        $this->addColumn('visita_canceladaen', 'VisitaCanceladaen', 'TIMESTAMP', true, null, null);
         $this->addColumn('visita_fechainicio', 'VisitaFechainicio', 'TIMESTAMP', true, null, null);
         $this->addColumn('visita_fechafin', 'VisitaFechafin', 'TIMESTAMP', true, null, null);
         $this->addColumn('visita_status', 'VisitaStatus', 'CHAR', true, null, null);
@@ -70,11 +70,14 @@ class VisitaTableMap extends TableMap
 ));
         $this->addColumn('visita_total', 'VisitaTotal', 'DECIMAL', false, 10, null);
         $this->addColumn('visita_nota', 'VisitaNota', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('visita_year', 'VisitaYear', 'INTEGER', false, null, null);
-        $this->addColumn('visita_month', 'VisitaMonth', 'INTEGER', false, null, null);
-        $this->addColumn('visita_day', 'VisitaDay', 'INTEGER', false, null, null);
+        $this->addColumn('visita_year', 'VisitaYear', 'INTEGER', true, null, null);
+        $this->addColumn('visita_month', 'VisitaMonth', 'INTEGER', true, null, null);
+        $this->addColumn('visita_day', 'VisitaDay', 'INTEGER', true, null, null);
         $this->addColumn('visita_foliomembresia', 'VisitaFoliomembresia', 'VARCHAR', false, 45, null);
         $this->addColumn('visita_cuponmembresia', 'VisitaCuponmembresia', 'VARCHAR', false, 45, null);
+        $this->addColumn('visita_horainicio', 'VisitaHorainicio', 'TIMESTAMP', true, null, null);
+        $this->addColumn('visita_horafin', 'VisitaHorafin', 'TIMESTAMP', true, null, null);
+        $this->addColumn('visita_duracion', 'VisitaDuracion', 'INTEGER', true, null, null);
         // validators
     } // initialize()
 
