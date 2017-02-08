@@ -569,6 +569,9 @@ abstract class BaseEmpleadoPeer
         // Invalidate objects in FaltantePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         FaltantePeer::clearInstancePool();
+        // Invalidate objects in MetaempleadoPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        MetaempleadoPeer::clearInstancePool();
         // Invalidate objects in PacientePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PacientePeer::clearInstancePool();
@@ -992,6 +995,12 @@ abstract class BaseEmpleadoPeer
 
             $criteria->add(FaltantePeer::IDEMPLEADOGENERADOR, $obj->getIdempleado());
             $affectedRows += FaltantePeer::doDelete($criteria, $con);
+
+            // delete related Metaempleado objects
+            $criteria = new Criteria(MetaempleadoPeer::DATABASE_NAME);
+
+            $criteria->add(MetaempleadoPeer::IDEMPLEADO, $obj->getIdempleado());
+            $affectedRows += MetaempleadoPeer::doDelete($criteria, $con);
 
             // delete related Paciente objects
             $criteria = new Criteria(PacientePeer::DATABASE_NAME);

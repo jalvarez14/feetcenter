@@ -144,6 +144,24 @@ abstract class BaseVisita extends BaseObject implements Persistent
     protected $visita_cuponmembresia;
 
     /**
+     * The value for the visita_horainicio field.
+     * @var        string
+     */
+    protected $visita_horainicio;
+
+    /**
+     * The value for the visita_horafin field.
+     * @var        string
+     */
+    protected $visita_horafin;
+
+    /**
+     * The value for the visita_duracion field.
+     * @var        int
+     */
+    protected $visita_duracion;
+
+    /**
      * @var        Clinica
      */
     protected $aClinica;
@@ -530,6 +548,97 @@ abstract class BaseVisita extends BaseObject implements Persistent
     {
 
         return $this->visita_cuponmembresia;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [visita_horainicio] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getVisitaHorainicio($format = 'Y-m-d H:i:s')
+    {
+        if ($this->visita_horainicio === null) {
+            return null;
+        }
+
+        if ($this->visita_horainicio === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->visita_horainicio);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->visita_horainicio, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [visita_horafin] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getVisitaHorafin($format = 'Y-m-d H:i:s')
+    {
+        if ($this->visita_horafin === null) {
+            return null;
+        }
+
+        if ($this->visita_horafin === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->visita_horafin);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->visita_horafin, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [visita_duracion] column value.
+     *
+     * @return int
+     */
+    public function getVisitaDuracion()
+    {
+
+        return $this->visita_duracion;
     }
 
     /**
@@ -956,6 +1065,73 @@ abstract class BaseVisita extends BaseObject implements Persistent
     } // setVisitaCuponmembresia()
 
     /**
+     * Sets the value of [visita_horainicio] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitaHorainicio($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->visita_horainicio !== null || $dt !== null) {
+            $currentDateAsString = ($this->visita_horainicio !== null && $tmpDt = new DateTime($this->visita_horainicio)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->visita_horainicio = $newDateAsString;
+                $this->modifiedColumns[] = VisitaPeer::VISITA_HORAINICIO;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setVisitaHorainicio()
+
+    /**
+     * Sets the value of [visita_horafin] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitaHorafin($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->visita_horafin !== null || $dt !== null) {
+            $currentDateAsString = ($this->visita_horafin !== null && $tmpDt = new DateTime($this->visita_horafin)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->visita_horafin = $newDateAsString;
+                $this->modifiedColumns[] = VisitaPeer::VISITA_HORAFIN;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setVisitaHorafin()
+
+    /**
+     * Set the value of [visita_duracion] column.
+     *
+     * @param  int $v new value
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitaDuracion($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->visita_duracion !== $v) {
+            $this->visita_duracion = $v;
+            $this->modifiedColumns[] = VisitaPeer::VISITA_DURACION;
+        }
+
+
+        return $this;
+    } // setVisitaDuracion()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1006,6 +1182,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $this->visita_day = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
             $this->visita_foliomembresia = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
             $this->visita_cuponmembresia = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->visita_horainicio = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->visita_horafin = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->visita_duracion = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1015,7 +1194,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 19; // 19 = VisitaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 22; // 22 = VisitaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Visita object", $e);
@@ -1371,6 +1550,15 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_CUPONMEMBRESIA)) {
             $modifiedColumns[':p' . $index++]  = '`visita_cuponmembresia`';
         }
+        if ($this->isColumnModified(VisitaPeer::VISITA_HORAINICIO)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_horainicio`';
+        }
+        if ($this->isColumnModified(VisitaPeer::VISITA_HORAFIN)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_horafin`';
+        }
+        if ($this->isColumnModified(VisitaPeer::VISITA_DURACION)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_duracion`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `visita` (%s) VALUES (%s)',
@@ -1438,6 +1626,15 @@ abstract class BaseVisita extends BaseObject implements Persistent
                         break;
                     case '`visita_cuponmembresia`':
                         $stmt->bindValue($identifier, $this->visita_cuponmembresia, PDO::PARAM_STR);
+                        break;
+                    case '`visita_horainicio`':
+                        $stmt->bindValue($identifier, $this->visita_horainicio, PDO::PARAM_STR);
+                        break;
+                    case '`visita_horafin`':
+                        $stmt->bindValue($identifier, $this->visita_horafin, PDO::PARAM_STR);
+                        break;
+                    case '`visita_duracion`':
+                        $stmt->bindValue($identifier, $this->visita_duracion, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1676,6 +1873,15 @@ abstract class BaseVisita extends BaseObject implements Persistent
             case 18:
                 return $this->getVisitaCuponmembresia();
                 break;
+            case 19:
+                return $this->getVisitaHorainicio();
+                break;
+            case 20:
+                return $this->getVisitaHorafin();
+                break;
+            case 21:
+                return $this->getVisitaDuracion();
+                break;
             default:
                 return null;
                 break;
@@ -1724,6 +1930,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $keys[16] => $this->getVisitaDay(),
             $keys[17] => $this->getVisitaFoliomembresia(),
             $keys[18] => $this->getVisitaCuponmembresia(),
+            $keys[19] => $this->getVisitaHorainicio(),
+            $keys[20] => $this->getVisitaHorafin(),
+            $keys[21] => $this->getVisitaDuracion(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1840,6 +2049,15 @@ abstract class BaseVisita extends BaseObject implements Persistent
             case 18:
                 $this->setVisitaCuponmembresia($value);
                 break;
+            case 19:
+                $this->setVisitaHorainicio($value);
+                break;
+            case 20:
+                $this->setVisitaHorafin($value);
+                break;
+            case 21:
+                $this->setVisitaDuracion($value);
+                break;
         } // switch()
     }
 
@@ -1883,6 +2101,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if (array_key_exists($keys[16], $arr)) $this->setVisitaDay($arr[$keys[16]]);
         if (array_key_exists($keys[17], $arr)) $this->setVisitaFoliomembresia($arr[$keys[17]]);
         if (array_key_exists($keys[18], $arr)) $this->setVisitaCuponmembresia($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setVisitaHorainicio($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setVisitaHorafin($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setVisitaDuracion($arr[$keys[21]]);
     }
 
     /**
@@ -1913,6 +2134,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_DAY)) $criteria->add(VisitaPeer::VISITA_DAY, $this->visita_day);
         if ($this->isColumnModified(VisitaPeer::VISITA_FOLIOMEMBRESIA)) $criteria->add(VisitaPeer::VISITA_FOLIOMEMBRESIA, $this->visita_foliomembresia);
         if ($this->isColumnModified(VisitaPeer::VISITA_CUPONMEMBRESIA)) $criteria->add(VisitaPeer::VISITA_CUPONMEMBRESIA, $this->visita_cuponmembresia);
+        if ($this->isColumnModified(VisitaPeer::VISITA_HORAINICIO)) $criteria->add(VisitaPeer::VISITA_HORAINICIO, $this->visita_horainicio);
+        if ($this->isColumnModified(VisitaPeer::VISITA_HORAFIN)) $criteria->add(VisitaPeer::VISITA_HORAFIN, $this->visita_horafin);
+        if ($this->isColumnModified(VisitaPeer::VISITA_DURACION)) $criteria->add(VisitaPeer::VISITA_DURACION, $this->visita_duracion);
 
         return $criteria;
     }
@@ -1994,6 +2218,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $copyObj->setVisitaDay($this->getVisitaDay());
         $copyObj->setVisitaFoliomembresia($this->getVisitaFoliomembresia());
         $copyObj->setVisitaCuponmembresia($this->getVisitaCuponmembresia());
+        $copyObj->setVisitaHorainicio($this->getVisitaHorainicio());
+        $copyObj->setVisitaHorafin($this->getVisitaHorafin());
+        $copyObj->setVisitaDuracion($this->getVisitaDuracion());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2840,6 +3067,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $this->visita_day = null;
         $this->visita_foliomembresia = null;
         $this->visita_cuponmembresia = null;
+        $this->visita_horainicio = null;
+        $this->visita_horafin = null;
+        $this->visita_duracion = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

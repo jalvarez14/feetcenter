@@ -50,10 +50,6 @@
  * @method ClinicaQuery rightJoinEncargadoclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Encargadoclinica relation
  * @method ClinicaQuery innerJoinEncargadoclinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Encargadoclinica relation
  *
- * @method ClinicaQuery leftJoinFaltante($relationAlias = null) Adds a LEFT JOIN clause to the query using the Faltante relation
- * @method ClinicaQuery rightJoinFaltante($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Faltante relation
- * @method ClinicaQuery innerJoinFaltante($relationAlias = null) Adds a INNER JOIN clause to the query using the Faltante relation
- *
  * @method ClinicaQuery leftJoinInsumoclinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Insumoclinica relation
  * @method ClinicaQuery rightJoinInsumoclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Insumoclinica relation
  * @method ClinicaQuery innerJoinInsumoclinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Insumoclinica relation
@@ -61,6 +57,10 @@
  * @method ClinicaQuery leftJoinMembresiaclinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Membresiaclinica relation
  * @method ClinicaQuery rightJoinMembresiaclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Membresiaclinica relation
  * @method ClinicaQuery innerJoinMembresiaclinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Membresiaclinica relation
+ *
+ * @method ClinicaQuery leftJoinMetaclinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Metaclinica relation
+ * @method ClinicaQuery rightJoinMetaclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Metaclinica relation
+ * @method ClinicaQuery innerJoinMetaclinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Metaclinica relation
  *
  * @method ClinicaQuery leftJoinPaciente($relationAlias = null) Adds a LEFT JOIN clause to the query using the Paciente relation
  * @method ClinicaQuery rightJoinPaciente($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Paciente relation
@@ -980,80 +980,6 @@ abstract class BaseClinicaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Faltante object
-     *
-     * @param   Faltante|PropelObjectCollection $faltante  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 ClinicaQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByFaltante($faltante, $comparison = null)
-    {
-        if ($faltante instanceof Faltante) {
-            return $this
-                ->addUsingAlias(ClinicaPeer::IDCLINICA, $faltante->getIdclinica(), $comparison);
-        } elseif ($faltante instanceof PropelObjectCollection) {
-            return $this
-                ->useFaltanteQuery()
-                ->filterByPrimaryKeys($faltante->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByFaltante() only accepts arguments of type Faltante or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Faltante relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ClinicaQuery The current query, for fluid interface
-     */
-    public function joinFaltante($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Faltante');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Faltante');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Faltante relation Faltante object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   FaltanteQuery A secondary query class using the current class as primary query
-     */
-    public function useFaltanteQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinFaltante($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Faltante', 'FaltanteQuery');
-    }
-
-    /**
      * Filter the query by a related Insumoclinica object
      *
      * @param   Insumoclinica|PropelObjectCollection $insumoclinica  the related object to use as filter
@@ -1199,6 +1125,80 @@ abstract class BaseClinicaQuery extends ModelCriteria
         return $this
             ->joinMembresiaclinica($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Membresiaclinica', 'MembresiaclinicaQuery');
+    }
+
+    /**
+     * Filter the query by a related Metaclinica object
+     *
+     * @param   Metaclinica|PropelObjectCollection $metaclinica  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ClinicaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByMetaclinica($metaclinica, $comparison = null)
+    {
+        if ($metaclinica instanceof Metaclinica) {
+            return $this
+                ->addUsingAlias(ClinicaPeer::IDCLINICA, $metaclinica->getIdclinica(), $comparison);
+        } elseif ($metaclinica instanceof PropelObjectCollection) {
+            return $this
+                ->useMetaclinicaQuery()
+                ->filterByPrimaryKeys($metaclinica->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByMetaclinica() only accepts arguments of type Metaclinica or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Metaclinica relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ClinicaQuery The current query, for fluid interface
+     */
+    public function joinMetaclinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Metaclinica');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Metaclinica');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Metaclinica relation Metaclinica object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   MetaclinicaQuery A secondary query class using the current class as primary query
+     */
+    public function useMetaclinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinMetaclinica($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Metaclinica', 'MetaclinicaQuery');
     }
 
     /**

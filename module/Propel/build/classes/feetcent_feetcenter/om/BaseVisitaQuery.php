@@ -25,6 +25,9 @@
  * @method VisitaQuery orderByVisitaDay($order = Criteria::ASC) Order by the visita_day column
  * @method VisitaQuery orderByVisitaFoliomembresia($order = Criteria::ASC) Order by the visita_foliomembresia column
  * @method VisitaQuery orderByVisitaCuponmembresia($order = Criteria::ASC) Order by the visita_cuponmembresia column
+ * @method VisitaQuery orderByVisitaHorainicio($order = Criteria::ASC) Order by the visita_horainicio column
+ * @method VisitaQuery orderByVisitaHorafin($order = Criteria::ASC) Order by the visita_horafin column
+ * @method VisitaQuery orderByVisitaDuracion($order = Criteria::ASC) Order by the visita_duracion column
  *
  * @method VisitaQuery groupByIdvisita() Group by the idvisita column
  * @method VisitaQuery groupByIdempleado() Group by the idempleado column
@@ -45,6 +48,9 @@
  * @method VisitaQuery groupByVisitaDay() Group by the visita_day column
  * @method VisitaQuery groupByVisitaFoliomembresia() Group by the visita_foliomembresia column
  * @method VisitaQuery groupByVisitaCuponmembresia() Group by the visita_cuponmembresia column
+ * @method VisitaQuery groupByVisitaHorainicio() Group by the visita_horainicio column
+ * @method VisitaQuery groupByVisitaHorafin() Group by the visita_horafin column
+ * @method VisitaQuery groupByVisitaDuracion() Group by the visita_duracion column
  *
  * @method VisitaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method VisitaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -95,6 +101,9 @@
  * @method Visita findOneByVisitaDay(int $visita_day) Return the first Visita filtered by the visita_day column
  * @method Visita findOneByVisitaFoliomembresia(string $visita_foliomembresia) Return the first Visita filtered by the visita_foliomembresia column
  * @method Visita findOneByVisitaCuponmembresia(string $visita_cuponmembresia) Return the first Visita filtered by the visita_cuponmembresia column
+ * @method Visita findOneByVisitaHorainicio(string $visita_horainicio) Return the first Visita filtered by the visita_horainicio column
+ * @method Visita findOneByVisitaHorafin(string $visita_horafin) Return the first Visita filtered by the visita_horafin column
+ * @method Visita findOneByVisitaDuracion(int $visita_duracion) Return the first Visita filtered by the visita_duracion column
  *
  * @method array findByIdvisita(int $idvisita) Return Visita objects filtered by the idvisita column
  * @method array findByIdempleado(int $idempleado) Return Visita objects filtered by the idempleado column
@@ -115,6 +124,9 @@
  * @method array findByVisitaDay(int $visita_day) Return Visita objects filtered by the visita_day column
  * @method array findByVisitaFoliomembresia(string $visita_foliomembresia) Return Visita objects filtered by the visita_foliomembresia column
  * @method array findByVisitaCuponmembresia(string $visita_cuponmembresia) Return Visita objects filtered by the visita_cuponmembresia column
+ * @method array findByVisitaHorainicio(string $visita_horainicio) Return Visita objects filtered by the visita_horainicio column
+ * @method array findByVisitaHorafin(string $visita_horafin) Return Visita objects filtered by the visita_horafin column
+ * @method array findByVisitaDuracion(int $visita_duracion) Return Visita objects filtered by the visita_duracion column
  *
  * @package    propel.generator.feetcent_feetcenter.om
  */
@@ -222,7 +234,7 @@ abstract class BaseVisitaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_canceladaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total`, `visita_nota`, `visita_year`, `visita_month`, `visita_day`, `visita_foliomembresia`, `visita_cuponmembresia` FROM `visita` WHERE `idvisita` = :p0';
+        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_canceladaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total`, `visita_nota`, `visita_year`, `visita_month`, `visita_day`, `visita_foliomembresia`, `visita_cuponmembresia`, `visita_horainicio`, `visita_horafin`, `visita_duracion` FROM `visita` WHERE `idvisita` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1041,6 +1053,134 @@ abstract class BaseVisitaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(VisitaPeer::VISITA_CUPONMEMBRESIA, $visitaCuponmembresia, $comparison);
+    }
+
+    /**
+     * Filter the query on the visita_horainicio column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaHorainicio('2011-03-14'); // WHERE visita_horainicio = '2011-03-14'
+     * $query->filterByVisitaHorainicio('now'); // WHERE visita_horainicio = '2011-03-14'
+     * $query->filterByVisitaHorainicio(array('max' => 'yesterday')); // WHERE visita_horainicio < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $visitaHorainicio The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaHorainicio($visitaHorainicio = null, $comparison = null)
+    {
+        if (is_array($visitaHorainicio)) {
+            $useMinMax = false;
+            if (isset($visitaHorainicio['min'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_HORAINICIO, $visitaHorainicio['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visitaHorainicio['max'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_HORAINICIO, $visitaHorainicio['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_HORAINICIO, $visitaHorainicio, $comparison);
+    }
+
+    /**
+     * Filter the query on the visita_horafin column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaHorafin('2011-03-14'); // WHERE visita_horafin = '2011-03-14'
+     * $query->filterByVisitaHorafin('now'); // WHERE visita_horafin = '2011-03-14'
+     * $query->filterByVisitaHorafin(array('max' => 'yesterday')); // WHERE visita_horafin < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $visitaHorafin The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaHorafin($visitaHorafin = null, $comparison = null)
+    {
+        if (is_array($visitaHorafin)) {
+            $useMinMax = false;
+            if (isset($visitaHorafin['min'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_HORAFIN, $visitaHorafin['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visitaHorafin['max'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_HORAFIN, $visitaHorafin['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_HORAFIN, $visitaHorafin, $comparison);
+    }
+
+    /**
+     * Filter the query on the visita_duracion column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaDuracion(1234); // WHERE visita_duracion = 1234
+     * $query->filterByVisitaDuracion(array(12, 34)); // WHERE visita_duracion IN (12, 34)
+     * $query->filterByVisitaDuracion(array('min' => 12)); // WHERE visita_duracion >= 12
+     * $query->filterByVisitaDuracion(array('max' => 12)); // WHERE visita_duracion <= 12
+     * </code>
+     *
+     * @param     mixed $visitaDuracion The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaDuracion($visitaDuracion = null, $comparison = null)
+    {
+        if (is_array($visitaDuracion)) {
+            $useMinMax = false;
+            if (isset($visitaDuracion['min'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_DURACION, $visitaDuracion['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visitaDuracion['max'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_DURACION, $visitaDuracion['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_DURACION, $visitaDuracion, $comparison);
     }
 
     /**

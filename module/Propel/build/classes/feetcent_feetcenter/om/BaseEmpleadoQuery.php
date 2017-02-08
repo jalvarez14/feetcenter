@@ -104,6 +104,10 @@
  * @method EmpleadoQuery rightJoinFaltanteRelatedByIdempleadogenerador($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FaltanteRelatedByIdempleadogenerador relation
  * @method EmpleadoQuery innerJoinFaltanteRelatedByIdempleadogenerador($relationAlias = null) Adds a INNER JOIN clause to the query using the FaltanteRelatedByIdempleadogenerador relation
  *
+ * @method EmpleadoQuery leftJoinMetaempleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Metaempleado relation
+ * @method EmpleadoQuery rightJoinMetaempleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Metaempleado relation
+ * @method EmpleadoQuery innerJoinMetaempleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Metaempleado relation
+ *
  * @method EmpleadoQuery leftJoinPaciente($relationAlias = null) Adds a LEFT JOIN clause to the query using the Paciente relation
  * @method EmpleadoQuery rightJoinPaciente($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Paciente relation
  * @method EmpleadoQuery innerJoinPaciente($relationAlias = null) Adds a INNER JOIN clause to the query using the Paciente relation
@@ -1975,6 +1979,80 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
         return $this
             ->joinFaltanteRelatedByIdempleadogenerador($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'FaltanteRelatedByIdempleadogenerador', 'FaltanteQuery');
+    }
+
+    /**
+     * Filter the query by a related Metaempleado object
+     *
+     * @param   Metaempleado|PropelObjectCollection $metaempleado  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByMetaempleado($metaempleado, $comparison = null)
+    {
+        if ($metaempleado instanceof Metaempleado) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $metaempleado->getIdempleado(), $comparison);
+        } elseif ($metaempleado instanceof PropelObjectCollection) {
+            return $this
+                ->useMetaempleadoQuery()
+                ->filterByPrimaryKeys($metaempleado->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByMetaempleado() only accepts arguments of type Metaempleado or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Metaempleado relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinMetaempleado($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Metaempleado');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Metaempleado');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Metaempleado relation Metaempleado object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   MetaempleadoQuery A secondary query class using the current class as primary query
+     */
+    public function useMetaempleadoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinMetaempleado($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Metaempleado', 'MetaempleadoQuery');
     }
 
     /**
