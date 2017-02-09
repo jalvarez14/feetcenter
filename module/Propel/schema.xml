@@ -363,9 +363,6 @@
     <column name="faltante_comentario" phpName="FaltanteComentario" type="LONGVARCHAR" required="false"/>
     <column name="faltante_comprobante" phpName="FaltanteComprobante" type="LONGVARCHAR" required="false"/>
     <column name="faltante_comprobantefirmado" phpName="FaltanteComprobantefirmado" type="LONGVARCHAR" required="false"/>
-    <foreign-key foreignTable="clinica" name="idclinica_faltante" onDelete="CASCADE" onUpdate="CASCADE">
-      <reference local="idclinica" foreign="idclinica"/>
-    </foreign-key>
     <foreign-key foreignTable="empleado" name="idempleadodeudor_faltante" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idempleadodeudor" foreign="idempleado"/>
     </foreign-key>
@@ -377,9 +374,6 @@
     </index>
     <index name="idempleadodeudor">
       <index-column name="idempleadodeudor"/>
-    </index>
-    <index name="idclinica">
-      <index-column name="idclinica"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
@@ -473,11 +467,11 @@
     <column name="membresia_descripcion" phpName="MembresiaDescripcion" type="LONGVARCHAR" required="true"/>
     <column name="membresia_servicios" phpName="MembresiaServicios" type="DECIMAL" size="10" scale="2" required="true"/>
     <column name="membresia_cupones" phpName="MembresiaCupones" type="DECIMAL" size="10" scale="2" required="true"/>
-    <column name="membresia_precio" phpName="MembresiaPrecio" type="DECIMAL" size="10" scale="2" required="true"/>
-    <column name="servicio_generaingreso" phpName="ServicioGeneraingreso" type="BOOLEAN" size="1" required="false"/>
-    <column name="servicio_generacomision" phpName="ServicioGeneracomision" type="BOOLEAN" size="1" required="false"/>
+    <column name="servicio_generaingreso" phpName="ServicioGeneraingreso" type="BOOLEAN" size="1" required="true"/>
+    <column name="servicio_generacomision" phpName="ServicioGeneracomision" type="BOOLEAN" size="1" required="true"/>
     <column name="servicio_tipocomision" phpName="ServicioTipocomision" type="CHAR" sqlType="enum('porcentaje','cantidad')" required="false"/>
     <column name="servicio_comision" phpName="ServicioComision" type="DECIMAL" size="10" scale="2" required="false"/>
+    <column name="membresia_precio" phpName="MembresiaPrecio" type="DECIMAL" size="10" scale="2" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -498,6 +492,38 @@
     </index>
     <index name="idclinica">
       <index-column name="idclinica"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="metaclinica" phpName="Metaclinica" idMethod="native">
+    <column name="idmetaclinica" phpName="Idmetaclinica" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
+    <column name="metaclinica_anio" phpName="MetaclinicaAnio" type="INTEGER" required="true"/>
+    <column name="metaclinica_mes" phpName="MetaclinicaMes" type="INTEGER" required="true"/>
+    <column name="metaclinica_meta" phpName="MetaclinicaMeta" type="DECIMAL" size="15" scale="5" required="true"/>
+    <foreign-key foreignTable="clinica" name="idclinica_metaclinica" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <index name="idclinica">
+      <index-column name="idclinica"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="metaempleado" phpName="Metaempleado" idMethod="native">
+    <column name="idmetaempleado" phpName="Idmetaempleado" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
+    <column name="metaempleado_meta" phpName="MetaempleadoMeta" type="DECIMAL" size="15" scale="5" required="true"/>
+    <column name="metaempleado_anio" phpName="MetaempleadoAnio" type="INTEGER" required="true"/>
+    <column name="metaempleado_mes" phpName="MetaempleadoMes" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="empleado" name="idempleado_metaempleado" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleado" foreign="idempleado"/>
+    </foreign-key>
+    <index name="idempleado">
+      <index-column name="idempleado"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
@@ -853,18 +879,21 @@
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
     <column name="visita_tipo" phpName="VisitaTipo" type="CHAR" sqlType="enum('consulta','servicio')" required="true"/>
     <column name="visita_creadaen" phpName="VisitaCreadaen" type="TIMESTAMP" required="true"/>
-    <column name="visita_canceladaen" phpName="VisitaCanceladaen" type="TIMESTAMP" required="false"/>
+    <column name="visita_canceladaen" phpName="VisitaCanceladaen" type="TIMESTAMP" required="true"/>
     <column name="visita_fechainicio" phpName="VisitaFechainicio" type="TIMESTAMP" required="true"/>
     <column name="visita_fechafin" phpName="VisitaFechafin" type="TIMESTAMP" required="true"/>
     <column name="visita_status" phpName="VisitaStatus" type="CHAR" sqlType="enum('por confirmar','confimada','cancelo','no se presento','reprogramda','en servicio','terminado')" required="true"/>
     <column name="visita_estatuspago" phpName="VisitaEstatuspago" type="CHAR" sqlType="enum('pagada','no pagada','cancelada')" required="false"/>
     <column name="visita_total" phpName="VisitaTotal" type="DECIMAL" size="10" scale="2" required="false"/>
     <column name="visita_nota" phpName="VisitaNota" type="LONGVARCHAR" required="false"/>
-    <column name="visita_year" phpName="VisitaYear" type="INTEGER" required="false"/>
-    <column name="visita_month" phpName="VisitaMonth" type="INTEGER" required="false"/>
-    <column name="visita_day" phpName="VisitaDay" type="INTEGER" required="false"/>
+    <column name="visita_year" phpName="VisitaYear" type="INTEGER" required="true"/>
+    <column name="visita_month" phpName="VisitaMonth" type="INTEGER" required="true"/>
+    <column name="visita_day" phpName="VisitaDay" type="INTEGER" required="true"/>
     <column name="visita_foliomembresia" phpName="VisitaFoliomembresia" type="VARCHAR" size="45" required="false"/>
     <column name="visita_cuponmembresia" phpName="VisitaCuponmembresia" type="VARCHAR" size="45" required="false"/>
+    <column name="visita_horainicio" phpName="VisitaHorainicio" type="TIMESTAMP" required="true"/>
+    <column name="visita_horafin" phpName="VisitaHorafin" type="TIMESTAMP" required="true"/>
+    <column name="visita_duracion" phpName="VisitaDuracion" type="INTEGER" required="true"/>
     <foreign-key foreignTable="clinica" name="idclinica_visita" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
     </foreign-key>
