@@ -356,6 +356,7 @@ class ReportesController extends AbstractActionController
              //DIAS RESTANTES
               $respone['clinica']['clinica_diasrestantes'] = $diff_days;
               
+              $respone['clinica']['clinica_hoy'] =  ($respone['clinica']['clinica_meta']-$respone['clinica']['clinica_acumulado'])/$respone['clinica']['clinica_diasrestantes'];
               
              /*
              * EMPLEADOS
@@ -385,7 +386,9 @@ class ReportesController extends AbstractActionController
 
                  //SERVICIOS POR DIA
                  $tmp['servicios_por_dia'] = 0;
-                 $total_servicios = \VisitadetalleQuery::create()->filterByIdservicioclinica(NULL, \Criteria::NOT_EQUAL)->useServicioclinicaQuery()->useServicioQuery()->filterByServicioGeneracomision(1)->endUse()->endUse()->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->count();
+                 //$total_servicios = \VisitadetalleQuery::create()->filterByIdservicioclinica(NULL, \Criteria::NOT_EQUAL)->useServicioclinicaQuery()->useServicioQuery()->filterByServicioGeneracomision(1)->endUse()->endUse()->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->count();
+                 $total_servicios = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->count();
+
                  if($total_servicios>0){
                        $tmp['servicios_por_dia'] = $total_servicios / $diff_days3;
                        $tmp['servicios_por_dia'] = number_format($tmp['servicios_por_dia'], 2, '.', ',');
@@ -403,10 +406,11 @@ class ReportesController extends AbstractActionController
                  $tmp['venta_promedio_por_cliente']  = 0;
                   $clientes_count  = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->groupByIdpaciente()->count();
                   $total_vendido = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaTotal)','acumulado')->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->findOne()->toArray();
+                  
                   $total_vendido = !is_null($total_vendido['acumulado']) ? $total_vendido['acumulado'] : 0;
                   $tmp['empleado_acumulado'] = $total_vendido;
                   if($total_vendido>0){
-                       $tmp['venta_promedio_por_cliente'] = $total_vendido / $clientes_count;
+                       $tmp['venta_promedio_por_cliente'] = $total_vendido /$total_servicios;
                        $tmp['venta_promedio_por_cliente'] = number_format($tmp['venta_promedio_por_cliente'], 2, '.', ',');
                   }
                  
