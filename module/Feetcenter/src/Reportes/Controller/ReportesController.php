@@ -289,6 +289,8 @@ class ReportesController extends AbstractActionController
     public function tablerodecontrolAction(){
         
         $request = $this->getRequest();
+        $session = new \Shared\Session\AouthSession();
+        $idrol = $session->getIdrol();
         
         if($request->isPost()){
             $post_data = $request->getPost();
@@ -478,6 +480,12 @@ class ReportesController extends AbstractActionController
         }
         
         $clinicas = \ClinicaQuery::create()->select(array('idclinica','clinica_nombre'))->find()->toKeyValue('idclinica','clinica_nombre');
+        
+        if($idrol != 1){
+           $clinicas = \ClinicaQuery::create()->select(array('idclinica','clinica_nombre'))->filterByIdclinica($session->getIdClinica())->find()->toKeyValue('idclinica','clinica_nombre');
+        }
+        
+        
         
         return new ViewModel(array(
             'clinicas' => $clinicas,
