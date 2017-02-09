@@ -385,7 +385,7 @@ class ReportesController extends AbstractActionController
 
                  //SERVICIOS POR DIA
                  $tmp['servicios_por_dia'] = 0;
-                 $total_servicios = \VisitadetalleQuery::create()->filterByIdservicioclinica(NULL, \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->count();
+                 $total_servicios = \VisitadetalleQuery::create()->filterByIdservicioclinica(NULL, \Criteria::NOT_EQUAL)->useServicioclinicaQuery()->useServicioQuery()->filterByServicioGeneracomision(1)->endUse()->endUse()->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->count();
                  if($total_servicios>0){
                        $tmp['servicios_por_dia'] = $total_servicios / $diff_days3;
                        $tmp['servicios_por_dia'] = number_format($tmp['servicios_por_dia'], 2, '.', ',');
