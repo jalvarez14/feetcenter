@@ -417,8 +417,9 @@ class ReportesController extends AbstractActionController
                   
                   //TIEMPO PROMEDIO DE SERVICIO
                   $tmp['tiempo_promedio_servicio'] = 0;
-                  $query = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaDuracion)','acumulado')->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->find();
-                  $querycount = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->find();
+                  $query = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaDuracion)','acumulado')->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->filterByVisitaDuracion(0, \Criteria::GREATER_THAN)->find();
+                  $querycount = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->filterByVisitaDuracion(0, \Criteria::GREATER_THAN)  ->find();
+                  
                   $query_array = $query->toArray();
                   $query_count = $querycount->count();
                 
