@@ -615,6 +615,14 @@ class AgendaController extends AbstractActionController
                      ->setVisitaEstatuspago('pagada')
                      ->setVisitaTotal($post_data['visita_total']);
               
+                
+                $visita->setVisitaHorafin(new \DateTime());
+                $horainicio =  $visita->getVisitaHorainicio();
+                $segundos= strtotime('now')-strtotime($horainicio);
+                $duracion=intval($segundos/60);
+                $visita->setVisitaDuracion($duracion);
+                
+          
               $visita->save();
               
               //Actualizamos lo detalles de la visita

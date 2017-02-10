@@ -437,10 +437,21 @@ class ReportesController extends AbstractActionController
                   $tmp['clientes_nuevos'] = \PacienteQuery::create()->filterByIdempleado($idempleado)->filterByPacienteFecharegistro(array('min' => $from, 'max' => $to))->count();
                   
                   //MEMBRESIAS
-                  $tmp['membresias']  = 0;
-                  $total_membresias = \VisitadetalleQuery::create()->filterByIdmembresia(NULL, \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->count();
-                  if($total_membresias>0){
-                      $tmp['membresias'] = $total_membresias / $diff_days3;
+//                  $tmp['membresias']  = 0;
+//                  $total_membresias = \VisitadetalleQuery::create()->filterByIdmembresia(NULL, \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->count();
+//                  if($total_membresias>0){
+//                      $tmp['membresias'] = $total_membresias / $diff_days3;
+//                  }
+                  
+                  //MEMBRESIAS
+                  $tmp['membresias'] = 0;
+                  $visita_detalles =  \VisitadetalleQuery::create()->filterByIdmembresia(NULL, \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->find();
+                  $detalle = new \Visitadetalle();
+                  foreach ($visita_detalles as $detalle){
+                      $membresia = $detalle->getMembresia();
+                      if (strpos(strtoupper($membresia->getMembresiaNombre()), 'PAGO') == false) {
+                             $tmp['membresias']++;
+                       }
                   }
                   
                   //PAGOS ANTICIPADOS
