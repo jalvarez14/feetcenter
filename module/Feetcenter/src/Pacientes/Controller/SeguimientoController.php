@@ -106,11 +106,12 @@ class SeguimientoController extends AbstractActionController
             }
             
             //Las fechas
-            if(isset($post_data['pacienteseguimiento_fecha_submit'])){
-                $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit']);
-                $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit'].' '.$post_data['pacienteseguimiento_hora']);
-            }
-            
+//            if(isset($post_data['pacienteseguimiento_fecha_submit'])){
+//                $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit']);
+//                $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit'].' '.$post_data['pacienteseguimiento_hora']);
+//            }
+            //la fecha se setea de acuerdo a la hora del sistema
+            $entity->setPacienteseguimientoFecha(new \DateTime());
             $entity->save();
             
             //Agregamos un mensaje
@@ -181,7 +182,9 @@ class SeguimientoController extends AbstractActionController
             
             //Las fechas 
             $entity->setPacienteseguimientoFechacreacion(new \DateTime());
-            $entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit'].' '.$post_data['pacienteseguimiento_hora']);
+            //la fecha se setea de acuerdo a la hora del sistema
+            $entity->setPacienteseguimientoFecha(new \DateTime());
+            //$entity->setPacienteseguimientoFecha($post_data['pacienteseguimiento_fecha_submit'].' '.$post_data['pacienteseguimiento_hora']);
             
             if($sesion->getIdrol() == 1){
                 $idclinica = 1;

@@ -63,10 +63,10 @@ class PacientesController extends AbstractActionController
             }
             
             //Setiamos las fechas
+            // se quitó esta línea para evitar que se modifique la fecha de registro en el edit
+             //$entity->setPacienteFecharegistro(new \DateTime());
+             
             
-             $entity->setPacienteFecharegistro(new \DateTime());
-             
-             
             if(isset($post_data['paciente_fechanacimiento_submit'])){
                 $entity->setPacienteFechanacimiento('paciente_fechanacimiento_submit');
             }

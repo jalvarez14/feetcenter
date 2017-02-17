@@ -304,10 +304,16 @@
                          $container.find('#table_indicadores thead').append('<th>Indicadores</th>');
                          
                          //INDICADORES ESTRUCTURA
-                            
                         
                         var $tr = $('<tr>');
                         $tr.append('<td><b>Servicios por día</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>Servicios Com. por día</b></td>');
                         for(var i=0; i<empleados.length;i++){
                            $tr.append('<td></td>');
                         }
@@ -397,15 +403,16 @@
                              $container.find('#table_indicadores thead').append('<th>'+value.empleado_nombre+'</th>');
 
                              $container.find('#table_indicadores tbody tr').eq(0).find('td').eq(index+1).text(value.servicios_por_dia);
-                             $container.find('#table_indicadores tbody tr').eq(1).find('td').eq(index+1).text(accounting.formatMoney(value.venta_promedio_por_cliente));
-                             $container.find('#table_indicadores tbody tr').eq(2).find('td').eq(index+1).text(value.productos_por_cliente);
-                             $container.find('#table_indicadores tbody tr').eq(3).find('td').eq(index+1).text(value.tiempo_promedio_servicio);
-                             $container.find('#table_indicadores tbody tr').eq(4).find('td').eq(index+1).text(value.clientes_nuevos);
-                             $container.find('#table_indicadores tbody tr').eq(5).find('td').eq(index+1).text(value.membresias);
-                             $container.find('#table_indicadores tbody tr').eq(6).find('td').eq(index+1).text(value.pagos_anticipados);
-                             $container.find('#table_indicadores tbody tr').eq(8).find('td').eq(index+1).text(value.tasa_retorno['30dias']);
-                             $container.find('#table_indicadores tbody tr').eq(9).find('td').eq(index+1).text(value.tasa_retorno['45dias']);
-                             $container.find('#table_indicadores tbody tr').eq(10).find('td').eq(index+1).text(value.tasa_retorno['60dias']);
+                             $container.find('#table_indicadores tbody tr').eq(1).find('td').eq(index+1).text(value.servicioscomision_por_dia);
+                             $container.find('#table_indicadores tbody tr').eq(2).find('td').eq(index+1).text(accounting.formatMoney(value.venta_promedio_por_cliente));
+                             $container.find('#table_indicadores tbody tr').eq(3).find('td').eq(index+1).text(value.productos_por_cliente);
+                             $container.find('#table_indicadores tbody tr').eq(4).find('td').eq(index+1).text(value.tiempo_promedio_servicio);
+                             $container.find('#table_indicadores tbody tr').eq(5).find('td').eq(index+1).text(value.clientes_nuevos);
+                             $container.find('#table_indicadores tbody tr').eq(6).find('td').eq(index+1).text(value.membresias);
+                             $container.find('#table_indicadores tbody tr').eq(7).find('td').eq(index+1).text(value.pagos_anticipados);
+                             $container.find('#table_indicadores tbody tr').eq(9).find('td').eq(index+1).text(value.tasa_retorno['30dias']);
+                             $container.find('#table_indicadores tbody tr').eq(10).find('td').eq(index+1).text(value.tasa_retorno['45dias']);
+                             $container.find('#table_indicadores tbody tr').eq(11).find('td').eq(index+1).text(value.tasa_retorno['60dias']);
                          });
                          $('body').removeClass('loading');
                     }

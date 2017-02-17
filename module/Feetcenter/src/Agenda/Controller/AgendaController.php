@@ -616,7 +616,7 @@ class AgendaController extends AbstractActionController
                      ->setVisitaTotal($post_data['visita_total']);
               
                 
-                $visita->setVisitaHorafin(new \DateTime());
+                $visita->setVisitaHorafin(date('Y-m-d H:i:s'));
                 $horainicio =  $visita->getVisitaHorainicio();
                 $segundos= strtotime('now')-strtotime($horainicio);
                 $duracion=intval($segundos/60);
@@ -941,7 +941,9 @@ class AgendaController extends AbstractActionController
                             //Servicios vendidos
                             $current_vendidos = $empleado_comision->getEmpleadocomisionServiciosvendidos();
                             $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
-                            $empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
+                            
+                            //se va a comentar esta línea para evitar que se contabilicen los servicios que no generar comisión.
+                            //$empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
                             
                             //Acumulado
 //                            $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();

@@ -14,13 +14,13 @@
                 Fecha <span class="req">*</span>
                 <?php echo $this->formHidden($form->get('idpaciente')); ?>  
             </label>
-            <?php echo $this->formText($form->get('pacienteseguimiento_fecha')); ?>
+            <?php echo date("Y-m-d"); ?>
         </div>
         <div class="unit-50">
             <label style="margin-bottom: 0px">
                 Hora (Formato 24 hrs) <span class="req">*</span>
             </label>
-            <?php echo $this->formText($form->get('pacienteseguimiento_hora')); ?>
+            <?php echo date("h:i:s"); ?>
         </div>
         
     </div>

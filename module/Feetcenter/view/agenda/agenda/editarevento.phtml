@@ -36,14 +36,25 @@
                 <div class="unit-60">
                      <div><span><b>Última visita: </b></span><span id="visita_ultima"></span></div>
                 </div>
-                <div class="unit-33">
-                     <div><a target="_blank" href="/pacientes/expediente/ver/<?php echo $visita->getIdpaciente(); ?>"> Expediente</a></div>
-                </div>
+                
             </div>
         </div>
         <div class="unit-40" style="margin-top: 25px;">
               <button class="btn" style="height: 30px; padding-right: 50px; padding-left: 48px;" btn-action="open_paciente_container">Nuevo</button>
               <button btn-action="open_relacionados_container" class="btn btn-disabled" style="margin-left: 7px; height: 30px;" disabled>Relacionados</button>
+        </div>
+    </div>
+    <div class="units-row" style="margin-bottom: 0px;">
+        <div class="unit-60">
+            <label>
+                <b>Tiempo en servicio: </b><?php echo date("H:i:s",strtotime($visita->getVisitaHorainicio()))." - ".date("H:i:s",strtotime($visita->getVisitaHorafin()))." ".$visita->getVisitaduracion()." minutos"; ?>
+            </label>
+        
+        </div>
+        <div class="unit-40" style="margin-top: 0px;">
+            <div class="unit-100">
+                <div><a target="_blank" href="/pacientes/expediente/ver/<?php echo $visita->getIdpaciente(); ?>"> <h2>Expediente</h2></a></div>
+            </div>
         </div>
     </div>
         <div id="paciente_membresia_container" class="units-row" style="display: none">
