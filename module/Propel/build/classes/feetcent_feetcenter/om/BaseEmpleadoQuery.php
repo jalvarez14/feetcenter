@@ -56,6 +56,10 @@
  * @method EmpleadoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method EmpleadoQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method EmpleadoQuery leftJoinAusenciaempleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Ausenciaempleado relation
+ * @method EmpleadoQuery rightJoinAusenciaempleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Ausenciaempleado relation
+ * @method EmpleadoQuery innerJoinAusenciaempleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Ausenciaempleado relation
+ *
  * @method EmpleadoQuery leftJoinClinicaempleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Clinicaempleado relation
  * @method EmpleadoQuery rightJoinClinicaempleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Clinicaempleado relation
  * @method EmpleadoQuery innerJoinClinicaempleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Clinicaempleado relation
@@ -1091,6 +1095,80 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EmpleadoPeer::EMPLEADO_CANTIDADCOMISIONSERVICIO, $empleadoCantidadcomisionservicio, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Ausenciaempleado object
+     *
+     * @param   Ausenciaempleado|PropelObjectCollection $ausenciaempleado  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByAusenciaempleado($ausenciaempleado, $comparison = null)
+    {
+        if ($ausenciaempleado instanceof Ausenciaempleado) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $ausenciaempleado->getIdempleado(), $comparison);
+        } elseif ($ausenciaempleado instanceof PropelObjectCollection) {
+            return $this
+                ->useAusenciaempleadoQuery()
+                ->filterByPrimaryKeys($ausenciaempleado->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByAusenciaempleado() only accepts arguments of type Ausenciaempleado or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Ausenciaempleado relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinAusenciaempleado($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Ausenciaempleado');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Ausenciaempleado');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Ausenciaempleado relation Ausenciaempleado object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   AusenciaempleadoQuery A secondary query class using the current class as primary query
+     */
+    public function useAusenciaempleadoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinAusenciaempleado($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Ausenciaempleado', 'AusenciaempleadoQuery');
     }
 
     /**

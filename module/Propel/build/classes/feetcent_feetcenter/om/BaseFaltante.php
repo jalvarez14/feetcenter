@@ -96,6 +96,11 @@ abstract class BaseFaltante extends BaseObject implements Persistent
     protected $faltante_comprobantefirmado;
 
     /**
+     * @var        Clinica
+     */
+    protected $aClinica;
+
+    /**
      * @var        Empleado
      */
     protected $aEmpleadoRelatedByIdempleadodeudor;
@@ -364,6 +369,10 @@ abstract class BaseFaltante extends BaseObject implements Persistent
         if ($this->idclinica !== $v) {
             $this->idclinica = $v;
             $this->modifiedColumns[] = FaltantePeer::IDCLINICA;
+        }
+
+        if ($this->aClinica !== null && $this->aClinica->getIdclinica() !== $v) {
+            $this->aClinica = null;
         }
 
 
@@ -648,6 +657,9 @@ abstract class BaseFaltante extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aClinica !== null && $this->idclinica !== $this->aClinica->getIdclinica()) {
+            $this->aClinica = null;
+        }
         if ($this->aEmpleadoRelatedByIdempleadogenerador !== null && $this->idempleadogenerador !== $this->aEmpleadoRelatedByIdempleadogenerador->getIdempleado()) {
             $this->aEmpleadoRelatedByIdempleadogenerador = null;
         }
@@ -693,6 +705,7 @@ abstract class BaseFaltante extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aClinica = null;
             $this->aEmpleadoRelatedByIdempleadodeudor = null;
             $this->aEmpleadoRelatedByIdempleadogenerador = null;
         } // if (deep)
@@ -812,6 +825,13 @@ abstract class BaseFaltante extends BaseObject implements Persistent
             // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
+
+            if ($this->aClinica !== null) {
+                if ($this->aClinica->isModified() || $this->aClinica->isNew()) {
+                    $affectedRows += $this->aClinica->save($con);
+                }
+                $this->setClinica($this->aClinica);
+            }
 
             if ($this->aEmpleadoRelatedByIdempleadodeudor !== null) {
                 if ($this->aEmpleadoRelatedByIdempleadodeudor->isModified() || $this->aEmpleadoRelatedByIdempleadodeudor->isNew()) {
@@ -1040,6 +1060,12 @@ abstract class BaseFaltante extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aClinica !== null) {
+                if (!$this->aClinica->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aClinica->getValidationFailures());
+                }
+            }
+
             if ($this->aEmpleadoRelatedByIdempleadodeudor !== null) {
                 if (!$this->aEmpleadoRelatedByIdempleadodeudor->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aEmpleadoRelatedByIdempleadodeudor->getValidationFailures());
@@ -1173,6 +1199,9 @@ abstract class BaseFaltante extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aClinica) {
+                $result['Clinica'] = $this->aClinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aEmpleadoRelatedByIdempleadodeudor) {
                 $result['EmpleadoRelatedByIdempleadodeudor'] = $this->aEmpleadoRelatedByIdempleadodeudor->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1435,6 +1464,58 @@ abstract class BaseFaltante extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a Clinica object.
+     *
+     * @param                  Clinica $v
+     * @return Faltante The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setClinica(Clinica $v = null)
+    {
+        if ($v === null) {
+            $this->setIdclinica(NULL);
+        } else {
+            $this->setIdclinica($v->getIdclinica());
+        }
+
+        $this->aClinica = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Clinica object, it will not be re-added.
+        if ($v !== null) {
+            $v->addFaltante($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Clinica object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Clinica The associated Clinica object.
+     * @throws PropelException
+     */
+    public function getClinica(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aClinica === null && ($this->idclinica !== null) && $doQuery) {
+            $this->aClinica = ClinicaQuery::create()->findPk($this->idclinica, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aClinica->addFaltantes($this);
+             */
+        }
+
+        return $this->aClinica;
+    }
+
+    /**
      * Declares an association between this object and a Empleado object.
      *
      * @param                  Empleado $v
@@ -1576,6 +1657,9 @@ abstract class BaseFaltante extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aClinica instanceof Persistent) {
+              $this->aClinica->clearAllReferences($deep);
+            }
             if ($this->aEmpleadoRelatedByIdempleadodeudor instanceof Persistent) {
               $this->aEmpleadoRelatedByIdempleadodeudor->clearAllReferences($deep);
             }
@@ -1586,6 +1670,7 @@ abstract class BaseFaltante extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aClinica = null;
         $this->aEmpleadoRelatedByIdempleadodeudor = null;
         $this->aEmpleadoRelatedByIdempleadogenerador = null;
     }

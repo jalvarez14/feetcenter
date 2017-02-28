@@ -162,6 +162,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     protected $empleado_cantidadcomisionservicio;
 
     /**
+     * @var        PropelObjectCollection|Ausenciaempleado[] Collection to store aggregation of Ausenciaempleado objects.
+     */
+    protected $collAusenciaempleados;
+    protected $collAusenciaempleadosPartial;
+
+    /**
      * @var        PropelObjectCollection|Clinicaempleado[] Collection to store aggregation of Clinicaempleado objects.
      */
     protected $collClinicaempleados;
@@ -294,6 +300,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $ausenciaempleadosScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1300,6 +1312,8 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collAusenciaempleados = null;
+
             $this->collClinicaempleados = null;
 
             $this->collCompras = null;
@@ -1460,6 +1474,23 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->ausenciaempleadosScheduledForDeletion !== null) {
+                if (!$this->ausenciaempleadosScheduledForDeletion->isEmpty()) {
+                    AusenciaempleadoQuery::create()
+                        ->filterByPrimaryKeys($this->ausenciaempleadosScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->ausenciaempleadosScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collAusenciaempleados !== null) {
+                foreach ($this->collAusenciaempleados as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->clinicaempleadosScheduledForDeletion !== null) {
@@ -2053,6 +2084,14 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
 
 
+                if ($this->collAusenciaempleados !== null) {
+                    foreach ($this->collAusenciaempleados as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collClinicaempleados !== null) {
                     foreach ($this->collClinicaempleados as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -2364,6 +2403,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collAusenciaempleados) {
+                $result['Ausenciaempleados'] = $this->collAusenciaempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collClinicaempleados) {
                 $result['Clinicaempleados'] = $this->collClinicaempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -2692,6 +2734,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getAusenciaempleados() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addAusenciaempleado($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getClinicaempleados() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addClinicaempleado($relObj->copy($deepCopy));
@@ -2867,6 +2915,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('Ausenciaempleado' == $relationName) {
+            $this->initAusenciaempleados();
+        }
         if ('Clinicaempleado' == $relationName) {
             $this->initClinicaempleados();
         }
@@ -2924,6 +2975,231 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if ('VisitaRelatedByIdempleadocreador' == $relationName) {
             $this->initVisitasRelatedByIdempleadocreador();
         }
+    }
+
+    /**
+     * Clears out the collAusenciaempleados collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addAusenciaempleados()
+     */
+    public function clearAusenciaempleados()
+    {
+        $this->collAusenciaempleados = null; // important to set this to null since that means it is uninitialized
+        $this->collAusenciaempleadosPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collAusenciaempleados collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialAusenciaempleados($v = true)
+    {
+        $this->collAusenciaempleadosPartial = $v;
+    }
+
+    /**
+     * Initializes the collAusenciaempleados collection.
+     *
+     * By default this just sets the collAusenciaempleados collection to an empty array (like clearcollAusenciaempleados());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initAusenciaempleados($overrideExisting = true)
+    {
+        if (null !== $this->collAusenciaempleados && !$overrideExisting) {
+            return;
+        }
+        $this->collAusenciaempleados = new PropelObjectCollection();
+        $this->collAusenciaempleados->setModel('Ausenciaempleado');
+    }
+
+    /**
+     * Gets an array of Ausenciaempleado objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Ausenciaempleado[] List of Ausenciaempleado objects
+     * @throws PropelException
+     */
+    public function getAusenciaempleados($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collAusenciaempleadosPartial && !$this->isNew();
+        if (null === $this->collAusenciaempleados || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collAusenciaempleados) {
+                // return empty collection
+                $this->initAusenciaempleados();
+            } else {
+                $collAusenciaempleados = AusenciaempleadoQuery::create(null, $criteria)
+                    ->filterByEmpleado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collAusenciaempleadosPartial && count($collAusenciaempleados)) {
+                      $this->initAusenciaempleados(false);
+
+                      foreach ($collAusenciaempleados as $obj) {
+                        if (false == $this->collAusenciaempleados->contains($obj)) {
+                          $this->collAusenciaempleados->append($obj);
+                        }
+                      }
+
+                      $this->collAusenciaempleadosPartial = true;
+                    }
+
+                    $collAusenciaempleados->getInternalIterator()->rewind();
+
+                    return $collAusenciaempleados;
+                }
+
+                if ($partial && $this->collAusenciaempleados) {
+                    foreach ($this->collAusenciaempleados as $obj) {
+                        if ($obj->isNew()) {
+                            $collAusenciaempleados[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collAusenciaempleados = $collAusenciaempleados;
+                $this->collAusenciaempleadosPartial = false;
+            }
+        }
+
+        return $this->collAusenciaempleados;
+    }
+
+    /**
+     * Sets a collection of Ausenciaempleado objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $ausenciaempleados A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setAusenciaempleados(PropelCollection $ausenciaempleados, PropelPDO $con = null)
+    {
+        $ausenciaempleadosToDelete = $this->getAusenciaempleados(new Criteria(), $con)->diff($ausenciaempleados);
+
+
+        $this->ausenciaempleadosScheduledForDeletion = $ausenciaempleadosToDelete;
+
+        foreach ($ausenciaempleadosToDelete as $ausenciaempleadoRemoved) {
+            $ausenciaempleadoRemoved->setEmpleado(null);
+        }
+
+        $this->collAusenciaempleados = null;
+        foreach ($ausenciaempleados as $ausenciaempleado) {
+            $this->addAusenciaempleado($ausenciaempleado);
+        }
+
+        $this->collAusenciaempleados = $ausenciaempleados;
+        $this->collAusenciaempleadosPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Ausenciaempleado objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Ausenciaempleado objects.
+     * @throws PropelException
+     */
+    public function countAusenciaempleados(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collAusenciaempleadosPartial && !$this->isNew();
+        if (null === $this->collAusenciaempleados || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collAusenciaempleados) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getAusenciaempleados());
+            }
+            $query = AusenciaempleadoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleado($this)
+                ->count($con);
+        }
+
+        return count($this->collAusenciaempleados);
+    }
+
+    /**
+     * Method called to associate a Ausenciaempleado object to this object
+     * through the Ausenciaempleado foreign key attribute.
+     *
+     * @param    Ausenciaempleado $l Ausenciaempleado
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addAusenciaempleado(Ausenciaempleado $l)
+    {
+        if ($this->collAusenciaempleados === null) {
+            $this->initAusenciaempleados();
+            $this->collAusenciaempleadosPartial = true;
+        }
+
+        if (!in_array($l, $this->collAusenciaempleados->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddAusenciaempleado($l);
+
+            if ($this->ausenciaempleadosScheduledForDeletion and $this->ausenciaempleadosScheduledForDeletion->contains($l)) {
+                $this->ausenciaempleadosScheduledForDeletion->remove($this->ausenciaempleadosScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Ausenciaempleado $ausenciaempleado The ausenciaempleado object to add.
+     */
+    protected function doAddAusenciaempleado($ausenciaempleado)
+    {
+        $this->collAusenciaempleados[]= $ausenciaempleado;
+        $ausenciaempleado->setEmpleado($this);
+    }
+
+    /**
+     * @param	Ausenciaempleado $ausenciaempleado The ausenciaempleado object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeAusenciaempleado($ausenciaempleado)
+    {
+        if ($this->getAusenciaempleados()->contains($ausenciaempleado)) {
+            $this->collAusenciaempleados->remove($this->collAusenciaempleados->search($ausenciaempleado));
+            if (null === $this->ausenciaempleadosScheduledForDeletion) {
+                $this->ausenciaempleadosScheduledForDeletion = clone $this->collAusenciaempleados;
+                $this->ausenciaempleadosScheduledForDeletion->clear();
+            }
+            $this->ausenciaempleadosScheduledForDeletion[]= clone $ausenciaempleado;
+            $ausenciaempleado->setEmpleado(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -5701,6 +5977,31 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         return $this;
     }
 
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related FaltantesRelatedByIdempleadodeudor from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Faltante[] List of Faltante objects
+     */
+    public function getFaltantesRelatedByIdempleadodeudorJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = FaltanteQuery::create(null, $criteria);
+        $query->joinWith('Clinica', $join_behavior);
+
+        return $this->getFaltantesRelatedByIdempleadodeudor($query, $con);
+    }
+
     /**
      * Clears out the collFaltantesRelatedByIdempleadogenerador collection
      *
@@ -5924,6 +6225,31 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         }
 
         return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related FaltantesRelatedByIdempleadogenerador from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Faltante[] List of Faltante objects
+     */
+    public function getFaltantesRelatedByIdempleadogeneradorJoinClinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = FaltanteQuery::create(null, $criteria);
+        $query->joinWith('Clinica', $join_behavior);
+
+        return $this->getFaltantesRelatedByIdempleadogenerador($query, $con);
     }
 
     /**
@@ -7875,6 +8201,11 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collAusenciaempleados) {
+                foreach ($this->collAusenciaempleados as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collClinicaempleados) {
                 foreach ($this->collClinicaempleados as $o) {
                     $o->clearAllReferences($deep);
@@ -7974,6 +8305,10 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collAusenciaempleados instanceof PropelCollection) {
+            $this->collAusenciaempleados->clearIterator();
+        }
+        $this->collAusenciaempleados = null;
         if ($this->collClinicaempleados instanceof PropelCollection) {
             $this->collClinicaempleados->clearIterator();
         }

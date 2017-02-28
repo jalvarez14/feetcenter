@@ -60,6 +60,12 @@ abstract class BaseMembresia extends BaseObject implements Persistent
     protected $membresia_cupones;
 
     /**
+     * The value for the membresia_precio field.
+     * @var        string
+     */
+    protected $membresia_precio;
+
+    /**
      * The value for the servicio_generaingreso field.
      * @var        boolean
      */
@@ -82,12 +88,6 @@ abstract class BaseMembresia extends BaseObject implements Persistent
      * @var        string
      */
     protected $servicio_comision;
-
-    /**
-     * The value for the membresia_precio field.
-     * @var        string
-     */
-    protected $membresia_precio;
 
     /**
      * @var        PropelObjectCollection|Membresiaclinica[] Collection to store aggregation of Membresiaclinica objects.
@@ -201,6 +201,17 @@ abstract class BaseMembresia extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [membresia_precio] column value.
+     *
+     * @return string
+     */
+    public function getMembresiaPrecio()
+    {
+
+        return $this->membresia_precio;
+    }
+
+    /**
      * Get the [servicio_generaingreso] column value.
      *
      * @return boolean
@@ -242,17 +253,6 @@ abstract class BaseMembresia extends BaseObject implements Persistent
     {
 
         return $this->servicio_comision;
-    }
-
-    /**
-     * Get the [membresia_precio] column value.
-     *
-     * @return string
-     */
-    public function getMembresiaPrecio()
-    {
-
-        return $this->membresia_precio;
     }
 
     /**
@@ -361,6 +361,27 @@ abstract class BaseMembresia extends BaseObject implements Persistent
     } // setMembresiaCupones()
 
     /**
+     * Set the value of [membresia_precio] column.
+     *
+     * @param  string $v new value
+     * @return Membresia The current object (for fluent API support)
+     */
+    public function setMembresiaPrecio($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->membresia_precio !== $v) {
+            $this->membresia_precio = $v;
+            $this->modifiedColumns[] = MembresiaPeer::MEMBRESIA_PRECIO;
+        }
+
+
+        return $this;
+    } // setMembresiaPrecio()
+
+    /**
      * Sets the value of the [servicio_generaingreso] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -461,27 +482,6 @@ abstract class BaseMembresia extends BaseObject implements Persistent
     } // setServicioComision()
 
     /**
-     * Set the value of [membresia_precio] column.
-     *
-     * @param  string $v new value
-     * @return Membresia The current object (for fluent API support)
-     */
-    public function setMembresiaPrecio($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->membresia_precio !== $v) {
-            $this->membresia_precio = $v;
-            $this->modifiedColumns[] = MembresiaPeer::MEMBRESIA_PRECIO;
-        }
-
-
-        return $this;
-    } // setMembresiaPrecio()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -518,11 +518,11 @@ abstract class BaseMembresia extends BaseObject implements Persistent
             $this->membresia_descripcion = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->membresia_servicios = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->membresia_cupones = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->servicio_generaingreso = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
-            $this->servicio_generacomision = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->servicio_tipocomision = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->servicio_comision = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->membresia_precio = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->membresia_precio = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->servicio_generaingreso = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
+            $this->servicio_generacomision = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+            $this->servicio_tipocomision = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->servicio_comision = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -816,6 +816,9 @@ abstract class BaseMembresia extends BaseObject implements Persistent
         if ($this->isColumnModified(MembresiaPeer::MEMBRESIA_CUPONES)) {
             $modifiedColumns[':p' . $index++]  = '`membresia_cupones`';
         }
+        if ($this->isColumnModified(MembresiaPeer::MEMBRESIA_PRECIO)) {
+            $modifiedColumns[':p' . $index++]  = '`membresia_precio`';
+        }
         if ($this->isColumnModified(MembresiaPeer::SERVICIO_GENERAINGRESO)) {
             $modifiedColumns[':p' . $index++]  = '`servicio_generaingreso`';
         }
@@ -827,9 +830,6 @@ abstract class BaseMembresia extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(MembresiaPeer::SERVICIO_COMISION)) {
             $modifiedColumns[':p' . $index++]  = '`servicio_comision`';
-        }
-        if ($this->isColumnModified(MembresiaPeer::MEMBRESIA_PRECIO)) {
-            $modifiedColumns[':p' . $index++]  = '`membresia_precio`';
         }
 
         $sql = sprintf(
@@ -857,6 +857,9 @@ abstract class BaseMembresia extends BaseObject implements Persistent
                     case '`membresia_cupones`':
                         $stmt->bindValue($identifier, $this->membresia_cupones, PDO::PARAM_STR);
                         break;
+                    case '`membresia_precio`':
+                        $stmt->bindValue($identifier, $this->membresia_precio, PDO::PARAM_STR);
+                        break;
                     case '`servicio_generaingreso`':
                         $stmt->bindValue($identifier, (int) $this->servicio_generaingreso, PDO::PARAM_INT);
                         break;
@@ -868,9 +871,6 @@ abstract class BaseMembresia extends BaseObject implements Persistent
                         break;
                     case '`servicio_comision`':
                         $stmt->bindValue($identifier, $this->servicio_comision, PDO::PARAM_STR);
-                        break;
-                    case '`membresia_precio`':
-                        $stmt->bindValue($identifier, $this->membresia_precio, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1046,19 +1046,19 @@ abstract class BaseMembresia extends BaseObject implements Persistent
                 return $this->getMembresiaCupones();
                 break;
             case 5:
-                return $this->getServicioGeneraingreso();
+                return $this->getMembresiaPrecio();
                 break;
             case 6:
-                return $this->getServicioGeneracomision();
+                return $this->getServicioGeneraingreso();
                 break;
             case 7:
-                return $this->getServicioTipocomision();
+                return $this->getServicioGeneracomision();
                 break;
             case 8:
-                return $this->getServicioComision();
+                return $this->getServicioTipocomision();
                 break;
             case 9:
-                return $this->getMembresiaPrecio();
+                return $this->getServicioComision();
                 break;
             default:
                 return null;
@@ -1094,11 +1094,11 @@ abstract class BaseMembresia extends BaseObject implements Persistent
             $keys[2] => $this->getMembresiaDescripcion(),
             $keys[3] => $this->getMembresiaServicios(),
             $keys[4] => $this->getMembresiaCupones(),
-            $keys[5] => $this->getServicioGeneraingreso(),
-            $keys[6] => $this->getServicioGeneracomision(),
-            $keys[7] => $this->getServicioTipocomision(),
-            $keys[8] => $this->getServicioComision(),
-            $keys[9] => $this->getMembresiaPrecio(),
+            $keys[5] => $this->getMembresiaPrecio(),
+            $keys[6] => $this->getServicioGeneraingreso(),
+            $keys[7] => $this->getServicioGeneracomision(),
+            $keys[8] => $this->getServicioTipocomision(),
+            $keys[9] => $this->getServicioComision(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1165,19 +1165,19 @@ abstract class BaseMembresia extends BaseObject implements Persistent
                 $this->setMembresiaCupones($value);
                 break;
             case 5:
-                $this->setServicioGeneraingreso($value);
+                $this->setMembresiaPrecio($value);
                 break;
             case 6:
-                $this->setServicioGeneracomision($value);
+                $this->setServicioGeneraingreso($value);
                 break;
             case 7:
-                $this->setServicioTipocomision($value);
+                $this->setServicioGeneracomision($value);
                 break;
             case 8:
-                $this->setServicioComision($value);
+                $this->setServicioTipocomision($value);
                 break;
             case 9:
-                $this->setMembresiaPrecio($value);
+                $this->setServicioComision($value);
                 break;
         } // switch()
     }
@@ -1208,11 +1208,11 @@ abstract class BaseMembresia extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setMembresiaDescripcion($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setMembresiaServicios($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setMembresiaCupones($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setServicioGeneraingreso($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setServicioGeneracomision($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setServicioTipocomision($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setServicioComision($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setMembresiaPrecio($arr[$keys[9]]);
+        if (array_key_exists($keys[5], $arr)) $this->setMembresiaPrecio($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setServicioGeneraingreso($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setServicioGeneracomision($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setServicioTipocomision($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setServicioComision($arr[$keys[9]]);
     }
 
     /**
@@ -1229,11 +1229,11 @@ abstract class BaseMembresia extends BaseObject implements Persistent
         if ($this->isColumnModified(MembresiaPeer::MEMBRESIA_DESCRIPCION)) $criteria->add(MembresiaPeer::MEMBRESIA_DESCRIPCION, $this->membresia_descripcion);
         if ($this->isColumnModified(MembresiaPeer::MEMBRESIA_SERVICIOS)) $criteria->add(MembresiaPeer::MEMBRESIA_SERVICIOS, $this->membresia_servicios);
         if ($this->isColumnModified(MembresiaPeer::MEMBRESIA_CUPONES)) $criteria->add(MembresiaPeer::MEMBRESIA_CUPONES, $this->membresia_cupones);
+        if ($this->isColumnModified(MembresiaPeer::MEMBRESIA_PRECIO)) $criteria->add(MembresiaPeer::MEMBRESIA_PRECIO, $this->membresia_precio);
         if ($this->isColumnModified(MembresiaPeer::SERVICIO_GENERAINGRESO)) $criteria->add(MembresiaPeer::SERVICIO_GENERAINGRESO, $this->servicio_generaingreso);
         if ($this->isColumnModified(MembresiaPeer::SERVICIO_GENERACOMISION)) $criteria->add(MembresiaPeer::SERVICIO_GENERACOMISION, $this->servicio_generacomision);
         if ($this->isColumnModified(MembresiaPeer::SERVICIO_TIPOCOMISION)) $criteria->add(MembresiaPeer::SERVICIO_TIPOCOMISION, $this->servicio_tipocomision);
         if ($this->isColumnModified(MembresiaPeer::SERVICIO_COMISION)) $criteria->add(MembresiaPeer::SERVICIO_COMISION, $this->servicio_comision);
-        if ($this->isColumnModified(MembresiaPeer::MEMBRESIA_PRECIO)) $criteria->add(MembresiaPeer::MEMBRESIA_PRECIO, $this->membresia_precio);
 
         return $criteria;
     }
@@ -1301,11 +1301,11 @@ abstract class BaseMembresia extends BaseObject implements Persistent
         $copyObj->setMembresiaDescripcion($this->getMembresiaDescripcion());
         $copyObj->setMembresiaServicios($this->getMembresiaServicios());
         $copyObj->setMembresiaCupones($this->getMembresiaCupones());
+        $copyObj->setMembresiaPrecio($this->getMembresiaPrecio());
         $copyObj->setServicioGeneraingreso($this->getServicioGeneraingreso());
         $copyObj->setServicioGeneracomision($this->getServicioGeneracomision());
         $copyObj->setServicioTipocomision($this->getServicioTipocomision());
         $copyObj->setServicioComision($this->getServicioComision());
-        $copyObj->setMembresiaPrecio($this->getMembresiaPrecio());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2239,11 +2239,11 @@ abstract class BaseMembresia extends BaseObject implements Persistent
         $this->membresia_descripcion = null;
         $this->membresia_servicios = null;
         $this->membresia_cupones = null;
+        $this->membresia_precio = null;
         $this->servicio_generaingreso = null;
         $this->servicio_generacomision = null;
         $this->servicio_tipocomision = null;
         $this->servicio_comision = null;
-        $this->membresia_precio = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

@@ -80,6 +80,7 @@ class EmpleadoTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Ausenciaempleado', 'Ausenciaempleado', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Ausenciaempleados');
         $this->addRelation('Clinicaempleado', 'Clinicaempleado', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Clinicaempleados');
         $this->addRelation('Compra', 'Compra', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Compras');
         $this->addRelation('Egresoclinica', 'Egresoclinica', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Egresoclinicas');

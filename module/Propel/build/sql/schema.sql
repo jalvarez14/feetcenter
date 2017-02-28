@@ -4,6 +4,27 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
+-- ausenciaempleado
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ausenciaempleado`;
+
+CREATE TABLE `ausenciaempleado`
+(
+    `idausenciaempleado` INTEGER NOT NULL AUTO_INCREMENT,
+    `idempleado` INTEGER NOT NULL,
+    `ausenciaempleado_fecha` DATE NOT NULL,
+    `ausenciaempleado_nota` TEXT,
+    PRIMARY KEY (`idausenciaempleado`),
+    INDEX `idempleado` (`idempleado`),
+    CONSTRAINT `idempleado_ausenciaempleado`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- canalcomunicacion
 -- ---------------------------------------------------------------------
 
@@ -15,6 +36,25 @@ CREATE TABLE `canalcomunicacion`
     `canalcomunicacion_nombre` VARCHAR(255) NOT NULL,
     `canalcomunicacion_descripcion` TEXT NOT NULL,
     PRIMARY KEY (`idcanalcomunicacion`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- cierrecaja
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cierrecaja`;
+
+CREATE TABLE `cierrecaja`
+(
+    `idcierrecaja` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `cierrecaja_cantidad` DECIMAL(10,5) NOT NULL,
+    `cierrecaja_efectivo` DECIMAL(10,5) NOT NULL,
+    `cierrecaja_tarjeta` DECIMAL(10,5) NOT NULL,
+    `idempleado` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`idcierrecaja`),
+    INDEX `idsucursal` (`idsucursal`),
+    INDEX `idempleado` (`idempleado`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -662,6 +702,50 @@ CREATE TABLE `membresiaclinica`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- metaclinica
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `metaclinica`;
+
+CREATE TABLE `metaclinica`
+(
+    `idmetaclinica` INTEGER NOT NULL AUTO_INCREMENT,
+    `idclinica` INTEGER NOT NULL,
+    `metaclinica_anio` INTEGER NOT NULL,
+    `metaclinica_mes` INTEGER NOT NULL,
+    `metaclinica_meta` DECIMAL(15,5) NOT NULL,
+    PRIMARY KEY (`idmetaclinica`),
+    INDEX `idclinica` (`idclinica`),
+    CONSTRAINT `idclinica_metaclinica`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- metaempleado
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `metaempleado`;
+
+CREATE TABLE `metaempleado`
+(
+    `idmetaempleado` INTEGER NOT NULL AUTO_INCREMENT,
+    `idempleado` INTEGER NOT NULL,
+    `metaempleado_meta` DECIMAL(15,5) NOT NULL,
+    `metaempleado_anio` INTEGER NOT NULL,
+    `metaempleado_mes` INTEGER NOT NULL,
+    PRIMARY KEY (`idmetaempleado`),
+    INDEX `idempleado` (`idempleado`),
+    CONSTRAINT `idempleado_metaempleado`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- paciente
 -- ---------------------------------------------------------------------
 
@@ -1120,6 +1204,9 @@ CREATE TABLE `visita`
     `visita_day` INTEGER,
     `visita_foliomembresia` VARCHAR(45),
     `visita_cuponmembresia` VARCHAR(45),
+    `visita_horainicio` DATETIME,
+    `visita_horafin` DATETIME,
+    `visita_duracion` INTEGER,
     PRIMARY KEY (`idvisita`),
     INDEX `idempleadocreador` (`idempleadocreador`),
     INDEX `idempleado` (`idempleado`),
@@ -1189,6 +1276,22 @@ CREATE TABLE `visitadetalle`
         REFERENCES `visita` (`idvisita`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- visitalog
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `visitalog`;
+
+CREATE TABLE `visitalog`
+(
+    `idvisitalog` INTEGER NOT NULL AUTO_INCREMENT,
+    `idvisita` INTEGER NOT NULL,
+    `idempleado` INTEGER,
+    `visitalog_fecha` DATETIME,
+    `visitalog_accion` VARCHAR(45),
+    PRIMARY KEY (`idvisitalog`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

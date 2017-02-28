@@ -2,78 +2,59 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'membresia' table.
+ * Base static class for performing query and update operations on the 'visitalog' table.
  *
  *
  *
  * @package propel.generator.feetcent_feetcenter.om
  */
-abstract class BaseMembresiaPeer
+abstract class BaseVisitalogPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'feetcent_feetcenter';
 
     /** the table name for this class */
-    const TABLE_NAME = 'membresia';
+    const TABLE_NAME = 'visitalog';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Membresia';
+    const OM_CLASS = 'Visitalog';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'MembresiaTableMap';
+    const TM_CLASS = 'VisitalogTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 5;
 
-    /** the column name for the idmembresia field */
-    const IDMEMBRESIA = 'membresia.idmembresia';
+    /** the column name for the idvisitalog field */
+    const IDVISITALOG = 'visitalog.idvisitalog';
 
-    /** the column name for the membresia_nombre field */
-    const MEMBRESIA_NOMBRE = 'membresia.membresia_nombre';
+    /** the column name for the idvisita field */
+    const IDVISITA = 'visitalog.idvisita';
 
-    /** the column name for the membresia_descripcion field */
-    const MEMBRESIA_DESCRIPCION = 'membresia.membresia_descripcion';
+    /** the column name for the idempleado field */
+    const IDEMPLEADO = 'visitalog.idempleado';
 
-    /** the column name for the membresia_servicios field */
-    const MEMBRESIA_SERVICIOS = 'membresia.membresia_servicios';
+    /** the column name for the visitalog_fecha field */
+    const VISITALOG_FECHA = 'visitalog.visitalog_fecha';
 
-    /** the column name for the membresia_cupones field */
-    const MEMBRESIA_CUPONES = 'membresia.membresia_cupones';
-
-    /** the column name for the membresia_precio field */
-    const MEMBRESIA_PRECIO = 'membresia.membresia_precio';
-
-    /** the column name for the servicio_generaingreso field */
-    const SERVICIO_GENERAINGRESO = 'membresia.servicio_generaingreso';
-
-    /** the column name for the servicio_generacomision field */
-    const SERVICIO_GENERACOMISION = 'membresia.servicio_generacomision';
-
-    /** the column name for the servicio_tipocomision field */
-    const SERVICIO_TIPOCOMISION = 'membresia.servicio_tipocomision';
-
-    /** the column name for the servicio_comision field */
-    const SERVICIO_COMISION = 'membresia.servicio_comision';
-
-    /** The enumerated values for the servicio_tipocomision field */
-    const SERVICIO_TIPOCOMISION_PORCENTAJE = 'porcentaje';
-    const SERVICIO_TIPOCOMISION_CANTIDAD = 'cantidad';
+    /** the column name for the visitalog_accion field */
+    const VISITALOG_ACCION = 'visitalog.visitalog_accion';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of Membresia objects.
+     * An identity map to hold any loaded instances of Visitalog objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array Membresia[]
+     * @var        array Visitalog[]
      */
     public static $instances = array();
 
@@ -82,38 +63,30 @@ abstract class BaseMembresiaPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. MembresiaPeer::$fieldNames[MembresiaPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. VisitalogPeer::$fieldNames[VisitalogPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idmembresia', 'MembresiaNombre', 'MembresiaDescripcion', 'MembresiaServicios', 'MembresiaCupones', 'MembresiaPrecio', 'ServicioGeneraingreso', 'ServicioGeneracomision', 'ServicioTipocomision', 'ServicioComision', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia', 'membresiaNombre', 'membresiaDescripcion', 'membresiaServicios', 'membresiaCupones', 'membresiaPrecio', 'servicioGeneraingreso', 'servicioGeneracomision', 'servicioTipocomision', 'servicioComision', ),
-        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA, MembresiaPeer::MEMBRESIA_NOMBRE, MembresiaPeer::MEMBRESIA_DESCRIPCION, MembresiaPeer::MEMBRESIA_SERVICIOS, MembresiaPeer::MEMBRESIA_CUPONES, MembresiaPeer::MEMBRESIA_PRECIO, MembresiaPeer::SERVICIO_GENERAINGRESO, MembresiaPeer::SERVICIO_GENERACOMISION, MembresiaPeer::SERVICIO_TIPOCOMISION, MembresiaPeer::SERVICIO_COMISION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA', 'MEMBRESIA_NOMBRE', 'MEMBRESIA_DESCRIPCION', 'MEMBRESIA_SERVICIOS', 'MEMBRESIA_CUPONES', 'MEMBRESIA_PRECIO', 'SERVICIO_GENERAINGRESO', 'SERVICIO_GENERACOMISION', 'SERVICIO_TIPOCOMISION', 'SERVICIO_COMISION', ),
-        BasePeer::TYPE_FIELDNAME => array ('idmembresia', 'membresia_nombre', 'membresia_descripcion', 'membresia_servicios', 'membresia_cupones', 'membresia_precio', 'servicio_generaingreso', 'servicio_generacomision', 'servicio_tipocomision', 'servicio_comision', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Idvisitalog', 'Idvisita', 'Idempleado', 'VisitalogFecha', 'VisitalogAccion', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisitalog', 'idvisita', 'idempleado', 'visitalogFecha', 'visitalogAccion', ),
+        BasePeer::TYPE_COLNAME => array (VisitalogPeer::IDVISITALOG, VisitalogPeer::IDVISITA, VisitalogPeer::IDEMPLEADO, VisitalogPeer::VISITALOG_FECHA, VisitalogPeer::VISITALOG_ACCION, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITALOG', 'IDVISITA', 'IDEMPLEADO', 'VISITALOG_FECHA', 'VISITALOG_ACCION', ),
+        BasePeer::TYPE_FIELDNAME => array ('idvisitalog', 'idvisita', 'idempleado', 'visitalog_fecha', 'visitalog_accion', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. MembresiaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. VisitalogPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idmembresia' => 0, 'MembresiaNombre' => 1, 'MembresiaDescripcion' => 2, 'MembresiaServicios' => 3, 'MembresiaCupones' => 4, 'MembresiaPrecio' => 5, 'ServicioGeneraingreso' => 6, 'ServicioGeneracomision' => 7, 'ServicioTipocomision' => 8, 'ServicioComision' => 9, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idmembresia' => 0, 'membresiaNombre' => 1, 'membresiaDescripcion' => 2, 'membresiaServicios' => 3, 'membresiaCupones' => 4, 'membresiaPrecio' => 5, 'servicioGeneraingreso' => 6, 'servicioGeneracomision' => 7, 'servicioTipocomision' => 8, 'servicioComision' => 9, ),
-        BasePeer::TYPE_COLNAME => array (MembresiaPeer::IDMEMBRESIA => 0, MembresiaPeer::MEMBRESIA_NOMBRE => 1, MembresiaPeer::MEMBRESIA_DESCRIPCION => 2, MembresiaPeer::MEMBRESIA_SERVICIOS => 3, MembresiaPeer::MEMBRESIA_CUPONES => 4, MembresiaPeer::MEMBRESIA_PRECIO => 5, MembresiaPeer::SERVICIO_GENERAINGRESO => 6, MembresiaPeer::SERVICIO_GENERACOMISION => 7, MembresiaPeer::SERVICIO_TIPOCOMISION => 8, MembresiaPeer::SERVICIO_COMISION => 9, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDMEMBRESIA' => 0, 'MEMBRESIA_NOMBRE' => 1, 'MEMBRESIA_DESCRIPCION' => 2, 'MEMBRESIA_SERVICIOS' => 3, 'MEMBRESIA_CUPONES' => 4, 'MEMBRESIA_PRECIO' => 5, 'SERVICIO_GENERAINGRESO' => 6, 'SERVICIO_GENERACOMISION' => 7, 'SERVICIO_TIPOCOMISION' => 8, 'SERVICIO_COMISION' => 9, ),
-        BasePeer::TYPE_FIELDNAME => array ('idmembresia' => 0, 'membresia_nombre' => 1, 'membresia_descripcion' => 2, 'membresia_servicios' => 3, 'membresia_cupones' => 4, 'membresia_precio' => 5, 'servicio_generaingreso' => 6, 'servicio_generacomision' => 7, 'servicio_tipocomision' => 8, 'servicio_comision' => 9, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
-    );
-
-    /** The enumerated values for this table */
-    protected static $enumValueSets = array(
-        MembresiaPeer::SERVICIO_TIPOCOMISION => array(
-            MembresiaPeer::SERVICIO_TIPOCOMISION_PORCENTAJE,
-            MembresiaPeer::SERVICIO_TIPOCOMISION_CANTIDAD,
-        ),
+        BasePeer::TYPE_PHPNAME => array ('Idvisitalog' => 0, 'Idvisita' => 1, 'Idempleado' => 2, 'VisitalogFecha' => 3, 'VisitalogAccion' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisitalog' => 0, 'idvisita' => 1, 'idempleado' => 2, 'visitalogFecha' => 3, 'visitalogAccion' => 4, ),
+        BasePeer::TYPE_COLNAME => array (VisitalogPeer::IDVISITALOG => 0, VisitalogPeer::IDVISITA => 1, VisitalogPeer::IDEMPLEADO => 2, VisitalogPeer::VISITALOG_FECHA => 3, VisitalogPeer::VISITALOG_ACCION => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITALOG' => 0, 'IDVISITA' => 1, 'IDEMPLEADO' => 2, 'VISITALOG_FECHA' => 3, 'VISITALOG_ACCION' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('idvisitalog' => 0, 'idvisita' => 1, 'idempleado' => 2, 'visitalog_fecha' => 3, 'visitalog_accion' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -128,10 +101,10 @@ abstract class BaseMembresiaPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = MembresiaPeer::getFieldNames($toType);
-        $key = isset(MembresiaPeer::$fieldKeys[$fromType][$name]) ? MembresiaPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = VisitalogPeer::getFieldNames($toType);
+        $key = isset(VisitalogPeer::$fieldKeys[$fromType][$name]) ? VisitalogPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(MembresiaPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(VisitalogPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -148,56 +121,11 @@ abstract class BaseMembresiaPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, MembresiaPeer::$fieldNames)) {
+        if (!array_key_exists($type, VisitalogPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return MembresiaPeer::$fieldNames[$type];
-    }
-
-    /**
-     * Gets the list of values for all ENUM columns
-     * @return array
-     */
-    public static function getValueSets()
-    {
-      return MembresiaPeer::$enumValueSets;
-    }
-
-    /**
-     * Gets the list of values for an ENUM column
-     *
-     * @param string $colname The ENUM column name.
-     *
-     * @return array list of possible values for the column
-     */
-    public static function getValueSet($colname)
-    {
-        $valueSets = MembresiaPeer::getValueSets();
-
-        if (!isset($valueSets[$colname])) {
-            throw new PropelException(sprintf('Column "%s" has no ValueSet.', $colname));
-        }
-
-        return $valueSets[$colname];
-    }
-
-    /**
-     * Gets the SQL value for the ENUM column value
-     *
-     * @param string $colname ENUM column name.
-     * @param string $enumVal ENUM value.
-     *
-     * @return int SQL value
-     */
-    public static function getSqlValueForEnum($colname, $enumVal)
-    {
-        $values = MembresiaPeer::getValueSet($colname);
-        if (!in_array($enumVal, $values)) {
-            throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $colname));
-        }
-
-        return array_search($enumVal, $values);
+        return VisitalogPeer::$fieldNames[$type];
     }
 
     /**
@@ -209,12 +137,12 @@ abstract class BaseMembresiaPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. MembresiaPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. VisitalogPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(MembresiaPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(VisitalogPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -232,27 +160,17 @@ abstract class BaseMembresiaPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(MembresiaPeer::IDMEMBRESIA);
-            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_NOMBRE);
-            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_DESCRIPCION);
-            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_SERVICIOS);
-            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_CUPONES);
-            $criteria->addSelectColumn(MembresiaPeer::MEMBRESIA_PRECIO);
-            $criteria->addSelectColumn(MembresiaPeer::SERVICIO_GENERAINGRESO);
-            $criteria->addSelectColumn(MembresiaPeer::SERVICIO_GENERACOMISION);
-            $criteria->addSelectColumn(MembresiaPeer::SERVICIO_TIPOCOMISION);
-            $criteria->addSelectColumn(MembresiaPeer::SERVICIO_COMISION);
+            $criteria->addSelectColumn(VisitalogPeer::IDVISITALOG);
+            $criteria->addSelectColumn(VisitalogPeer::IDVISITA);
+            $criteria->addSelectColumn(VisitalogPeer::IDEMPLEADO);
+            $criteria->addSelectColumn(VisitalogPeer::VISITALOG_FECHA);
+            $criteria->addSelectColumn(VisitalogPeer::VISITALOG_ACCION);
         } else {
-            $criteria->addSelectColumn($alias . '.idmembresia');
-            $criteria->addSelectColumn($alias . '.membresia_nombre');
-            $criteria->addSelectColumn($alias . '.membresia_descripcion');
-            $criteria->addSelectColumn($alias . '.membresia_servicios');
-            $criteria->addSelectColumn($alias . '.membresia_cupones');
-            $criteria->addSelectColumn($alias . '.membresia_precio');
-            $criteria->addSelectColumn($alias . '.servicio_generaingreso');
-            $criteria->addSelectColumn($alias . '.servicio_generacomision');
-            $criteria->addSelectColumn($alias . '.servicio_tipocomision');
-            $criteria->addSelectColumn($alias . '.servicio_comision');
+            $criteria->addSelectColumn($alias . '.idvisitalog');
+            $criteria->addSelectColumn($alias . '.idvisita');
+            $criteria->addSelectColumn($alias . '.idempleado');
+            $criteria->addSelectColumn($alias . '.visitalog_fecha');
+            $criteria->addSelectColumn($alias . '.visitalog_accion');
         }
     }
 
@@ -272,21 +190,21 @@ abstract class BaseMembresiaPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(MembresiaPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(VisitalogPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            MembresiaPeer::addSelectColumns($criteria);
+            VisitalogPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(MembresiaPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(VisitalogPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(VisitalogPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -305,7 +223,7 @@ abstract class BaseMembresiaPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return Membresia
+     * @return Visitalog
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -313,7 +231,7 @@ abstract class BaseMembresiaPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = MembresiaPeer::doSelect($critcopy, $con);
+        $objects = VisitalogPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -331,7 +249,7 @@ abstract class BaseMembresiaPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return MembresiaPeer::populateObjects(MembresiaPeer::doSelectStmt($criteria, $con));
+        return VisitalogPeer::populateObjects(VisitalogPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -349,16 +267,16 @@ abstract class BaseMembresiaPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(VisitalogPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            MembresiaPeer::addSelectColumns($criteria);
+            VisitalogPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(MembresiaPeer::DATABASE_NAME);
+        $criteria->setDbName(VisitalogPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -372,16 +290,16 @@ abstract class BaseMembresiaPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param Membresia $obj A Membresia object.
+     * @param Visitalog $obj A Visitalog object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = (string) $obj->getIdmembresia();
+                $key = (string) $obj->getIdvisitalog();
             } // if key === null
-            MembresiaPeer::$instances[$key] = $obj;
+            VisitalogPeer::$instances[$key] = $obj;
         }
     }
 
@@ -393,7 +311,7 @@ abstract class BaseMembresiaPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A Membresia object or a primary key value.
+     * @param      mixed $value A Visitalog object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -401,17 +319,17 @@ abstract class BaseMembresiaPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof Membresia) {
-                $key = (string) $value->getIdmembresia();
+            if (is_object($value) && $value instanceof Visitalog) {
+                $key = (string) $value->getIdvisitalog();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Membresia object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Visitalog object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(MembresiaPeer::$instances[$key]);
+            unset(VisitalogPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -422,14 +340,14 @@ abstract class BaseMembresiaPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return Membresia Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return Visitalog Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(MembresiaPeer::$instances[$key])) {
-                return MembresiaPeer::$instances[$key];
+            if (isset(VisitalogPeer::$instances[$key])) {
+                return VisitalogPeer::$instances[$key];
             }
         }
 
@@ -444,28 +362,19 @@ abstract class BaseMembresiaPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (MembresiaPeer::$instances as $instance) {
+        foreach (VisitalogPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        MembresiaPeer::$instances = array();
+        VisitalogPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to membresia
+     * Method to invalidate the instance pool of all tables related to visitalog
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in MembresiaclinicaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        MembresiaclinicaPeer::clearInstancePool();
-        // Invalidate objects in PacientemembresiaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PacientemembresiaPeer::clearInstancePool();
-        // Invalidate objects in VisitadetallePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        VisitadetallePeer::clearInstancePool();
     }
 
     /**
@@ -515,11 +424,11 @@ abstract class BaseMembresiaPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = MembresiaPeer::getOMClass();
+        $cls = VisitalogPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = MembresiaPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = MembresiaPeer::getInstanceFromPool($key))) {
+            $key = VisitalogPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = VisitalogPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -528,7 +437,7 @@ abstract class BaseMembresiaPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                MembresiaPeer::addInstanceToPool($obj, $key);
+                VisitalogPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -542,21 +451,21 @@ abstract class BaseMembresiaPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (Membresia object, last column rank)
+     * @return array (Visitalog object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = MembresiaPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = MembresiaPeer::getInstanceFromPool($key))) {
+        $key = VisitalogPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = VisitalogPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + MembresiaPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + VisitalogPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = MembresiaPeer::OM_CLASS;
+            $cls = VisitalogPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            MembresiaPeer::addInstanceToPool($obj, $key);
+            VisitalogPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -571,7 +480,7 @@ abstract class BaseMembresiaPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(MembresiaPeer::DATABASE_NAME)->getTable(MembresiaPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(VisitalogPeer::DATABASE_NAME)->getTable(VisitalogPeer::TABLE_NAME);
     }
 
     /**
@@ -579,9 +488,9 @@ abstract class BaseMembresiaPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BaseMembresiaPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BaseMembresiaPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \MembresiaTableMap());
+      $dbMap = Propel::getDatabaseMap(BaseVisitalogPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BaseVisitalogPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \VisitalogTableMap());
       }
     }
 
@@ -593,13 +502,13 @@ abstract class BaseMembresiaPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return MembresiaPeer::OM_CLASS;
+        return VisitalogPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a Membresia or Criteria object.
+     * Performs an INSERT on the database, given a Visitalog or Criteria object.
      *
-     * @param      mixed $values Criteria or Membresia object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or Visitalog object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -608,22 +517,22 @@ abstract class BaseMembresiaPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(VisitalogPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from Membresia object
+            $criteria = $values->buildCriteria(); // build Criteria from Visitalog object
         }
 
-        if ($criteria->containsKey(MembresiaPeer::IDMEMBRESIA) && $criteria->keyContainsValue(MembresiaPeer::IDMEMBRESIA) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.MembresiaPeer::IDMEMBRESIA.')');
+        if ($criteria->containsKey(VisitalogPeer::IDVISITALOG) && $criteria->keyContainsValue(VisitalogPeer::IDVISITALOG) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.VisitalogPeer::IDVISITALOG.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(MembresiaPeer::DATABASE_NAME);
+        $criteria->setDbName(VisitalogPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -640,9 +549,9 @@ abstract class BaseMembresiaPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a Membresia or Criteria object.
+     * Performs an UPDATE on the database, given a Visitalog or Criteria object.
      *
-     * @param      mixed $values Criteria or Membresia object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or Visitalog object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -651,35 +560,35 @@ abstract class BaseMembresiaPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(VisitalogPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(MembresiaPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(VisitalogPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(MembresiaPeer::IDMEMBRESIA);
-            $value = $criteria->remove(MembresiaPeer::IDMEMBRESIA);
+            $comparison = $criteria->getComparison(VisitalogPeer::IDVISITALOG);
+            $value = $criteria->remove(VisitalogPeer::IDVISITALOG);
             if ($value) {
-                $selectCriteria->add(MembresiaPeer::IDMEMBRESIA, $value, $comparison);
+                $selectCriteria->add(VisitalogPeer::IDVISITALOG, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(MembresiaPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(VisitalogPeer::TABLE_NAME);
             }
 
-        } else { // $values is Membresia object
+        } else { // $values is Visitalog object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(MembresiaPeer::DATABASE_NAME);
+        $criteria->setDbName(VisitalogPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the membresia table.
+     * Deletes all rows from the visitalog table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -688,20 +597,19 @@ abstract class BaseMembresiaPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(VisitalogPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += MembresiaPeer::doOnDeleteCascade(new Criteria(MembresiaPeer::DATABASE_NAME), $con);
-            $affectedRows += BasePeer::doDeleteAll(MembresiaPeer::TABLE_NAME, $con, MembresiaPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(VisitalogPeer::TABLE_NAME, $con, VisitalogPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            MembresiaPeer::clearInstancePool();
-            MembresiaPeer::clearRelatedInstancePool();
+            VisitalogPeer::clearInstancePool();
+            VisitalogPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -712,9 +620,9 @@ abstract class BaseMembresiaPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a Membresia or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Visitalog or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or Membresia object or primary key or array of primary keys
+     * @param      mixed $values Criteria or Visitalog object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -725,22 +633,32 @@ abstract class BaseMembresiaPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(VisitalogPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
+            // invalidate the cache for all objects of this type, since we have no
+            // way of knowing (without running a query) what objects should be invalidated
+            // from the cache based on this Criteria.
+            VisitalogPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof Membresia) { // it's a model object
+        } elseif ($values instanceof Visitalog) { // it's a model object
+            // invalidate the cache for this single object
+            VisitalogPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(MembresiaPeer::DATABASE_NAME);
-            $criteria->add(MembresiaPeer::IDMEMBRESIA, (array) $values, Criteria::IN);
+            $criteria = new Criteria(VisitalogPeer::DATABASE_NAME);
+            $criteria->add(VisitalogPeer::IDVISITALOG, (array) $values, Criteria::IN);
+            // invalidate the cache for this object(s)
+            foreach ((array) $values as $singleval) {
+                VisitalogPeer::removeInstanceFromPool($singleval);
+            }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(MembresiaPeer::DATABASE_NAME);
+        $criteria->setDbName(VisitalogPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -749,25 +667,8 @@ abstract class BaseMembresiaPeer
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
 
-            // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
-            $c = clone $criteria;
-            $affectedRows += MembresiaPeer::doOnDeleteCascade($c, $con);
-
-            // Because this db requires some delete cascade/set null emulation, we have to
-            // clear the cached instance *after* the emulation has happened (since
-            // instances get re-added by the select statement contained therein).
-            if ($values instanceof Criteria) {
-                MembresiaPeer::clearInstancePool();
-            } elseif ($values instanceof Membresia) { // it's a model object
-                MembresiaPeer::removeInstanceFromPool($values);
-            } else { // it's a primary key, or an array of pks
-                foreach ((array) $values as $singleval) {
-                    MembresiaPeer::removeInstanceFromPool($singleval);
-                }
-            }
-
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            MembresiaPeer::clearRelatedInstancePool();
+            VisitalogPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -778,58 +679,13 @@ abstract class BaseMembresiaPeer
     }
 
     /**
-     * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
-     * feature (like MySQL or SQLite).
-     *
-     * This method is not very speedy because it must perform a query first to get
-     * the implicated records and then perform the deletes by calling those Peer classes.
-     *
-     * This method should be used within a transaction if possible.
-     *
-     * @param      Criteria $criteria
-     * @param      PropelPDO $con
-     * @return int The number of affected rows (if supported by underlying database driver).
-     */
-    protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
-    {
-        // initialize var to track total num of affected rows
-        $affectedRows = 0;
-
-        // first find the objects that are implicated by the $criteria
-        $objects = MembresiaPeer::doSelect($criteria, $con);
-        foreach ($objects as $obj) {
-
-
-            // delete related Membresiaclinica objects
-            $criteria = new Criteria(MembresiaclinicaPeer::DATABASE_NAME);
-
-            $criteria->add(MembresiaclinicaPeer::IDMEMBRESIA, $obj->getIdmembresia());
-            $affectedRows += MembresiaclinicaPeer::doDelete($criteria, $con);
-
-            // delete related Pacientemembresia objects
-            $criteria = new Criteria(PacientemembresiaPeer::DATABASE_NAME);
-
-            $criteria->add(PacientemembresiaPeer::IDMEMBRESIA, $obj->getIdmembresia());
-            $affectedRows += PacientemembresiaPeer::doDelete($criteria, $con);
-
-            // delete related Visitadetalle objects
-            $criteria = new Criteria(VisitadetallePeer::DATABASE_NAME);
-
-            $criteria->add(VisitadetallePeer::IDMEMBRESIA, $obj->getIdmembresia());
-            $affectedRows += VisitadetallePeer::doDelete($criteria, $con);
-        }
-
-        return $affectedRows;
-    }
-
-    /**
-     * Validates all modified columns of given Membresia object.
+     * Validates all modified columns of given Visitalog object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param Membresia $obj The object to validate.
+     * @param Visitalog $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -839,8 +695,8 @@ abstract class BaseMembresiaPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(MembresiaPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(MembresiaPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(VisitalogPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(VisitalogPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -856,7 +712,7 @@ abstract class BaseMembresiaPeer
 
         }
 
-        return BasePeer::doValidate(MembresiaPeer::DATABASE_NAME, MembresiaPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(VisitalogPeer::DATABASE_NAME, VisitalogPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -864,23 +720,23 @@ abstract class BaseMembresiaPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return Membresia
+     * @return Visitalog
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = MembresiaPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = VisitalogPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(VisitalogPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(MembresiaPeer::DATABASE_NAME);
-        $criteria->add(MembresiaPeer::IDMEMBRESIA, $pk);
+        $criteria = new Criteria(VisitalogPeer::DATABASE_NAME);
+        $criteria->add(VisitalogPeer::IDVISITALOG, $pk);
 
-        $v = MembresiaPeer::doSelect($criteria, $con);
+        $v = VisitalogPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -890,31 +746,31 @@ abstract class BaseMembresiaPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return Membresia[]
+     * @return Visitalog[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(MembresiaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(VisitalogPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(MembresiaPeer::DATABASE_NAME);
-            $criteria->add(MembresiaPeer::IDMEMBRESIA, $pks, Criteria::IN);
-            $objs = MembresiaPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(VisitalogPeer::DATABASE_NAME);
+            $criteria->add(VisitalogPeer::IDVISITALOG, $pks, Criteria::IN);
+            $objs = VisitalogPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BaseMembresiaPeer
+} // BaseVisitalogPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseMembresiaPeer::buildTableMap();
+BaseVisitalogPeer::buildTableMap();
 
