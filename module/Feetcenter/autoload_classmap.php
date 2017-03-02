@@ -37,6 +37,7 @@ return array(
     'Configuracion\Controller\ConfiguracionController'  => __DIR__ . '/src/Configuracion/Controller/ConfiguracionController.php',
     'Egresos\Controller\EgresosController'              => __DIR__ . '/src/Egresos/Controller/EgresosController.php',
     'Egresos\Form\EgresoForm'                           => __DIR__ . '/src/Egresos/Form/EgresoForm.php',
+    'Empleados\Controller\AusenciasController'          => __DIR__ . '/src/Empleados/Controller/AusenciasController.php',
     'Empleados\Controller\ComisionesController'         => __DIR__ . '/src/Empleados/Controller/ComisionesController.php',
     'Empleados\Controller\EmpleadosController'          => __DIR__ . '/src/Empleados/Controller/EmpleadosController.php',
     'Empleados\Controller\FaltantesController'          => __DIR__ . '/src/Empleados/Controller/FaltantesController.php',

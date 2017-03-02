@@ -42,8 +42,10 @@ return array(
             'empleados-comisiones',
             'empleados-vendidos',
             'empleados-faltantes',
+            'empleados-ausencias',
             //pacientes
             'pacientes',
+            'pacientes/get',
             'pacientes/nuevo',
             'pacientes/filter',
             'pacientes/editar',
@@ -100,7 +102,9 @@ return array(
             'empleados-comisiones',
             'empleados-vendidos',
             'empleados-faltantes',
+            'empleados-ausencias',
             //pacientes
+            'pacientes/get',
             'pacientes/serverside',
             'pacientes',
             'pacientes/nuevo',
@@ -165,6 +169,7 @@ return array(
             'empleados-vendidos',
             //pacientes
             'pacientes',
+            'pacientes/get',
             'pacientes/serverside',
             'pacientes/filter',
             'seguimiento',
@@ -209,6 +214,7 @@ return array(
             'empleados-reportes/editar',
             'empleados-reportes/eliminar',
             'empleados-faltantes',
+            'empleados-ausencias',
             //pacientes
             'pacientes/nuevo',
             'pacientes/editar',

@@ -387,11 +387,12 @@
                     if(data_dependencia == 'cupon'){
                         var error = false;
                         var folio = prompt("Folio de la membresia");
+                        var idpaciente = $container.find('input[name=idpaciente]').val();
                         if(folio !== null){
                             //La peticion ajax
                             $.ajax({
                                 url:'/validarmembresia',
-                                data:{folio:folio,cantidad:cantidad},
+                                data:{folio:folio,cantidad:cantidad,idpaciente:idpaciente},
                                 dataType:'json',
                                 success:function (data){
                                    if(data.response){
@@ -785,7 +786,16 @@
                 console.log(type);
             });
             
-            
+            $container.find('input[name=visita_tipo]').on('change',function(e){
+                if($(this).val() == 'consulta'){
+                    var r = confirm("¿Segura que es consulta?");
+                    if (r == false) {
+
+                        $container.find('input[name=visita_tipo][value=consulta]').prop('checked',false);
+                        $container.find('input[name=visita_tipo][value=servicio]').prop('checked',true);
+                    }
+                }
+            });
             
            
 

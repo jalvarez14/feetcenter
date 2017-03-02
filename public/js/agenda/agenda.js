@@ -315,7 +315,8 @@
                     $(this).addClass('input-error');
                 }
             });
-
+     
+            
             if(!empty){
                 var total = parseFloat(payMethodContainer.find('input[name=visita_total]').val());
                 var sum = 0;
@@ -1058,7 +1059,17 @@
                                         payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
                                         payDetailsContainer.slideDown();
                                         payMethodContainer.slideDown();
+                                        
+                                        //CALCULADORA
+                                        
+                                        payMethodContainer.find('input[name=recibi]').on('keyup',function(){
+                                            var recibi = parseFloat($(this).val());
+                                            var total = parseFloat(payDetailsContainer.find('input[name=visita_total]').val());
+                                            var cambio = recibi - total;
 
+                                            payMethodContainer.find('span#visita_cambio b').text(accounting.formatMoney(cambio));
+                                        });
+                                        
                                         //dateContainer.slideUp();
                                         pagarAction.text('Pagar');
                                         pagarAction.prop('disabled',false);

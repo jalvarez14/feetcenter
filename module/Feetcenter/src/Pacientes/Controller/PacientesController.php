@@ -15,6 +15,25 @@ use Zend\View\Model\ViewModel;
 class PacientesController extends AbstractActionController
 {
     
+    public function getAction(){
+        $post_data = $this->params()->fromQuery();
+        $view_model = new ViewModel();
+        if($post_data['name'] == 'pacientemembresiadetalle'){
+            
+            $pacientemembresiadetalle = \PacientemembresiadetalleQuery::create()->findPk($post_data['data']['id']);
+            $view_model->setTerminal(true);
+            $view_model->setTemplate('pacientes/modal/pacientemembresiadetalle');
+            $view_model->setVariables(array(
+                'entity' => $pacientemembresiadetalle,
+            ));
+            
+            
+            
+        }
+        
+        return $view_model;
+    }
+    
     public $columns = array(
          0 => 'clinica_nombre',
          1 => 'paciente_fecharegistro',

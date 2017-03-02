@@ -48,7 +48,7 @@
         ?>
 
     </head>
-    <body>
+    <body class="loading">
         <header id="top_header" class="group z-depth-1">
             <nav id="top_header_resources" class="navbar navbar-left">
                 <ul>
@@ -81,6 +81,7 @@
             <li><a href="/empleados/comisiones">Comisiones</a></li>
             <li><a href="/empleados/vendidos">Productos y servicios vendidos</a></li>
             <li><a href="/empleados/faltantes">Faltantes</a></li>
+            <li><a href="/empleados/ausencias">Ausencias</a></li>
         </ul>
         <ul id="dropdown-pacientes" class="dropdown">
             <li><a href="/pacientes/nuevo">Nuevo cliente</a></li>
@@ -162,4 +163,16 @@
 
     </script>
     <div class="modal-loading"><!-- Place at bottom of page --></div>
+    <script>
+        $(document).ready(function(){
+            $('body').removeClass('loading');
+        });
+        $(document).ajaxStart(function(){
+             $('body').addClass('loading');
+        }); 
+        
+        $( document ).ajaxComplete(function() {
+             $('body').removeClass('loading');
+        });
+    </script>
 </html>
