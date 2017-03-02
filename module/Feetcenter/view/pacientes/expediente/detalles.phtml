@@ -4,11 +4,21 @@
             <tr>
                 <th>Cantidad</th>
                 <th>Servicio/Producto</th>
+                <th>Membresia</th>
                 <th>Subtotal</th>
             </tr>
         </thead>
         <tbody>
+            
             <?php foreach ($visita->getVisitadetalles() as $key => $value) :?>
+            <?php 
+                $membresia = 'N/A';
+                $membresia_exist = PacientemembresiadetalleQuery::create()->filterByIdvisitadetalle($value->getIdvisitadetalle())->exists();
+                if($membresia_exist){
+                    $pacientemembresiadetalle = PacientemembresiadetalleQuery::create()->filterByIdvisitadetalle($value->getIdvisitadetalle())->findOne();
+                    $membresia = $pacientemembresiadetalle->getPacientemembresia()->getPaciente()->getPacienteNombre();
+                }
+            ?>
             <tr>
                 <?php if ($value->getIdproductoclinica() != NULL) :?>
                     <input type="hidden" value="<?php echo $value->getIdproductoclinica()?>" name="vistadetalle[<?php echo $key?>][id]">
@@ -32,6 +42,7 @@
                     <input class="visitadetalle_subtotal" type="hidden" value="<?php echo $value->getVisitadetalleSubtotal()?>" name="vistadetalle[<?php echo $key?>][subtotal]">
                     <td><?php echo (int) $value->getVisitadetalleCantidad()?></td>
                     <td><?php echo $name?></td>
+                    <td><?php echo $membresia?></td>
                     <td class="visitadetalle_subtotal"><?php echo $value->getVisitadetalleSubtotal()?></td>
             </tr>
             <?php endforeach;?>

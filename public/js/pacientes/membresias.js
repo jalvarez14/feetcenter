@@ -116,6 +116,7 @@
         
                         //Los detalles 
                         $.each(this.detalles,function(index){
+                            
                             var date = moment(this.pacientemembresiadetalle_fecha,'MM/DD/YY');
                             if(this.tipo == 'membresia'){
                                 var div = tr.find('td#servicios .units-row').find('div').not('.no_aplica').eq(0);
@@ -127,8 +128,16 @@
                                 var div = tr.find('td#cupones .units-row').find('div').not('.no_aplica').eq(0);
                                 div.addClass('no_aplica');
                                 div.css('color','black');
-                                div.text(date.format('DD/MM'));
+                                div.html('<a data-width="800" data="modal" data-title="CUPON DETALLES" idpacientemembresiadetalle="'+this.idpacientemembresiadetalle+'" href="javascript:;">'+date.format('DD/MM')+'</a>');
                                 div.attr('title',date.format('DD/MM/YYYY'));
+                                
+                                var data_content = 'get';
+                                data_content += '?name=pacientemembresiadetalle';
+                                data_content += '&data[id]='+this.idpacientemembresiadetalle;
+                                
+                                div.find('a').attr('data-content',data_content);
+                                var $modal = div.find('a').modal();
+                                console.log('');
                                
                             }
                             return;
@@ -176,10 +185,11 @@
              $container.find("select[name=pacientemembresia_estatus]").multipleSelect({
                 onClick : filter,
                 onCheckAll:filter,
+                
             });
    
             $container.find("select[name=idclinica]").multipleSelect("setSelects", [settings.session.idclinica]);
-            $container.find("select[name=pacientemembresia_estatus]").multipleSelect("setSelects", ['activa']);
+            $container.find("select[name=pacientemembresia_estatus]").multipleSelect("checkAll");
             
             filter();
             

@@ -287,7 +287,7 @@ class ReportesController extends AbstractActionController
     }
     
     public function tablerodecontrolAction(){
-        
+            
         $request = $this->getRequest();
         $session = new \Shared\Session\AouthSession();
         $idrol = $session->getIdrol();

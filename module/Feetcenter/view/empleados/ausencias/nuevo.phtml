@@ -1,0 +1,26 @@
+
+<div id="modal_event_container">
+    <form method="POST" action="/empleados/ausencias/nuevo">
+    <div class="units-row" style="margin-bottom: 0px;">
+        <div class="unit-50">
+            Empleado
+            <input type="hidden" name="idclinica" value="<?php echo $idclinica?>">
+            <input type="hidden" name="start" value="<?php echo $start?>">
+            <select class="width-100" name="idempleado" style="height: 29px;">
+                <?php foreach ($empleados as $empleado) :?>
+                    <option value="<?php echo $empleado->getIdempleado()?>"><?php echo $empleado->getEmpleado()->getEmpleadoNombre()?></option>
+                <?php endforeach;?>
+            </select>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-100">
+            Nota
+            <textarea name="nota" required></textarea>
+                
+           
+        </div>
+    </div>
+    </form>
+</div>
+

@@ -1,10 +1,12 @@
 <style>
-    .fc-header-center{
-        font-size: 18px;
-        font-weight: bold;
+    .closeon{
+        position: absolute;
+        top: 0px;
+        right: 0px;
     }
 </style>
 <div id="agenda_container">
+     <h1>Ausencias</h1>
     <?php if(count($successMessages)) :?>
         <div class="units-row">yellow;
             <?php foreach ($successMessages as $message) :?>
@@ -25,12 +27,6 @@
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="unit-30" id="filter_container">
-            <label style="font-size: 18px">
-                Buscar Fecha   
-            </label>
-            <input class="width-100" type="text" name="agenda_fecha" style="height: 26px;">
-        </div>
     </div>
     <div id='calendar'></div>
 </div>
@@ -40,11 +36,11 @@
 <script src="/plugins/fullcalendar/fullcalendar.js"></script>
 <script src="/js/plugin/accounting.js"></script>
 <script src="/plugins/fullcalendar/lang/es.js"></script>
-<script src='/js/agenda/agenda.js'></script>
+<script src='/js/empleados/ausencias.js'></script>
 <script>
-    var agenda = $('#agenda_container').agenda({
+    var ausencias = $('#agenda_container').ausencias({
         idclinica: <?php echo $idclinica?>,
         idrol: <?php echo Shared\Session\AouthSession::getIdrol()?>,
     });
-    agenda.init();
+    ausencias.init();
 </script>

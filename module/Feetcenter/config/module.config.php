@@ -371,6 +371,16 @@ return array(
                     ),
                 ),
             ),
+            'empleados-ausencias' => array(
+                 'type' => 'Segment',
+                 'options' => array(
+                    'route' => '/empleados/ausencias[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Empleados\Controller\Ausencias',
+                        'action' => 'index',
+                    ),
+                ),
+             ),
              'empleados-comisiones' => array(
                  'type' => 'Segment',
                  'options' => array(
@@ -478,6 +488,16 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'get' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                           'route'    => '/get',
+                           'defaults' => array(
+                               'controller'    => 'Pacientes\Controller\Pacientes',
+                               'action'        => 'get',
+                           ),
+                       ),
+                   ),
                     'nuevo' => array(
                        'type' => 'Segment',
                        'options' => array(
@@ -743,6 +763,7 @@ return array(
             'Empleados\Controller\Comisiones' => 'Empleados\Controller\ComisionesController',
             'Empleados\Controller\Vendidos' => 'Empleados\Controller\VendidosController',
             'Empleados\Controller\Faltantes' => 'Empleados\Controller\FaltantesController',
+            'Empleados\Controller\Ausencias' => 'Empleados\Controller\AusenciasController',
             //Pacientes
             'Pacientes\Controller\Pacientes' => 'Pacientes\Controller\PacientesController',
             'Pacientes\Controller\Grupos' => 'Pacientes\Controller\GruposController',

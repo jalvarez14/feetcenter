@@ -35,16 +35,22 @@ class AgendaController extends AbstractActionController
         if ($this->params()->fromQuery('folio')){
             
             $folio = $this->params()->fromQuery('folio');
+            $idpaciente = $this->params()->fromQuery('idpaciente');
             
             if(\PacientemembresiaQuery::create()->filterByPacientemembresiaFolio($folio)->filterByPacientemembresiaEstatus('activa')->exists()){
+                //SI ESTAN RELACIONADOS
                 $paciente_membresia = \PacientemembresiaQuery::create()->filterByPacientemembresiaFolio($folio)->findOne();
-                //Verificamos si existen cupones disponibles
-                $cantidad = $this->params()->fromQuery('cantidad');
-                if($paciente_membresia->getPacientemembresiaCuponesdisponibles()>=$cantidad){
-                    return $this->getResponse()->setContent(json_encode(array('response' => true, 'idpacientemembresia' => $paciente_membresia->getIdpacientemembresia())));
-                }else{
-                     return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'Sin cupones disponibles en la membresia')));
-                }
+                 if(\GrupopersonalQuery::create()->filterByIdpaciente(array($paciente_membresia->getIdpaciente(),$idpaciente))->filterByIdpacienteagregado(array($paciente_membresia->getIdpaciente(),$idpaciente))->exists()){
+                    //Verificamos si existen cupones disponibles
+                    $cantidad = $this->params()->fromQuery('cantidad');
+                    if($paciente_membresia->getPacientemembresiaCuponesdisponibles()>=$cantidad){
+                        return $this->getResponse()->setContent(json_encode(array('response' => true, 'idpacientemembresia' => $paciente_membresia->getIdpacientemembresia())));
+                    }else{
+                         return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'Sin cupones disponibles en la membresia')));
+                    }
+                 }else{
+                    return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'No está relacionado al titular de la membresía')));
+                 }
             }else{
                 return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'Folio invalido')));
             }

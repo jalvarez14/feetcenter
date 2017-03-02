@@ -189,6 +189,7 @@
    
                                 var td = $tableProductos.find('tr[idproducto='+idproducto+']').find('td').eq(index);
                                 td.text(this.vendidos);
+                                
                             });
                         });
                     }
@@ -207,9 +208,8 @@
                             $table2 = $tableProductos.DataTable({
                                 language:data,
                             });
-                        }
+                        },
                     });
-
                }
            })
 
