@@ -583,6 +583,9 @@
     <column name="paciente_sexo" phpName="PacienteSexo" type="CHAR" sqlType="enum('Hombre','Mujer')" required="false"/>
     <column name="paciente_fechanacimiento" phpName="PacienteFechanacimiento" type="DATE" required="false"/>
     <column name="paciente_fecharegistro" phpName="PacienteFecharegistro" type="DATE" required="true"/>
+    <column name="paciente_name" phpName="PacienteName" type="VARCHAR" size="255" required="false"/>
+    <column name="paciente_ap" phpName="PacienteAp" type="VARCHAR" size="255" required="false"/>
+    <column name="paciente_am" phpName="PacienteAm" type="VARCHAR" size="255" required="false"/>
     <foreign-key foreignTable="clinica" name="idclinica_paciente" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
     </foreign-key>

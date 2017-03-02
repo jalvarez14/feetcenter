@@ -120,6 +120,24 @@ abstract class BasePaciente extends BaseObject implements Persistent
     protected $paciente_fecharegistro;
 
     /**
+     * The value for the paciente_name field.
+     * @var        string
+     */
+    protected $paciente_name;
+
+    /**
+     * The value for the paciente_ap field.
+     * @var        string
+     */
+    protected $paciente_ap;
+
+    /**
+     * The value for the paciente_am field.
+     * @var        string
+     */
+    protected $paciente_am;
+
+    /**
      * @var        Clinica
      */
     protected $aClinica;
@@ -442,6 +460,39 @@ abstract class BasePaciente extends BaseObject implements Persistent
 
         return $dt->format($format);
 
+    }
+
+    /**
+     * Get the [paciente_name] column value.
+     *
+     * @return string
+     */
+    public function getPacienteName()
+    {
+
+        return $this->paciente_name;
+    }
+
+    /**
+     * Get the [paciente_ap] column value.
+     *
+     * @return string
+     */
+    public function getPacienteAp()
+    {
+
+        return $this->paciente_ap;
+    }
+
+    /**
+     * Get the [paciente_am] column value.
+     *
+     * @return string
+     */
+    public function getPacienteAm()
+    {
+
+        return $this->paciente_am;
     }
 
     /**
@@ -772,6 +823,69 @@ abstract class BasePaciente extends BaseObject implements Persistent
     } // setPacienteFecharegistro()
 
     /**
+     * Set the value of [paciente_name] column.
+     *
+     * @param  string $v new value
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function setPacienteName($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->paciente_name !== $v) {
+            $this->paciente_name = $v;
+            $this->modifiedColumns[] = PacientePeer::PACIENTE_NAME;
+        }
+
+
+        return $this;
+    } // setPacienteName()
+
+    /**
+     * Set the value of [paciente_ap] column.
+     *
+     * @param  string $v new value
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function setPacienteAp($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->paciente_ap !== $v) {
+            $this->paciente_ap = $v;
+            $this->modifiedColumns[] = PacientePeer::PACIENTE_AP;
+        }
+
+
+        return $this;
+    } // setPacienteAp()
+
+    /**
+     * Set the value of [paciente_am] column.
+     *
+     * @param  string $v new value
+     * @return Paciente The current object (for fluent API support)
+     */
+    public function setPacienteAm($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->paciente_am !== $v) {
+            $this->paciente_am = $v;
+            $this->modifiedColumns[] = PacientePeer::PACIENTE_AM;
+        }
+
+
+        return $this;
+    } // setPacienteAm()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -818,6 +932,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
             $this->paciente_sexo = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->paciente_fechanacimiento = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->paciente_fecharegistro = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->paciente_name = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->paciente_ap = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->paciente_am = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -827,7 +944,7 @@ abstract class BasePaciente extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 15; // 15 = PacientePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 18; // 18 = PacientePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Paciente object", $e);
@@ -1225,6 +1342,15 @@ abstract class BasePaciente extends BaseObject implements Persistent
         if ($this->isColumnModified(PacientePeer::PACIENTE_FECHAREGISTRO)) {
             $modifiedColumns[':p' . $index++]  = '`paciente_fecharegistro`';
         }
+        if ($this->isColumnModified(PacientePeer::PACIENTE_NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`paciente_name`';
+        }
+        if ($this->isColumnModified(PacientePeer::PACIENTE_AP)) {
+            $modifiedColumns[':p' . $index++]  = '`paciente_ap`';
+        }
+        if ($this->isColumnModified(PacientePeer::PACIENTE_AM)) {
+            $modifiedColumns[':p' . $index++]  = '`paciente_am`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `paciente` (%s) VALUES (%s)',
@@ -1280,6 +1406,15 @@ abstract class BasePaciente extends BaseObject implements Persistent
                         break;
                     case '`paciente_fecharegistro`':
                         $stmt->bindValue($identifier, $this->paciente_fecharegistro, PDO::PARAM_STR);
+                        break;
+                    case '`paciente_name`':
+                        $stmt->bindValue($identifier, $this->paciente_name, PDO::PARAM_STR);
+                        break;
+                    case '`paciente_ap`':
+                        $stmt->bindValue($identifier, $this->paciente_ap, PDO::PARAM_STR);
+                        break;
+                    case '`paciente_am`':
+                        $stmt->bindValue($identifier, $this->paciente_am, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1526,6 +1661,15 @@ abstract class BasePaciente extends BaseObject implements Persistent
             case 14:
                 return $this->getPacienteFecharegistro();
                 break;
+            case 15:
+                return $this->getPacienteName();
+                break;
+            case 16:
+                return $this->getPacienteAp();
+                break;
+            case 17:
+                return $this->getPacienteAm();
+                break;
             default:
                 return null;
                 break;
@@ -1570,6 +1714,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
             $keys[12] => $this->getPacienteSexo(),
             $keys[13] => $this->getPacienteFechanacimiento(),
             $keys[14] => $this->getPacienteFecharegistro(),
+            $keys[15] => $this->getPacienteName(),
+            $keys[16] => $this->getPacienteAp(),
+            $keys[17] => $this->getPacienteAm(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1680,6 +1827,15 @@ abstract class BasePaciente extends BaseObject implements Persistent
             case 14:
                 $this->setPacienteFecharegistro($value);
                 break;
+            case 15:
+                $this->setPacienteName($value);
+                break;
+            case 16:
+                $this->setPacienteAp($value);
+                break;
+            case 17:
+                $this->setPacienteAm($value);
+                break;
         } // switch()
     }
 
@@ -1719,6 +1875,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
         if (array_key_exists($keys[12], $arr)) $this->setPacienteSexo($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setPacienteFechanacimiento($arr[$keys[13]]);
         if (array_key_exists($keys[14], $arr)) $this->setPacienteFecharegistro($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setPacienteName($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setPacienteAp($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setPacienteAm($arr[$keys[17]]);
     }
 
     /**
@@ -1745,6 +1904,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
         if ($this->isColumnModified(PacientePeer::PACIENTE_SEXO)) $criteria->add(PacientePeer::PACIENTE_SEXO, $this->paciente_sexo);
         if ($this->isColumnModified(PacientePeer::PACIENTE_FECHANACIMIENTO)) $criteria->add(PacientePeer::PACIENTE_FECHANACIMIENTO, $this->paciente_fechanacimiento);
         if ($this->isColumnModified(PacientePeer::PACIENTE_FECHAREGISTRO)) $criteria->add(PacientePeer::PACIENTE_FECHAREGISTRO, $this->paciente_fecharegistro);
+        if ($this->isColumnModified(PacientePeer::PACIENTE_NAME)) $criteria->add(PacientePeer::PACIENTE_NAME, $this->paciente_name);
+        if ($this->isColumnModified(PacientePeer::PACIENTE_AP)) $criteria->add(PacientePeer::PACIENTE_AP, $this->paciente_ap);
+        if ($this->isColumnModified(PacientePeer::PACIENTE_AM)) $criteria->add(PacientePeer::PACIENTE_AM, $this->paciente_am);
 
         return $criteria;
     }
@@ -1822,6 +1984,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
         $copyObj->setPacienteSexo($this->getPacienteSexo());
         $copyObj->setPacienteFechanacimiento($this->getPacienteFechanacimiento());
         $copyObj->setPacienteFecharegistro($this->getPacienteFecharegistro());
+        $copyObj->setPacienteName($this->getPacienteName());
+        $copyObj->setPacienteAp($this->getPacienteAp());
+        $copyObj->setPacienteAm($this->getPacienteAm());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -3671,6 +3836,9 @@ abstract class BasePaciente extends BaseObject implements Persistent
         $this->paciente_sexo = null;
         $this->paciente_fechanacimiento = null;
         $this->paciente_fecharegistro = null;
+        $this->paciente_name = null;
+        $this->paciente_ap = null;
+        $this->paciente_am = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

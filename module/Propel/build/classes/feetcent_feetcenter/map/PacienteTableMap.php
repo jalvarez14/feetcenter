@@ -57,6 +57,9 @@ class PacienteTableMap extends TableMap
 ));
         $this->addColumn('paciente_fechanacimiento', 'PacienteFechanacimiento', 'DATE', false, null, null);
         $this->addColumn('paciente_fecharegistro', 'PacienteFecharegistro', 'DATE', true, null, null);
+        $this->addColumn('paciente_name', 'PacienteName', 'VARCHAR', false, 255, null);
+        $this->addColumn('paciente_ap', 'PacienteAp', 'VARCHAR', false, 255, null);
+        $this->addColumn('paciente_am', 'PacienteAm', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 

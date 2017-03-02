@@ -21,6 +21,9 @@
  * @method PacienteQuery orderByPacienteSexo($order = Criteria::ASC) Order by the paciente_sexo column
  * @method PacienteQuery orderByPacienteFechanacimiento($order = Criteria::ASC) Order by the paciente_fechanacimiento column
  * @method PacienteQuery orderByPacienteFecharegistro($order = Criteria::ASC) Order by the paciente_fecharegistro column
+ * @method PacienteQuery orderByPacienteName($order = Criteria::ASC) Order by the paciente_name column
+ * @method PacienteQuery orderByPacienteAp($order = Criteria::ASC) Order by the paciente_ap column
+ * @method PacienteQuery orderByPacienteAm($order = Criteria::ASC) Order by the paciente_am column
  *
  * @method PacienteQuery groupByIdpaciente() Group by the idpaciente column
  * @method PacienteQuery groupByIdclinica() Group by the idclinica column
@@ -37,6 +40,9 @@
  * @method PacienteQuery groupByPacienteSexo() Group by the paciente_sexo column
  * @method PacienteQuery groupByPacienteFechanacimiento() Group by the paciente_fechanacimiento column
  * @method PacienteQuery groupByPacienteFecharegistro() Group by the paciente_fecharegistro column
+ * @method PacienteQuery groupByPacienteName() Group by the paciente_name column
+ * @method PacienteQuery groupByPacienteAp() Group by the paciente_ap column
+ * @method PacienteQuery groupByPacienteAm() Group by the paciente_am column
  *
  * @method PacienteQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PacienteQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -91,6 +97,9 @@
  * @method Paciente findOneByPacienteSexo(string $paciente_sexo) Return the first Paciente filtered by the paciente_sexo column
  * @method Paciente findOneByPacienteFechanacimiento(string $paciente_fechanacimiento) Return the first Paciente filtered by the paciente_fechanacimiento column
  * @method Paciente findOneByPacienteFecharegistro(string $paciente_fecharegistro) Return the first Paciente filtered by the paciente_fecharegistro column
+ * @method Paciente findOneByPacienteName(string $paciente_name) Return the first Paciente filtered by the paciente_name column
+ * @method Paciente findOneByPacienteAp(string $paciente_ap) Return the first Paciente filtered by the paciente_ap column
+ * @method Paciente findOneByPacienteAm(string $paciente_am) Return the first Paciente filtered by the paciente_am column
  *
  * @method array findByIdpaciente(int $idpaciente) Return Paciente objects filtered by the idpaciente column
  * @method array findByIdclinica(int $idclinica) Return Paciente objects filtered by the idclinica column
@@ -107,6 +116,9 @@
  * @method array findByPacienteSexo(string $paciente_sexo) Return Paciente objects filtered by the paciente_sexo column
  * @method array findByPacienteFechanacimiento(string $paciente_fechanacimiento) Return Paciente objects filtered by the paciente_fechanacimiento column
  * @method array findByPacienteFecharegistro(string $paciente_fecharegistro) Return Paciente objects filtered by the paciente_fecharegistro column
+ * @method array findByPacienteName(string $paciente_name) Return Paciente objects filtered by the paciente_name column
+ * @method array findByPacienteAp(string $paciente_ap) Return Paciente objects filtered by the paciente_ap column
+ * @method array findByPacienteAm(string $paciente_am) Return Paciente objects filtered by the paciente_am column
  *
  * @package    propel.generator.feetcent_feetcenter.om
  */
@@ -214,7 +226,7 @@ abstract class BasePacienteQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idpaciente`, `idclinica`, `idempleado`, `paciente_nombre`, `paciente_celular`, `paciente_telefono`, `paciente_calle`, `paciente_numero`, `paciente_colonia`, `paciente_codigopostal`, `paciente_ciudad`, `paciente_estado`, `paciente_sexo`, `paciente_fechanacimiento`, `paciente_fecharegistro` FROM `paciente` WHERE `idpaciente` = :p0';
+        $sql = 'SELECT `idpaciente`, `idclinica`, `idempleado`, `paciente_nombre`, `paciente_celular`, `paciente_telefono`, `paciente_calle`, `paciente_numero`, `paciente_colonia`, `paciente_codigopostal`, `paciente_ciudad`, `paciente_estado`, `paciente_sexo`, `paciente_fechanacimiento`, `paciente_fecharegistro`, `paciente_name`, `paciente_ap`, `paciente_am` FROM `paciente` WHERE `idpaciente` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -807,6 +819,93 @@ abstract class BasePacienteQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PacientePeer::PACIENTE_FECHAREGISTRO, $pacienteFecharegistro, $comparison);
+    }
+
+    /**
+     * Filter the query on the paciente_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPacienteName('fooValue');   // WHERE paciente_name = 'fooValue'
+     * $query->filterByPacienteName('%fooValue%'); // WHERE paciente_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $pacienteName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PacienteQuery The current query, for fluid interface
+     */
+    public function filterByPacienteName($pacienteName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($pacienteName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $pacienteName)) {
+                $pacienteName = str_replace('*', '%', $pacienteName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PacientePeer::PACIENTE_NAME, $pacienteName, $comparison);
+    }
+
+    /**
+     * Filter the query on the paciente_ap column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPacienteAp('fooValue');   // WHERE paciente_ap = 'fooValue'
+     * $query->filterByPacienteAp('%fooValue%'); // WHERE paciente_ap LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $pacienteAp The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PacienteQuery The current query, for fluid interface
+     */
+    public function filterByPacienteAp($pacienteAp = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($pacienteAp)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $pacienteAp)) {
+                $pacienteAp = str_replace('*', '%', $pacienteAp);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PacientePeer::PACIENTE_AP, $pacienteAp, $comparison);
+    }
+
+    /**
+     * Filter the query on the paciente_am column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPacienteAm('fooValue');   // WHERE paciente_am = 'fooValue'
+     * $query->filterByPacienteAm('%fooValue%'); // WHERE paciente_am LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $pacienteAm The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PacienteQuery The current query, for fluid interface
+     */
+    public function filterByPacienteAm($pacienteAm = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($pacienteAm)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $pacienteAm)) {
+                $pacienteAm = str_replace('*', '%', $pacienteAm);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PacientePeer::PACIENTE_AM, $pacienteAm, $comparison);
     }
 
     /**
