@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Transferencias');
+    echo $this->headTitle();
+?>
 <div id="transferencias_control_container">
     <h1>Transferencias<a style="float: right; text-decoration: none"href="/inventario/transferencias/nuevo">Nuevo</a></h1>
     <?php if(count($successMessages)) :?>

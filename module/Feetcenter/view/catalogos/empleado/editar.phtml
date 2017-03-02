@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Editar empleado');
+    echo $this->headTitle();
+?>
 <div id="empleado_container">
     <h1>Empleado: <?php echo $form->get('empleado_nombre')->getValue()?></h1>
     <?php 

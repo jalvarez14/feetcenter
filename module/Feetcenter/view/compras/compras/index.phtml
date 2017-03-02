@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Compras');
+    echo $this->headTitle();
+?>
 <h1>Compras<a style="float: right; text-decoration: none"href="/compras/nuevo">Nuevo</a></h1>
 <?php if(count($successMessages)) :?>
     <div class="units-row">

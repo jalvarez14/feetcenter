@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Editar compra');
+    echo $this->headTitle();
+?>
 <h1>Compra: <?php echo "No.".$compra->getIdcompra()?></h1>
 <div id="compra_container">
     <form class="forms" enctype="multipart/form-data" novalidate="1" action="/compras/editar/<?php echo $compra->getIdcompra()?>" name="compraForm" method="post">

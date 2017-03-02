@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Seguimiento Cliente');
+    echo $this->headTitle();
+?>
 <h1><?php echo $paciente->getPacienteNombre()?><a style="float: right; text-decoration: none"href="/pacientes/seguimiento/<?php echo $paciente->getIdpaciente().'/'?>nuevo">Nuevo</a></h1>
 <?php if(count($successMessages)) :?>
     <div class="units-row">

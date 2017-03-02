@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Nueva transferencia');
+    echo $this->headTitle();
+?>
 <h1>Nueva transferencia</h1>
 <div id="transferencia_container">
     <form class="forms" enctype="multipart/form-data" novalidate="1" action="/inventario/transferencias/nuevo" name="compraForm" method="post">

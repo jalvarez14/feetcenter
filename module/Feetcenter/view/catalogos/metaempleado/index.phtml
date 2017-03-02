@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Meta de empleados');
+    echo $this->headTitle();
+?>
 <h1>Meta de empleados<a style="float: right; text-decoration: none"href="/catalogos/metaempleado/nuevo">Nuevo</a></h1>
 <?php if(count($successMessages)) :?>
     <div class="units-row">

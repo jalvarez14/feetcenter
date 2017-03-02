@@ -4,6 +4,10 @@
         font-weight: bold;
     }
 </style>
+<?php 
+    $this->headTitle()->prepend('Agenda');
+    echo $this->headTitle();
+?>
 <div id="agenda_container">
     <?php if(count($successMessages)) :?>
         <div class="units-row">yellow;
