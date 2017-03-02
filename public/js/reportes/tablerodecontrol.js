@@ -306,7 +306,7 @@
                          //INDICADORES ESTRUCTURA
                         
                         var $tr = $('<tr>');
-                        $tr.append('<td><b>Servicios por día</b></td>');
+                        $tr.append('<td><b>Clientes atendidos por día</b></td>');
                         for(var i=0; i<empleados.length;i++){
                            $tr.append('<td></td>');
                         }

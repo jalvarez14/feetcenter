@@ -450,6 +450,11 @@ class ReportesController extends AbstractActionController
             $post_data = $request->getPost();
             
             $from = new \DateTime($post_data['from']." 00:00:00");
+            
+            $yesterday = new \DateTime();
+            $yesterday->modify('-1 day');
+            $yesterday->setTime(23, 59,59);
+           
             $from_copy = new \DateTime($post_data['from']." 00:00:00");
             $to  = new \DateTime($post_data['to']." 00:00:00");
             $diff_month = $from->diff($to)->m + ($from->diff($to)->y*12);
@@ -497,14 +502,14 @@ class ReportesController extends AbstractActionController
            
 
              $respone['clinica']['clinica_acumulado'] = 0;
-             $acumulado = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaTotal)','acumulado')->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->filterByIdclinica($post_data['idclinica'])->findOne()->toArray();
+             $acumulado = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaTotal)','acumulado')->filterByVisitaFechafin(array('min' => $from, 'max' => $yesterday))->filterByVisitaEstatuspago('pagada')->filterByIdclinica($post_data['idclinica'])->findOne()->toArray();
              if(!is_null($acumulado['acumulado'])){
                  $respone['clinica']['clinica_acumulado'] = $acumulado['acumulado'];
              }
              
              //HOY
              $respone['clinica']['clinica_hoy'] = 0;
-             $hoy = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaTotal)','acumulado')->filterByVisitaFechafin(array('min' => $today_from, 'max' => $today_to))->filterByVisitaEstatuspago('pagada')->filterByIdclinica($post_data['idclinica'])->findOne()->toArray();
+             $hoy = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaTotal)','acumulado')->filterByVisitaFechafin(array('min' => $today_from, 'max' => $yesterday))->filterByVisitaEstatuspago('pagada')->filterByIdclinica($post_data['idclinica'])->findOne()->toArray();
              if(!is_null($hoy['acumulado'])){
                  $respone['clinica']['clinica_hoy'] = $hoy['acumulado'];
              }
@@ -519,27 +524,58 @@ class ReportesController extends AbstractActionController
              */
              $respone['empleados'] = array();
              $empleados = \ClinicaempleadoQuery::create()->select(array('idempleado'))->filterByIdclinica($post_data['idclinica'])->groupByIdempleado()->find()->toArray();
+              $m = $from;
+             $mes = (int) $m->format('m');
+             //var_dump($mes);
              foreach ($empleados as $idempleado){
-                
+             $mes2=$mes;  
                  $empleado = \EmpleadoQuery::create()->findPk($idempleado);
+                 
                  $tmp['idempleado'] = $empleado->getIdempleado();
                  $tmp['empleado_nombre'] = $empleado->getEmpleadoNombre();
                  
                  //META
+//                 $tmp['empleado_meta'] = 0;
+//                 $meta_exist = \MetaempleadoQuery::create()->filterByIdempleado($idempleado)->exists();
+//                 if($meta_exist){
+//                    $hoy = \MetaempleadoQuery::create()->withColumn('SUM(MetaEmpleado.Meta)','metaTotal')->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $today_from, 'max' => $today_to))->filterByVisitaEstatuspago('pagada')->findOne()->toArray();
+//                    $meta_empleado = \MetaempleadoQuery::create()->filterByIdempleado($idempleado)->findOne();
+//                    $tmp['empleado_meta'] = $meta_empleado->getMetaempleadoMeta();
+//                 }
+//                 
+//                 $respone['clinica']['clinica_meta'] = 0;
                  $tmp['empleado_meta'] = 0;
-                 $meta_exist = \MetaempleadoQuery::create()->filterByIdempleado($idempleado)->exists();
-                 if($meta_exist){
-                    $meta_empleado = \MetaempleadoQuery::create()->filterByIdempleado($idempleado)->findOne();
-                    $tmp['empleado_meta'] = $meta_empleado->getMetaempleadoMeta();
-                 }
-                 
-                 //DIAS RESTANTES
-                 $tmp['empleado_diasrestantes'] = $diff_days;
-                 
-               
-                $hoy = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaTotal)','acumulado')->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $today_from, 'max' => $today_to))->filterByVisitaEstatuspago('pagada')->findOne()->toArray();
-                $tmp['empleado_hoy'] = !is_null($hoy['acumulado']) ? $hoy['acumulado'] : 0;
 
+                   
+                  for($i=0;$i<=$diff_month;$i++){
+                   
+                    if($i>0){
+                       $mes2++;
+                    }
+                    
+                    $metaempleado_exist = \MetaempleadoQuery::create()->filterByIdempleado($idempleado)->filterByMetaempleadoMes($mes2)->filterByMetaempleadoAnio((int)$m->format('Y'))->exists();
+                   
+                    if($metaempleado_exist){
+                        $metaempleado = \MetaempleadoQuery::create()->filterByIdempleado($idempleado)->filterByMetaempleadoMes($mes2)->filterByMetaempleadoAnio((int)$m->format('Y'))->findOne();
+                        $tmp['empleado_meta']+= $metaempleado->getMetaempleadoMeta();
+
+                    }
+                }
+                 
+                
+                 //DIAS RESTANTES
+                 $ausencias = \AusenciaempleadoQuery::create()->filterbyIdempleado($idempleado)->filterByAusenciaempleadoFecha(array('min' => $from, 'max' => $to))->count();
+                 
+                 $tmp['empleado_diasrestantes'] = $diff_days -  $ausencias;
+                 
+                //$respone['clinica']['clinica_hoy'] =  ($respone['clinica']['clinica_meta']-$respone['clinica']['clinica_acumulado'])/$respone['clinica']['clinica_diasrestantes'];
+
+                 
+                $hoy = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaTotal)','acumulado')->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $yesterday))->filterByVisitaEstatuspago('pagada')->findOne()->toArray();
+                //$tmp['empleado_hoy'] = !is_null($hoy['acumulado']) ? $hoy['acumulado'] : 0;
+                
+                $tmp['empleado_hoy'] = ($tmp['empleado_meta'] - $hoy['acumulado'])/ $tmp['empleado_diasrestantes'];
+                
                  //SERVICIOS comision detalle POR DIA
                  $tmp['servicioscomision_por_dia'] = 0;
                  //sólo se consideran los servicios que generan comisión
