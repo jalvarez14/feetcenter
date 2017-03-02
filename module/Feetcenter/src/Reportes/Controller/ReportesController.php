@@ -286,6 +286,160 @@ class ReportesController extends AbstractActionController
         }
     }
     
+     public function horariosvaciosAction(){
+        
+        $request = $this->getRequest();
+        $session = new \Shared\Session\AouthSession();
+        $idrol = $session->getIdrol();
+        
+        if($request->isPost()){
+            $post_data = $request->getPost();
+            
+            $from = new \DateTime($post_data['from']." 00:00:00");
+           
+            $from2 = date('Y-m-d',  strtotime($post_data['from']." 00:00:00"));
+            
+                    $from  = $from2. " 00:00:00";
+            $to  = new \DateTime($post_data['to']." 23:00:00");
+            $to = date('Y-m-d',   strtotime($post_data['to']." 23:59:00"));
+                    $to  = $to. " 23:00:00";
+            $respone = array();
+
+            /*
+             * CLINICA
+             */
+            
+            
+            $respone['clinica'] = \ClinicaQuery::create()->findPk($post_data['idclinica'])->toArray(\BasePeer::TYPE_FIELDNAME);
+             
+           $conn = \Propel::getConnection(); 
+           $req1 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) =10 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=10 and MINUTE(visita_horainicio)<=29;";
+                        $st = $conn->prepare($req1);
+                        $st->execute();
+                        $slot1 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req2 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=10 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=10 and MINUTE(visita_horainicio)<=59 ;";
+                        $st = $conn->prepare($req2);
+                        $st->execute();
+                        $slot2 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req3 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=11 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=11 and MINUTE(visita_horainicio)<=29 ;";
+                        $st = $conn->prepare($req3);
+                        $st->execute();
+                        $slot3 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req4 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=11 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=11 and MINUTE(visita_horainicio)<=59 ;";
+                        $st = $conn->prepare($req4);
+                        $st->execute();
+                        $slot4 = $st->fetchAll(\PDO::FETCH_ASSOC);
+            $req5 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=12 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=12 and MINUTE(visita_horainicio)<=29 ;";
+                        $st = $conn->prepare($req5);
+                        $st->execute();
+                        $slot5 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req6 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=12 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=12 and MINUTE(visita_horainicio)<=59 ;";
+                        $st = $conn->prepare($req6);
+                        $st->execute();
+                        $slot6 = $st->fetchAll(\PDO::FETCH_ASSOC);
+            $req7 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=13 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=13 and MINUTE(visita_horainicio)<=29 ;";
+                        $st = $conn->prepare($req7);
+                        $st->execute();
+                        $slot7 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req8 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=13 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=13 and MINUTE(visita_horainicio)<=59 ;";
+                        $st = $conn->prepare($req8);
+                        $st->execute();
+                        $slot8 = $st->fetchAll(\PDO::FETCH_ASSOC);
+            $req9 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=14 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=14 and MINUTE(visita_horainicio)<=29 ;";
+                        $st = $conn->prepare($req9);
+                        $st->execute();
+                        $slot9 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req10 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=14 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=14 and MINUTE(visita_horainicio)<=59 ;";
+                        $st = $conn->prepare($req10);
+                        $st->execute();
+                        $slot10 = $st->fetchAll(\PDO::FETCH_ASSOC);
+            $req11 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=15 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=15 and MINUTE(visita_horainicio)<=29 ;";
+                        $st = $conn->prepare($req11);
+                        $st->execute();
+                        $slot11 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req12 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=15 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=15 and MINUTE(visita_horainicio)<=59 ;";
+                        $st = $conn->prepare($req12);
+                        $st->execute();
+                        $slot12 = $st->fetchAll(\PDO::FETCH_ASSOC);
+            $req13 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=16 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=16 and MINUTE(visita_horainicio)<=29 ;";
+                        $st = $conn->prepare($req13);
+                        $st->execute();
+                        $slot13 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req14 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=16 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=16 and MINUTE(visita_horainicio)<=59 ;";
+                        $st = $conn->prepare($req14);
+                        $st->execute();
+                        $slot14 = $st->fetchAll(\PDO::FETCH_ASSOC);
+            $req15 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=17 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=17 and MINUTE(visita_horainicio)<=29 ;";
+                        $st = $conn->prepare($req15);
+                        $st->execute();
+                        $slot15 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req16 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=17 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=17 and MINUTE(visita_horainicio)<=59 ;";
+                        $st = $conn->prepare($req16);
+                        $st->execute();
+                        $slot16 = $st->fetchAll(\PDO::FETCH_ASSOC);
+            $req17 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=18 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=18 and MINUTE(visita_horainicio)<=29 ;";
+                        $st = $conn->prepare($req17);
+                        $st->execute();
+                        $slot17 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req18 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=18 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=18 and MINUTE(visita_horainicio)<=59 ;";
+                        $st = $conn->prepare($req18);
+                        $st->execute();
+                        $slot18 = $st->fetchAll(\PDO::FETCH_ASSOC);
+            $req19 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=19 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=19 and MINUTE(visita_horainicio)<=29 ;";
+                        $st = $conn->prepare($req19);
+                        $st->execute();
+                        $slot19 = $st->fetchAll(\PDO::FETCH_ASSOC); 
+            $req20 = "SELECT count(idvisita) FROM visita WHERE visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=19 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=19 and MINUTE(visita_horainicio)<=59 ;";
+                        $st = $conn->prepare($req20);
+                        $st->execute();
+                        $slot20 = $st->fetchAll(\PDO::FETCH_ASSOC);
+    
+                    
+            $respone['clinica']['slot1'] = $slot1[0]['count(idvisita)'];
+            $respone['clinica']['slot2'] = $slot2[0]['count(idvisita)'];
+            $respone['clinica']['slot3'] = $slot3[0]['count(idvisita)'];
+            $respone['clinica']['slot4'] = $slot4[0]['count(idvisita)'];
+            $respone['clinica']['slot5'] = $slot5[0]['count(idvisita)'];
+            $respone['clinica']['slot6'] = $slot6[0]['count(idvisita)'];
+            $respone['clinica']['slot7'] = $slot7[0]['count(idvisita)'];
+            $respone['clinica']['slot8'] = $slot8[0]['count(idvisita)'];
+            $respone['clinica']['slot9'] = $slot9[0]['count(idvisita)'];
+            $respone['clinica']['slot10'] = $slot10[0]['count(idvisita)'];
+            $respone['clinica']['slot11'] = $slot11[0]['count(idvisita)'];
+            $respone['clinica']['slot12'] = $slot12[0]['count(idvisita)'];
+            $respone['clinica']['slot13'] = $slot13[0]['count(idvisita)'];
+            $respone['clinica']['slot14'] = $slot14[0]['count(idvisita)'];
+            $respone['clinica']['slot15'] = $slot15[0]['count(idvisita)'];
+            $respone['clinica']['slot16'] = $slot16[0]['count(idvisita)'];
+            $respone['clinica']['slot17'] = $slot17[0]['count(idvisita)'];
+            $respone['clinica']['slot18'] = $slot18[0]['count(idvisita)'];
+            $respone['clinica']['slot19'] = $slot19[0]['count(idvisita)'];
+            $respone['clinica']['slot20'] = $slot20[0]['count(idvisita)'];
+            
+           
+            
+            
+            
+
+             return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $respone)));
+        }
+        
+        $clinicas = \ClinicaQuery::create()->select(array('idclinica','clinica_nombre'))->find()->toKeyValue('idclinica','clinica_nombre');
+        
+        if($idrol != 1){
+           $clinicas = \ClinicaQuery::create()->select(array('idclinica','clinica_nombre'))->filterByIdclinica($session->getIdClinica())->find()->toKeyValue('idclinica','clinica_nombre');
+        }
+        
+        
+        
+        return new ViewModel(array(
+            'clinicas' => $clinicas,
+
+        ));
+
+
+    }
+    
     public function tablerodecontrolAction(){
         
         $request = $this->getRequest();

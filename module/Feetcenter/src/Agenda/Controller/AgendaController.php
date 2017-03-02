@@ -1306,6 +1306,14 @@ class AgendaController extends AbstractActionController
                 $clinica_nombre = $cliniva->getClinicaNombre();
                 $tmp['relacionados'][$key]['clinica_nombre'] = $clinica_nombre;
             }
+            
+            //ultimo comentario
+            if(\PacienteseguimientoQuery::create()->filterByIdpaciente($r['idpaciente'])->orderByPacienteseguimientoFecha('desc')->exists()){
+                 $ultimocomentario = \PacienteseguimientoQuery::create()->filterByIdpaciente($r['idpaciente'])->orderByPacienteseguimientoFecha(\Criteria::DESC)->limit(1)->findOne();
+                 
+                 $tmp['visita_comentario'] = $ultimocomentario->getPacienteseguimientoComentario();
+                
+            }
            
             //Mmebresia
             $tmp['membresia'] = NULL;
