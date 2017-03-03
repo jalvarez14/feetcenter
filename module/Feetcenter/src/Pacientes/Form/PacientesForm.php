@@ -41,6 +41,31 @@ class PacientesForm extends Form
             'type' => 'Text',
             'attributes' => array(
                 'class' => 'width-100',
+                'required' => false,
+                'disabled' => true,
+            ),
+        ));
+        $this->add(array(
+            'name' => 'paciente_name',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'width-100',
+                'required' => true,
+            ),
+        ));
+        $this->add(array(
+            'name' => 'paciente_ap',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'width-100',
+                'required' => true,
+            ),
+        ));
+        $this->add(array(
+            'name' => 'paciente_am',
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'width-100',
                 'required' => true,
             ),
         ));

@@ -29,6 +29,26 @@
         <div class="unit-33">
             <label>
                 Nombre <span class="req">*</span>
+                <?php echo $this->formText($form->get('paciente_name')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+               Apellido paterno <span class="req">*</span>
+                <?php echo $this->formText($form->get('paciente_ap')); ?>
+            </label>
+        </div>
+        <div class="unit-33">
+            <label>
+                Apellido materno<span class="req">*</span>
+                <?php echo $this->formText($form->get('paciente_am')); ?>
+            </label>
+        </div>
+    </div>
+    <div class="units-row">
+        <div class="unit-33">
+            <label>
+                Nombre <span ></span>
                 <?php echo $this->formText($form->get('paciente_nombre')); ?>
             </label>
         </div>
