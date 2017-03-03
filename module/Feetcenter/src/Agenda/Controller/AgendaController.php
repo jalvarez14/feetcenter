@@ -1285,8 +1285,8 @@ class AgendaController extends AbstractActionController
         $result_array = array();
         foreach ($result as $r){
             $tmp['id'] = $r['idpaciente'];  
-            $tmp['name'] = $r['paciente_nombre'].' - Celular: '.$r['paciente_celular'].' - Teléfono: '.$r['paciente_telefono'];
-            $tmp['paciente_nombre'] = $r['paciente_nombre'];
+            $tmp['name'] = $r['paciente_ap']." ".$r['paciente_am'].", ".$r['paciente_name'].' - Celular: '.$r['paciente_celular'].' - Teléfono: '.$r['paciente_telefono'];
+            $tmp['paciente_nombre'] = $r['paciente_ap']." ".$r['paciente_am'].", ".$r['paciente_name'];
             $tmp['clinica_nombre'] = $r['clinica_nombre'];
             $tmp['paciente_celular'] = $r['paciente_celular'];
             $tmp['paciente_telefono'] = $r['paciente_telefono'];
@@ -1311,6 +1311,14 @@ class AgendaController extends AbstractActionController
                 $cliniva = \ClinicaQuery::create()->findPk($value['idclinica']);
                 $clinica_nombre = $cliniva->getClinicaNombre();
                 $tmp['relacionados'][$key]['clinica_nombre'] = $clinica_nombre;
+            }
+            
+            //ultimo comentario
+            if(\PacienteseguimientoQuery::create()->filterByIdpaciente($r['idpaciente'])->orderByPacienteseguimientoFecha('desc')->exists()){
+                 $ultimocomentario = \PacienteseguimientoQuery::create()->filterByIdpaciente($r['idpaciente'])->orderByPacienteseguimientoFecha(\Criteria::DESC)->limit(1)->findOne();
+                 
+                 $tmp['visita_comentario'] = $ultimocomentario->getPacienteseguimientoComentario();
+                
             }
            
             //Mmebresia
@@ -1345,6 +1353,7 @@ class AgendaController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
+            $entity->setPacienteNombre($post_data['paciente_ap']." ".$post_data['paciente_am'].", ".$post_data['paciente_name']);
             $entity->setIdpaciente(NULL);
             $entity->setPacienteFecharegistro(new \DateTime());
             $entity->save();

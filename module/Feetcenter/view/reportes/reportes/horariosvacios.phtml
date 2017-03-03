@@ -1,15 +1,11 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<style>
-.ui-datepicker-calendar {
-    display: none;
-    }
-</style>
+
 <?php 
-    $this->headTitle()->prepend('Tablero de control');
+    $this->headTitle()->prepend('Horarios Vacíos');
     echo $this->headTitle();
 ?>
-<div id="tablero_container">
-    <h1>Tablero de control</h1>
+<div id="horarios_container">
+    <h1>Horarios </h1>
     <div class="units-row">
         <div class="unit-30">
             Clinica
@@ -33,43 +29,27 @@
         <div class="unit-100">
             <table class="table-bordered" id="table_clinica">
             <thead>
-            <th>Venta por sucursal</th>
-            <th>Meta</th>
-            <th>Acumulado</th>
-            <th>Meta para hoy</th>
-             <th>Dias restantes</th>
-            </thead>
-            <tbody>
-
-            </tbody>
-            <tfoot>
-            </tfoot>
-            </table>
-        </div>
-    </div>
-    <div class="units-row">
-        <div class="unit-100">
-            <table class="table-bordered" id="table_empleado">
-            <thead>
-            <th>Venta individual</th>
-            <th>Meta</th>
-            <th>Acumulado</th>
-            <th>Meta para hoy</th>
-             <th>Dias restantes</th>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            </tfoot>
-            </table>
-        </div>
-    </div>
-
-    <div class="units-row">
-        <div class="unit-100">
-            <table class="table-bordered" id="table_indicadores">
-            <thead>
-            <th>Indicadores</th>
+             <th>10:00</th>
+            <th>10:30</th>
+            <th>11:00</th>
+            <th>11:30</th>
+            <th>12:00</th>
+            <th>12:30</th>
+            <th>13:00</th>
+            <th>13:30</th>
+            <th>14:00</th>
+            <th>14:30</th>
+            <th>15:30</th>
+            <th>16:00</th>
+            <th>16:30</th>
+            <th>17:00</th>
+            <th>17:30</th>
+            <th>18:00</th>
+            <th>18:30</th>
+            <th>19:00</th>
+            <th>19:30</th>
+            <th>20:00</th>
+            <th>20:30</th>
             </thead>
             <tbody>
 
@@ -84,7 +64,7 @@
 <script src="/plugins/fullcalendar/moment.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="/js/datepicker-es.js"></script>
-<script src="/js/reportes/tablerodecontrol.js"></script>
+<script src="/js/reportes/horariosvacios.js"></script>
 <script>
-    $('#tablero_container').tablerodecontrol();
+    $('#horarios_container').horariosvacios();
 </script>

@@ -80,6 +80,7 @@ class PacientesController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
+            $entity->setPacienteNombre($post_data['paciente_ap']." ".$post_data['paciente_am'].", ".$post_data['paciente_name']);
             
             //Setiamos las fechas
             // se quitó esta línea para evitar que se modifique la fecha de registro en el edit
@@ -397,6 +398,8 @@ class PacientesController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
+            $entity->setPacienteNombre($post_data['paciente_ap']." ".$post_data['paciente_am'].", ".$post_data['paciente_name']);
+
             
             //Setiamos las fechas
              $entity->setPacienteFecharegistro(new \DateTime());

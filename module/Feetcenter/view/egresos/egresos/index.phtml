@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Egresos');
+    echo $this->headTitle();
+?>
 <div id="egresos_container">
     <h1>Egresos<a style="float: right; text-decoration: none"href="/egresos/nuevo">Nuevo</a></h1>
     <?php if(count($successMessages)) :?>

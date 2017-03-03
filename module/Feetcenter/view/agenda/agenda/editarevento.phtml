@@ -287,7 +287,30 @@
         <div class="unit-100">
             <div id="visita_estatuspago" value="<?php echo $visita->getVisitaEstatuspago()?>"><span><b>Estatus de pago: </b></span><span><?php echo ucfirst($visita->getVisitaEstatuspago()) ?></span></div>
         </div>
+        <div class="unit-100">
+            <div id="visita_estatuspago" value="<?php echo $visita->getVisitaEstatuspago()?>"><span><b>Histórico de acciones: </b></span></div>
+        </div>
+        <div class="unit-100" style="border : solid 2px #DCDCDC; background : #ffffff; color : #000000; padding : 4px; height : 50px; overflow : auto; ">
+
+        <?php
+        
+               $logs =  \VisitalogQuery::create()->filterByIdvisita($visita->getIdvisita())->orderByIdvisitalog(desc)->find();
+               $log = new Visitalog();
+               foreach ($logs as $log)
+               {
+                   $empleado = \EmpleadoQuery::create()->filterByIdempleado($log->getIdempleado())->findOne();
+                   ?>
+                        <div id="visita_log" value="<?php echo $visita->getVisitaEstatuspago()?>"><span></span><span><?php echo "De: ".$empleado->getEmpleadoNombre().", acción: ".$log->getVisitalogAccion().", fecha: ".$log->getVisitalogFecha()  ?></span></div>
+
+                   <?php
+                   
+               }
+               
+        ?>
+        </div>
+
     </div>
+
    
     <div id="pay_container">
         <div id="pay_nextdate_container"class="units-row" style="margin-bottom: 0px; display: none">

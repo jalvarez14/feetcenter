@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Editar meta de empleado');
+    echo $this->headTitle();
+?>
 <div id="clinica_container">
     <h1>Meta de empleado: <?php echo \EmpleadoQuery::create()->filterByIdempleado($entidad)->findOne()->getEmpleadoNombre()?></h1>
     <?php 

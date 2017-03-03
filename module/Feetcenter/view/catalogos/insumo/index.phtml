@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Insumos');
+    echo $this->headTitle();
+?>
 <h1>Insumos<a style="float: right; text-decoration: none"href="/catalogos/insumo/nuevo">Nuevo</a></h1>
 <?php if(count($successMessages)) :?>
     <div class="units-row">

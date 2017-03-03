@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Editar producto');
+    echo $this->headTitle();
+?>
 <div id="producto_container">
     <h1>Producto: <?php echo $form->get('producto_nombre')->getValue()?></h1>
     <?php 

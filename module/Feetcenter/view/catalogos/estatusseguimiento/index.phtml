@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Estatus de seguimiento');
+    echo $this->headTitle();
+?>
 <h1>Estatus de seguimiento<a style="float: right; text-decoration: none"href="/catalogos/estatusseguimiento/nuevo">Nuevo</a></h1>
 <?php if(count($successMessages)) :?>
     <div class="units-row">

@@ -1,4 +1,7 @@
-
+<?php 
+    $this->headTitle()->prepend('Editar membresía');
+    echo $this->headTitle();
+?>
 <div id="membresia_container">
      <h1>Membresía: <?php echo $form->get('membresia_nombre')->getValue()?></h1>
     <?php 

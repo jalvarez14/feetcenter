@@ -622,6 +622,7 @@
                     $container.find('input[name=idpaciente]').val(item.id);
                     $container.find('#visita_total').text(item.visita_total);
                     $container.find('#visita_ultima').text(item.visita_ultima);
+                    $container.find('#visita_comentario').text(item.visita_comentario);
                     $container.find('button[btn-action=open_relacionados_container]').removeClass('btn-disabled');
                     $container.find('button[btn-action=open_relacionados_container]').prop('disabled',false);
                     showRelacionados(item.relacionados);

@@ -1,3 +1,7 @@
+<?php 
+    $this->headTitle()->prepend('Proveedores');
+    echo $this->headTitle();
+?>
 <h1>Proveedores<a style="float: right; text-decoration: none"href="/catalogos/proveedor/nuevo">Nuevo</a></h1>
 <?php if(count($successMessages)) :?>
     <div class="units-row">
