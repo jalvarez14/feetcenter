@@ -312,7 +312,7 @@ class ReportesController extends AbstractActionController
                 $diff_days3 = $from->diff($to)->days + ($from->diff($to)->y*12);
             }
             
-         
+
 
 
             $respone = array();
