@@ -51,6 +51,7 @@ return array(
     'Inventario\Controller\ExistenciasController'       => __DIR__ . '/src/Inventario/Controller/ExistenciasController.php',
     'Inventario\Controller\InsumoController'            => __DIR__ . '/src/Inventario/Controller/InsumoController.php',
     'Inventario\Controller\PreciosController'           => __DIR__ . '/src/Inventario/Controller/PreciosController.php',
+    'Inventario\Controller\HistorialController'           => __DIR__ . '/src/Inventario/Controller/HistorialController.php',
     'Inventario\Controller\ProductoController'          => __DIR__ . '/src/Inventario/Controller/ProductoController.php',
     'Inventario\Controller\ReordenController'           => __DIR__ . '/src/Inventario/Controller/ReordenController.php',
     'Inventario\Controller\TransferenciasController'    => __DIR__ . '/src/Inventario/Controller/TransferenciasController.php',
