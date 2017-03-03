@@ -1,14 +1,6 @@
 <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css" />
 <link href="/css/plugin/monthpicker.css" media="all" rel="stylesheet" type="text/css" />
-<style>
-    .month-year-input{
-        width: 60%;
-    }
-    
-    .month-picker {
-        width: 250px;
-    }
-</style>
+
 <?php 
     $this->headTitle()->prepend('Productos y servicios vendidos');
     echo $this->headTitle();
@@ -24,9 +16,21 @@
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="unit-30" id="month_filter_container">
-            <label style="display: block">Filtrar por mes</label>
-            <input placeholder="Mes" type="text" name="month_filter" class="width-60" />
+        <div class="unit-30">
+           Productos
+            <select multiple="multiple" name="idproducto" class="width-100">
+                <?php foreach ($productos as $producto) : ?>
+                    <option value="<?php echo $producto->getIdproducto()?>"><?php echo $producto->getProductonombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-20" id="month_filter_container">
+            <label style="display: block">Fecha inicial</label>
+            <input placeholder="Fecha inicial" type="text" name="month_filter" class="width-100" />
+        </div>
+        <div class="unit-20" id="month_filter_container">
+            <label style="display: block">Fecha final</label>
+            <input placeholder="Fecha final" type="text" name="month_filter2" class="width-60" />
             <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
         </div>
     </div>
@@ -63,6 +67,7 @@
     var vendidos = $('#empleados_vendidos_container').vendidos({
         session: <?php echo $session?>,
     });
+    
     vendidos.init();
     
 </script>
