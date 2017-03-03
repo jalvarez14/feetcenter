@@ -953,6 +953,22 @@ CREATE TABLE `productoclinica`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- productoinventario
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `productoinventario`;
+
+CREATE TABLE `productoinventario`
+(
+    `idproductoinventario` INTEGER NOT NULL AUTO_INCREMENT,
+    `idclinica` INTEGER NOT NULL,
+    `idproducto` INTEGER NOT NULL,
+    `productoinventario_fecha` DATE NOT NULL,
+    `productoinventario_cantidad` DECIMAL(10,5) NOT NULL,
+    PRIMARY KEY (`idproductoinventario`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- proveedor
 -- ---------------------------------------------------------------------
 
