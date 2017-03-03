@@ -20,6 +20,33 @@ class LoginController extends AbstractActionController
 {
     
     
+    public function cortecajaAction(){
+        
+        $session = new \Shared\Session\AouthSession();
+        $session = $session->getData();
+        
+        $today = new \DateTime();
+        $total = \VisitapagoQuery::create()->select(array('total'))->withColumn('SUM(VisitapagoCantidad)', 'total')->withColumn('SUM(visitapago_cantidad)', 'total')->filterByVisitapagoFecha(array('min' => $today->format('Y-m-d').' 00:00:00'))->findOne();
+        $total = !is_null($total) ? $total : 0;
+        
+        $total_efectivo = \VisitapagoQuery::create()->select(array('total'))->withColumn('SUM(VisitapagoCantidad)', 'total')->withColumn('SUM(visitapago_cantidad)', 'total')->filterByVisitapagoTipo('efectivo')->filterByVisitapagoFecha(array('min' => $today->format('Y-m-d').' 00:00:00'))->findOne();
+        $total_efectivo = !is_null($total_efectivo) ? $total_efectivo : 0;
+        
+        $total_tarjeta = \VisitapagoQuery::create()->select(array('total'))->withColumn('SUM(VisitapagoCantidad)', 'total')->withColumn('SUM(visitapago_cantidad)', 'total')->filterByVisitapagoTipo('tarjeta')->filterByVisitapagoFecha(array('min' => $today->format('Y-m-d').' 00:00:00'))->findOne();
+        $total_tarjeta = !is_null($total_tarjeta) ? $total_tarjeta : 0;
+        
+        return new ViewModel(array(
+            'total_tarjeta' => $total_tarjeta,
+            'total_efectivo' => $total_efectivo,
+            'total' => $total,
+        ));
+        
+       
+         
+       
+    }
+
+
     public function indexAction()
     {
         
@@ -66,7 +93,7 @@ class LoginController extends AbstractActionController
             
             
             $post_data = $request->getPost();
-            
+           
             
             $post_data['empleadoacceso_password'] = md5($post_data['empleadoacceso_password']);
             
@@ -79,11 +106,11 @@ class LoginController extends AbstractActionController
                
                 
                 //Verificamos que ese usario ya este asiganod alguna clinica
-                if(\ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->exists() || $empleado_acceso->getIdrol()==1){
+                if(\ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->exists() || in_array($empleado_acceso->getIdrol(), array(1,6))){
                     $clinica_empleado = \ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->findOne();
                    
                     
-                    if($empleado_acceso->getIdrol() == 1){
+                    if(in_array($empleado_acceso->getIdrol(), array(1,6))){
                         $idclinica = NULL;
                     }else{
                         $idclinica = $clinica_empleado->getIdclinica();
@@ -118,7 +145,7 @@ class LoginController extends AbstractActionController
                          * NOTIFICACIONES
                          */
                         
-                        if($empleado_acceso->getIdrol() == 1){
+                        if(in_array($empleado_acceso->getIdrol(), array(1,6))){
                             
                             
                             $transferencias = \TransferenciaQuery::create()->filterByTransferenciaEstatus('enviada')->count();
@@ -127,10 +154,7 @@ class LoginController extends AbstractActionController
                             
                             $transferencias = \TransferenciaQuery::create()->filterByIdclinicadestinataria($empleado_acceso->getIdrol())->filterByTransferenciaEstatus('enviada')->count();  
                         }
-                        
-                        
-                        
-                        
+
                         //Creamos nuestra session
                         $session->Create(array(
                             'idempleadoacceso' => $empleado_acceso->getIdempleadoacceso(),
@@ -148,9 +172,13 @@ class LoginController extends AbstractActionController
                         $empleado_acceso->setEmpleadoaccesoEnsesion(1);
                         $empleado_acceso->save();
                         
-                        
+                        if(in_array($empleado_acceso->getIdrol(), array(1,6))){
+                            return $this->redirect()->toRoute('agenda');
+                        }else{
+                            return $this->redirect()->toUrl('/login/cortecaja');
+                        }
 
-                        return $this->redirect()->toRoute('agenda');
+                        
                     }else{
                         
                         $this->flashMessenger()->addErrorMessage('El usuario ya ha iniciado sesión en otro dispositivo');

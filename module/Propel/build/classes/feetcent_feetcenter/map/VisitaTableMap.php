@@ -78,6 +78,7 @@ class VisitaTableMap extends TableMap
         $this->addColumn('visita_horainicio', 'VisitaHorainicio', 'TIMESTAMP', false, null, null);
         $this->addColumn('visita_horafin', 'VisitaHorafin', 'TIMESTAMP', false, null, null);
         $this->addColumn('visita_duracion', 'VisitaDuracion', 'INTEGER', false, null, null);
+        $this->addColumn('visita_descuento', 'VisitaDescuento', 'DECIMAL', false, 10, 0);
         // validators
     } // initialize()
 

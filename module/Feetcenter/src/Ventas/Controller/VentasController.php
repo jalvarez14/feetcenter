@@ -104,6 +104,8 @@ class VentasController  extends AbstractActionController
                 $tmp['visita_fecha'] = $visita->getVisitaFechainicio('d-m-Y - H:i');
                 $tmp['visita_efectivo']  = 0;
                 $tmp['visita_tarjeta'] = 0;
+                $tmp['visita_iva'] = $tmp['visita_total'] * 0.16;
+                $tmp['visita_subtotal'] = $tmp['visita_total'] - $tmp['visita_iva'];
                 
                 //Efectivo
                 foreach ($visita->getVisitapagos() as $pago){

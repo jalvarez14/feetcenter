@@ -91,6 +91,8 @@
                             { data: "visita_estatuspago" ,"sClass": "estatus_pago"},
                             { data: "visita_efectivo" ,"sClass": "efectivo"},
                             { data: "visita_tarjeta" ,"sClass": "tarjeta"},
+                            { data: "visita_subtotal" ,"sClass": "total"},
+                            { data: "visita_iva" ,"sClass": "total"},
                             { data: "visita_total" ,"sClass": "total"},
                             { data: "opciones", "sClass": "tr_options" },
                         ],

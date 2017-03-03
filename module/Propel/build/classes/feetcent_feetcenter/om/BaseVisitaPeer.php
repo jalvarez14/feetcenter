@@ -24,13 +24,13 @@ abstract class BaseVisitaPeer
     const TM_CLASS = 'VisitaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 22;
+    const NUM_COLUMNS = 23;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 22;
+    const NUM_HYDRATE_COLUMNS = 23;
 
     /** the column name for the idvisita field */
     const IDVISITA = 'visita.idvisita';
@@ -98,6 +98,9 @@ abstract class BaseVisitaPeer
     /** the column name for the visita_duracion field */
     const VISITA_DURACION = 'visita.visita_duracion';
 
+    /** the column name for the visita_descuento field */
+    const VISITA_DESCUENTO = 'visita.visita_descuento';
+
     /** The enumerated values for the visita_tipo field */
     const VISITA_TIPO_CONSULTA = 'consulta';
     const VISITA_TIPO_SERVICIO = 'servicio';
@@ -135,12 +138,12 @@ abstract class BaseVisitaPeer
      * e.g. VisitaPeer::$fieldNames[VisitaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idvisita', 'Idempleado', 'Idempleadocreador', 'Idpaciente', 'Idclinica', 'VisitaTipo', 'VisitaCreadaen', 'VisitaCanceladaen', 'VisitaFechainicio', 'VisitaFechafin', 'VisitaStatus', 'VisitaEstatuspago', 'VisitaTotal', 'VisitaNota', 'VisitaYear', 'VisitaMonth', 'VisitaDay', 'VisitaFoliomembresia', 'VisitaCuponmembresia', 'VisitaHorainicio', 'VisitaHorafin', 'VisitaDuracion', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisita', 'idempleado', 'idempleadocreador', 'idpaciente', 'idclinica', 'visitaTipo', 'visitaCreadaen', 'visitaCanceladaen', 'visitaFechainicio', 'visitaFechafin', 'visitaStatus', 'visitaEstatuspago', 'visitaTotal', 'visitaNota', 'visitaYear', 'visitaMonth', 'visitaDay', 'visitaFoliomembresia', 'visitaCuponmembresia', 'visitaHorainicio', 'visitaHorafin', 'visitaDuracion', ),
-        BasePeer::TYPE_COLNAME => array (VisitaPeer::IDVISITA, VisitaPeer::IDEMPLEADO, VisitaPeer::IDEMPLEADOCREADOR, VisitaPeer::IDPACIENTE, VisitaPeer::IDCLINICA, VisitaPeer::VISITA_TIPO, VisitaPeer::VISITA_CREADAEN, VisitaPeer::VISITA_CANCELADAEN, VisitaPeer::VISITA_FECHAINICIO, VisitaPeer::VISITA_FECHAFIN, VisitaPeer::VISITA_STATUS, VisitaPeer::VISITA_ESTATUSPAGO, VisitaPeer::VISITA_TOTAL, VisitaPeer::VISITA_NOTA, VisitaPeer::VISITA_YEAR, VisitaPeer::VISITA_MONTH, VisitaPeer::VISITA_DAY, VisitaPeer::VISITA_FOLIOMEMBRESIA, VisitaPeer::VISITA_CUPONMEMBRESIA, VisitaPeer::VISITA_HORAINICIO, VisitaPeer::VISITA_HORAFIN, VisitaPeer::VISITA_DURACION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITA', 'IDEMPLEADO', 'IDEMPLEADOCREADOR', 'IDPACIENTE', 'IDCLINICA', 'VISITA_TIPO', 'VISITA_CREADAEN', 'VISITA_CANCELADAEN', 'VISITA_FECHAINICIO', 'VISITA_FECHAFIN', 'VISITA_STATUS', 'VISITA_ESTATUSPAGO', 'VISITA_TOTAL', 'VISITA_NOTA', 'VISITA_YEAR', 'VISITA_MONTH', 'VISITA_DAY', 'VISITA_FOLIOMEMBRESIA', 'VISITA_CUPONMEMBRESIA', 'VISITA_HORAINICIO', 'VISITA_HORAFIN', 'VISITA_DURACION', ),
-        BasePeer::TYPE_FIELDNAME => array ('idvisita', 'idempleado', 'idempleadocreador', 'idpaciente', 'idclinica', 'visita_tipo', 'visita_creadaen', 'visita_canceladaen', 'visita_fechainicio', 'visita_fechafin', 'visita_status', 'visita_estatuspago', 'visita_total', 'visita_nota', 'visita_year', 'visita_month', 'visita_day', 'visita_foliomembresia', 'visita_cuponmembresia', 'visita_horainicio', 'visita_horafin', 'visita_duracion', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
+        BasePeer::TYPE_PHPNAME => array ('Idvisita', 'Idempleado', 'Idempleadocreador', 'Idpaciente', 'Idclinica', 'VisitaTipo', 'VisitaCreadaen', 'VisitaCanceladaen', 'VisitaFechainicio', 'VisitaFechafin', 'VisitaStatus', 'VisitaEstatuspago', 'VisitaTotal', 'VisitaNota', 'VisitaYear', 'VisitaMonth', 'VisitaDay', 'VisitaFoliomembresia', 'VisitaCuponmembresia', 'VisitaHorainicio', 'VisitaHorafin', 'VisitaDuracion', 'VisitaDescuento', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisita', 'idempleado', 'idempleadocreador', 'idpaciente', 'idclinica', 'visitaTipo', 'visitaCreadaen', 'visitaCanceladaen', 'visitaFechainicio', 'visitaFechafin', 'visitaStatus', 'visitaEstatuspago', 'visitaTotal', 'visitaNota', 'visitaYear', 'visitaMonth', 'visitaDay', 'visitaFoliomembresia', 'visitaCuponmembresia', 'visitaHorainicio', 'visitaHorafin', 'visitaDuracion', 'visitaDescuento', ),
+        BasePeer::TYPE_COLNAME => array (VisitaPeer::IDVISITA, VisitaPeer::IDEMPLEADO, VisitaPeer::IDEMPLEADOCREADOR, VisitaPeer::IDPACIENTE, VisitaPeer::IDCLINICA, VisitaPeer::VISITA_TIPO, VisitaPeer::VISITA_CREADAEN, VisitaPeer::VISITA_CANCELADAEN, VisitaPeer::VISITA_FECHAINICIO, VisitaPeer::VISITA_FECHAFIN, VisitaPeer::VISITA_STATUS, VisitaPeer::VISITA_ESTATUSPAGO, VisitaPeer::VISITA_TOTAL, VisitaPeer::VISITA_NOTA, VisitaPeer::VISITA_YEAR, VisitaPeer::VISITA_MONTH, VisitaPeer::VISITA_DAY, VisitaPeer::VISITA_FOLIOMEMBRESIA, VisitaPeer::VISITA_CUPONMEMBRESIA, VisitaPeer::VISITA_HORAINICIO, VisitaPeer::VISITA_HORAFIN, VisitaPeer::VISITA_DURACION, VisitaPeer::VISITA_DESCUENTO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITA', 'IDEMPLEADO', 'IDEMPLEADOCREADOR', 'IDPACIENTE', 'IDCLINICA', 'VISITA_TIPO', 'VISITA_CREADAEN', 'VISITA_CANCELADAEN', 'VISITA_FECHAINICIO', 'VISITA_FECHAFIN', 'VISITA_STATUS', 'VISITA_ESTATUSPAGO', 'VISITA_TOTAL', 'VISITA_NOTA', 'VISITA_YEAR', 'VISITA_MONTH', 'VISITA_DAY', 'VISITA_FOLIOMEMBRESIA', 'VISITA_CUPONMEMBRESIA', 'VISITA_HORAINICIO', 'VISITA_HORAFIN', 'VISITA_DURACION', 'VISITA_DESCUENTO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idvisita', 'idempleado', 'idempleadocreador', 'idpaciente', 'idclinica', 'visita_tipo', 'visita_creadaen', 'visita_canceladaen', 'visita_fechainicio', 'visita_fechafin', 'visita_status', 'visita_estatuspago', 'visita_total', 'visita_nota', 'visita_year', 'visita_month', 'visita_day', 'visita_foliomembresia', 'visita_cuponmembresia', 'visita_horainicio', 'visita_horafin', 'visita_duracion', 'visita_descuento', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
     );
 
     /**
@@ -150,12 +153,12 @@ abstract class BaseVisitaPeer
      * e.g. VisitaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idvisita' => 0, 'Idempleado' => 1, 'Idempleadocreador' => 2, 'Idpaciente' => 3, 'Idclinica' => 4, 'VisitaTipo' => 5, 'VisitaCreadaen' => 6, 'VisitaCanceladaen' => 7, 'VisitaFechainicio' => 8, 'VisitaFechafin' => 9, 'VisitaStatus' => 10, 'VisitaEstatuspago' => 11, 'VisitaTotal' => 12, 'VisitaNota' => 13, 'VisitaYear' => 14, 'VisitaMonth' => 15, 'VisitaDay' => 16, 'VisitaFoliomembresia' => 17, 'VisitaCuponmembresia' => 18, 'VisitaHorainicio' => 19, 'VisitaHorafin' => 20, 'VisitaDuracion' => 21, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisita' => 0, 'idempleado' => 1, 'idempleadocreador' => 2, 'idpaciente' => 3, 'idclinica' => 4, 'visitaTipo' => 5, 'visitaCreadaen' => 6, 'visitaCanceladaen' => 7, 'visitaFechainicio' => 8, 'visitaFechafin' => 9, 'visitaStatus' => 10, 'visitaEstatuspago' => 11, 'visitaTotal' => 12, 'visitaNota' => 13, 'visitaYear' => 14, 'visitaMonth' => 15, 'visitaDay' => 16, 'visitaFoliomembresia' => 17, 'visitaCuponmembresia' => 18, 'visitaHorainicio' => 19, 'visitaHorafin' => 20, 'visitaDuracion' => 21, ),
-        BasePeer::TYPE_COLNAME => array (VisitaPeer::IDVISITA => 0, VisitaPeer::IDEMPLEADO => 1, VisitaPeer::IDEMPLEADOCREADOR => 2, VisitaPeer::IDPACIENTE => 3, VisitaPeer::IDCLINICA => 4, VisitaPeer::VISITA_TIPO => 5, VisitaPeer::VISITA_CREADAEN => 6, VisitaPeer::VISITA_CANCELADAEN => 7, VisitaPeer::VISITA_FECHAINICIO => 8, VisitaPeer::VISITA_FECHAFIN => 9, VisitaPeer::VISITA_STATUS => 10, VisitaPeer::VISITA_ESTATUSPAGO => 11, VisitaPeer::VISITA_TOTAL => 12, VisitaPeer::VISITA_NOTA => 13, VisitaPeer::VISITA_YEAR => 14, VisitaPeer::VISITA_MONTH => 15, VisitaPeer::VISITA_DAY => 16, VisitaPeer::VISITA_FOLIOMEMBRESIA => 17, VisitaPeer::VISITA_CUPONMEMBRESIA => 18, VisitaPeer::VISITA_HORAINICIO => 19, VisitaPeer::VISITA_HORAFIN => 20, VisitaPeer::VISITA_DURACION => 21, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITA' => 0, 'IDEMPLEADO' => 1, 'IDEMPLEADOCREADOR' => 2, 'IDPACIENTE' => 3, 'IDCLINICA' => 4, 'VISITA_TIPO' => 5, 'VISITA_CREADAEN' => 6, 'VISITA_CANCELADAEN' => 7, 'VISITA_FECHAINICIO' => 8, 'VISITA_FECHAFIN' => 9, 'VISITA_STATUS' => 10, 'VISITA_ESTATUSPAGO' => 11, 'VISITA_TOTAL' => 12, 'VISITA_NOTA' => 13, 'VISITA_YEAR' => 14, 'VISITA_MONTH' => 15, 'VISITA_DAY' => 16, 'VISITA_FOLIOMEMBRESIA' => 17, 'VISITA_CUPONMEMBRESIA' => 18, 'VISITA_HORAINICIO' => 19, 'VISITA_HORAFIN' => 20, 'VISITA_DURACION' => 21, ),
-        BasePeer::TYPE_FIELDNAME => array ('idvisita' => 0, 'idempleado' => 1, 'idempleadocreador' => 2, 'idpaciente' => 3, 'idclinica' => 4, 'visita_tipo' => 5, 'visita_creadaen' => 6, 'visita_canceladaen' => 7, 'visita_fechainicio' => 8, 'visita_fechafin' => 9, 'visita_status' => 10, 'visita_estatuspago' => 11, 'visita_total' => 12, 'visita_nota' => 13, 'visita_year' => 14, 'visita_month' => 15, 'visita_day' => 16, 'visita_foliomembresia' => 17, 'visita_cuponmembresia' => 18, 'visita_horainicio' => 19, 'visita_horafin' => 20, 'visita_duracion' => 21, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
+        BasePeer::TYPE_PHPNAME => array ('Idvisita' => 0, 'Idempleado' => 1, 'Idempleadocreador' => 2, 'Idpaciente' => 3, 'Idclinica' => 4, 'VisitaTipo' => 5, 'VisitaCreadaen' => 6, 'VisitaCanceladaen' => 7, 'VisitaFechainicio' => 8, 'VisitaFechafin' => 9, 'VisitaStatus' => 10, 'VisitaEstatuspago' => 11, 'VisitaTotal' => 12, 'VisitaNota' => 13, 'VisitaYear' => 14, 'VisitaMonth' => 15, 'VisitaDay' => 16, 'VisitaFoliomembresia' => 17, 'VisitaCuponmembresia' => 18, 'VisitaHorainicio' => 19, 'VisitaHorafin' => 20, 'VisitaDuracion' => 21, 'VisitaDescuento' => 22, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idvisita' => 0, 'idempleado' => 1, 'idempleadocreador' => 2, 'idpaciente' => 3, 'idclinica' => 4, 'visitaTipo' => 5, 'visitaCreadaen' => 6, 'visitaCanceladaen' => 7, 'visitaFechainicio' => 8, 'visitaFechafin' => 9, 'visitaStatus' => 10, 'visitaEstatuspago' => 11, 'visitaTotal' => 12, 'visitaNota' => 13, 'visitaYear' => 14, 'visitaMonth' => 15, 'visitaDay' => 16, 'visitaFoliomembresia' => 17, 'visitaCuponmembresia' => 18, 'visitaHorainicio' => 19, 'visitaHorafin' => 20, 'visitaDuracion' => 21, 'visitaDescuento' => 22, ),
+        BasePeer::TYPE_COLNAME => array (VisitaPeer::IDVISITA => 0, VisitaPeer::IDEMPLEADO => 1, VisitaPeer::IDEMPLEADOCREADOR => 2, VisitaPeer::IDPACIENTE => 3, VisitaPeer::IDCLINICA => 4, VisitaPeer::VISITA_TIPO => 5, VisitaPeer::VISITA_CREADAEN => 6, VisitaPeer::VISITA_CANCELADAEN => 7, VisitaPeer::VISITA_FECHAINICIO => 8, VisitaPeer::VISITA_FECHAFIN => 9, VisitaPeer::VISITA_STATUS => 10, VisitaPeer::VISITA_ESTATUSPAGO => 11, VisitaPeer::VISITA_TOTAL => 12, VisitaPeer::VISITA_NOTA => 13, VisitaPeer::VISITA_YEAR => 14, VisitaPeer::VISITA_MONTH => 15, VisitaPeer::VISITA_DAY => 16, VisitaPeer::VISITA_FOLIOMEMBRESIA => 17, VisitaPeer::VISITA_CUPONMEMBRESIA => 18, VisitaPeer::VISITA_HORAINICIO => 19, VisitaPeer::VISITA_HORAFIN => 20, VisitaPeer::VISITA_DURACION => 21, VisitaPeer::VISITA_DESCUENTO => 22, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDVISITA' => 0, 'IDEMPLEADO' => 1, 'IDEMPLEADOCREADOR' => 2, 'IDPACIENTE' => 3, 'IDCLINICA' => 4, 'VISITA_TIPO' => 5, 'VISITA_CREADAEN' => 6, 'VISITA_CANCELADAEN' => 7, 'VISITA_FECHAINICIO' => 8, 'VISITA_FECHAFIN' => 9, 'VISITA_STATUS' => 10, 'VISITA_ESTATUSPAGO' => 11, 'VISITA_TOTAL' => 12, 'VISITA_NOTA' => 13, 'VISITA_YEAR' => 14, 'VISITA_MONTH' => 15, 'VISITA_DAY' => 16, 'VISITA_FOLIOMEMBRESIA' => 17, 'VISITA_CUPONMEMBRESIA' => 18, 'VISITA_HORAINICIO' => 19, 'VISITA_HORAFIN' => 20, 'VISITA_DURACION' => 21, 'VISITA_DESCUENTO' => 22, ),
+        BasePeer::TYPE_FIELDNAME => array ('idvisita' => 0, 'idempleado' => 1, 'idempleadocreador' => 2, 'idpaciente' => 3, 'idclinica' => 4, 'visita_tipo' => 5, 'visita_creadaen' => 6, 'visita_canceladaen' => 7, 'visita_fechainicio' => 8, 'visita_fechafin' => 9, 'visita_status' => 10, 'visita_estatuspago' => 11, 'visita_total' => 12, 'visita_nota' => 13, 'visita_year' => 14, 'visita_month' => 15, 'visita_day' => 16, 'visita_foliomembresia' => 17, 'visita_cuponmembresia' => 18, 'visita_horainicio' => 19, 'visita_horafin' => 20, 'visita_duracion' => 21, 'visita_descuento' => 22, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
     );
 
     /** The enumerated values for this table */
@@ -318,6 +321,7 @@ abstract class BaseVisitaPeer
             $criteria->addSelectColumn(VisitaPeer::VISITA_HORAINICIO);
             $criteria->addSelectColumn(VisitaPeer::VISITA_HORAFIN);
             $criteria->addSelectColumn(VisitaPeer::VISITA_DURACION);
+            $criteria->addSelectColumn(VisitaPeer::VISITA_DESCUENTO);
         } else {
             $criteria->addSelectColumn($alias . '.idvisita');
             $criteria->addSelectColumn($alias . '.idempleado');
@@ -341,6 +345,7 @@ abstract class BaseVisitaPeer
             $criteria->addSelectColumn($alias . '.visita_horainicio');
             $criteria->addSelectColumn($alias . '.visita_horafin');
             $criteria->addSelectColumn($alias . '.visita_duracion');
+            $criteria->addSelectColumn($alias . '.visita_descuento');
         }
     }
 

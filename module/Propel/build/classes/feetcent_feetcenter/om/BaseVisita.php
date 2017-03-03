@@ -162,6 +162,13 @@ abstract class BaseVisita extends BaseObject implements Persistent
     protected $visita_duracion;
 
     /**
+     * The value for the visita_descuento field.
+     * Note: this column has a database default value of: '0.00'
+     * @var        string
+     */
+    protected $visita_descuento;
+
+    /**
      * @var        Clinica
      */
     protected $aClinica;
@@ -224,6 +231,27 @@ abstract class BaseVisita extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $visitapagosScheduledForDeletion = null;
+
+    /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->visita_descuento = '0.00';
+    }
+
+    /**
+     * Initializes internal state of BaseVisita object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
 
     /**
      * Get the [idvisita] column value.
@@ -639,6 +667,17 @@ abstract class BaseVisita extends BaseObject implements Persistent
     {
 
         return $this->visita_duracion;
+    }
+
+    /**
+     * Get the [visita_descuento] column value.
+     *
+     * @return string
+     */
+    public function getVisitaDescuento()
+    {
+
+        return $this->visita_descuento;
     }
 
     /**
@@ -1132,6 +1171,27 @@ abstract class BaseVisita extends BaseObject implements Persistent
     } // setVisitaDuracion()
 
     /**
+     * Set the value of [visita_descuento] column.
+     *
+     * @param  string $v new value
+     * @return Visita The current object (for fluent API support)
+     */
+    public function setVisitaDescuento($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->visita_descuento !== $v) {
+            $this->visita_descuento = $v;
+            $this->modifiedColumns[] = VisitaPeer::VISITA_DESCUENTO;
+        }
+
+
+        return $this;
+    } // setVisitaDescuento()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1141,6 +1201,10 @@ abstract class BaseVisita extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->visita_descuento !== '0.00') {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -1185,6 +1249,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $this->visita_horainicio = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->visita_horafin = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
             $this->visita_duracion = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
+            $this->visita_descuento = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1194,7 +1259,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 22; // 22 = VisitaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 23; // 23 = VisitaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Visita object", $e);
@@ -1559,6 +1624,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_DURACION)) {
             $modifiedColumns[':p' . $index++]  = '`visita_duracion`';
         }
+        if ($this->isColumnModified(VisitaPeer::VISITA_DESCUENTO)) {
+            $modifiedColumns[':p' . $index++]  = '`visita_descuento`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `visita` (%s) VALUES (%s)',
@@ -1635,6 +1703,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
                         break;
                     case '`visita_duracion`':
                         $stmt->bindValue($identifier, $this->visita_duracion, PDO::PARAM_INT);
+                        break;
+                    case '`visita_descuento`':
+                        $stmt->bindValue($identifier, $this->visita_descuento, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1882,6 +1953,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
             case 21:
                 return $this->getVisitaDuracion();
                 break;
+            case 22:
+                return $this->getVisitaDescuento();
+                break;
             default:
                 return null;
                 break;
@@ -1933,6 +2007,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
             $keys[19] => $this->getVisitaHorainicio(),
             $keys[20] => $this->getVisitaHorafin(),
             $keys[21] => $this->getVisitaDuracion(),
+            $keys[22] => $this->getVisitaDescuento(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2058,6 +2133,9 @@ abstract class BaseVisita extends BaseObject implements Persistent
             case 21:
                 $this->setVisitaDuracion($value);
                 break;
+            case 22:
+                $this->setVisitaDescuento($value);
+                break;
         } // switch()
     }
 
@@ -2104,6 +2182,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if (array_key_exists($keys[19], $arr)) $this->setVisitaHorainicio($arr[$keys[19]]);
         if (array_key_exists($keys[20], $arr)) $this->setVisitaHorafin($arr[$keys[20]]);
         if (array_key_exists($keys[21], $arr)) $this->setVisitaDuracion($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setVisitaDescuento($arr[$keys[22]]);
     }
 
     /**
@@ -2137,6 +2216,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
         if ($this->isColumnModified(VisitaPeer::VISITA_HORAINICIO)) $criteria->add(VisitaPeer::VISITA_HORAINICIO, $this->visita_horainicio);
         if ($this->isColumnModified(VisitaPeer::VISITA_HORAFIN)) $criteria->add(VisitaPeer::VISITA_HORAFIN, $this->visita_horafin);
         if ($this->isColumnModified(VisitaPeer::VISITA_DURACION)) $criteria->add(VisitaPeer::VISITA_DURACION, $this->visita_duracion);
+        if ($this->isColumnModified(VisitaPeer::VISITA_DESCUENTO)) $criteria->add(VisitaPeer::VISITA_DESCUENTO, $this->visita_descuento);
 
         return $criteria;
     }
@@ -2221,6 +2301,7 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $copyObj->setVisitaHorainicio($this->getVisitaHorainicio());
         $copyObj->setVisitaHorafin($this->getVisitaHorafin());
         $copyObj->setVisitaDuracion($this->getVisitaDuracion());
+        $copyObj->setVisitaDescuento($this->getVisitaDescuento());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -3070,10 +3151,12 @@ abstract class BaseVisita extends BaseObject implements Persistent
         $this->visita_horainicio = null;
         $this->visita_horafin = null;
         $this->visita_duracion = null;
+        $this->visita_descuento = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

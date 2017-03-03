@@ -28,6 +28,7 @@
  * @method VisitaQuery orderByVisitaHorainicio($order = Criteria::ASC) Order by the visita_horainicio column
  * @method VisitaQuery orderByVisitaHorafin($order = Criteria::ASC) Order by the visita_horafin column
  * @method VisitaQuery orderByVisitaDuracion($order = Criteria::ASC) Order by the visita_duracion column
+ * @method VisitaQuery orderByVisitaDescuento($order = Criteria::ASC) Order by the visita_descuento column
  *
  * @method VisitaQuery groupByIdvisita() Group by the idvisita column
  * @method VisitaQuery groupByIdempleado() Group by the idempleado column
@@ -51,6 +52,7 @@
  * @method VisitaQuery groupByVisitaHorainicio() Group by the visita_horainicio column
  * @method VisitaQuery groupByVisitaHorafin() Group by the visita_horafin column
  * @method VisitaQuery groupByVisitaDuracion() Group by the visita_duracion column
+ * @method VisitaQuery groupByVisitaDescuento() Group by the visita_descuento column
  *
  * @method VisitaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method VisitaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -104,6 +106,7 @@
  * @method Visita findOneByVisitaHorainicio(string $visita_horainicio) Return the first Visita filtered by the visita_horainicio column
  * @method Visita findOneByVisitaHorafin(string $visita_horafin) Return the first Visita filtered by the visita_horafin column
  * @method Visita findOneByVisitaDuracion(int $visita_duracion) Return the first Visita filtered by the visita_duracion column
+ * @method Visita findOneByVisitaDescuento(string $visita_descuento) Return the first Visita filtered by the visita_descuento column
  *
  * @method array findByIdvisita(int $idvisita) Return Visita objects filtered by the idvisita column
  * @method array findByIdempleado(int $idempleado) Return Visita objects filtered by the idempleado column
@@ -127,6 +130,7 @@
  * @method array findByVisitaHorainicio(string $visita_horainicio) Return Visita objects filtered by the visita_horainicio column
  * @method array findByVisitaHorafin(string $visita_horafin) Return Visita objects filtered by the visita_horafin column
  * @method array findByVisitaDuracion(int $visita_duracion) Return Visita objects filtered by the visita_duracion column
+ * @method array findByVisitaDescuento(string $visita_descuento) Return Visita objects filtered by the visita_descuento column
  *
  * @package    propel.generator.feetcent_feetcenter.om
  */
@@ -234,7 +238,7 @@ abstract class BaseVisitaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_canceladaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total`, `visita_nota`, `visita_year`, `visita_month`, `visita_day`, `visita_foliomembresia`, `visita_cuponmembresia`, `visita_horainicio`, `visita_horafin`, `visita_duracion` FROM `visita` WHERE `idvisita` = :p0';
+        $sql = 'SELECT `idvisita`, `idempleado`, `idempleadocreador`, `idpaciente`, `idclinica`, `visita_tipo`, `visita_creadaen`, `visita_canceladaen`, `visita_fechainicio`, `visita_fechafin`, `visita_status`, `visita_estatuspago`, `visita_total`, `visita_nota`, `visita_year`, `visita_month`, `visita_day`, `visita_foliomembresia`, `visita_cuponmembresia`, `visita_horainicio`, `visita_horafin`, `visita_duracion`, `visita_descuento` FROM `visita` WHERE `idvisita` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1181,6 +1185,48 @@ abstract class BaseVisitaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(VisitaPeer::VISITA_DURACION, $visitaDuracion, $comparison);
+    }
+
+    /**
+     * Filter the query on the visita_descuento column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisitaDescuento(1234); // WHERE visita_descuento = 1234
+     * $query->filterByVisitaDescuento(array(12, 34)); // WHERE visita_descuento IN (12, 34)
+     * $query->filterByVisitaDescuento(array('min' => 12)); // WHERE visita_descuento >= 12
+     * $query->filterByVisitaDescuento(array('max' => 12)); // WHERE visita_descuento <= 12
+     * </code>
+     *
+     * @param     mixed $visitaDescuento The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VisitaQuery The current query, for fluid interface
+     */
+    public function filterByVisitaDescuento($visitaDescuento = null, $comparison = null)
+    {
+        if (is_array($visitaDescuento)) {
+            $useMinMax = false;
+            if (isset($visitaDescuento['min'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_DESCUENTO, $visitaDescuento['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visitaDescuento['max'])) {
+                $this->addUsingAlias(VisitaPeer::VISITA_DESCUENTO, $visitaDescuento['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VisitaPeer::VISITA_DESCUENTO, $visitaDescuento, $comparison);
     }
 
     /**

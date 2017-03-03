@@ -1210,6 +1210,7 @@ CREATE TABLE `visita`
     `visita_horainicio` DATETIME,
     `visita_horafin` DATETIME,
     `visita_duracion` INTEGER,
+    `visita_descuento` DECIMAL(10,2) DEFAULT 0.00,
     PRIMARY KEY (`idvisita`),
     INDEX `idempleadocreador` (`idempleadocreador`),
     INDEX `idempleado` (`idempleado`),

@@ -935,6 +935,7 @@
     <column name="visita_horainicio" phpName="VisitaHorainicio" type="TIMESTAMP" required="false"/>
     <column name="visita_horafin" phpName="VisitaHorafin" type="TIMESTAMP" required="false"/>
     <column name="visita_duracion" phpName="VisitaDuracion" type="INTEGER" required="false"/>
+    <column name="visita_descuento" phpName="VisitaDescuento" type="DECIMAL" size="10" scale="2" required="false" defaultValue="0.00"/>
     <foreign-key foreignTable="clinica" name="idclinica_visita" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idclinica" foreign="idclinica"/>
     </foreign-key>
