@@ -167,6 +167,7 @@ return array(
             'empleados-reportes/vernota',
             'empleados-comisiones',
             'empleados-vendidos',
+            'empleados-ausencias',
             //pacientes
             'pacientes',
             'pacientes/get',
@@ -185,6 +186,7 @@ return array(
             'cron-autologout',
             
         ),
+        
         "deny"=>array(
             //Catalogos
             'catalogos/clinica',
@@ -214,7 +216,86 @@ return array(
             'empleados-reportes/editar',
             'empleados-reportes/eliminar',
             'empleados-faltantes',
+
+            //pacientes
+            'pacientes/nuevo',
+            'pacientes/editar',
+            'pacientes/eliminar',
+            'pacientes-membresias',
+            'grupos',
+            'seguimiento/nuevo',
+            'seguimiento/editar',
+            'seguimiento/eliminar',
+            //ventas
+            'ventas',
+            'ventas-balance',
+            //configuracion
+            'configuracion',
+            //reportes
+            'reportes',
+
+        ),
+    ),
+    'Telefonista' => array(
+        "allow"=>array(
+            //Login
+            'login',
+            //Empleados
+            'empleados',
+            'empleados-reportes',
+            'empleados-reportes/vernota',
+            'empleados-comisiones',
+            'empleados-vendidos',
             'empleados-ausencias',
+            //pacientes
+            'pacientes',
+            'pacientes/get',
+            'pacientes/serverside',
+            'pacientes/filter',
+            'seguimiento',
+            'seguimiento/ver',
+            'seguimiento/serverside',
+            'pacientes-visitas',
+            'pacientes-expediente',
+            //Agenda
+            'agenda',
+            //mi cuenta
+            'micuenta',
+            //Cronjobs
+            'cron-autologout',
+            
+        ),
+        
+        "deny"=>array(
+            //Catalogos
+            'catalogos/clinica',
+            'catalogos/insumo',
+            'catalogos/proveedor',
+            'catalogos/canal',
+            'catalogos/rol',
+            'catalogos/producto',
+            'catalogos/servicio',
+            'catalogos/empleado',
+            'catalogos/concepto',
+            'catalogos/membresias',
+            //Compras
+            'compras',
+            //Inventarios
+            'inventario/insumo',
+            'inventario/producto',
+            'inventario/existencias',
+            'inventario/reorden',
+            'inventario/transferencias',
+            'inventario/precios',
+            'catalogos/incidencia',
+            //Egresos
+            'egresos',
+            'empleados-reportes/nuevo',
+            'empleados-reportes/filter',
+            'empleados-reportes/editar',
+            'empleados-reportes/eliminar',
+            'empleados-faltantes',
+            
             //pacientes
             'pacientes/nuevo',
             'pacientes/editar',
