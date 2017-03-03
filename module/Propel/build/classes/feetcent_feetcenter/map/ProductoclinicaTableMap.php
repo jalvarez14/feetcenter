@@ -56,6 +56,7 @@ class ProductoclinicaTableMap extends TableMap
         $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Producto', 'Producto', RelationMap::MANY_TO_ONE, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Compradetalle', 'Compradetalle', RelationMap::ONE_TO_MANY, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE', 'Compradetalles');
+        $this->addRelation('Productoinventario', 'Productoinventario', RelationMap::ONE_TO_MANY, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE', 'Productoinventarios');
         $this->addRelation('Transferenciadetalle', 'Transferenciadetalle', RelationMap::ONE_TO_MANY, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE', 'Transferenciadetalles');
         $this->addRelation('Visitadetalle', 'Visitadetalle', RelationMap::ONE_TO_MANY, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE', 'Visitadetalles');
     } // buildRelations()

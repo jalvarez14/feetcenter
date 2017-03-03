@@ -8,13 +8,13 @@
  *
  * @method ProductoinventarioQuery orderByIdproductoinventario($order = Criteria::ASC) Order by the idproductoinventario column
  * @method ProductoinventarioQuery orderByIdclinica($order = Criteria::ASC) Order by the idclinica column
- * @method ProductoinventarioQuery orderByIdproducto($order = Criteria::ASC) Order by the idproducto column
+ * @method ProductoinventarioQuery orderByIdproductoclinica($order = Criteria::ASC) Order by the idproductoclinica column
  * @method ProductoinventarioQuery orderByProductoinventarioFecha($order = Criteria::ASC) Order by the productoinventario_fecha column
  * @method ProductoinventarioQuery orderByProductoinventarioCantidad($order = Criteria::ASC) Order by the productoinventario_cantidad column
  *
  * @method ProductoinventarioQuery groupByIdproductoinventario() Group by the idproductoinventario column
  * @method ProductoinventarioQuery groupByIdclinica() Group by the idclinica column
- * @method ProductoinventarioQuery groupByIdproducto() Group by the idproducto column
+ * @method ProductoinventarioQuery groupByIdproductoclinica() Group by the idproductoclinica column
  * @method ProductoinventarioQuery groupByProductoinventarioFecha() Group by the productoinventario_fecha column
  * @method ProductoinventarioQuery groupByProductoinventarioCantidad() Group by the productoinventario_cantidad column
  *
@@ -22,17 +22,25 @@
  * @method ProductoinventarioQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method ProductoinventarioQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method ProductoinventarioQuery leftJoinClinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Clinica relation
+ * @method ProductoinventarioQuery rightJoinClinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Clinica relation
+ * @method ProductoinventarioQuery innerJoinClinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Clinica relation
+ *
+ * @method ProductoinventarioQuery leftJoinProductoclinica($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productoclinica relation
+ * @method ProductoinventarioQuery rightJoinProductoclinica($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productoclinica relation
+ * @method ProductoinventarioQuery innerJoinProductoclinica($relationAlias = null) Adds a INNER JOIN clause to the query using the Productoclinica relation
+ *
  * @method Productoinventario findOne(PropelPDO $con = null) Return the first Productoinventario matching the query
  * @method Productoinventario findOneOrCreate(PropelPDO $con = null) Return the first Productoinventario matching the query, or a new Productoinventario object populated from the query conditions when no match is found
  *
  * @method Productoinventario findOneByIdclinica(int $idclinica) Return the first Productoinventario filtered by the idclinica column
- * @method Productoinventario findOneByIdproducto(int $idproducto) Return the first Productoinventario filtered by the idproducto column
+ * @method Productoinventario findOneByIdproductoclinica(int $idproductoclinica) Return the first Productoinventario filtered by the idproductoclinica column
  * @method Productoinventario findOneByProductoinventarioFecha(string $productoinventario_fecha) Return the first Productoinventario filtered by the productoinventario_fecha column
  * @method Productoinventario findOneByProductoinventarioCantidad(string $productoinventario_cantidad) Return the first Productoinventario filtered by the productoinventario_cantidad column
  *
  * @method array findByIdproductoinventario(int $idproductoinventario) Return Productoinventario objects filtered by the idproductoinventario column
  * @method array findByIdclinica(int $idclinica) Return Productoinventario objects filtered by the idclinica column
- * @method array findByIdproducto(int $idproducto) Return Productoinventario objects filtered by the idproducto column
+ * @method array findByIdproductoclinica(int $idproductoclinica) Return Productoinventario objects filtered by the idproductoclinica column
  * @method array findByProductoinventarioFecha(string $productoinventario_fecha) Return Productoinventario objects filtered by the productoinventario_fecha column
  * @method array findByProductoinventarioCantidad(string $productoinventario_cantidad) Return Productoinventario objects filtered by the productoinventario_cantidad column
  *
@@ -142,7 +150,7 @@ abstract class BaseProductoinventarioQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproductoinventario`, `idclinica`, `idproducto`, `productoinventario_fecha`, `productoinventario_cantidad` FROM `productoinventario` WHERE `idproductoinventario` = :p0';
+        $sql = 'SELECT `idproductoinventario`, `idclinica`, `idproductoclinica`, `productoinventario_fecha`, `productoinventario_cantidad` FROM `productoinventario` WHERE `idproductoinventario` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -284,6 +292,8 @@ abstract class BaseProductoinventarioQuery extends ModelCriteria
      * $query->filterByIdclinica(array('max' => 12)); // WHERE idclinica <= 12
      * </code>
      *
+     * @see       filterByClinica()
+     *
      * @param     mixed $idclinica The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -316,17 +326,19 @@ abstract class BaseProductoinventarioQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the idproducto column
+     * Filter the query on the idproductoclinica column
      *
      * Example usage:
      * <code>
-     * $query->filterByIdproducto(1234); // WHERE idproducto = 1234
-     * $query->filterByIdproducto(array(12, 34)); // WHERE idproducto IN (12, 34)
-     * $query->filterByIdproducto(array('min' => 12)); // WHERE idproducto >= 12
-     * $query->filterByIdproducto(array('max' => 12)); // WHERE idproducto <= 12
+     * $query->filterByIdproductoclinica(1234); // WHERE idproductoclinica = 1234
+     * $query->filterByIdproductoclinica(array(12, 34)); // WHERE idproductoclinica IN (12, 34)
+     * $query->filterByIdproductoclinica(array('min' => 12)); // WHERE idproductoclinica >= 12
+     * $query->filterByIdproductoclinica(array('max' => 12)); // WHERE idproductoclinica <= 12
      * </code>
      *
-     * @param     mixed $idproducto The value to use as filter.
+     * @see       filterByProductoclinica()
+     *
+     * @param     mixed $idproductoclinica The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -334,16 +346,16 @@ abstract class BaseProductoinventarioQuery extends ModelCriteria
      *
      * @return ProductoinventarioQuery The current query, for fluid interface
      */
-    public function filterByIdproducto($idproducto = null, $comparison = null)
+    public function filterByIdproductoclinica($idproductoclinica = null, $comparison = null)
     {
-        if (is_array($idproducto)) {
+        if (is_array($idproductoclinica)) {
             $useMinMax = false;
-            if (isset($idproducto['min'])) {
-                $this->addUsingAlias(ProductoinventarioPeer::IDPRODUCTO, $idproducto['min'], Criteria::GREATER_EQUAL);
+            if (isset($idproductoclinica['min'])) {
+                $this->addUsingAlias(ProductoinventarioPeer::IDPRODUCTOCLINICA, $idproductoclinica['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($idproducto['max'])) {
-                $this->addUsingAlias(ProductoinventarioPeer::IDPRODUCTO, $idproducto['max'], Criteria::LESS_EQUAL);
+            if (isset($idproductoclinica['max'])) {
+                $this->addUsingAlias(ProductoinventarioPeer::IDPRODUCTOCLINICA, $idproductoclinica['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -354,7 +366,7 @@ abstract class BaseProductoinventarioQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ProductoinventarioPeer::IDPRODUCTO, $idproducto, $comparison);
+        return $this->addUsingAlias(ProductoinventarioPeer::IDPRODUCTOCLINICA, $idproductoclinica, $comparison);
     }
 
     /**
@@ -440,6 +452,158 @@ abstract class BaseProductoinventarioQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductoinventarioPeer::PRODUCTOINVENTARIO_CANTIDAD, $productoinventarioCantidad, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Clinica object
+     *
+     * @param   Clinica|PropelObjectCollection $clinica The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductoinventarioQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByClinica($clinica, $comparison = null)
+    {
+        if ($clinica instanceof Clinica) {
+            return $this
+                ->addUsingAlias(ProductoinventarioPeer::IDCLINICA, $clinica->getIdclinica(), $comparison);
+        } elseif ($clinica instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(ProductoinventarioPeer::IDCLINICA, $clinica->toKeyValue('PrimaryKey', 'Idclinica'), $comparison);
+        } else {
+            throw new PropelException('filterByClinica() only accepts arguments of type Clinica or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Clinica relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductoinventarioQuery The current query, for fluid interface
+     */
+    public function joinClinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Clinica');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Clinica');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Clinica relation Clinica object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ClinicaQuery A secondary query class using the current class as primary query
+     */
+    public function useClinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinClinica($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Clinica', 'ClinicaQuery');
+    }
+
+    /**
+     * Filter the query by a related Productoclinica object
+     *
+     * @param   Productoclinica|PropelObjectCollection $productoclinica The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductoinventarioQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByProductoclinica($productoclinica, $comparison = null)
+    {
+        if ($productoclinica instanceof Productoclinica) {
+            return $this
+                ->addUsingAlias(ProductoinventarioPeer::IDPRODUCTOCLINICA, $productoclinica->getIdproductoclinica(), $comparison);
+        } elseif ($productoclinica instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(ProductoinventarioPeer::IDPRODUCTOCLINICA, $productoclinica->toKeyValue('PrimaryKey', 'Idproductoclinica'), $comparison);
+        } else {
+            throw new PropelException('filterByProductoclinica() only accepts arguments of type Productoclinica or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Productoclinica relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductoinventarioQuery The current query, for fluid interface
+     */
+    public function joinProductoclinica($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Productoclinica');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Productoclinica');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Productoclinica relation Productoclinica object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ProductoclinicaQuery A secondary query class using the current class as primary query
+     */
+    public function useProductoclinicaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinProductoclinica($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Productoclinica', 'ProductoclinicaQuery');
     }
 
     /**

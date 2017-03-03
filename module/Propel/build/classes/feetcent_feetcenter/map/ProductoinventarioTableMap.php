@@ -39,8 +39,8 @@ class ProductoinventarioTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idproductoinventario', 'Idproductoinventario', 'INTEGER', true, null, null);
-        $this->addColumn('idclinica', 'Idclinica', 'INTEGER', true, null, null);
-        $this->addColumn('idproducto', 'Idproducto', 'INTEGER', true, null, null);
+        $this->addForeignKey('idclinica', 'Idclinica', 'INTEGER', 'clinica', 'idclinica', true, null, null);
+        $this->addForeignKey('idproductoclinica', 'Idproductoclinica', 'INTEGER', 'productoclinica', 'idproductoclinica', true, null, null);
         $this->addColumn('productoinventario_fecha', 'ProductoinventarioFecha', 'DATE', true, null, null);
         $this->addColumn('productoinventario_cantidad', 'ProductoinventarioCantidad', 'DECIMAL', true, 10, null);
         // validators
@@ -51,6 +51,8 @@ class ProductoinventarioTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Clinica', 'Clinica', RelationMap::MANY_TO_ONE, array('idclinica' => 'idclinica', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Productoclinica', 'Productoclinica', RelationMap::MANY_TO_ONE, array('idproductoclinica' => 'idproductoclinica', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
 } // ProductoinventarioTableMap

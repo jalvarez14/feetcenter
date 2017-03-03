@@ -38,6 +38,10 @@
  * @method ProductoclinicaQuery rightJoinCompradetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Compradetalle relation
  * @method ProductoclinicaQuery innerJoinCompradetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Compradetalle relation
  *
+ * @method ProductoclinicaQuery leftJoinProductoinventario($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productoinventario relation
+ * @method ProductoclinicaQuery rightJoinProductoinventario($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productoinventario relation
+ * @method ProductoclinicaQuery innerJoinProductoinventario($relationAlias = null) Adds a INNER JOIN clause to the query using the Productoinventario relation
+ *
  * @method ProductoclinicaQuery leftJoinTransferenciadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Transferenciadetalle relation
  * @method ProductoclinicaQuery rightJoinTransferenciadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Transferenciadetalle relation
  * @method ProductoclinicaQuery innerJoinTransferenciadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Transferenciadetalle relation
@@ -781,6 +785,80 @@ abstract class BaseProductoclinicaQuery extends ModelCriteria
         return $this
             ->joinCompradetalle($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Compradetalle', 'CompradetalleQuery');
+    }
+
+    /**
+     * Filter the query by a related Productoinventario object
+     *
+     * @param   Productoinventario|PropelObjectCollection $productoinventario  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductoclinicaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByProductoinventario($productoinventario, $comparison = null)
+    {
+        if ($productoinventario instanceof Productoinventario) {
+            return $this
+                ->addUsingAlias(ProductoclinicaPeer::IDPRODUCTOCLINICA, $productoinventario->getIdproductoclinica(), $comparison);
+        } elseif ($productoinventario instanceof PropelObjectCollection) {
+            return $this
+                ->useProductoinventarioQuery()
+                ->filterByPrimaryKeys($productoinventario->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByProductoinventario() only accepts arguments of type Productoinventario or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Productoinventario relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductoclinicaQuery The current query, for fluid interface
+     */
+    public function joinProductoinventario($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Productoinventario');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Productoinventario');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Productoinventario relation Productoinventario object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ProductoinventarioQuery A secondary query class using the current class as primary query
+     */
+    public function useProductoinventarioQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinProductoinventario($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Productoinventario', 'ProductoinventarioQuery');
     }
 
     /**

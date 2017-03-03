@@ -38,8 +38,8 @@ abstract class BaseProductoinventarioPeer
     /** the column name for the idclinica field */
     const IDCLINICA = 'productoinventario.idclinica';
 
-    /** the column name for the idproducto field */
-    const IDPRODUCTO = 'productoinventario.idproducto';
+    /** the column name for the idproductoclinica field */
+    const IDPRODUCTOCLINICA = 'productoinventario.idproductoclinica';
 
     /** the column name for the productoinventario_fecha field */
     const PRODUCTOINVENTARIO_FECHA = 'productoinventario.productoinventario_fecha';
@@ -66,11 +66,11 @@ abstract class BaseProductoinventarioPeer
      * e.g. ProductoinventarioPeer::$fieldNames[ProductoinventarioPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductoinventario', 'Idclinica', 'Idproducto', 'ProductoinventarioFecha', 'ProductoinventarioCantidad', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductoinventario', 'idclinica', 'idproducto', 'productoinventarioFecha', 'productoinventarioCantidad', ),
-        BasePeer::TYPE_COLNAME => array (ProductoinventarioPeer::IDPRODUCTOINVENTARIO, ProductoinventarioPeer::IDCLINICA, ProductoinventarioPeer::IDPRODUCTO, ProductoinventarioPeer::PRODUCTOINVENTARIO_FECHA, ProductoinventarioPeer::PRODUCTOINVENTARIO_CANTIDAD, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOINVENTARIO', 'IDCLINICA', 'IDPRODUCTO', 'PRODUCTOINVENTARIO_FECHA', 'PRODUCTOINVENTARIO_CANTIDAD', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductoinventario', 'idclinica', 'idproducto', 'productoinventario_fecha', 'productoinventario_cantidad', ),
+        BasePeer::TYPE_PHPNAME => array ('Idproductoinventario', 'Idclinica', 'Idproductoclinica', 'ProductoinventarioFecha', 'ProductoinventarioCantidad', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductoinventario', 'idclinica', 'idproductoclinica', 'productoinventarioFecha', 'productoinventarioCantidad', ),
+        BasePeer::TYPE_COLNAME => array (ProductoinventarioPeer::IDPRODUCTOINVENTARIO, ProductoinventarioPeer::IDCLINICA, ProductoinventarioPeer::IDPRODUCTOCLINICA, ProductoinventarioPeer::PRODUCTOINVENTARIO_FECHA, ProductoinventarioPeer::PRODUCTOINVENTARIO_CANTIDAD, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOINVENTARIO', 'IDCLINICA', 'IDPRODUCTOCLINICA', 'PRODUCTOINVENTARIO_FECHA', 'PRODUCTOINVENTARIO_CANTIDAD', ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductoinventario', 'idclinica', 'idproductoclinica', 'productoinventario_fecha', 'productoinventario_cantidad', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
@@ -81,11 +81,11 @@ abstract class BaseProductoinventarioPeer
      * e.g. ProductoinventarioPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductoinventario' => 0, 'Idclinica' => 1, 'Idproducto' => 2, 'ProductoinventarioFecha' => 3, 'ProductoinventarioCantidad' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductoinventario' => 0, 'idclinica' => 1, 'idproducto' => 2, 'productoinventarioFecha' => 3, 'productoinventarioCantidad' => 4, ),
-        BasePeer::TYPE_COLNAME => array (ProductoinventarioPeer::IDPRODUCTOINVENTARIO => 0, ProductoinventarioPeer::IDCLINICA => 1, ProductoinventarioPeer::IDPRODUCTO => 2, ProductoinventarioPeer::PRODUCTOINVENTARIO_FECHA => 3, ProductoinventarioPeer::PRODUCTOINVENTARIO_CANTIDAD => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOINVENTARIO' => 0, 'IDCLINICA' => 1, 'IDPRODUCTO' => 2, 'PRODUCTOINVENTARIO_FECHA' => 3, 'PRODUCTOINVENTARIO_CANTIDAD' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductoinventario' => 0, 'idclinica' => 1, 'idproducto' => 2, 'productoinventario_fecha' => 3, 'productoinventario_cantidad' => 4, ),
+        BasePeer::TYPE_PHPNAME => array ('Idproductoinventario' => 0, 'Idclinica' => 1, 'Idproductoclinica' => 2, 'ProductoinventarioFecha' => 3, 'ProductoinventarioCantidad' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductoinventario' => 0, 'idclinica' => 1, 'idproductoclinica' => 2, 'productoinventarioFecha' => 3, 'productoinventarioCantidad' => 4, ),
+        BasePeer::TYPE_COLNAME => array (ProductoinventarioPeer::IDPRODUCTOINVENTARIO => 0, ProductoinventarioPeer::IDCLINICA => 1, ProductoinventarioPeer::IDPRODUCTOCLINICA => 2, ProductoinventarioPeer::PRODUCTOINVENTARIO_FECHA => 3, ProductoinventarioPeer::PRODUCTOINVENTARIO_CANTIDAD => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOINVENTARIO' => 0, 'IDCLINICA' => 1, 'IDPRODUCTOCLINICA' => 2, 'PRODUCTOINVENTARIO_FECHA' => 3, 'PRODUCTOINVENTARIO_CANTIDAD' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductoinventario' => 0, 'idclinica' => 1, 'idproductoclinica' => 2, 'productoinventario_fecha' => 3, 'productoinventario_cantidad' => 4, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
@@ -162,13 +162,13 @@ abstract class BaseProductoinventarioPeer
         if (null === $alias) {
             $criteria->addSelectColumn(ProductoinventarioPeer::IDPRODUCTOINVENTARIO);
             $criteria->addSelectColumn(ProductoinventarioPeer::IDCLINICA);
-            $criteria->addSelectColumn(ProductoinventarioPeer::IDPRODUCTO);
+            $criteria->addSelectColumn(ProductoinventarioPeer::IDPRODUCTOCLINICA);
             $criteria->addSelectColumn(ProductoinventarioPeer::PRODUCTOINVENTARIO_FECHA);
             $criteria->addSelectColumn(ProductoinventarioPeer::PRODUCTOINVENTARIO_CANTIDAD);
         } else {
             $criteria->addSelectColumn($alias . '.idproductoinventario');
             $criteria->addSelectColumn($alias . '.idclinica');
-            $criteria->addSelectColumn($alias . '.idproducto');
+            $criteria->addSelectColumn($alias . '.idproductoclinica');
             $criteria->addSelectColumn($alias . '.productoinventario_fecha');
             $criteria->addSelectColumn($alias . '.productoinventario_cantidad');
         }
@@ -469,6 +469,637 @@ abstract class BaseProductoinventarioPeer
         }
 
         return array($obj, $col);
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Clinica table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinClinica(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ProductoinventarioPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            ProductoinventarioPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(ProductoinventarioPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(ProductoinventarioPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(ProductoinventarioPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Productoclinica table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinProductoclinica(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ProductoinventarioPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            ProductoinventarioPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(ProductoinventarioPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(ProductoinventarioPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(ProductoinventarioPeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Productoinventario objects pre-filled with their Clinica objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Productoinventario objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinClinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ProductoinventarioPeer::DATABASE_NAME);
+        }
+
+        ProductoinventarioPeer::addSelectColumns($criteria);
+        $startcol = ProductoinventarioPeer::NUM_HYDRATE_COLUMNS;
+        ClinicaPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(ProductoinventarioPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ProductoinventarioPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ProductoinventarioPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = ProductoinventarioPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ProductoinventarioPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Productoinventario) to $obj2 (Clinica)
+                $obj2->addProductoinventario($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Productoinventario objects pre-filled with their Productoclinica objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Productoinventario objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinProductoclinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ProductoinventarioPeer::DATABASE_NAME);
+        }
+
+        ProductoinventarioPeer::addSelectColumns($criteria);
+        $startcol = ProductoinventarioPeer::NUM_HYDRATE_COLUMNS;
+        ProductoclinicaPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(ProductoinventarioPeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ProductoinventarioPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ProductoinventarioPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = ProductoinventarioPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ProductoinventarioPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = ProductoclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = ProductoclinicaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = ProductoclinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    ProductoclinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Productoinventario) to $obj2 (Productoclinica)
+                $obj2->addProductoinventario($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining all related tables
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ProductoinventarioPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            ProductoinventarioPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(ProductoinventarioPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(ProductoinventarioPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(ProductoinventarioPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(ProductoinventarioPeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+    /**
+     * Selects a collection of Productoinventario objects pre-filled with all related objects.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Productoinventario objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ProductoinventarioPeer::DATABASE_NAME);
+        }
+
+        ProductoinventarioPeer::addSelectColumns($criteria);
+        $startcol2 = ProductoinventarioPeer::NUM_HYDRATE_COLUMNS;
+
+        ClinicaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        ProductoclinicaPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ProductoclinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(ProductoinventarioPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $criteria->addJoin(ProductoinventarioPeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ProductoinventarioPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ProductoinventarioPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = ProductoinventarioPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ProductoinventarioPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+            // Add objects for joined Clinica rows
+
+            $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (Productoinventario) to the collection in $obj2 (Clinica)
+                $obj2->addProductoinventario($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Productoclinica rows
+
+            $key3 = ProductoclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = ProductoclinicaPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = ProductoclinicaPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ProductoclinicaPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (Productoinventario) to the collection in $obj3 (Productoclinica)
+                $obj3->addProductoinventario($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Clinica table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptClinica(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ProductoinventarioPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            ProductoinventarioPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(ProductoinventarioPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(ProductoinventarioPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(ProductoinventarioPeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Productoclinica table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptProductoclinica(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ProductoinventarioPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            ProductoinventarioPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(ProductoinventarioPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(ProductoinventarioPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(ProductoinventarioPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Productoinventario objects pre-filled with all related objects except Clinica.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Productoinventario objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptClinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ProductoinventarioPeer::DATABASE_NAME);
+        }
+
+        ProductoinventarioPeer::addSelectColumns($criteria);
+        $startcol2 = ProductoinventarioPeer::NUM_HYDRATE_COLUMNS;
+
+        ProductoclinicaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ProductoclinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(ProductoinventarioPeer::IDPRODUCTOCLINICA, ProductoclinicaPeer::IDPRODUCTOCLINICA, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ProductoinventarioPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ProductoinventarioPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = ProductoinventarioPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ProductoinventarioPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Productoclinica rows
+
+                $key2 = ProductoclinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = ProductoclinicaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = ProductoclinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ProductoclinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Productoinventario) to the collection in $obj2 (Productoclinica)
+                $obj2->addProductoinventario($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Productoinventario objects pre-filled with all related objects except Productoclinica.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Productoinventario objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptProductoclinica(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ProductoinventarioPeer::DATABASE_NAME);
+        }
+
+        ProductoinventarioPeer::addSelectColumns($criteria);
+        $startcol2 = ProductoinventarioPeer::NUM_HYDRATE_COLUMNS;
+
+        ClinicaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ClinicaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(ProductoinventarioPeer::IDCLINICA, ClinicaPeer::IDCLINICA, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ProductoinventarioPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ProductoinventarioPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = ProductoinventarioPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ProductoinventarioPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Clinica rows
+
+                $key2 = ClinicaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = ClinicaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = ClinicaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ClinicaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Productoinventario) to the collection in $obj2 (Clinica)
+                $obj2->addProductoinventario($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
     /**

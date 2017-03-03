@@ -388,6 +388,9 @@ abstract class BaseProductoclinicaPeer
         // Invalidate objects in CompradetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CompradetallePeer::clearInstancePool();
+        // Invalidate objects in ProductoinventarioPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ProductoinventarioPeer::clearInstancePool();
         // Invalidate objects in TransferenciadetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransferenciadetallePeer::clearInstancePool();
@@ -1364,6 +1367,12 @@ abstract class BaseProductoclinicaPeer
 
             $criteria->add(CompradetallePeer::IDPRODUCTOCLINICA, $obj->getIdproductoclinica());
             $affectedRows += CompradetallePeer::doDelete($criteria, $con);
+
+            // delete related Productoinventario objects
+            $criteria = new Criteria(ProductoinventarioPeer::DATABASE_NAME);
+
+            $criteria->add(ProductoinventarioPeer::IDPRODUCTOCLINICA, $obj->getIdproductoclinica());
+            $affectedRows += ProductoinventarioPeer::doDelete($criteria, $con);
 
             // delete related Transferenciadetalle objects
             $criteria = new Criteria(TransferenciadetallePeer::DATABASE_NAME);

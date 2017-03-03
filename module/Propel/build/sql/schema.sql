@@ -962,10 +962,22 @@ CREATE TABLE `productoinventario`
 (
     `idproductoinventario` INTEGER NOT NULL AUTO_INCREMENT,
     `idclinica` INTEGER NOT NULL,
-    `idproducto` INTEGER NOT NULL,
+    `idproductoclinica` INTEGER NOT NULL,
     `productoinventario_fecha` DATE NOT NULL,
     `productoinventario_cantidad` DECIMAL(10,5) NOT NULL,
-    PRIMARY KEY (`idproductoinventario`)
+    PRIMARY KEY (`idproductoinventario`),
+    INDEX `idclinica` (`idclinica`),
+    INDEX `idproductoclinica` (`idproductoclinica`),
+    CONSTRAINT `idclinica_productoinventario`
+        FOREIGN KEY (`idclinica`)
+        REFERENCES `clinica` (`idclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductoclinica_productoinventario`
+        FOREIGN KEY (`idproductoclinica`)
+        REFERENCES `productoclinica` (`idproductoclinica`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

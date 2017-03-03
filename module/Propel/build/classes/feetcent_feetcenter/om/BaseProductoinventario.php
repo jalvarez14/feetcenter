@@ -42,10 +42,10 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
     protected $idclinica;
 
     /**
-     * The value for the idproducto field.
+     * The value for the idproductoclinica field.
      * @var        int
      */
-    protected $idproducto;
+    protected $idproductoclinica;
 
     /**
      * The value for the productoinventario_fecha field.
@@ -58,6 +58,16 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
      * @var        string
      */
     protected $productoinventario_cantidad;
+
+    /**
+     * @var        Clinica
+     */
+    protected $aClinica;
+
+    /**
+     * @var        Productoclinica
+     */
+    protected $aProductoclinica;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -102,14 +112,14 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [idproducto] column value.
+     * Get the [idproductoclinica] column value.
      *
      * @return int
      */
-    public function getIdproducto()
+    public function getIdproductoclinica()
     {
 
-        return $this->idproducto;
+        return $this->idproductoclinica;
     }
 
     /**
@@ -201,30 +211,38 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
             $this->modifiedColumns[] = ProductoinventarioPeer::IDCLINICA;
         }
 
+        if ($this->aClinica !== null && $this->aClinica->getIdclinica() !== $v) {
+            $this->aClinica = null;
+        }
+
 
         return $this;
     } // setIdclinica()
 
     /**
-     * Set the value of [idproducto] column.
+     * Set the value of [idproductoclinica] column.
      *
      * @param  int $v new value
      * @return Productoinventario The current object (for fluent API support)
      */
-    public function setIdproducto($v)
+    public function setIdproductoclinica($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idproducto !== $v) {
-            $this->idproducto = $v;
-            $this->modifiedColumns[] = ProductoinventarioPeer::IDPRODUCTO;
+        if ($this->idproductoclinica !== $v) {
+            $this->idproductoclinica = $v;
+            $this->modifiedColumns[] = ProductoinventarioPeer::IDPRODUCTOCLINICA;
+        }
+
+        if ($this->aProductoclinica !== null && $this->aProductoclinica->getIdproductoclinica() !== $v) {
+            $this->aProductoclinica = null;
         }
 
 
         return $this;
-    } // setIdproducto()
+    } // setIdproductoclinica()
 
     /**
      * Sets the value of [productoinventario_fecha] column to a normalized version of the date/time value specified.
@@ -304,7 +322,7 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
 
             $this->idproductoinventario = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idclinica = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->idproducto = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->idproductoclinica = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->productoinventario_fecha = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->productoinventario_cantidad = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
@@ -339,6 +357,12 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aClinica !== null && $this->idclinica !== $this->aClinica->getIdclinica()) {
+            $this->aClinica = null;
+        }
+        if ($this->aProductoclinica !== null && $this->idproductoclinica !== $this->aProductoclinica->getIdproductoclinica()) {
+            $this->aProductoclinica = null;
+        }
     } // ensureConsistency
 
     /**
@@ -378,6 +402,8 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aClinica = null;
+            $this->aProductoclinica = null;
         } // if (deep)
     }
 
@@ -491,6 +517,25 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aClinica !== null) {
+                if ($this->aClinica->isModified() || $this->aClinica->isNew()) {
+                    $affectedRows += $this->aClinica->save($con);
+                }
+                $this->setClinica($this->aClinica);
+            }
+
+            if ($this->aProductoclinica !== null) {
+                if ($this->aProductoclinica->isModified() || $this->aProductoclinica->isNew()) {
+                    $affectedRows += $this->aProductoclinica->save($con);
+                }
+                $this->setProductoclinica($this->aProductoclinica);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -534,8 +579,8 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoinventarioPeer::IDCLINICA)) {
             $modifiedColumns[':p' . $index++]  = '`idclinica`';
         }
-        if ($this->isColumnModified(ProductoinventarioPeer::IDPRODUCTO)) {
-            $modifiedColumns[':p' . $index++]  = '`idproducto`';
+        if ($this->isColumnModified(ProductoinventarioPeer::IDPRODUCTOCLINICA)) {
+            $modifiedColumns[':p' . $index++]  = '`idproductoclinica`';
         }
         if ($this->isColumnModified(ProductoinventarioPeer::PRODUCTOINVENTARIO_FECHA)) {
             $modifiedColumns[':p' . $index++]  = '`productoinventario_fecha`';
@@ -560,8 +605,8 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
                     case '`idclinica`':
                         $stmt->bindValue($identifier, $this->idclinica, PDO::PARAM_INT);
                         break;
-                    case '`idproducto`':
-                        $stmt->bindValue($identifier, $this->idproducto, PDO::PARAM_INT);
+                    case '`idproductoclinica`':
+                        $stmt->bindValue($identifier, $this->idproductoclinica, PDO::PARAM_INT);
                         break;
                     case '`productoinventario_fecha`':
                         $stmt->bindValue($identifier, $this->productoinventario_fecha, PDO::PARAM_STR);
@@ -663,6 +708,24 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
             $failureMap = array();
 
 
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aClinica !== null) {
+                if (!$this->aClinica->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aClinica->getValidationFailures());
+                }
+            }
+
+            if ($this->aProductoclinica !== null) {
+                if (!$this->aProductoclinica->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aProductoclinica->getValidationFailures());
+                }
+            }
+
+
             if (($retval = ProductoinventarioPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
@@ -710,7 +773,7 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
                 return $this->getIdclinica();
                 break;
             case 2:
-                return $this->getIdproducto();
+                return $this->getIdproductoclinica();
                 break;
             case 3:
                 return $this->getProductoinventarioFecha();
@@ -735,10 +798,11 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['Productoinventario'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -748,7 +812,7 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getIdproductoinventario(),
             $keys[1] => $this->getIdclinica(),
-            $keys[2] => $this->getIdproducto(),
+            $keys[2] => $this->getIdproductoclinica(),
             $keys[3] => $this->getProductoinventarioFecha(),
             $keys[4] => $this->getProductoinventarioCantidad(),
         );
@@ -757,6 +821,14 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aClinica) {
+                $result['Clinica'] = $this->aClinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aProductoclinica) {
+                $result['Productoclinica'] = $this->aProductoclinica->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -797,7 +869,7 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
                 $this->setIdclinica($value);
                 break;
             case 2:
-                $this->setIdproducto($value);
+                $this->setIdproductoclinica($value);
                 break;
             case 3:
                 $this->setProductoinventarioFecha($value);
@@ -831,7 +903,7 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setIdproductoinventario($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setIdclinica($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setIdproducto($arr[$keys[2]]);
+        if (array_key_exists($keys[2], $arr)) $this->setIdproductoclinica($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setProductoinventarioFecha($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setProductoinventarioCantidad($arr[$keys[4]]);
     }
@@ -847,7 +919,7 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
 
         if ($this->isColumnModified(ProductoinventarioPeer::IDPRODUCTOINVENTARIO)) $criteria->add(ProductoinventarioPeer::IDPRODUCTOINVENTARIO, $this->idproductoinventario);
         if ($this->isColumnModified(ProductoinventarioPeer::IDCLINICA)) $criteria->add(ProductoinventarioPeer::IDCLINICA, $this->idclinica);
-        if ($this->isColumnModified(ProductoinventarioPeer::IDPRODUCTO)) $criteria->add(ProductoinventarioPeer::IDPRODUCTO, $this->idproducto);
+        if ($this->isColumnModified(ProductoinventarioPeer::IDPRODUCTOCLINICA)) $criteria->add(ProductoinventarioPeer::IDPRODUCTOCLINICA, $this->idproductoclinica);
         if ($this->isColumnModified(ProductoinventarioPeer::PRODUCTOINVENTARIO_FECHA)) $criteria->add(ProductoinventarioPeer::PRODUCTOINVENTARIO_FECHA, $this->productoinventario_fecha);
         if ($this->isColumnModified(ProductoinventarioPeer::PRODUCTOINVENTARIO_CANTIDAD)) $criteria->add(ProductoinventarioPeer::PRODUCTOINVENTARIO_CANTIDAD, $this->productoinventario_cantidad);
 
@@ -914,9 +986,21 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setIdclinica($this->getIdclinica());
-        $copyObj->setIdproducto($this->getIdproducto());
+        $copyObj->setIdproductoclinica($this->getIdproductoclinica());
         $copyObj->setProductoinventarioFecha($this->getProductoinventarioFecha());
         $copyObj->setProductoinventarioCantidad($this->getProductoinventarioCantidad());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdproductoinventario(NULL); // this is a auto-increment column, so set to default value
@@ -964,13 +1048,117 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a Clinica object.
+     *
+     * @param                  Clinica $v
+     * @return Productoinventario The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setClinica(Clinica $v = null)
+    {
+        if ($v === null) {
+            $this->setIdclinica(NULL);
+        } else {
+            $this->setIdclinica($v->getIdclinica());
+        }
+
+        $this->aClinica = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Clinica object, it will not be re-added.
+        if ($v !== null) {
+            $v->addProductoinventario($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Clinica object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Clinica The associated Clinica object.
+     * @throws PropelException
+     */
+    public function getClinica(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aClinica === null && ($this->idclinica !== null) && $doQuery) {
+            $this->aClinica = ClinicaQuery::create()->findPk($this->idclinica, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aClinica->addProductoinventarios($this);
+             */
+        }
+
+        return $this->aClinica;
+    }
+
+    /**
+     * Declares an association between this object and a Productoclinica object.
+     *
+     * @param                  Productoclinica $v
+     * @return Productoinventario The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setProductoclinica(Productoclinica $v = null)
+    {
+        if ($v === null) {
+            $this->setIdproductoclinica(NULL);
+        } else {
+            $this->setIdproductoclinica($v->getIdproductoclinica());
+        }
+
+        $this->aProductoclinica = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Productoclinica object, it will not be re-added.
+        if ($v !== null) {
+            $v->addProductoinventario($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Productoclinica object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Productoclinica The associated Productoclinica object.
+     * @throws PropelException
+     */
+    public function getProductoclinica(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aProductoclinica === null && ($this->idproductoclinica !== null) && $doQuery) {
+            $this->aProductoclinica = ProductoclinicaQuery::create()->findPk($this->idproductoclinica, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aProductoclinica->addProductoinventarios($this);
+             */
+        }
+
+        return $this->aProductoclinica;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->idproductoinventario = null;
         $this->idclinica = null;
-        $this->idproducto = null;
+        $this->idproductoclinica = null;
         $this->productoinventario_fecha = null;
         $this->productoinventario_cantidad = null;
         $this->alreadyInSave = false;
@@ -995,10 +1183,18 @@ abstract class BaseProductoinventario extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aClinica instanceof Persistent) {
+              $this->aClinica->clearAllReferences($deep);
+            }
+            if ($this->aProductoclinica instanceof Persistent) {
+              $this->aProductoclinica->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        $this->aClinica = null;
+        $this->aProductoclinica = null;
     }
 
     /**

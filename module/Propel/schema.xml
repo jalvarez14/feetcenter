@@ -741,9 +741,21 @@
   <table name="productoinventario" phpName="Productoinventario" idMethod="native">
     <column name="idproductoinventario" phpName="Idproductoinventario" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idclinica" phpName="Idclinica" type="INTEGER" required="true"/>
-    <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
+    <column name="idproductoclinica" phpName="Idproductoclinica" type="INTEGER" required="true"/>
     <column name="productoinventario_fecha" phpName="ProductoinventarioFecha" type="DATE" required="true"/>
     <column name="productoinventario_cantidad" phpName="ProductoinventarioCantidad" type="DECIMAL" size="10" scale="5" required="true"/>
+    <foreign-key foreignTable="clinica" name="idclinica_productoinventario" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclinica" foreign="idclinica"/>
+    </foreign-key>
+    <foreign-key foreignTable="productoclinica" name="idproductoclinica_productoinventario" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproductoclinica" foreign="idproductoclinica"/>
+    </foreign-key>
+    <index name="idclinica">
+      <index-column name="idclinica"/>
+    </index>
+    <index name="idproductoclinica">
+      <index-column name="idproductoclinica"/>
+    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

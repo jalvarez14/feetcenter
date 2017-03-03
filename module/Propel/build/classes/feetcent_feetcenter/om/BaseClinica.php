@@ -150,6 +150,12 @@ abstract class BaseClinica extends BaseObject implements Persistent
     protected $collProductoclinicasPartial;
 
     /**
+     * @var        PropelObjectCollection|Productoinventario[] Collection to store aggregation of Productoinventario objects.
+     */
+    protected $collProductoinventarios;
+    protected $collProductoinventariosPartial;
+
+    /**
      * @var        PropelObjectCollection|Servicioclinica[] Collection to store aggregation of Servicioclinica objects.
      */
     protected $collServicioclinicas;
@@ -282,6 +288,12 @@ abstract class BaseClinica extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $productoclinicasScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $productoinventariosScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -604,6 +616,8 @@ abstract class BaseClinica extends BaseObject implements Persistent
             $this->collPacienteseguimientos = null;
 
             $this->collProductoclinicas = null;
+
+            $this->collProductoinventarios = null;
 
             $this->collServicioclinicas = null;
 
@@ -992,6 +1006,23 @@ abstract class BaseClinica extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->productoinventariosScheduledForDeletion !== null) {
+                if (!$this->productoinventariosScheduledForDeletion->isEmpty()) {
+                    ProductoinventarioQuery::create()
+                        ->filterByPrimaryKeys($this->productoinventariosScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->productoinventariosScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collProductoinventarios !== null) {
+                foreach ($this->collProductoinventarios as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->servicioclinicasScheduledForDeletion !== null) {
                 if (!$this->servicioclinicasScheduledForDeletion->isEmpty()) {
                     ServicioclinicaQuery::create()
@@ -1346,6 +1377,14 @@ abstract class BaseClinica extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collProductoinventarios !== null) {
+                    foreach ($this->collProductoinventarios as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collServicioclinicas !== null) {
                     foreach ($this->collServicioclinicas as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1513,6 +1552,9 @@ abstract class BaseClinica extends BaseObject implements Persistent
             }
             if (null !== $this->collProductoclinicas) {
                 $result['Productoclinicas'] = $this->collProductoclinicas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collProductoinventarios) {
+                $result['Productoinventarios'] = $this->collProductoinventarios->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collServicioclinicas) {
                 $result['Servicioclinicas'] = $this->collServicioclinicas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1785,6 +1827,12 @@ abstract class BaseClinica extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getProductoinventarios() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addProductoinventario($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getServicioclinicas() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addServicioclinica($relObj->copy($deepCopy));
@@ -1914,6 +1962,9 @@ abstract class BaseClinica extends BaseObject implements Persistent
         }
         if ('Productoclinica' == $relationName) {
             $this->initProductoclinicas();
+        }
+        if ('Productoinventario' == $relationName) {
+            $this->initProductoinventarios();
         }
         if ('Servicioclinica' == $relationName) {
             $this->initServicioclinicas();
@@ -5830,6 +5881,256 @@ abstract class BaseClinica extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collProductoinventarios collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Clinica The current object (for fluent API support)
+     * @see        addProductoinventarios()
+     */
+    public function clearProductoinventarios()
+    {
+        $this->collProductoinventarios = null; // important to set this to null since that means it is uninitialized
+        $this->collProductoinventariosPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collProductoinventarios collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialProductoinventarios($v = true)
+    {
+        $this->collProductoinventariosPartial = $v;
+    }
+
+    /**
+     * Initializes the collProductoinventarios collection.
+     *
+     * By default this just sets the collProductoinventarios collection to an empty array (like clearcollProductoinventarios());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initProductoinventarios($overrideExisting = true)
+    {
+        if (null !== $this->collProductoinventarios && !$overrideExisting) {
+            return;
+        }
+        $this->collProductoinventarios = new PropelObjectCollection();
+        $this->collProductoinventarios->setModel('Productoinventario');
+    }
+
+    /**
+     * Gets an array of Productoinventario objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Clinica is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Productoinventario[] List of Productoinventario objects
+     * @throws PropelException
+     */
+    public function getProductoinventarios($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collProductoinventariosPartial && !$this->isNew();
+        if (null === $this->collProductoinventarios || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collProductoinventarios) {
+                // return empty collection
+                $this->initProductoinventarios();
+            } else {
+                $collProductoinventarios = ProductoinventarioQuery::create(null, $criteria)
+                    ->filterByClinica($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collProductoinventariosPartial && count($collProductoinventarios)) {
+                      $this->initProductoinventarios(false);
+
+                      foreach ($collProductoinventarios as $obj) {
+                        if (false == $this->collProductoinventarios->contains($obj)) {
+                          $this->collProductoinventarios->append($obj);
+                        }
+                      }
+
+                      $this->collProductoinventariosPartial = true;
+                    }
+
+                    $collProductoinventarios->getInternalIterator()->rewind();
+
+                    return $collProductoinventarios;
+                }
+
+                if ($partial && $this->collProductoinventarios) {
+                    foreach ($this->collProductoinventarios as $obj) {
+                        if ($obj->isNew()) {
+                            $collProductoinventarios[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collProductoinventarios = $collProductoinventarios;
+                $this->collProductoinventariosPartial = false;
+            }
+        }
+
+        return $this->collProductoinventarios;
+    }
+
+    /**
+     * Sets a collection of Productoinventario objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $productoinventarios A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Clinica The current object (for fluent API support)
+     */
+    public function setProductoinventarios(PropelCollection $productoinventarios, PropelPDO $con = null)
+    {
+        $productoinventariosToDelete = $this->getProductoinventarios(new Criteria(), $con)->diff($productoinventarios);
+
+
+        $this->productoinventariosScheduledForDeletion = $productoinventariosToDelete;
+
+        foreach ($productoinventariosToDelete as $productoinventarioRemoved) {
+            $productoinventarioRemoved->setClinica(null);
+        }
+
+        $this->collProductoinventarios = null;
+        foreach ($productoinventarios as $productoinventario) {
+            $this->addProductoinventario($productoinventario);
+        }
+
+        $this->collProductoinventarios = $productoinventarios;
+        $this->collProductoinventariosPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Productoinventario objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Productoinventario objects.
+     * @throws PropelException
+     */
+    public function countProductoinventarios(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collProductoinventariosPartial && !$this->isNew();
+        if (null === $this->collProductoinventarios || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collProductoinventarios) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getProductoinventarios());
+            }
+            $query = ProductoinventarioQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByClinica($this)
+                ->count($con);
+        }
+
+        return count($this->collProductoinventarios);
+    }
+
+    /**
+     * Method called to associate a Productoinventario object to this object
+     * through the Productoinventario foreign key attribute.
+     *
+     * @param    Productoinventario $l Productoinventario
+     * @return Clinica The current object (for fluent API support)
+     */
+    public function addProductoinventario(Productoinventario $l)
+    {
+        if ($this->collProductoinventarios === null) {
+            $this->initProductoinventarios();
+            $this->collProductoinventariosPartial = true;
+        }
+
+        if (!in_array($l, $this->collProductoinventarios->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddProductoinventario($l);
+
+            if ($this->productoinventariosScheduledForDeletion and $this->productoinventariosScheduledForDeletion->contains($l)) {
+                $this->productoinventariosScheduledForDeletion->remove($this->productoinventariosScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Productoinventario $productoinventario The productoinventario object to add.
+     */
+    protected function doAddProductoinventario($productoinventario)
+    {
+        $this->collProductoinventarios[]= $productoinventario;
+        $productoinventario->setClinica($this);
+    }
+
+    /**
+     * @param	Productoinventario $productoinventario The productoinventario object to remove.
+     * @return Clinica The current object (for fluent API support)
+     */
+    public function removeProductoinventario($productoinventario)
+    {
+        if ($this->getProductoinventarios()->contains($productoinventario)) {
+            $this->collProductoinventarios->remove($this->collProductoinventarios->search($productoinventario));
+            if (null === $this->productoinventariosScheduledForDeletion) {
+                $this->productoinventariosScheduledForDeletion = clone $this->collProductoinventarios;
+                $this->productoinventariosScheduledForDeletion->clear();
+            }
+            $this->productoinventariosScheduledForDeletion[]= clone $productoinventario;
+            $productoinventario->setClinica(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Clinica is new, it will return
+     * an empty collection; or if this Clinica has previously
+     * been saved, it will retrieve related Productoinventarios from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Clinica.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Productoinventario[] List of Productoinventario objects
+     */
+    public function getProductoinventariosJoinProductoclinica($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ProductoinventarioQuery::create(null, $criteria);
+        $query->joinWith('Productoclinica', $join_behavior);
+
+        return $this->getProductoinventarios($query, $con);
+    }
+
+    /**
      * Clears out the collServicioclinicas collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -7036,6 +7337,11 @@ abstract class BaseClinica extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collProductoinventarios) {
+                foreach ($this->collProductoinventarios as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collServicioclinicas) {
                 foreach ($this->collServicioclinicas as $o) {
                     $o->clearAllReferences($deep);
@@ -7120,6 +7426,10 @@ abstract class BaseClinica extends BaseObject implements Persistent
             $this->collProductoclinicas->clearIterator();
         }
         $this->collProductoclinicas = null;
+        if ($this->collProductoinventarios instanceof PropelCollection) {
+            $this->collProductoinventarios->clearIterator();
+        }
+        $this->collProductoinventarios = null;
         if ($this->collServicioclinicas instanceof PropelCollection) {
             $this->collServicioclinicas->clearIterator();
         }
