@@ -26,6 +26,7 @@ return array(
             'inventario/insumo',
             'inventario/producto',
             'inventario/existencias',
+            'inventario/historial',
             'inventario/reorden',
             'inventario/transferencias',
             'inventario/precios',

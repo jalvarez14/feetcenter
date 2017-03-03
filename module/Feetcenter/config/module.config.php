@@ -333,6 +333,16 @@ return array(
                             ),
                         ),
                     ),
+                    'historial' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/historial[/:action][/:id]',
+                            'defaults' => array(
+                                'controller'    => 'Inventario\Controller\Historial',
+                                'action'        => 'index',
+                            ),
+                        ),
+                    ),
                     'precios' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -755,6 +765,7 @@ return array(
             'Inventario\Controller\Reorden' => 'Inventario\Controller\ReordenController',
             'Inventario\Controller\Transferencias' => 'Inventario\Controller\TransferenciasController',
             'Inventario\Controller\Precios' => 'Inventario\Controller\PreciosController',
+            'Inventario\Controller\Historial' => 'Inventario\Controller\HistorialController',
             //Egresos
             'Egresos\Controller\Egresos' => 'Egresos\Controller\EgresosController',
             //Empleados
