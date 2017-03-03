@@ -253,8 +253,20 @@
                 var subtotal = accounting.unformat($(this).find('td').eq(3).text());
                 total += subtotal;
             });
+            
+            var iva = (total * 0.16) ;
+            var subtotal = total - iva;
+            
+            $container.find('input[name=visita_subtotal]').val(subtotal);
+            $container.find('#subtotal').text(accounting.formatMoney(subtotal));
+            
+            $container.find('input[name=visita_iva]').val(iva);
+            $container.find('#iva').text(accounting.formatMoney(iva));
+            
             $container.find('input[name=visita_total]').val(total);
             $container.find('#total').text(accounting.formatMoney(total));
+            
+
            
        }
         
@@ -325,6 +337,15 @@
                         });
                         $container.find('input[name=visita_total]').val(total);
                         $container.find('#total').text(accounting.formatMoney(total));
+                        
+                         var iva = (total * 0.16) ;
+                        var subtotal = total - iva;
+
+                        $container.find('input[name=visita_subtotal]').val(subtotal);
+                        $container.find('#subtotal').text(accounting.formatMoney(subtotal));
+
+                        $container.find('input[name=visita_iva]').val(iva);
+                        $container.find('#iva').text(accounting.formatMoney(iva));
 
 
                         selected.addClass('hide');
@@ -378,6 +399,15 @@
                             });
                             $container.find('input[name=visita_total]').val(total);
                             $container.find('#total').text(accounting.formatMoney(total));
+                            
+                             var iva = (total * 0.16) ;
+                            var subtotal = total - iva;
+
+                            $container.find('input[name=visita_subtotal]').val(subtotal);
+                            $container.find('#subtotal').text(accounting.formatMoney(subtotal));
+
+                            $container.find('input[name=visita_iva]').val(iva);
+                            $container.find('#iva').text(accounting.formatMoney(iva));
 
 
                             selected.addClass('hide');
@@ -420,6 +450,15 @@
                                         });
                                         $container.find('input[name=visita_total]').val(total);
                                         $container.find('#total').text(accounting.formatMoney(total));
+                                        
+                                         var iva = (total * 0.16) ;
+                                            var subtotal = total - iva;
+
+                                            $container.find('input[name=visita_subtotal]').val(subtotal);
+                                            $container.find('#subtotal').text(accounting.formatMoney(subtotal));
+
+                                            $container.find('input[name=visita_iva]').val(iva);
+                                            $container.find('#iva').text(accounting.formatMoney(iva));
 
 
                                         selected.addClass('hide');
@@ -472,13 +511,22 @@
                         });
                         $container.find('input[name=visita_total]').val(total);
                         $container.find('#total').text(accounting.formatMoney(total));
+                        
+                         var iva = (total * 0.16) ;
+                            var subtotal = total - iva;
+
+                            $container.find('input[name=visita_subtotal]').val(subtotal);
+                            $container.find('#subtotal').text(accounting.formatMoney(subtotal));
+
+                            $container.find('input[name=visita_iva]').val(iva);
+                            $container.find('#iva').text(accounting.formatMoney(iva));
 
 
                         selected.addClass('hide');
                         $('#addproduct_container input,#addproduct_container select').val('');
                     }
                }
-               else{
+               else{    
                    //$container.find('input[name=visitadetalle_cantidad]').closest('div').hide();
                    var idmembresia = selected.val();
                    var idclinica = container.find('input[name=idclinica]').val();
@@ -588,6 +636,16 @@
                     });
                     $container.find('input[name=visita_total]').val(total);
                     $container.find('#total').text(accounting.formatMoney(total));
+                    
+                    
+                     var iva = (total * 0.16) ;
+                    var subtotal = total - iva;
+
+                    $container.find('input[name=visita_subtotal]').val(subtotal);
+                    $container.find('#subtotal').text(accounting.formatMoney(subtotal));
+
+                    $container.find('input[name=visita_iva]').val(iva);
+                    $container.find('#iva').text(accounting.formatMoney(iva));
 
 
                     selected.addClass('hide');
@@ -640,7 +698,15 @@
                             url: '/getserviciosbymembresia',
                             data: {idmembresia: 1, idclinica: 2},
                             success: function (data) {
-
+                                
+                                $container.find('select[name=visita_status]').on('change',function(){
+                                   
+                                    if($(this).val() == 'en servicio'){
+                                        alert('Actualizar datos');
+                                    }
+                                    
+                                });
+                                
                                 var $opt_servicios = $('select#visitadetalle_tipo optgroup[label=Servicios]');
                                 $.each(data, function () {
                                     var $option = $('<option>', {'data-dependencia': 'membresia', 'data-available': this.disponible, 'data-name': this.servicio_nombre, 'data-price': this.servicioclinica_precio, 'data-type': 'servicio', 'value': this.idservicioclinica}).text(this.servicio_nombre);
@@ -762,6 +828,17 @@
             });
             $container.find('input[name=visita_total]').val(total);
             $container.find('#total').text(accounting.formatMoney(total));
+             console.log(total);
+             var iva = (total * 0.16) ;
+             console.log(iva);
+            var subtotal = total - iva;
+            
+            $container.find('input[name=visita_subtotal]').val(subtotal);
+            $container.find('#subtotal').text(accounting.formatMoney(subtotal));
+            
+            $container.find('input[name=visita_iva]').val(iva);
+            $container.find('#iva').text(accounting.formatMoney(iva));
+            
             $container.find('tbody a').on('click',deleteProduct);
             
             if(typeof settings.paciente != 'undefined'){

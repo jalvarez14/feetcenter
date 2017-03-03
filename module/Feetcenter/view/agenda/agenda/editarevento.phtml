@@ -226,7 +226,7 @@
                 <th>Cantidad</th>
                 <th>Servicio / Producto</th>
                 <th>Opciones</th>
-                <th>Subtotal</th>
+                <th>Importe</th>
             </tr>
         </thead>
         <tbody>
@@ -274,7 +274,18 @@
             <?php endforeach;?>
         </tbody>
         <tfoot>
+             <tr>
+            <input name="visita_subtotal" type="hidden" value="0">
+                <td colspan="3">Subtotal</td>
+                <td id="subtotal">$ 0</td>
+            </tr>
+         
             <tr>
+            <input name="visita_iva" type="hidden" value="0">
+                <td colspan="3">IVA</td>
+                <td id="iva">$ 0</td>
+            </tr>
+            <tr>    
             <input name="visita_total" type="hidden" value="0">
                 <td colspan="3">Total</td>
                 <td id="total">$ 0</td>
@@ -294,7 +305,7 @@
 
         <?php
         
-               $logs =  \VisitalogQuery::create()->filterByIdvisita($visita->getIdvisita())->orderByIdvisitalog(desc)->find();
+               $logs =  \VisitalogQuery::create()->filterByIdvisita($visita->getIdvisita())->orderByIdvisitalog(Criteria::DESC)->find();
                $log = new Visitalog();
                foreach ($logs as $log)
                {
@@ -507,12 +518,23 @@
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                       <input requiered name="visita_total" type="hidden" value="0">
-                                       <td colspan="3">Total</td>
-                                       <td id="total">$ 0</td>
-                                   </tr>
-                                </tfoot>
+                                        <tr>
+                                    <input name="visita_subtotal" type="hidden" value="0">
+                                    <td colspan="3">Subtotal</td>
+                                    <td id="subtotal">$ 0</td>
+                                 </tr>
+
+                                 <tr>
+                                 <input name="visita_iva" type="hidden" value="0">
+                                 <td colspan="3">IVA</td>
+                                 <td id="iva">$ 0</td>
+                                 </tr>
+                                 <tr>    
+                                 <input name="visita_total" type="hidden" value="0">
+                                 <td colspan="3">Total</td>
+                                 <td id="total">$ 0</td>
+                                 </tr>
+                                 </tfoot>
                                 <?php else :?>
                                     <thead>
                                         <tr>
@@ -556,12 +578,23 @@
                                         <?php endforeach;?>
                                     </tbody>
                                     <tfoot>
-                                        <tr>    
-                                           <input name="visita_total" type="hidden" value="0">
-                                           <td colspan="2">Total</td>
-                                           <td id="total">$ 0</td>
-                                       </tr>
-                                    </tfoot>
+                                            <tr>
+                                        <input name="visita_subtotal" type="hidden" value="0">
+                                        <td colspan="2">Subtotal</td>
+                                        <td id="subtotal">$ 0</td>
+                                 </tr>
+
+                                 <tr>
+                                 <input name="visita_iva" type="hidden" value="0">
+                                 <td colspan="2">IVA</td>
+                                 <td id="iva">$ 0</td>
+                                 </tr>
+                                 <tr>    
+                                 <input name="visita_total" type="hidden" value="0">
+                                 <td colspan="2">Total</td>
+                                 <td id="total">$ 0</td>
+                                 </tr>
+                                 </tfoot>
                                 <?php endif;?>  
                             </table>
                         </div>

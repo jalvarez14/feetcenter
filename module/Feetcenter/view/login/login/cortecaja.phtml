@@ -1,0 +1,31 @@
+<style>
+    h2{
+        color:#72D308;
+        font-size: 30px;
+    }
+    p{
+        text-align: left;
+        font-size: 15px;
+    }
+    p span{
+        font-weight: bold;
+    }
+</style>
+<div class="units-row">
+    <div class="unit-centered unit-40">
+        <div id="login_container" class="text-centered">
+            <img  src="/img/logo/top_logo.png">
+            <div class="units-row">
+                <div class="unit-100">
+                    <h2>Bienvenido</h2>
+                    <p>Efectivo: <span><?php echo number_format($total_efectivo, 2, '.', ',')?></span></p>
+                    <p>Tarjeta: <span><?php echo number_format($total_tarjeta, 2, '.', ',')?></span></p>
+                    <p>Total: <span><?php echo number_format($total, 2, '.', ',')?></span></p>
+                    <a href="/" class="btn btn-blue" role="button">Continuar</a>
+                    <a href="/login/out" class="btn btn-red" role="button">Cancclar</a>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>

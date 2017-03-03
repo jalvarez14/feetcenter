@@ -1051,8 +1051,28 @@
                                             total += subtotal;
                                         });
                                         
+                                         var iva = (total * 0.16) ;
+                                        var subtotal = total - iva;
+
+                                        payDetailsContainer.find('input[name=visita_subtotal]').val(subtotal);
+                                        payDetailsContainer.find('#subtotal').text(accounting.formatMoney(subtotal));
+
+                                        payDetailsContainer.find('input[name=visita_iva]').val(iva);
+                                        payDetailsContainer.find('#iva').text(accounting.formatMoney(iva));
+                                        
                                         payDetailsContainer.find('input[name=visita_total]').val(total);
                                         payDetailsContainer.find('#total').text(accounting.formatMoney(total));
+                                        
+                                        var iva = (total * 0.16) ;
+                                        var subtotal = total - iva;
+
+                                        payDetailsContainer.find('input[name=visita_subtotal]').val(subtotal);
+                                        payDetailsContainer.find('#subtotal').text(accounting.formatMoney(subtotal));
+
+                                        payDetailsContainer.find('input[name=visita_iva]').val(iva);
+                                        payDetailsContainer.find('#iva').text(accounting.formatMoney(iva));
+                                        
+                                        
                                         payMethodContainer.find('#addMethodPay').unbind();
                                         payMethodContainer.find('#addMethodPay').on('click',newMethodPay);
                                         payMethodContainer.find('input').val(total);
@@ -1580,6 +1600,15 @@
                                                                                        });
                                                                                        payDetailsContainer.find('input[name=visita_total]').val(total);
                                                                                        payDetailsContainer.find('#total').text(accounting.formatMoney(total));
+                                                                                       
+                                                                                       var iva = (total * 0.16) ;
+                                                                                        var subtotal = total - iva;
+
+                                                                                        payDetailsContainer.find('input[name=visita_subtotal]').val(subtotal);
+                                                                                        payDetailsContainer.find('#subtotal').text(accounting.formatMoney(subtotal));
+
+                                                                                        payDetailsContainer.find('input[name=visita_iva]').val(iva);
+                                                                                        payDetailsContainer.find('#iva').text(accounting.formatMoney(iva));
 
                                                                                        payMethodContainer.find('input').val(total);
                                                                                        payMethodContainer.slideDown();
@@ -1611,7 +1640,14 @@
                                                                                        payDetailsContainer.find('input[name=visita_total]').val(total);
                                                                                        payDetailsContainer.find('#total').text(accounting.formatMoney(total));
 
+                                                                                       var iva = (total * 0.16) ;
+                                                                                        var subtotal = total - iva;
 
+                                                                                        payDetailsContainer.find('input[name=visita_subtotal]').val(subtotal);
+                                                                                        payDetailsContainer.find('#subtotal').text(accounting.formatMoney(subtotal));
+
+                                                                                        payDetailsContainer.find('input[name=visita_iva]').val(iva);
+                                                                                        payDetailsContainer.find('#iva').text(accounting.formatMoney(iva));
 
                                                                                        payMethodContainer.find('input').val(total);
                                                                                        payMethodContainer.slideDown();
