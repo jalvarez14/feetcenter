@@ -59,9 +59,7 @@
    
             var clinicas_select = $container.find("select[name=idclinica]").multipleSelect('getSelects');
             clinicas_select = clinicas_select[0];
-            
-            var productos_select = $container.find("select[name=idproducto]").multipleSelect('getSelects');
-            
+                        
             $container.find('table.table-vendidos-servicios thead tr').remove();
             $container.find('table.table-vendidos-servicios tbody tr').remove();
             $container.find('table.table-vendidos-servicios tfoot tr').remove();
@@ -79,32 +77,9 @@
                 data:{idclinica:clinicas_select,idrol:idrol,fecha:fecha},
                 success: function(data){
    
-                    if(data.empleados.length > 0){
+                    if(data.productos.length > 0){
                         
-                        //Servicios
-                        var $thead = $('<tr><th>Servicios</th></tr>');
-                        $.each(data.empleados,function(){
-                            $thead.append('<th idempleado="'+this.idempleado+'">'+this.empleado_nombre+'</th>');
-                        });
-                        $container.find('table.table-vendidos-servicios thead').append($thead);
                         
-                        //La estructura de los servicios 
-                       $.each(data.servicios,function(){
-                            var tr = $('<tr idservicioclinica="'+this.idservicioclinia+'"><td>'+this.servicio_nombre+'</td></tr>');
-                            for(var i=0; i<data.empleados.length; i++){
-                                tr.append('<td>'+this.empleados[i].vendidos+'</td>');
-                            }
-                            $container.find('table.table-vendidos-servicios tbody').append(tr);
-                        });
-                        
-                        //Las membresias
-                        $.each(data.membresias,function(){
-                            var tr = $('<tr idmembresia="'+this.idmembresia+'"><td>'+this.membresia_nombre+'</td></tr>');
-                            for(var i=0; i<data.empleados.length; i++){
-                                tr.append('<td>'+this.empleados[i].vendidos+'</td>');
-                            }
-                            $container.find('table.table-vendidos-servicios tbody').append(tr);
-                        });
                         
                         //Calculamos totales de tabla 1
                         /*var rowTotal = $('<tr><td>Totales</td></tr>');
@@ -119,39 +94,18 @@
                         $container.find('table.table-vendidos-servicios tfoot').append(rowTotal);*/
                         
                         //Productos
-                        var productosemp = [];
-                        $thead = $('<tr><th>Productos</th></tr>');
-                        $.each(data.empleados,function(){
-                            $thead.append('<th>'+this.empleado_nombre+'</th>');
-                        });
-                        $container.find('table.table-vendidos-productos').append($thead);
+                        var $thead = $('<tr><th>Productos</th></tr>');
+                        
                         
                         //La estructura de los productos
-                        var contprod=0;
                         $.each(data.productos,function(){
-                            var tr = $('<tr idproductoclinica="'+this.idproductoclinica+'"><td>'+this.producto_nombre+'</td></tr>');
-                            for(var i=0; i<data.empleados.length; i++){
-                                tr.append('<td>'+this.empleados[i].vendidos+'</td>');
-                                if(contprod==0)
-                                {
-                                    productosemp[i]= parseInt(this.empleados[i].vendidos);
-                                }
-                                else
-                                {
-                                    productosemp[i]+= parseInt(this.empleados[i].vendidos);
-                                }
+                            var tr = $('<tr idproductoclinica="'+this.idproductoclinica+'"><td>'+this.producto_nombre+'</td><td>'+this.inventario+'</td></tr>');
                             
-                            }
                             $container.find('table.table-vendidos-productos tbody').append(tr);
-                            contprod++;
+                          
                         });
-                        var tr = $('<tr><td>Total</td></tr>');
                                                     
-                        for(var i=0; i<data.empleados.length; i++){
-                                tr.append('<td>'+productosemp[i]+'</td>');
-                                
-                        }
-                        $container.find('table.table-vendidos-productos tbody').append(tr);
+                        
                     }
                 }
             });
