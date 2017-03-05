@@ -33,7 +33,10 @@ class FaltantesController extends AbstractActionController
         $session = new \Shared\Session\AouthSession();
         $idrol = (int)$session->getIdrol();
         $idempleado = $session->getIdempleado();
-        
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
         if($request->isPost()){
             
             $id = $this->params()->fromRoute('id');
@@ -108,7 +111,10 @@ class FaltantesController extends AbstractActionController
     public function editarAction(){
         
         $session = new \Shared\Session\AouthSession();
-        
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
         $request = $this->getRequest();
         
         
@@ -334,6 +340,11 @@ class FaltantesController extends AbstractActionController
         $session = new \Shared\Session\AouthSession();
         $idrol = (int)$session->getIdrol();
         $idempleado = $session->getIdempleado();
+        
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
         
         if($request->isPost()){
             

@@ -333,6 +333,7 @@
                     $.each(modal.$modalBody.find(':checkbox:checked, :radio:checked'),function(){
                         formData.append($(this).attr('name'),$(this).val());
                     });
+                    formData.append('visita_descuento',modal.$modalBody.find('input[name=visita_descuento]').val());
                      //Hacemos la peticion ajax
                     $.ajax({
                         dataType: 'json', 
@@ -540,7 +541,8 @@
                 select: function(start, end, event,view) {
                     
                     //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
-                    if(settings.idrol == 3){
+                    var deny_roles = [3,5,6];
+                    if(deny_roles.indexOf(settings.idrol ) >= 0){
                          unselect();
                          return false;
                     }
@@ -685,7 +687,8 @@
                 },
                 eventResize:function( event, delta, revertFunc, jsEvent, ui, view ) {
                     //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
-                    if(settings.idrol == 3){
+                    var deny_roles = [3,5,6];
+                    if(deny_roles.indexOf(settings.idrol ) >= 0){
                          revertFunc();
                     }
                     var viewName = view.name;
@@ -722,7 +725,8 @@
                 eventDrop:function(event, delta, revertFunc, jsEvent, ui, view ) {
                            
                             //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
-                            if(settings.idrol == 3){
+                            var deny_roles = [3,5,6];
+                            if(deny_roles.indexOf(settings.idrol ) >= 0){
                                  revertFunc();
                             }
                             var n = moment();
@@ -802,7 +806,8 @@
                     var type_array = className.split('_'); var type = type_array[0];
                     
                     //SI SE TRATA DE UN PEDICURISTA NO LO DEJAM
-                    if(settings.idrol == 3){
+                    var deny_roles = [3,5,6];
+                    if(deny_roles.indexOf(settings.idrol ) >= 0){
                          return false;
                     }
                     
@@ -1088,6 +1093,19 @@
                                             var cambio = recibi - total;
 
                                             payMethodContainer.find('span#visita_cambio b').text(accounting.formatMoney(cambio));
+                                           
+                                        });
+                                        
+                                        
+                                        //DESCUENTO
+                                        payDetailsContainer.find('input[name=visita_descuento]').on('keyup',function(){
+                                            var descuento = $(this).val();
+                                            var nuevo_total = total - descuento;
+                                            
+                                            payDetailsContainer.find('input[name=visita_total]').val(nuevo_total);
+                                            payDetailsContainer.find('#total').text(accounting.formatMoney(nuevo_total));
+                                             payMethodContainer.find('input[name="visitapago_tipo[0][cantidad]"]').val(nuevo_total);
+                                            
                                         });
                                         
                                         //dateContainer.slideUp();

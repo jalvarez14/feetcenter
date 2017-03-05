@@ -31,7 +31,11 @@ class InsumoController extends AbstractActionController
     {
         
         $request = $this->getRequest();
-        
+        $session = new \Shared\Session\AouthSession();
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
         $form = new \Catalogos\Form\InsumoForm();
         
         if ($request->isPost()){
@@ -90,7 +94,11 @@ class InsumoController extends AbstractActionController
     public function eliminarAction(){
         
         $request = $this->getRequest();
-        
+        $session = new \Shared\Session\AouthSession();
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
         if($request->isPost()){
              
             $id = $this->params()->fromRoute('id');
@@ -130,7 +138,11 @@ class InsumoController extends AbstractActionController
     public function editarAction()
     {   
         $request = $this->getRequest();
-        
+        $session = new \Shared\Session\AouthSession();
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
         //Cachamos el valor desde nuestro params
         $id = (int) $this->params()->fromRoute('id');
         //Verificamos que el Id lugar que se quiere modificar exista

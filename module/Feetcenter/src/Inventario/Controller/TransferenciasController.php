@@ -62,8 +62,13 @@ class TransferenciasController extends AbstractActionController
     public function nuevoAction(){
         
         $request = $this->request;
-        
+
         $sesion = new \Shared\Session\AouthSession();
+        
+        if(in_array($sesion->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
         
         if($request->isPost()){
             $post_data = $request->getPost();
@@ -182,6 +187,11 @@ class TransferenciasController extends AbstractActionController
         
         $request = $this->request;
         $sesion = new \Shared\Session\AouthSession();
+        
+        if(in_array($sesion->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
         
         if($request->isPost()){
             $post_data = $request->getPost();

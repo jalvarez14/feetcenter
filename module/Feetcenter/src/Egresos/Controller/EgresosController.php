@@ -17,9 +17,9 @@ class EgresosController extends AbstractActionController
     public function indexAction()
     {
         $sesion = new \Shared\Session\AouthSession();
-        
+
         //ADMIN
-        if($sesion->getIdrol() == 1){
+        if(in_array($sesion->getIdrol(),array(6))){ 
             $collection = \EgresoclinicaQuery::create()->find();
             //Filtros
             $clinicas = \ClinicaQuery::create()->find();
@@ -60,6 +60,11 @@ class EgresosController extends AbstractActionController
         
         $sesion = new \Shared\Session\AouthSession();
         $request = $this->request;
+        
+        if(in_array($sesion->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
         
         //Cachamos el valor desde nuestro params
         $id = (int) $this->params()->fromRoute('id');
@@ -185,6 +190,12 @@ class EgresosController extends AbstractActionController
         $sesion = new \Shared\Session\AouthSession();
         $request = $this->request;
         
+        if(in_array($sesion->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+        
+        
         if($request->isPost()){
             $post_data = $request->getPost();
        
@@ -280,6 +291,12 @@ class EgresosController extends AbstractActionController
     public function eliminarAction(){
         
         $request = $this->getRequest();
+        $sesion = new \Shared\Session\AouthSession();
+        
+        if(in_array($sesion->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
         
         if($request->isPost()){
              

@@ -78,7 +78,7 @@ class AgendaController extends AbstractActionController
         $idrol = $sesion->getIdrol();
         
         //Administrador
-        if($idrol == 1){
+        if(in_array($idrol,array(1,6))){ 
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
         }else{
@@ -299,6 +299,7 @@ class AgendaController extends AbstractActionController
          if($request->isPost()){
              $post_data = $request->getPost();
              
+            
            
              
              $entity = \VisitaQuery::create()->findPk($post_data['idvisita']);
@@ -614,12 +615,13 @@ class AgendaController extends AbstractActionController
           if($request->isPost()){
               
               $post_data = $request->getPost();
-              
+              $visita_descuento = (!is_null($post_data['visita_descuento']) or  $post_data['visita_descuento'] != "" ) ? $post_data['visita_descuento'] : 0;
               //Actualizamos la visita
               $visita = \VisitaQuery::create()->findPk($post_data['idvisita']);
               $visita->setVisitaStatus('terminado')
                      ->setVisitaEstatuspago('pagada')
-                     ->setVisitaTotal($post_data['visita_total']);
+                     ->setVisitaTotal($post_data['visita_total'])
+                     ->setVisitaDescuento($visita_descuento);
               
                 
                 $visita->setVisitaHorafin(date('Y-m-d H:i:s'));

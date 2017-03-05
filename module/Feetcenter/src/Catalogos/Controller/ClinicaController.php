@@ -51,6 +51,12 @@ class ClinicaController extends AbstractActionController
         
         $request = $this->getRequest();
         
+        $session = new \Shared\Session\AouthSession();
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
+        
         $form = new \Catalogos\Form\ClinicaForm();
         
         //Los empleados(Encargados)
@@ -68,7 +74,7 @@ class ClinicaController extends AbstractActionController
         }
         
         //Los empleados(Pedicuristas)
-        $empleadosCollection = \EmpleadoaccesoQuery::create()->filterByIdrol(3)->joinEmpleado()->withColumn('empleado_nombre')->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+        $empleadosCollection = \EmpleadoaccesoQuery::create()->filterByIdrol(array(3,5))->joinEmpleado()->withColumn('empleado_nombre')->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
         $empleados_conclinica = \ClinicaempleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
         $empleados_conclinica_array = array();
         foreach ($empleados_conclinica as $value){
@@ -238,6 +244,13 @@ class ClinicaController extends AbstractActionController
         
         $request = $this->getRequest();
         
+        $session = new \Shared\Session\AouthSession();
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
+        
+        
         if($request->isPost()){
              
             $id = $this->params()->fromRoute('id');
@@ -277,6 +290,12 @@ class ClinicaController extends AbstractActionController
     {   
         $request = $this->getRequest();
         
+        $session = new \Shared\Session\AouthSession();
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
+        
         //Cachamos el valor desde nuestro params
         $id = (int) $this->params()->fromRoute('id');
         //Verificamos que el Id lugar que se quiere modificar exista
@@ -309,7 +328,7 @@ class ClinicaController extends AbstractActionController
             }
             
             //Los empleados(Pedicuristas)
-            $empleadosCollection = \EmpleadoaccesoQuery::create()->filterByIdrol(3)->joinEmpleado()->withColumn('empleado_nombre')->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
+            $empleadosCollection = \EmpleadoaccesoQuery::create()->filterByIdrol(array(3,5))->joinEmpleado()->withColumn('empleado_nombre')->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
             $empleados_conclinica = \ClinicaempleadoQuery::create()->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME);
             $empleados_conclinica_array = array();
             foreach ($empleados_conclinica as $value){

@@ -19,13 +19,11 @@ class EmpleadosController extends AbstractActionController
         $sesion = new \Shared\Session\AouthSession();
         $idrol = $sesion->getIdrol();
         
-        if($idrol == 1){
+        if(in_array($idrol,array(1,6))){
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
-        }elseif($idrol == 2){
-             $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
-             $idclinica = $sesion->getIdClinica();
-        }elseif($idrol == 3){
+        
+        }else{
              $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
              $idclinica = $sesion->getIdClinica();
              
@@ -113,6 +111,7 @@ class EmpleadosController extends AbstractActionController
              
              $viewModel = new ViewModel(array(
                  'horario' => $tmp,
+                 'successMessages' => $this->flashMessenger()->getSuccessMessages(),
              ));
              $viewModel->setTemplate('empleados/empleados/index_pedicurista');
              return $viewModel;
@@ -234,7 +233,12 @@ class EmpleadosController extends AbstractActionController
     public function horariosAction(){
         
         $request = $this->request;
+        $sesion = new \Shared\Session\AouthSession();
         
+        if(in_array($sesion->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
         if($request->isPost()){
             $post_data = $request->getPost();
             

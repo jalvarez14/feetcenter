@@ -120,7 +120,7 @@ class AusenciasController extends AbstractActionController
         $idrol = $sesion->getIdrol();
         
         //Administrador
-        if($idrol == 1){
+        if(in_array($idrol, [1,6])){
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
         }else{

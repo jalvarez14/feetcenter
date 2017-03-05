@@ -93,6 +93,7 @@
                             { data: "visita_tarjeta" ,"sClass": "tarjeta"},
                             { data: "visita_subtotal" ,"sClass": "total"},
                             { data: "visita_iva" ,"sClass": "total"},
+                            { data: "visita_descuento" ,"sClass": "total"},
                             { data: "visita_total" ,"sClass": "total"},
                             { data: "opciones", "sClass": "tr_options" },
                         ],

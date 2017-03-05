@@ -77,57 +77,70 @@
              $('#calendar').fullCalendar({
                 events: '/empleados/ausencias/get?idclinica='+idclinica,
                 eventRender: function(event, element) {
-                   
-                    element.append( "<span class='closeon'>X</span>" );
-                    element.find(".closeon").click(function() {
-                        $.ajax({
-                       url:'/empleados/ausencias/delete',
-                       type: 'POST',
-                       dataType: 'json',
-                       data:{id:event.id},
-                       success: function (data, textStatus, jqXHR) {
-                            if(data.response){
-                                $('#calendar').fullCalendar('removeEvents',event._id);
-                            };
-                        }
-                    });
-                    });
+                    
+                    var allow_roles = [1,2];
+                    if(allow_roles.indexOf(settings.idrol) >= 0){
+                        
+                        element.append( "<span class='closeon'>X</span>" );
+                        element.find(".closeon").click(function() {
+                            $.ajax({
+                                url:'/empleados/ausencias/delete',
+                                type: 'POST',
+                                dataType: 'json',
+                                data:{id:event.id},
+                                success: function (data, textStatus, jqXHR) {
+                                     if(data.response){
+                                         $('#calendar').fullCalendar('removeEvents',event._id);
+                                     };
+                                 }
+                            });
+
+                        });
+                    }
                 },
                 eventDrop:function(event, delta, revertFunc, jsEvent, ui, view ) {
                     
-                    $.ajax({
-                        dataType: 'json',
-                        type: "POST",
-                        url: '/empleados/ausencias/eventdrop',
-                        data: {id: event.id, start: event.start.format('YYYY/MM/DD HH:mm:00'), end: event.end.format('YYYY/MM/DD HH:mm:00')},
-                    });
+                    var allow_roles = [1,2];
+                    if(allow_roles.indexOf(settings.idrol) >= 0){
+                        $.ajax({
+                            dataType: 'json',
+                            type: "POST",
+                            url: '/empleados/ausencias/eventdrop',
+                            data: {id: event.id, start: event.start.format('YYYY/MM/DD HH:mm:00'), end: event.end.format('YYYY/MM/DD HH:mm:00')},
+                        });
+                    }
                 },
                 dayClick: function(date, jsEvent, view, resourceObj) {
                     
-                    var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Registrar Ausencia');
-                    $modalLauncher.unbind();
-                    var data_content = $modalLauncher.attr('data-content');
+                    var allow_roles = [1,2];
+                    if(allow_roles.indexOf(settings.idrol) >= 0){
 
-                    data_content = '/empleados/ausencias/nuevo';
-                    data_content += '?start='+ date.format('YYYY-MM-DD+HH:mm:00');
-                    data_content += '&idclinica=' + idclinica;
+                        var $modalLauncher = $('<a>'); $modalLauncher.attr('data','modal'); $modalLauncher.attr('data-width',800    ); $modalLauncher.attr('data-title','Registrar Ausencia');
+                        $modalLauncher.unbind();
+                        var data_content = $modalLauncher.attr('data-content');
 
-                    $modalLauncher.attr('data-content',data_content);
-                    $modalLauncher.modal();
-                    $modalLauncher.trigger('click');
-                    $modalLauncher.unbind();
-                    
-                     $modalLauncher.on('loading.tools.modal', function(modal){
-                          var $modal = $(this.$modal);
-                          var $moda_header = this.$modalHeader;
-                          $moda_header.addClass('modal_header_action');
-                          this.createCancelButton('Cancelar');
-                          var guardarAction = this.createActionButton('Guardar');
-                          guardarAction.on('click', $.proxy(function(){
-                              console.log($modal);
-                              $modal.find('form').submit();
-                          })); 
-                     });
+                        data_content = '/empleados/ausencias/nuevo';
+                        data_content += '?start='+ date.format('YYYY-MM-DD+HH:mm:00');
+                        data_content += '&idclinica=' + idclinica;
+
+                        $modalLauncher.attr('data-content',data_content);
+                        $modalLauncher.modal();
+                        $modalLauncher.trigger('click');
+                        $modalLauncher.unbind();
+
+                         $modalLauncher.on('loading.tools.modal', function(modal){
+                              var $modal = $(this.$modal);
+                              var $moda_header = this.$modalHeader;
+                              $moda_header.addClass('modal_header_action');
+                              this.createCancelButton('Cancelar');
+                              var guardarAction = this.createActionButton('Guardar');
+                              guardarAction.on('click', $.proxy(function(){
+                                  console.log($modal);
+                                  $modal.find('form').submit();
+                              })); 
+                            });
+                    }
+                 
                     
                 }
             });

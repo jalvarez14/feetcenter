@@ -57,7 +57,10 @@ class ReordenController extends AbstractActionController
         
         $request = $this->request;
         $sesion = new \Shared\Session\AouthSession();
-        
+        if(in_array($sesion->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
         if($this->params()->fromQuery('html')){
             
             $id   = $this->params()->fromQuery('id');

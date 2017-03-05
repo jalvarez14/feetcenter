@@ -172,7 +172,7 @@ class LoginController extends AbstractActionController
                         $empleado_acceso->setEmpleadoaccesoEnsesion(1);
                         $empleado_acceso->save();
                         
-                        if(in_array($empleado_acceso->getIdrol(), array(1,6))){
+                        if(in_array($empleado_acceso->getIdrol(), array(1,6,3,5))){
                             return $this->redirect()->toRoute('agenda');
                         }else{
                             return $this->redirect()->toUrl('/login/cortecaja');

@@ -42,8 +42,15 @@ class ComisionesController extends AbstractActionController
     }
     
     public function comisionesbydateAction(){
+        $this->params()->fromQuery('idclinica');
         
-        $idclinica = $this->params()->fromQuery('idclinica');
+        if(!is_null($this->params()->fromQuery('idclinica'))){
+            $idclinica = $this->params()->fromQuery('idclinica');
+        }elseif(!is_null($this->params()->fromQuery('clinicas'))){
+            $idclinica = $this->params()->fromQuery('clinicas')[0];
+        }
+        
+      
         $from = $this->params()->fromQuery('from');
         $to  = $this->params()->fromQuery('to');
         
@@ -76,13 +83,10 @@ class ComisionesController extends AbstractActionController
         $session  = new \Shared\Session\AouthSession();
         $idrol = $session->getIdrol();
 
-        if($idrol == 1){ //Admnistrador
+        if(in_array($idrol,array(1,6))){ //Admnistrador
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
-        }elseif($idrol == 2){ //Encargado
-            $clinicas = \ClinicaQuery::create()->filterByIdclinica($session->getIdclinica())->find();
-            $idclinica = $session->getIdclinica();
-        }elseif($idrol == 3){ //Pedicurista
+        }else{ //Pedicurista
         
             //Obtenemos las comisiones del empleado en sesion
             $comisiones = \EmpleadocomisionQuery::create()->filterByIdempledo($session->getIdempleado())->groupBy('empleadocomision_fecha')->joinEmpleado()->withColumn('empleado_nombre')->orderBy('empleadocomision_fecha',  \Criteria::DESC)->find();

@@ -523,7 +523,7 @@ class VentasController  extends AbstractActionController
             
             
             //Si no es administrador
-            if($session->getIdrol() != 1){
+            if($session->getIdrol() != 1 && $session->getIdrol() != 6){
                 
                 //Cargamos la configuracion
                 $configuracion = \ConfiguracionQuery::create()->findOneByIdclinica($session->getIdClinica());
@@ -563,9 +563,15 @@ class VentasController  extends AbstractActionController
                 }
                 
             }else{
-                $viewModel = new ViewModel();
-                $viewModel->setTerminal(true);
-                return $viewModel;
+                
+                if($session->getIdrol() == 1){
+                    $viewModel = new ViewModel();
+                    $viewModel->setTerminal(true);
+                    return $viewModel;
+                }elseif($session->getIdrol() == 6){
+                    $this->getResponse()->setStatusCode(404);
+                    return; 
+                }
             }
                        
         }else{
@@ -633,8 +639,8 @@ class VentasController  extends AbstractActionController
         //Las clinicas
         $clinicas = \ClinicaQuery::create()->find();
         $empleados = \ClinicaempleadoQuery::create()->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
-        
-        if($session->getIdrol()!= 1){
+
+        if(in_array($session->getIdrol(), array(2,3,4,5))){
             $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($session->getIdClinica())->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
             $clinicas = \ClinicaQuery::create()->filterByIdclinica($session->getIdClinica())->find();
         }

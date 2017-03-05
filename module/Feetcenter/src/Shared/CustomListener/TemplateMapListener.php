@@ -54,7 +54,7 @@ class TemplateMapListener implements ListenerAggregateInterface
                     'layout/layout'      => __DIR__.'/../../../view/layout/layout_login.phtml',                        
                 ));
         }else{
-            
+           
             $sesion = new \Shared\Session\AouthSession();
             
             switch ($sesion->getRolNombre()){
@@ -74,7 +74,7 @@ class TemplateMapListener implements ListenerAggregateInterface
                     
                     break;
                 }
-                case 'Pedicurista':{
+                case 'Pedicurista' :{
                     $template_map->merge(
                         array(
                         'layout/layout'      => __DIR__.'/../../../view/layout/layout_pedicurista.phtml',                                 
@@ -82,6 +82,24 @@ class TemplateMapListener implements ListenerAggregateInterface
                     
                     break;
                 }
+                case 'Telefonista' :{
+                    $template_map->merge(
+                        array(
+                        'layout/layout'      => __DIR__.'/../../../view/layout/layout_pedicurista.phtml',                                 
+                    ));
+                    
+                    break;
+                }
+                case 'Auxiliar Adminsitrativo' :{
+                    $template_map->merge(
+                        array(
+                        'layout/layout'      => __DIR__.'/../../../view/layout/layout.phtml',                                  
+                    ));
+                    
+                    break;
+                }
+                
+                
             }
             
             

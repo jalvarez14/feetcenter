@@ -53,7 +53,7 @@ class BalanceController extends AbstractActionController
         $session  = new \Shared\Session\AouthSession();
         $idrol = $session->getIdrol();
         
-         if($idrol == 1){ //Admnistrador
+         if(in_array($idrol,array(1,6))){  //Admnistrador
             $clinicas = \ClinicaQuery::create()->find();
          }else{
             $clinicas = \ClinicaQuery::create()->filterByIdclinica($session->getIdclinica())->find();

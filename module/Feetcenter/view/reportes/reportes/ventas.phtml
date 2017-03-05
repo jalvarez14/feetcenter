@@ -20,7 +20,7 @@
             <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
         </div>
     </div>
-    <table class="table-balance table-bordered">
+    <table class="table-balance table-bordered" id="table_ventas">
         <thead>
             <tr>
                 <th></th>
@@ -50,6 +50,39 @@
                     <td idclinica="<?php echo $clinica->getIdclinica() ?>"></td>
                 <?php endforeach; ?>
             </tr>
+        </tfoot>
+    </table>
+    <table class="table-balance table-bordered" id="table_tipo">
+        <thead>
+            <tr>
+                <th></th>
+                 <?php foreach ($clinicas as $clinica) : ?>
+                    <th idclinica="<?php echo $clinica->getIdclinica() ?>"><?php echo $clinica->getClinicaNombre() ?></th>
+                <?php endforeach; ?>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="ingreso_efectivo">
+                <td><strong>Efectivo</strong></td>
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <td idclinica="<?php echo $clinica->getIdclinica() ?>"></td>
+                <?php endforeach; ?>
+            </tr>
+            <tr id="ingreso_tarjeta">
+                <td><strong>Tarjeta</strong></td>
+                <?php foreach ($clinicas as $clinica) : ?>
+                    <td idclinica="<?php echo $clinica->getIdclinica() ?>"></td>
+                <?php endforeach; ?>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table-comisiones table-balance table-bordered">
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+            
         </tfoot>
     </table>
 </div>

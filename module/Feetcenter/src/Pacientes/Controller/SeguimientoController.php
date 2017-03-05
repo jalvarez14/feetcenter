@@ -246,18 +246,13 @@ class SeguimientoController extends AbstractActionController
         $idrol = $sesion->getIdrol();
         
         //ADMIN
-        if($sesion->getIdrol() == 1){
+        if(in_array($idrol,array(1,6))){
             //Filtros
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
-        }elseif($sesion->getIdrol() == 2){//ENCARGADO
-            //Filtros
-             $clinicas = \ClinicaQuery::create()->find();
-             $idclinica = $sesion->getIdClinica();
-        }elseif($sesion->getIdrol() == 3){//PEDICURISTA (PENDIENTE)
-             $clinicas = \ClinicaQuery::create()->find();
-             $idclinica = $sesion->getIdClinica();
-             
+        }else{
+            $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
+            $idclinica = $sesion->getIdClinica();
         }
         
         $empleados = \ClinicaempleadoQuery::create()->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();

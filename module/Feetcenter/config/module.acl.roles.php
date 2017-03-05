@@ -177,6 +177,7 @@ return array(
             'seguimiento',
             'seguimiento/ver',
             'seguimiento/serverside',
+            
             'pacientes-visitas',
             'pacientes-expediente',
             //Agenda
@@ -224,8 +225,7 @@ return array(
             'pacientes/eliminar',
             'pacientes-membresias',
             'grupos',
-            'seguimiento/nuevo',
-            'seguimiento/editar',
+            
             'seguimiento/eliminar',
             //ventas
             'ventas',
@@ -256,6 +256,8 @@ return array(
             'seguimiento',
             'seguimiento/ver',
             'seguimiento/serverside',
+            'seguimiento/nuevo',
+            'seguimiento/editar',
             'pacientes-visitas',
             'pacientes-expediente',
             //Agenda
@@ -303,8 +305,7 @@ return array(
             'pacientes/eliminar',
             'pacientes-membresias',
             'grupos',
-            'seguimiento/nuevo',
-            'seguimiento/editar',
+
             'seguimiento/eliminar',
             //ventas
             'ventas',
@@ -314,6 +315,92 @@ return array(
             //reportes
             'reportes',
 
+        ),
+    ),
+    'Auxiliar Adminsitrativo' => array(
+        "allow"=>array(
+            //Catalogos
+            'catalogos/clinica',
+            'catalogos/metaclinica',
+            'catalogos/insumo',
+            'catalogos/proveedor',
+            'catalogos/canal',
+            'catalogos/rol',
+            'catalogos/producto',
+            'catalogos/servicio',
+            'catalogos/empleado',
+            'catalogos/metaempleado',
+            'catalogos/concepto',
+            'catalogos/incidencia',
+            'catalogos/membresias',
+            'catalogos/estatusseguimiento',
+            'catalogos/colores',
+            //Compras
+            'compras',
+            //Login
+            'login',
+            //Inventarios
+            'inventario/insumo',
+            'inventario/producto',
+            'inventario/existencias',
+            'inventario/historial',
+            'inventario/reorden',
+            'inventario/transferencias',
+            'inventario/precios',
+            //Egresos
+            'egresos',
+            //Empleados
+            'empleados',
+            'empleados-reportes',
+            
+            'empleados-reportes/filter',
+            'empleados-reportes/vernota',
+            
+            'empleados-comisiones',
+            'empleados-vendidos',
+            'empleados-faltantes',
+            'empleados-ausencias',
+            //pacientes
+            'pacientes',
+            'pacientes/get',
+            
+            'pacientes/filter',
+            
+            'pacientes-membresias',
+            'pacientes-expediente',
+            'grupos',
+            'seguimiento',
+            'seguimiento/ver',
+            
+            'seguimiento/eliminar',
+            'seguimiento/serverside',
+            'seguimiento/quick',
+            'seguimiento/historial',
+            'pacientes-visitas',
+            'pacientes/serverside',
+            //Agenda
+            'agenda',
+            //ventas
+            'ventas',
+            'ventas-balance',
+            //configuracion
+            'configuracion',
+            //reportes
+            'reportes',
+            //Cronjobs
+            'cron-autologout',
+        ),
+        "deny"=>array(
+            'pacientes/nuevo',
+            'pacientes/editar',
+            'pacientes/eliminar',
+            'seguimiento/nuevo',
+            'seguimiento/editar',
+            'seguimiento/quick',
+            'empleados-reportes/nuevo',
+            'empleados-reportes/editar',
+            'empleados-reportes/eliminar',
+            'configuracion',
         ),
     ),
 );

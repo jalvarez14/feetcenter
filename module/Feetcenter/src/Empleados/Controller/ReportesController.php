@@ -233,17 +233,12 @@ class ReportesController extends AbstractActionController
         $sesion = new \Shared\Session\AouthSession();
         $idrol = $sesion->getIdrol();
 
-        if($idrol == 1){
+        if(in_array($idrol,array(1,6))){
             
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
             
-        }elseif($idrol == 2){
-            
-            $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
-            $idclinica = $sesion->getIdClinica();
-
-        }elseif($idrol == 3){
+        }else{
             
             $collection = array();
             $query = \EmpleadoreporteQuery::create()->filterByIdempleadoreportado($sesion->getIdempleado())->find();
@@ -266,6 +261,7 @@ class ReportesController extends AbstractActionController
 
             $viewModel = new ViewModel();
             $viewModel->setVariable('collection', $collection);
+            $viewModel->setVariable('successMessages' ,$this->flashMessenger()->getSuccessMessages());
             $viewModel->setTemplate('empleados/reportes/index_pedicurista');
             return $viewModel;
         }

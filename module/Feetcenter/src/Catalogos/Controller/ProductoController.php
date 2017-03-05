@@ -30,6 +30,12 @@ class ProductoController extends AbstractActionController
     public function nuevoAction()
     {
         
+        $session = new \Shared\Session\AouthSession();
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
+        
         $request = $this->getRequest();
         
         $form = new \Catalogos\Form\ProductoForm();
@@ -114,6 +120,12 @@ class ProductoController extends AbstractActionController
     
     public function eliminarAction(){
         
+        $session = new \Shared\Session\AouthSession();
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
+        
         $request = $this->getRequest();
         
         if($request->isPost()){
@@ -170,6 +182,13 @@ class ProductoController extends AbstractActionController
     
     public function editarAction()
     {   
+        
+        $session = new \Shared\Session\AouthSession();
+        if(in_array($session->getIdrol(),array(6))){ 
+            $this->getResponse()->setStatusCode(404);
+            return; 
+        }
+        
         $request = $this->getRequest();
         
         //Cachamos el valor desde nuestro params
