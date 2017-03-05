@@ -2,11 +2,11 @@
 <link href="/css/plugin/monthpicker.css" media="all" rel="stylesheet" type="text/css" />
 
 <?php 
-    $this->headTitle()->prepend('Productos y servicios vendidos');
+    $this->headTitle()->prepend('Inventario de producto a la fecha');
     echo $this->headTitle();
 ?>
 <div id="empleados_vendidos_container">
-    <h1>Productos y servicios vendidos</h1>
+    <h1>Inventario de producto a la fecha</h1>
     <div class="units-row">
         <div class="unit-30">
             Clínica
@@ -18,23 +18,13 @@
         </div>
         
         <div class="unit-20" id="month_filter_container">
-            <label style="display: block">Fecha inicial</label>
+            <label style="display: block">Fecha a consultar</label>
             <input placeholder="Fecha inicial" type="text" name="month_filter" class="width-60" />
             <button id="filterbydate" class="btn btn-blue" style="height: 30px;"><i class="fa fa-filter"></i> </button>
         </div>
         
     </div>
     <div class="units-row">
-        <div class="unit-50">
-            <table class="table-vendidos-servicios table-bordered">
-            <thead>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            </tfoot>
-            </table>
-        </div>
         <div class="unit-50">
             <table class="table-vendidos-productos table-bordered">
             <thead>

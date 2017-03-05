@@ -25,110 +25,7 @@ class HistorialController extends AbstractActionController
         
         $session = new \Shared\Session\AouthSession();
         if($idrol !== 3){ //Para administradores
-            $productos= $this->params()->fromQuery('productos');
-            $arrServicios = array();
             
-            $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->joinEmpleado()->withColumn('empleado_nombre')->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
-            //Filtramos por clinica
-            $servicios = \ServicioclinicaQuery::create()->filterByIdclinica($idclinica)->find();
-            $servicio = new \Servicioclinica();
-            foreach ($servicios as $servicio){
-                $tmp['idservicioclinia'] = $servicio->getIdservicioclinica();
-                $tmp['servicio_nombre'] = $servicio->getServicio()->getServicioNombre();
-                //Comenzamos a itinerar sobre los empleados para conocer cuantos producto ha vendido cada empleado
-                $tmp['empleados'] = array();
-                $empleado = new \Clinicaempleado();
-                foreach ($empleados as $empleado){
-                    $emp['idempleado'] = $empleado->getIdempleado();
-                    $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();
-                    $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdservicioclinica($servicio->getIdservicioclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->find();
-                    foreach($vendidosQuery as $vendido){
-                        $vendidos+= (int)$vendido->getVisitadetalleCantidad();
-                    }
-                    $emp['vendidos'] = $vendidos;
-                    $tmp['empleados'][] = $emp;
-                }
-                $arrServicios[] = $tmp;
-            }
-            //Filtramos por producto
-            $arrProductos = array();
-            $productos = \ProductoclinicaQuery::create()->filterByIdclinica($idclinica)->filterByIdproducto($productos)->find();
-            $producto = new \Productoclinica();
-            foreach ($productos as $producto){
-                $tmp['idproductoclinica'] = $producto->getIdproductoclinica();
-                $tmp['producto_nombre'] = $producto->getProducto()->getProductoNombre();
-                //Comenzamos a itinerar sobre los empleados para conocer cuantos producto ha vendido cada empleado
-                    $tmp['empleados'] = array();
-                $empleado = new \Clinicaempleado();
-                foreach ($empleados as $empleado){
-                    $emp['idempleado'] = $empleado->getIdempleado();
-                    $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();    
-                    $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdproductoclinica($producto->getIdproductoclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->find();
-                    foreach($vendidosQuery as $vendido){
-                        $vendidos+= (int)$vendido->getVisitadetalleCantidad();
-                    }
-                    $emp['vendidos'] = $vendidos;
-                    $tmp['empleados'][] = $emp;
-                }
-                $arrProductos[] = $tmp;
-            }
-            
-            //Filtramos por producto
-            $arrMembresias = array();
-            $membresias = \MembresiaQuery::create()->find();
-            $membresia = new \Membresia();
-            foreach ($membresias as $membresia){
-                $tmp['idmembresia'] = $membresia->getIdmembresia();
-                $tmp['membresia_nombre'] = $membresia->getMembresiaNombre();
-                //Comenzamos a itinerar sobre los empleados para conocer cuantos producto ha vendido cada empleado
-                $tmp['empleados'] = array();
-                $empleado = new \Clinicaempleado();
-                foreach ($empleados as $empleado){
-                    $emp['idempleado'] = $empleado->getIdempleado();
-                    $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();    
-                    $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdmembresia($membresia->getIdmembresia())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->find();
-                    $vendido = new \Visitadetalle();
-                    foreach($vendidosQuery as $vendido){
-                        $vendidos+= (int)$vendido->getVisitadetalleCantidad();
-                    }
-                    $emp['vendidos'] = $vendidos;
-                    $tmp['empleados'][] = $emp;
-                }
-                $arrMembresias[] = $tmp;
-            }
-            
-            return $this->getResponse()->setContent(json_encode(array('productos' => $arrProductos,'membresias' => $arrMembresias, 'servicios' => $arrServicios, 'empleados' => $empleados->toArray(null,false,\BasePeer::TYPE_FIELDNAME))));
-        }else{
-            
-            $arrServicios = array();
-            $empleados = \ClinicaempleadoQuery::create()->filterByIdempleado($session->getIdempleado())->joinEmpleado()->withColumn('empleado_nombre')->find();
-            
-
-            //Filtramos por clinica
-            $servicios = \ServicioclinicaQuery::create()->filterByIdclinica($idclinica)->find();
-            $servicio = new \Servicioclinica();
-            foreach ($servicios as $servicio){
-                $tmp['idservicioclinia'] = $servicio->getIdservicioclinica();
-                $tmp['servicio_nombre'] = $servicio->getServicio()->getServicioNombre();
-                //Comenzamos a itinerar sobre los empleados para conocer cuantos producto ha vendido cada empleado
-                $tmp['empleados'] = array();
-                $empleado = new \Clinicaempleado();
-                foreach ($empleados as $empleado){
-                    $emp['idempleado'] = $empleado->getIdempleado();
-                    $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();
-                    $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdservicioclinica($servicio->getIdservicioclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->count();
-                    foreach($vendidosQuery as $vendido){
-                        $vendidos+= (int)$vendido->getVisitadetalleCantidad();
-                    }
-                    $emp['vendidos'] = $vendidos;
-                    $tmp['empleados'][] = $emp;
-                }
-                $arrServicios[] = $tmp;
-            }
             //Filtramos por producto
             $arrProductos = array();
             $productos = \ProductoclinicaQuery::create()->filterByIdclinica($idclinica)->find();
@@ -138,45 +35,57 @@ class HistorialController extends AbstractActionController
                 $tmp['producto_nombre'] = $producto->getProducto()->getProductoNombre();
                 //Comenzamos a itinerar sobre los empleados para conocer cuantos producto ha vendido cada empleado
                     $tmp['empleados'] = array();
-                $empleado = new \Clinicaempleado();
-                foreach ($empleados as $empleado){
-                    $emp['idempleado'] = $empleado->getIdempleado();
-                    $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();    
-                    $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdproductoclinica($producto->getIdproductoclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->count();
-                    foreach($vendidosQuery as $vendido){
-                        $vendidos+= (int)$vendido->getVisitadetalleCantidad();
+                    $exist = \ProductoinventarioQuery::create()->filterByIdproductoclinica($producto->getIdproductoclinica())->filterByProductoinventarioFecha($fecha)->exists();
+                    if($exist)
+                    {
+                    $historial = \ProductoinventarioQuery::create()->filterByIdproductoclinica($producto->getIdproductoclinica())->filterByProductoinventarioFecha($fecha)->orderByIdproductoinventario('desc')->findOne();
+
+                    $tmp['inventario'] =  $historial->getProductoinventarioCantidad();
+                    
                     }
-                    $emp['vendidos'] = $vendidos;
-                    $tmp['empleados'][] = $emp;
-                }
+                    else
+                    {
+                        $tmp['inventario']=0;
+                    }
+                
                 $arrProductos[] = $tmp;
             }
-            //Filtramos por producto
-            $arrMembresias = array();
-            $membresias = \MembresiaQuery::create()->find();
-            $membresia = new \Membresia();
-            foreach ($membresias as $membresia){
-                $tmp['idmembresia'] = $membresia->getIdmembresia();
-                $tmp['membresia_nombre'] = $membresia->getMembresiaNombre();
-                //Comenzamos a itinerar sobre los empleados para conocer cuantos producto ha vendido cada empleado
-                $tmp['empleados'] = array();
-                $empleado = new \Clinicaempleado();
-                foreach ($empleados as $empleado){
-                    $emp['idempleado'] = $empleado->getIdempleado();
-                    $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();    
-                    $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdmembresia($membresia->getIdmembresia())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->count();
-                    foreach($vendidosQuery as $vendido){
-                        $vendidos+= (int)$vendido->getVisitadetalleCantidad();
-                    }
-                    $emp['vendidos'] = $vendidos;
-                    $tmp['empleados'][] = $emp;
-                }
-                $arrMembresias[] = $tmp;
-            }
             
-            return $this->getResponse()->setContent(json_encode(array('productos' => $arrProductos,'membresias' => $arrMembresias, 'servicios' => $arrServicios, 'empleados' => $empleados->toArray(null,false,\BasePeer::TYPE_FIELDNAME))));
+            
+            return $this->getResponse()->setContent(json_encode(array('productos' => $arrProductos )));
+        }else{
+            
+            $arrServicios = array();
+            $empleados = \ClinicaempleadoQuery::create()->filterByIdempleado($session->getIdempleado())->joinEmpleado()->withColumn('empleado_nombre')->find();
+            
+
+            //Filtramos por producto
+            $arrProductos = array();
+            $productos = \ProductoclinicaQuery::create()->filterByIdclinica($idclinica)->find();
+            $producto = new \Productoclinica();
+            foreach ($productos as $producto){
+                $tmp['idproductoclinica'] = $producto->getIdproductoclinica();
+                $tmp['producto_nombre'] = $producto->getProducto()->getProductoNombre();
+                 $tmp['empleados'] = array();
+                    $exist = \ProductoinventarioQuery::create()->filterByIdproductoclinica($producto->getIdproductoclinica())->filterByProductoinventarioFecha($fecha)->exists();
+                    if($exist)
+                    {
+                    $historial = \ProductoinventarioQuery::create()->filterByIdproductoclinica($producto->getIdproductoclinica())->filterByProductoinventarioFecha($fecha)->orderByIdproductoinventario('desc')->findOne();
+
+                    $tmp['inventario'] =  $historial->getProductoinventarioCantidad();
+                    
+                    }
+                    else
+                    {
+                        $tmp['inventario']=0;
+                    }
+                
+                
+                $arrProductos[] = $tmp;
+            }
+           
+            
+            return $this->getResponse()->setContent(json_encode(array('productos' => $arrProductos)));
             
         }
         
