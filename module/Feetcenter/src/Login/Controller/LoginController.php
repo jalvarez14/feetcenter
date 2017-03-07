@@ -64,6 +64,12 @@ class LoginController extends AbstractActionController
         $form = new \Login\Form\LoginForm();
     
         
+        if(!strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'firefox')){
+             $this->flashMessenger()->addErrorMessage('No se esta utilizando el navegador correcto. Por favor utilice Mozilla Firefox');
+           //  return $this->redirect()->toRoute('login');
+             
+        }
+        
         return new ViewModel(array(
             'form' => $form,
             'errorMessages' => $this->flashMessenger()->getErrorMessages(),
@@ -97,101 +103,107 @@ class LoginController extends AbstractActionController
             
             $post_data['empleadoacceso_password'] = md5($post_data['empleadoacceso_password']);
             
+      
+            if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'firefox') != false){
             
-            //Verificamos si los datos de acceso son correctos
-            if(\EmpleadoaccesoQuery::create()->filterByEmpleadoaccesoUsername($post_data['empleadoacceso_username'])->filterByEmpleadoaccesoPassword($post_data['empleadoacceso_password'])->exists()){
+                //Verificamos si los datos de acceso son correctos
+                if(\EmpleadoaccesoQuery::create()->filterByEmpleadoaccesoUsername($post_data['empleadoacceso_username'])->filterByEmpleadoaccesoPassword($post_data['empleadoacceso_password'])->exists()){
 
-                
-                $empleado_acceso = \EmpleadoaccesoQuery::create()->filterByEmpleadoaccesoUsername($post_data['empleadoacceso_username'])->filterByEmpleadoaccesoPassword($post_data['empleadoacceso_password'])->findOne();
-               
-                
-                //Verificamos que ese usario ya este asiganod alguna clinica
-                if(\ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->exists() || in_array($empleado_acceso->getIdrol(), array(1,6))){
-                    $clinica_empleado = \ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->findOne();
-                   
-                    
-                    if(in_array($empleado_acceso->getIdrol(), array(1,6))){
-                        $idclinica = NULL;
-                    }else{
-                        $idclinica = $clinica_empleado->getIdclinica();
-                        //VERIFICAMOS QUE NO EXISTA UN EMPLEADO DE TIPO ENCARGADLO LOGUEADO POR CLINICA
-                       $empleados_clinica = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->find();
 
-                       $flag = false;
-                       foreach ($empleados_clinica as $empleado){
-                           if(\EmpleadoaccesoQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadoaccesoEnsesion(true)->exists()){
-                              $flag = true; 
-                           }
-                       }
-                       
-                       if($flag){
-                  
-                        
-                            $this->flashMessenger()->addErrorMessage('Ya existe un empleado con el rol de encargardo en sesión!');
-                            return $this->redirect()->toRoute('login');
-                    
-                       }
-                        
-                    }
-                    
+                    $empleado_acceso = \EmpleadoaccesoQuery::create()->filterByEmpleadoaccesoUsername($post_data['empleadoacceso_username'])->filterByEmpleadoaccesoPassword($post_data['empleadoacceso_password'])->findOne();
 
-                    //Verificamos que el usuario no este logueado actualmente
-                    if(!$empleado_acceso->getEmpleadoaccesoEnsesion()){
-                        
-                        
-                        
-                        
-                        /*
-                         * NOTIFICACIONES
-                         */
-                        
+
+                    //Verificamos que ese usario ya este asiganod alguna clinica
+                    if(\ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->exists() || in_array($empleado_acceso->getIdrol(), array(1,6))){
+                        $clinica_empleado = \ClinicaempleadoQuery::create()->filterByIdempleado($empleado_acceso->getIdempleado())->findOne();
+
+
                         if(in_array($empleado_acceso->getIdrol(), array(1,6))){
-                            
-                            
-                            $transferencias = \TransferenciaQuery::create()->filterByTransferenciaEstatus('enviada')->count();
+                            $idclinica = NULL;
                         }else{
-                            
-                            
-                            $transferencias = \TransferenciaQuery::create()->filterByIdclinicadestinataria($empleado_acceso->getIdrol())->filterByTransferenciaEstatus('enviada')->count();  
+                            $idclinica = $clinica_empleado->getIdclinica();
+                            //VERIFICAMOS QUE NO EXISTA UN EMPLEADO DE TIPO ENCARGADLO LOGUEADO POR CLINICA
+                           $empleados_clinica = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->find();
+
+                           $flag = false;
+                           foreach ($empleados_clinica as $empleado){
+                               if(\EmpleadoaccesoQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadoaccesoEnsesion(true)->exists()){
+                                  $flag = true; 
+                               }
+                           }
+
+                           if($flag){
+
+
+                                $this->flashMessenger()->addErrorMessage('Ya existe un empleado con el rol de encargardo en sesión!');
+                                return $this->redirect()->toRoute('login');
+
+                           }
+
                         }
 
-                        //Creamos nuestra session
-                        $session->Create(array(
-                            'idempleadoacceso' => $empleado_acceso->getIdempleadoacceso(),
-                            'idempleado' => $empleado_acceso->getIdempleado(),
-                            'idclinica' => $idclinica,
-                            'idrol' => $empleado_acceso->getIdrol(),
-                            'rol' => $empleado_acceso->getRol()->getRolNombre(),
-                            'empleadoacceso_username' => $empleado_acceso->getEmpleadoaccesoUsername(),
-                            'empleado_nombre' => $empleado_acceso->getEmpleado()->getEmpleadoNombre(),
-                            'empleado_foto' => $empleado_acceso->getEmpleado()->getEmpleadoFoto(),
-                            'transferencias_pendientes' => $transferencias,
-                        ));               
-                        
-                        
-                        $empleado_acceso->setEmpleadoaccesoEnsesion(1);
-                        $empleado_acceso->save();
-                        
-                        if(in_array($empleado_acceso->getIdrol(), array(1,6,3,5))){
-                            return $this->redirect()->toRoute('agenda');
+
+                        //Verificamos que el usuario no este logueado actualmente
+                        if(!$empleado_acceso->getEmpleadoaccesoEnsesion()){
+
+
+
+
+                            /*
+                             * NOTIFICACIONES
+                             */
+
+                            if(in_array($empleado_acceso->getIdrol(), array(1,6))){
+
+
+                                $transferencias = \TransferenciaQuery::create()->filterByTransferenciaEstatus('enviada')->count();
+                            }else{
+
+
+                                $transferencias = \TransferenciaQuery::create()->filterByIdclinicadestinataria($empleado_acceso->getIdrol())->filterByTransferenciaEstatus('enviada')->count();  
+                            }
+
+                            //Creamos nuestra session
+                            $session->Create(array(
+                                'idempleadoacceso' => $empleado_acceso->getIdempleadoacceso(),
+                                'idempleado' => $empleado_acceso->getIdempleado(),
+                                'idclinica' => $idclinica,
+                                'idrol' => $empleado_acceso->getIdrol(),
+                                'rol' => $empleado_acceso->getRol()->getRolNombre(),
+                                'empleadoacceso_username' => $empleado_acceso->getEmpleadoaccesoUsername(),
+                                'empleado_nombre' => $empleado_acceso->getEmpleado()->getEmpleadoNombre(),
+                                'empleado_foto' => $empleado_acceso->getEmpleado()->getEmpleadoFoto(),
+                                'transferencias_pendientes' => $transferencias,
+                            ));               
+
+
+                            $empleado_acceso->setEmpleadoaccesoEnsesion(1);
+                            $empleado_acceso->save();
+
+                            if(in_array($empleado_acceso->getIdrol(), array(1,6,3,5))){
+                                return $this->redirect()->toRoute('agenda');
+                            }else{
+                                return $this->redirect()->toUrl('/login/cortecaja');
+                            }
+
+
                         }else{
-                            return $this->redirect()->toUrl('/login/cortecaja');
+
+                            $this->flashMessenger()->addErrorMessage('El usuario ya ha iniciado sesión en otro dispositivo');
+                            return $this->redirect()->toRoute('login');
                         }
 
-                        
                     }else{
-                        
-                        $this->flashMessenger()->addErrorMessage('El usuario ya ha iniciado sesión en otro dispositivo');
+                        $this->flashMessenger()->addErrorMessage('No es posible iniciar sesion con este usuario ya que no ha sido asignado a ninguna clinica');
                         return $this->redirect()->toRoute('login');
                     }
 
                 }else{
-                    $this->flashMessenger()->addErrorMessage('No es posible iniciar sesion con este usuario ya que no ha sido asignado a ninguna clinica');
+                    $this->flashMessenger()->addErrorMessage('Nombre de usuario y/o contraseña incorrecta');
                     return $this->redirect()->toRoute('login');
                 }
-                
             }else{
-                $this->flashMessenger()->addErrorMessage('Nombre de usuario y/o contraseña incorrecta');
+                $this->flashMessenger()->addErrorMessage('No se esta utilizando el navegador correcto. Por favor utilice Mozilla Firefox');
                 return $this->redirect()->toRoute('login');
             }
 
