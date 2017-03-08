@@ -156,6 +156,8 @@
                        if(data.result){
                             $container.find('input[name=paciente_autocomplete]').tokenInput('add',{id:data.data.idpaciente,name:data.data.paciente_nombre + ' - Celular: ' + data.data.paciente_celular + ' - Teléfono:',visita_total:0,visita_ultima:'',relacionados:{}});
                             closePacienteContainer();
+                       }else{
+                           alert(data.msj);
                        }
                        
                    }

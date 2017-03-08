@@ -161,8 +161,8 @@ class AgendaController extends AbstractActionController
     public function gethorariosbyclinicaAction(){
         
         $idclinica = $this->params()->fromRoute('id'); 
-        $diadelasemana = $this->params()->fromQuery('dia');
-                
+        $date = new \DateTime($this->params()->fromQuery('dia'));
+     
         $array = array();
             
         $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->find();
@@ -171,15 +171,25 @@ class AgendaController extends AbstractActionController
                 //Obtenemos su horario
                 $idempleado = $empleado->getIdempleado();
                 
-                if(\EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($diadelasemana))->exists()){
-                    $empleado_horario = \EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($diadelasemana))->findOne();
-                    $tmp['entrada'] = $empleado_horario->getEmpleadohorarioEntrada('H:i:s');
-                    $tmp['salida'] = $empleado_horario->getEmpleadohorarioSalida('H:i:s');
-                    $tmp['descanso'] = $empleado_horario->getEmpleadohorarioDescanso();
-                    $array[$idempleado] = $tmp;
+                if(\EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($date->format('w')))->exists()){
+                    if(\AusenciaempleadoQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByAusenciaempleadoFecha($date)->exists()){
+                        $empleado_horario = \EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($date->format('w')))->findOne();
+                        $tmp['entrada'] = $empleado_horario->getEmpleadohorarioEntrada('H:i:s');
+                        $tmp['salida'] = $empleado_horario->getEmpleadohorarioSalida('H:i:s');
+                        $tmp['descanso'] = 1;
+                        $array[$idempleado] = $tmp;
+                    }else{
+                        $empleado_horario = \EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($date->format('w')))->findOne();
+                        $tmp['entrada'] = $empleado_horario->getEmpleadohorarioEntrada('H:i:s');
+                        $tmp['salida'] = $empleado_horario->getEmpleadohorarioSalida('H:i:s');
+                        $tmp['descanso'] = 0;
+                        $array[$idempleado] = $tmp;
+                    }
                 }else{
-                    $array[$idempleado] = NULL;
+                     $array[$idempleado] = NULL;
                 }
+                
+                
  
             }
             return $this->response->setContent(json_encode($array));
@@ -1348,19 +1358,30 @@ class AgendaController extends AbstractActionController
         
         if($request->isPost()){
             $post_data = $request->getPost();
-            $entity = new \Paciente();
+          
+            $paciente_exist = \PacienteQuery::create()->filterByPacienteName($post_data['paciente_name'])
+                                                      ->filterByPacienteAp($post_data['paciente_ap'])
+                                                      ->filterByPacienteAm($post_data['paciente_am'])
+                                                      ->exists();
             
-            foreach($post_data as $key => $value){
-                if(\PacientePeer::getTableMap()->hasColumn($key)){
-                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+            if(!$paciente_exist){
+            
+                $entity = new \Paciente();
+
+                foreach($post_data as $key => $value){
+                    if(\PacientePeer::getTableMap()->hasColumn($key)){
+                        $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                    }
                 }
+                $entity->setPacienteNombre($post_data['paciente_ap']." ".$post_data['paciente_am'].", ".$post_data['paciente_name']);
+                $entity->setIdpaciente(NULL);
+                $entity->setPacienteFecharegistro(new \DateTime());
+                $entity->save();
+
+                return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'data' => $entity->toArray(\BasePeer::TYPE_FIELDNAME))));
+            }else{
+                return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => false,'msj' => 'Ya existe un paciente registrado con los mismos datos!')));
             }
-            $entity->setPacienteNombre($post_data['paciente_ap']." ".$post_data['paciente_am'].", ".$post_data['paciente_name']);
-            $entity->setIdpaciente(NULL);
-            $entity->setPacienteFecharegistro(new \DateTime());
-            $entity->save();
-            
-            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'data' => $entity->toArray(\BasePeer::TYPE_FIELDNAME))));
 
         }
         

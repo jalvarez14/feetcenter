@@ -97,7 +97,7 @@
             $.ajax({
                 url: '/gethorariosbyclinica/' + settings.idclinica,
                 dataType: 'json',
-                data: {dia: date.isoWeekday()},
+                data: {dia:  date.format('YYYY-MM-DD')},
                 success: function (data) {
                     $.each(data, function (index, element) {
                         if (element !== null) {

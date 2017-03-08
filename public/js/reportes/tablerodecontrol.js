@@ -62,9 +62,7 @@
                from = moment('19-08-1990','DD-MM-YYYY');
                to = moment();
            }
-           
-           $tableServicios.find('tr').remove();
-           $tableProductos.find('tr').remove();          
+     
            
            if(typeof $table1 != 'undefined' && typeof $table2 != 'undefined'){
                 $table1.clear();
@@ -234,6 +232,38 @@
              * El evento filter
              */
             
+            var pickdateFrom = $container.find('input[name=filter_indicadores_from]').pickadate({
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                selectMonths: true,
+                selectYears: 25,
+                max: new Date(),
+            });
+            
+             var pickdateTo = $container.find('input[name=filter_to_indicadores]').pickadate({
+                monthsFull: [ 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre' ],
+                monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
+                weekdaysFull: [ 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' ],
+                weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
+                today: 'hoy',
+                clear: 'borrar',
+                close: 'cerrar',
+                firstDay: 1,
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy/mm/dd',
+                selectMonths: true,
+                selectYears: 25,
+                max: new Date(),
+            });
+            
             //Inicializamos nuestros calendarios del filtro de fechas
             $container.find('input[name=filter_from]').datepicker({
                 changeMonth: true,
@@ -271,7 +301,7 @@
             $container.find('button#filterbydate').on('click',function(){
                 
                  $('body').addClass('loading');
-                 
+                
                  var from = $container.find('input[name=filter_from_hidden]').val();
                  var to = $container.find('input[name=filter_to_hidden]').val();
                  var idclinica = $container.find("select[name=idclinica]").multipleSelect("getSelects")[0];
@@ -283,6 +313,8 @@
                      data:{from:from,to:to,idclinica:idclinica},
                      success: function (data, textStatus, jqXHR) {
                          
+                          //$container.find('input[name=filter_indicadores_from]').pickadate('picker').set('select', new Date(data.from));
+                          //$container.find('input[name=filter_to_indicadores]').pickadate('picker').set('select', new Date(data.to));
                          //CLINICA
                           $container.find('#table_clinica tbody tr').remove();
                          var clinica = data.data.clinica;
@@ -417,6 +449,143 @@
                          $('body').removeClass('loading');
                     }
                  });
+                 
+                 $container.find('#indicadores').show();
+
+            });
+            
+            $container.find('button#filterbydate2').on('click',function(){
+                
+                 $('body').addClass('loading');
+
+                 var from = moment($container.find('input[name=filter_indicadores_from_submit]').val(),'YYYY-MM-DD');
+                 var to =  moment($container.find('input[name=filter_to_indicadores_submit]').val(),'YYYY-MM-DD');
+                 var idclinica = $container.find("select[name=idclinica]").multipleSelect("getSelects")[0];
+                 
+                 $.ajax({
+                     url: "/reportes/tablerodecontrol",
+                     type: 'POST',
+                     dataType: 'JSON',
+                     data:{from:from.format('YYYY-MM-DD'),to:to.format('YYYY-MM-DD'),idclinica:idclinica},
+                     success: function (data, textStatus, jqXHR) {
+                       
+                         //CLINICA
+
+                         var clinica = data.data.clinica;
+                         var empleados = data.data.empleados;
+                                                  
+                         //EMPLEADOS 
+                         $container.find('#table_indicadores tbody tr').remove();
+                         $container.find('#table_indicadores thead th').remove();
+                         $container.find('#table_indicadores thead').append('<th>Indicadores</th>');
+                         
+                         //INDICADORES ESTRUCTURA
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>Clientes atendidos por día</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>Servicios Com. por día</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>Venta promedio por cliente</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>Productos por cliente</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>Tiempo promedio de servicio</td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>Clientes nuevos</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>Membresias</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>Pagos anticipados</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td colspan="'+(empleados.length + 1)+'"><b>Tasa de retorno</b></td>');
+                       
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>30 Días</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>45 Días</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
+                        $tr.append('<td><b>60 Días</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                         
+                         empleados.forEach(function(value,index){
+       
+                             //INDICADORES
+                             $container.find('#table_indicadores thead').append('<th>'+value.empleado_nombre+'</th>');
+
+                             $container.find('#table_indicadores tbody tr').eq(0).find('td').eq(index+1).text(value.servicios_por_dia);
+                             $container.find('#table_indicadores tbody tr').eq(1).find('td').eq(index+1).text(value.servicioscomision_por_dia);
+                             $container.find('#table_indicadores tbody tr').eq(2).find('td').eq(index+1).text(accounting.formatMoney(value.venta_promedio_por_cliente));
+                             $container.find('#table_indicadores tbody tr').eq(3).find('td').eq(index+1).text(value.productos_por_cliente);
+                             $container.find('#table_indicadores tbody tr').eq(4).find('td').eq(index+1).text(value.tiempo_promedio_servicio);
+                             $container.find('#table_indicadores tbody tr').eq(5).find('td').eq(index+1).text(value.clientes_nuevos);
+                             $container.find('#table_indicadores tbody tr').eq(6).find('td').eq(index+1).text(value.membresias);
+                             $container.find('#table_indicadores tbody tr').eq(7).find('td').eq(index+1).text(value.pagos_anticipados);
+                             $container.find('#table_indicadores tbody tr').eq(9).find('td').eq(index+1).text(value.tasa_retorno['30dias']);
+                             $container.find('#table_indicadores tbody tr').eq(10).find('td').eq(index+1).text(value.tasa_retorno['45dias']);
+                             $container.find('#table_indicadores tbody tr').eq(11).find('td').eq(index+1).text(value.tasa_retorno['60dias']);
+                         });
+                         $('body').removeClass('loading');
+                    }
+                 });
+                 
+                 $container.find('#indicadores').show();
 
             });
             

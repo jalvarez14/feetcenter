@@ -476,7 +476,7 @@ class ReportesController extends AbstractActionController
                 $diff_days3 = $from->diff($to)->days + ($from->diff($to)->y*12);
             }
             
-
+           
 
 
             $respone = array();
@@ -521,8 +521,12 @@ class ReportesController extends AbstractActionController
              
              //DIAS RESTANTES
               $respone['clinica']['clinica_diasrestantes'] = $diff_days;
+              if($respone['clinica']['clinica_diasrestantes']>0){
+                $respone['clinica']['clinica_hoy'] =  ($respone['clinica']['clinica_meta']-$respone['clinica']['clinica_acumulado'])/$respone['clinica']['clinica_diasrestantes'];
+              }else{
+                   $respone['clinica']['clinica_hoy'] =  ($respone['clinica']['clinica_meta']-$respone['clinica']['clinica_acumulado']);
+              }
               
-              $respone['clinica']['clinica_hoy'] =  ($respone['clinica']['clinica_meta']-$respone['clinica']['clinica_acumulado'])/$respone['clinica']['clinica_diasrestantes'];
               
              /*
              * EMPLEADOS
@@ -579,7 +583,12 @@ class ReportesController extends AbstractActionController
                 $hoy = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaTotal)','acumulado')->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $yesterday))->filterByVisitaEstatuspago('pagada')->findOne()->toArray();
                 //$tmp['empleado_hoy'] = !is_null($hoy['acumulado']) ? $hoy['acumulado'] : 0;
                 
-                $tmp['empleado_hoy'] = ($tmp['empleado_meta'] - $hoy['acumulado'])/ $tmp['empleado_diasrestantes'];
+                if($tmp['empleado_diasrestantes']>0){
+                     $tmp['empleado_hoy'] = ($tmp['empleado_meta'] - $hoy['acumulado'])/ $tmp['empleado_diasrestantes'];
+                }else{
+                     $tmp['empleado_hoy'] = ($tmp['empleado_meta'] - $hoy['acumulado']);
+                }
+               
                 
                  //SERVICIOS comision detalle POR DIA
                  $tmp['servicioscomision_por_dia'] = 0;
@@ -694,8 +703,13 @@ class ReportesController extends AbstractActionController
 
 
              }
-
-             return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $respone)));
+             
+             $from_js = $from->format('Y-m-');
+             $from_js.= $from->format('d') +1;
+             
+             $to->modify('+1day');
+             $to_js = $from->format('Y-m-d');
+             return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $respone,'from' => $from_js,'to' => $to_js)));
         }
         
         $clinicas = \ClinicaQuery::create()->select(array('idclinica','clinica_nombre'))->find()->toKeyValue('idclinica','clinica_nombre');

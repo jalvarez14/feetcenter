@@ -4,6 +4,17 @@
 ?>
 <div id="clinica_container">
     <h1>Nuevo cliente</h1>
+    <?php if(count($errorMessages)) :?>
+        <div class="units-row">
+            <?php foreach ($errorMessages as $message) :?>
+                <div class="unit-100">    
+                    <div class="tools-alert tools-alert-red">
+                        <?php echo $message?>
+                    </div> 
+                </div>
+            <?php endforeach;?>
+        </div>
+    <?php endif;?>
     <?php 
         $form->setAttribute('action', '/pacientes/nuevo');
         $form->setAttribute('novalidate', true);

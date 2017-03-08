@@ -380,53 +380,94 @@ class PacientesController extends AbstractActionController
         if($request->isPost()){
             
             $post_data = $request->getPost();
+            $paciente_exist = \PacienteQuery::create()->filterByPacienteName($post_data['paciente_name'])
+                                                      ->filterByPacienteAp($post_data['paciente_ap'])
+                                                      ->filterByPacienteAm($post_data['paciente_am'])
+                                                      ->exists();
             
-            foreach ($post_data as $k => $v){
-                if(empty($v)){
-                    unset($post_data[$k]);
+            if(!$paciente_exist){
+               
+                foreach ($post_data as $k => $v){
+                    if(empty($v)){
+                        unset($post_data[$k]);
+                    }
                 }
-            }
-            
-            $entity = new \Paciente();
-           
-            foreach($post_data as $key => $value){
-                if(\PacientePeer::getTableMap()->hasColumn($key) && $key!='paciente_fechanacimiento'){
-                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
-                }
-            }
-            $entity->setPacienteNombre($post_data['paciente_ap']." ".$post_data['paciente_am'].", ".$post_data['paciente_name']);
+               
+                $entity = new \Paciente();
 
-            
-            //Setiamos las fechas
-             $entity->setPacienteFecharegistro(new \DateTime());
-             
-             
-            if(isset($post_data['paciente_fechanacimiento_submit'])){
-                $entity->setPacienteFechanacimiento('paciente_fechanacimiento_submit');
-            }
-            
-            
-            $entity->save();
-            
-            //Ahora los pacientes
-            if(isset($post_data['pacientes'])){
-                foreach ($post_data['pacientes'] as $idpaciente){
-                    $grupo_paciente = new \Grupopersonal();
-                    $grupo_paciente->setIdpaciente($entity->getIdpaciente())
-                                   ->setIdpacienteagregado($idpaciente)
-                                   ->save();
+                foreach($post_data as $key => $value){
+                    if(\PacientePeer::getTableMap()->hasColumn($key) && $key!='paciente_fechanacimiento'){
+                        $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                    }
                 }
-            }
-            
-            
-            
-            //Agregamos un mensaje
-            $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
+                $entity->setPacienteNombre($post_data['paciente_ap']." ".$post_data['paciente_am'].", ".$post_data['paciente_name']);
+
+
+                //Setiamos las fechas
+                 $entity->setPacienteFecharegistro(new \DateTime());
                 
-            //Redireccionamos a nuestro list
-            return $this->redirect()->toRoute('pacientes');
-            
 
+                if(isset($post_data['paciente_fechanacimiento_submit'])){
+                    $entity->setPacienteFechanacimiento($post_data['paciente_fechanacimiento_submit']);
+                }
+
+                  
+                $entity->save();
+
+                //Ahora los pacientes
+                if(isset($post_data['pacientes'])){
+                    foreach ($post_data['pacientes'] as $idpaciente){
+                        $grupo_paciente = new \Grupopersonal();
+                        $grupo_paciente->setIdpaciente($entity->getIdpaciente())
+                                       ->setIdpacienteagregado($idpaciente)
+                                       ->save();
+                    }
+                }
+
+
+
+                //Agregamos un mensaje
+                $this->flashMessenger()->addSuccessMessage('Registro guardado exitosamente!');
+                
+                return $this->redirect()->toUrl('/pacientes');
+            } else {
+                $this->flashMessenger()->addErrorMessage('Ya existe un paciente registrado con los mismos datos!');
+                $empleados_array = array();
+                $clinicas_array = array();
+                //Administtrador
+                if ($sesion->getIdrol() == 1) {
+                    $clinicas = \ClinicaQuery::create()->find();
+                    $empleados = \ClinicaempleadoQuery::create()->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
+                    foreach ($empleados as $empleado) {
+                        $id = $empleado->getIdempleado();
+                        $empleados_array[$id] = $empleado->getEmpleado()->getEmpleadoNombre();
+                    }
+                    foreach ($clinicas as $clinica) {
+                        $id = $clinica->getIdclinica();
+                        $clinicas_array[$id] = $clinica->getClinicaNombre();
+                    }
+                }
+                //Encargado
+                elseif ($sesion->getIdrol() == 2) {
+                    $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
+                    $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($sesion->getIdClinica())->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
+                    foreach ($empleados as $empleado) {
+                        $id = $empleado->getIdempleado();
+                        $empleados_array[$id] = $empleado->getEmpleado()->getEmpleadoNombre();
+                    }
+                    foreach ($clinicas as $clinica) {
+                        $id = $clinica->getIdclinica();
+                        $clinicas_array[$id] = $clinica->getClinicaNombre();
+                    }
+                }
+
+                $form = new \Pacientes\Form\PacientesForm($clinicas_array, $empleados_array);
+                $form->setData($post_data);
+                return new ViewModel(array(
+                    'form' => $form,
+                    'errorMessages' => $this->flashMessenger()->getErrorMessages(),
+                ));
+            }
         }
         
         $empleados_array = array();
@@ -462,6 +503,7 @@ class PacientesController extends AbstractActionController
             
         return new ViewModel(array(
             'form' => $form,
+            'errorMessages' => $this->flashMessenger()->getErrorMessages(),
         ));
     }
 }
