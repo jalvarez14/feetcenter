@@ -61,6 +61,9 @@
             clinicas_select = clinicas_select[0];
             
             var productos_select = $container.find("select[name=idproducto]").multipleSelect('getSelects');
+            var servicios_select = $container.find("select[name=idservicio]").multipleSelect('getSelects');
+            var membresias_select = $container.find("select[name=idmembresia]").multipleSelect('getSelects');
+
             
             $container.find('table.table-vendidos-servicios thead tr').remove();
             $container.find('table.table-vendidos-servicios tbody tr').remove();
@@ -76,12 +79,14 @@
                 url: '/empleados/vendidos/filterbyclinica',
                 dataType: 'json',
                 async:false,
-                data:{idclinica:clinicas_select,idrol:idrol,productos:productos_select,from:from,to:to},
+                data:{idclinica:clinicas_select,idrol:idrol,productos:productos_select,servicios: servicios_select,membresias:membresias_select,from:from,to:to},
                 success: function(data){
    
                     if(data.empleados.length > 0){
                         
                         //Servicios
+                         var serviciosemp = [];
+                         var contserv=0;
                         var $thead = $('<tr><th>Servicios</th></tr>');
                         $.each(data.empleados,function(){
                             $thead.append('<th idempleado="'+this.idempleado+'">'+this.empleado_nombre+'</th>');
@@ -93,8 +98,17 @@
                             var tr = $('<tr idservicioclinica="'+this.idservicioclinia+'"><td>'+this.servicio_nombre+'</td></tr>');
                             for(var i=0; i<data.empleados.length; i++){
                                 tr.append('<td>'+this.empleados[i].vendidos+'</td>');
+                                if(contserv==0)
+                                {
+                                    serviciosemp[i]= parseInt(this.empleados[i].vendidos);
+                                }
+                                else
+                                {
+                                    serviciosemp[i]+= parseInt(this.empleados[i].vendidos);
+                                }
                             }
                             $container.find('table.table-vendidos-servicios tbody').append(tr);
+                            contserv++;
                         });
                         
                         //Las membresias
@@ -102,9 +116,26 @@
                             var tr = $('<tr idmembresia="'+this.idmembresia+'"><td>'+this.membresia_nombre+'</td></tr>');
                             for(var i=0; i<data.empleados.length; i++){
                                 tr.append('<td>'+this.empleados[i].vendidos+'</td>');
+                                if(contserv==0)
+                                {
+                                    serviciosemp[i]= parseInt(this.empleados[i].vendidos);
+                                }
+                                else
+                                {
+                                    serviciosemp[i]+= parseInt(this.empleados[i].vendidos);
+                                }
                             }
                             $container.find('table.table-vendidos-servicios tbody').append(tr);
+                            contserv++;
                         });
+                        
+                        var tr = $('<tr><td>Total</td></tr>');
+                                                    
+                        for(var i=0; i<data.empleados.length; i++){
+                                tr.append('<td>'+serviciosemp[i]+'</td>');
+                                
+                        }
+                        $container.find('table.table-vendidos-servicios tbody').append(tr);
                         
                         //Calculamos totales de tabla 1
                         /*var rowTotal = $('<tr><td>Totales</td></tr>');
@@ -125,6 +156,9 @@
                             $thead.append('<th>'+this.empleado_nombre+'</th>');
                         });
                         $container.find('table.table-vendidos-productos').append($thead);
+                        
+                        
+                        
                         
                         //La estructura de los productos
                         var contprod=0;
@@ -187,6 +221,15 @@
             });
             
             $container.find("select[name=idproducto]").multipleSelect({
+                single:false,   
+                
+            });
+            
+            $container.find("select[name=idservicio]").multipleSelect({
+                single:false,   
+                
+            });
+            $container.find("select[name=idmembresia]").multipleSelect({
                 single:false,   
                 
             });

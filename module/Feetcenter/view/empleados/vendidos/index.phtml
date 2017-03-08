@@ -17,6 +17,22 @@
             </select>
         </div>
         <div class="unit-30">
+           Servicios
+            <select multiple="multiple" name="idservicio" class="width-100">
+                <?php foreach ($servicios as $servicio) : ?>
+                    <option value="<?php echo $servicio->getIdservicio()?>"><?php echo $servicio->getServicionombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-30">
+           Membresías
+            <select multiple="multiple" name="idmembresia" class="width-100">
+                <?php foreach ($membresias as $membresia) : ?>
+                    <option value="<?php echo $membresia->getIdmembresia()?>"><?php echo $membresia->getMembresianombre() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="unit-30">
            Productos
             <select multiple="multiple" name="idproducto" class="width-100">
                 <?php foreach ($productos as $producto) : ?>

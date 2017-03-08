@@ -27,12 +27,17 @@ class VendidosController extends AbstractActionController
         $session = new \Shared\Session\AouthSession();
         if($idrol !== 3){ //Para administradores
             $productos= $this->params()->fromQuery('productos');
-            $arrServicios = array();
+            $servicios= $this->params()->fromQuery('servicios');
+            $membresias= $this->params()->fromQuery('membresias');
             
+            
+
+            $arrServicios = array();
             $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->joinEmpleado()->withColumn('empleado_nombre')->useEmpleadoQuery()->useEmpleadoaccesoQuery()->filterByIdrol(3)->endUse()->endUse()->groupBy('idempleado')->find();
             //Filtramos por clinica
-            $servicios = \ServicioclinicaQuery::create()->filterByIdclinica($idclinica)->find();
+            $servicios = \ServicioclinicaQuery::create()->filterByIdclinica($idclinica)->filterByIdservicio($servicios)->find();
             $servicio = new \Servicioclinica();
+           
             foreach ($servicios as $servicio){
                 $tmp['idservicioclinia'] = $servicio->getIdservicioclinica();
                 $tmp['servicio_nombre'] = $servicio->getServicio()->getServicioNombre();
@@ -52,6 +57,8 @@ class VendidosController extends AbstractActionController
                 }
                 $arrServicios[] = $tmp;
             }
+            
+          
             //Filtramos por producto
             $arrProductos = array();
             $productos = \ProductoclinicaQuery::create()->filterByIdclinica($idclinica)->filterByIdproducto($productos)->find();
@@ -78,7 +85,7 @@ class VendidosController extends AbstractActionController
             
             //Filtramos por producto
             $arrMembresias = array();
-            $membresias = \MembresiaQuery::create()->find();
+            $membresias = \MembresiaQuery::create()->filterByIdmembresia($membresias)->find();
             $membresia = new \Membresia();
             foreach ($membresias as $membresia){
                 $tmp['idmembresia'] = $membresia->getIdmembresia();
@@ -193,10 +200,14 @@ class VendidosController extends AbstractActionController
             $clinicas = \ClinicaQuery::create()->find();
         }
         $productos = \ProductoQuery::create()->find();
+        $servicios = \ServicioQuery::create()->find();
+        $membresias = \MembresiaQuery::create()->find();
 
         return new ViewModel(array(
             'clinicas' => $clinicas,
             'productos'=> $productos,
+            'servicios'=> $servicios,
+            'membresias'=> $membresias,
             'session' => json_encode($session->getData()),
         ));
     }
