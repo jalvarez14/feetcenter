@@ -599,6 +599,16 @@ class AgendaController extends AbstractActionController
                 $paciente_membresia = \PacientemembresiaQuery::create()->joinMembresia()->withColumn('membresia_nombre')->withColumn('membresia_servicios')->withColumn('membresia_cupones')->filterByIdpaciente($paciente->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->findOne();
                 $paciente_array['membresia'] = $paciente_membresia->toArray(\BasePeer::TYPE_FIELDNAME);
             }  
+            
+            //ultimo comentario
+            if(\PacienteseguimientoQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->orderByPacienteseguimientoFecha('desc')->exists()){
+                 $ultimocomentario = \PacienteseguimientoQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->orderByPacienteseguimientoFecha(\Criteria::DESC)->limit(1)->findOne();
+                 
+                $paciente_array['visita_comentario'] = $ultimocomentario->getPacienteseguimientoComentario();
+                
+            }
+            
+            
 
             $viewModel = new ViewModel();
             $viewModel->setVariables(array(

@@ -5,6 +5,10 @@
         right: 0px;
     }
 </style>
+<?php 
+    $this->headTitle()->prepend('Ausencias');
+    echo $this->headTitle();
+?>
 <div id="agenda_container">
      <h1>Ausencias</h1>
     <?php if(count($successMessages)) :?>
