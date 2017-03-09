@@ -1089,8 +1089,19 @@
                                         
                                         payMethodContainer.find('input[name=recibi]').on('keyup',function(){
                                             var recibi = parseFloat($(this).val());
-                                            var total = parseFloat(payDetailsContainer.find('input[name=visita_total]').val());
-                                            var cambio = recibi - total;
+                                            var total_efectivo = 0;
+                                            payMethodContainer.find('select[name*=visitapago_tipo]').filter(function(){
+                                                if($(this).val() == 'efectivo'){
+                                                    var str = $(this).attr('name');
+                                                    str = str.split("visitapago_tipo[");
+                                                    str = str[1].split("][type]");
+                                                    var key = str[0];
+                                                    
+                                                    total_efectivo+= parseFloat(payMethodContainer.find('input[name="visitapago_tipo['+key+'][cantidad]"]').val());
+                                                }
+                                            });
+                                            
+                                            var cambio = recibi - total_efectivo;
 
                                             payMethodContainer.find('span#visita_cambio b').text(accounting.formatMoney(cambio));
                                            

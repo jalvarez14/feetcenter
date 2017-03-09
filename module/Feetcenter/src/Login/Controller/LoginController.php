@@ -132,7 +132,7 @@ class LoginController extends AbstractActionController
                            if($flag){
 
                                 $rol = \RolQuery::create()->findPk($session['idrol']);
-                                $this->flashMessenger()->addErrorMessage('Ya existe un empleado con el rol de '.$rol->getRolNombre().' en sesión!');
+                                $this->flashMessenger()->addErrorMessage('Ya existe un empleado con el rol de '.$rol->getRolNombre()    .' en sesión!');
                                 return $this->redirect()->toRoute('login');
 
                            }
