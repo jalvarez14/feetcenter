@@ -65,7 +65,7 @@ class AgendaController extends AbstractActionController
             4 => 'jueves',
             5 => 'viernes',
             6=> 'sabado',
-            7 => 'domingo'
+            0 => 'domingo'
         );
         
         return $days[$day];
@@ -170,9 +170,12 @@ class AgendaController extends AbstractActionController
             foreach ($empleados as $empleado){
                 //Obtenemos su horario
                 $idempleado = $empleado->getIdempleado();
-                
+                    
                 if(\EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($date->format('w')))->exists()){
+                 
                     if(\AusenciaempleadoQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByAusenciaempleadoFecha($date)->exists()){
+                       
+                       
                         $empleado_horario = \EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($date->format('w')))->findOne();
                         $tmp['entrada'] = $empleado_horario->getEmpleadohorarioEntrada('H:i:s');
                         $tmp['salida'] = $empleado_horario->getEmpleadohorarioSalida('H:i:s');
