@@ -239,7 +239,7 @@
                 changeMonth: true,
                 changeYear: true,
                 showButtonPanel: true,
-                dateFormat: 'dd MM yy',  
+                dateFormat: 'yy-mm-dd',  
                  altFormat: "yy-mm-dd",
             });
             $container.find('input[name=filter_from]').datepicker('option','onClose',function(textDate,inst){
@@ -255,7 +255,7 @@
                 changeMonth: true,
                 changeYear: true,
                 showButtonPanel: true,
-                dateFormat: 'dd MM yy',  
+                dateFormat: 'yy-mm-dd',  
                  altFormat: "yy-mm-dd",
             });
             $container.find('input[name=filter_to]').datepicker('option','onClose',function(textDate,inst){
@@ -272,8 +272,8 @@
                 
                  $('body').addClass('loading');
                  
-                 var from = $container.find('input[name=filter_from_hidden]').val();
-                 var to = $container.find('input[name=filter_to_hidden]').val();
+                 var from = $container.find('input[name=filter_from]').val();
+                 var to = $container.find('input[name=filter_to]').val();
                  var idclinica = $container.find("select[name=idclinica]").multipleSelect("getSelects")[0];
                  
                  $.ajax({
@@ -289,7 +289,7 @@
                          var empleados = data.data.empleados;
                          
                          var $tr = $('<tr>');
-                         $tr.append('<td>'+clinica.clinica_nombre+'</td>');
+                        
                          $tr.append('<td>'+clinica.slot1+'</td>');
                          $tr.append('<td>'+clinica.slot2+'</td>');
                          $tr.append('<td>'+clinica.slot3+'</td>');
@@ -310,6 +310,8 @@
                          $tr.append('<td>'+clinica.slot18+'</td>');
                          $tr.append('<td>'+clinica.slot19+'</td>');
                          $tr.append('<td>'+clinica.slot20+'</td>');
+                         $tr.append('<td>'+clinica.slot21+'</td>');
+                         $tr.append('<td>'+clinica.slot22+'</td>');
                          
                          
                          

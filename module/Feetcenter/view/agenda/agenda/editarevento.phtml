@@ -36,7 +36,11 @@
                 <div class="unit-60">
                      <div><span><b>Última visita: </b></span><span id="visita_ultima"></span></div>
                 </div>
-                
+               
+                <div class="unit-100">
+                    <div><span><b>Último comentario: </b></span><span id="visita_comentario"></span></div>
+                </div>
+          
             </div>
         </div>
         <div class="unit-40" style="margin-top: 25px;">
@@ -51,16 +55,12 @@
             </label>
         
         </div>
-        <div class="unit-20" style="margin-top: 0px;">
+        <div class="unit-40" style="margin-top: 0px;">
             <div class="unit-100">
                 <div><a target="_blank" href="/pacientes/expediente/ver/<?php echo $visita->getIdpaciente(); ?>"> <h2>Expediente</h2></a></div>
             </div>
         </div>
-        <div class="unit-20" style="margin-top: 0px;">
-            <div class="unit-100">
-                <div><a target="_blank" href="/pacientes/visitas"> <h2>Visitas</h2></a></div>
-            </div>
-        </div>
+        
     </div>
         <div id="paciente_membresia_container" class="units-row" style="display: none">
         <div class="unit-100">
