@@ -279,11 +279,7 @@
             <?php endforeach;?>
         </tbody>
         <tfoot>
-             <tr>
-            <input name="visita_subtotal" type="hidden" value="0">
-                <td colspan="3">Subtotal</td>
-                <td id="subtotal">$ 0</td>
-            </tr>
+             
          
             <tr>
             <input name="visita_iva" type="hidden" value="0">
@@ -523,17 +519,9 @@
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
-                                        <tr>
-                                    <input name="visita_subtotal" type="hidden" value="0">
-                                    <td colspan="3">Subtotal</td>
-                                    <td id="subtotal">$ 0</td>
-                                 </tr>
+                                        
 
-                                 <tr>
-                                 <input name="visita_iva" type="hidden" value="0">
-                                 <td colspan="3">IVA</td>
-                                 <td id="iva">$ 0</td>
-                                 </tr>
+                                
                                  <tr>
                                 <tr>    
                                  <input name="visita_total" type="hidden" value="0">
@@ -544,6 +532,11 @@
                                  <input name="visita_total" type="hidden" value="0">
                                  <td colspan="3">Total</td>
                                  <td id="total">$ 0</td>
+                                 </tr>
+                                 <tr>
+                                 <input name="visita_iva" type="hidden" value="0">
+                                 <td colspan="1">Impuesto incluído</td>
+                                 <td id="iva">$ 0</td>
                                  </tr>
                                  </tfoot>
                                 <?php else :?>
@@ -589,17 +582,9 @@
                                         <?php endforeach;?>
                                     </tbody>
                                     <tfoot>
-                                            <tr>
-                                        <input name="visita_subtotal" type="hidden" value="0">
-                                        <td colspan="2">Subtotal</td>
-                                        <td id="subtotal">$ 0</td>
-                                 </tr>
+                                           
 
-                                 <tr>
-                                 <input name="visita_iva" type="hidden" value="0">
-                                 <td colspan="2">IVA</td>
-                                 <td id="iva">$ 0</td>
-                                 </tr>
+                                 
                                  <tr>    
                                  <input name="visita_total" type="hidden" value="0">
                                  <td colspan="2
@@ -611,6 +596,11 @@
                                  <td colspan="2
                                      ">Total</td>
                                  <td id="total">$ 0</td>
+                                 </tr>
+                                 <tr>
+                                 <input name="visita_iva" type="hidden" value="0">
+                                 <td colspan="1">Impuesto incluído</td>
+                                 <td id="iva">$ 0</td>
                                  </tr>
                                  </tfoot>
                                 <?php endif;?>  
