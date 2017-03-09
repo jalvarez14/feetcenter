@@ -26,15 +26,15 @@ class LoginController extends AbstractActionController
         $session = $session->getData();
         
         $today = new \DateTime();
-        $total = \VisitapagoQuery::create()->select(array('total'))->withColumn('SUM(VisitapagoCantidad)', 'total')->withColumn('SUM(visitapago_cantidad)', 'total')->filterByVisitapagoFecha(array('min' => $today->format('Y-m-d').' 00:00:00'))->useVisitaQuery()->filterByIdclinica($idclinica)->endUse()->findOne();
+        $total = \VisitapagoQuery::create()->select(array('total'))->withColumn('SUM(visitapago_cantidad)', 'total')->filterByVisitapagoFecha(array('min' => $today->format('Y-m-d').' 00:00:00'))->useVisitaQuery()->filterByIdclinica($session['idclinica'])->endUse()->findOne();
         $total = !is_null($total) ? $total : 0;
         
-        $total_efectivo = \VisitapagoQuery::create()->select(array('total'))->withColumn('SUM(VisitapagoCantidad)', 'total')->withColumn('SUM(visitapago_cantidad)', 'total')->filterByVisitapagoTipo('efectivo')->filterByVisitapagoFecha(array('min' => $today->format('Y-m-d').' 00:00:00'))->useVisitaQuery()->filterByIdclinica($idclinica)->endUse()->findOne();
+        $total_efectivo = \VisitapagoQuery::create()->select(array('total'))->withColumn('SUM(visitapago_cantidad)', 'total')->filterByVisitapagoTipo('efectivo')->filterByVisitapagoFecha(array('min' => $today->format('Y-m-d').' 00:00:00'))->useVisitaQuery()->filterByIdclinica($session['idclinica'])->endUse()->findOne();
         $total_efectivo = !is_null($total_efectivo) ? $total_efectivo : 0;
         
-        $total_tarjeta = \VisitapagoQuery::create()->select(array('total'))->withColumn('SUM(VisitapagoCantidad)', 'total')->withColumn('SUM(visitapago_cantidad)', 'total')->filterByVisitapagoTipo('tarjeta')->filterByVisitapagoFecha(array('min' => $today->format('Y-m-d').' 00:00:00'))->useVisitaQuery()->filterByIdclinica($idclinica)->endUse()->findOne();
+        $total_tarjeta = \VisitapagoQuery::create()->select(array('total'))->withColumn('SUM(visitapago_cantidad)', 'total')->filterByVisitapagoTipo('tarjeta')->filterByVisitapagoFecha(array('min' => $today->format('Y-m-d').' 00:00:00'))->useVisitaQuery()->filterByIdclinica($session['idclinica'])->endUse()->findOne();
         $total_tarjeta = !is_null($total_tarjeta) ? $total_tarjeta : 0;
-        
+   
         return new ViewModel(array(
             'total_tarjeta' => $total_tarjeta,
             'total_efectivo' => $total_efectivo,
