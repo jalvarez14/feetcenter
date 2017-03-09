@@ -477,7 +477,7 @@ class ReportesController extends AbstractActionController
             $yesterday->setTime(23, 59,59);
            
             $from_copy = new \DateTime($post_data['from']." 00:00:00");
-            $to  = new \DateTime($post_data['to']." 00:00:00");
+            $to  = new \DateTime($post_data['to']." 23:59:00");
             $diff_month = $from->diff($to)->m + ($from->diff($to)->y*12);
             $today_from = new \DateTime();
             $today_from->setTime('0','0','0');
@@ -485,11 +485,17 @@ class ReportesController extends AbstractActionController
             $diff_days = $today_from->diff($to)->days + ($today_from->diff($to)->y*12);
             //$diff_days2 = $from->diff($to)->days + ($from->diff($to)->y*12);
             $diff_days3 = $from->diff($today_to)->days + ($from->diff($today_to)->y*12);
+            
+            
             if($today_from > $to){
                 $diff_days = 0;
             }
+            
             if($today_to > $to){
                 $diff_days3 = $from->diff($to)->days + ($from->diff($to)->y*12);
+            }
+            if($post_data['from']==$post_data['to']){
+                $diff_days3 = 1;
             }
             
            
@@ -595,7 +601,7 @@ class ReportesController extends AbstractActionController
                  
                 //$respone['clinica']['clinica_hoy'] =  ($respone['clinica']['clinica_meta']-$respone['clinica']['clinica_acumulado'])/$respone['clinica']['clinica_diasrestantes'];
 
-                 
+                
                 $hoy = \VisitaQuery::create()->withColumn('SUM(Visita.VisitaTotal)','acumulado')->filterByIdempleado($idempleado)->filterByVisitaFechafin(array('min' => $from, 'max' => $yesterday))->filterByVisitaEstatuspago('pagada')->findOne()->toArray();
                 //$tmp['empleado_hoy'] = !is_null($hoy['acumulado']) ? $hoy['acumulado'] : 0;
                 
