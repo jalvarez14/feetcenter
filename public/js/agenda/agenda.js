@@ -599,8 +599,8 @@
                                         $modalHeader.addClass('modal_header_action');
                                         this.createCancelButton('Cancelar');
                                         var guardarAction = this.createActionButton('Guardar');
-                                        guardarAction.on('click', $.proxy(function(){          
-
+                                        guardarAction.one('click', $.proxy(function(){          
+                                            
                                             var option = modal.find('input[name=visita_option]:checked').val();
 
                                             var empty = false;
@@ -995,7 +995,8 @@
                                      var payDetailsContainer = modal.find('#pay_details_container');
                                      var payMethodContainer = modal.find('#pay_method_container');
                                      
-                                     pagarAction.on('click', $.proxy(function(){
+                                     pagarAction.one('click', $.proxy(function(){
+                                        
                                         eventoProximaCita();
                                      }));
                                      
@@ -1125,7 +1126,7 @@
                                         pagarAction.unbind();
                                        
                                         pagarAction.on('click', $.proxy(function(){
-
+                                            pagarAction.attr('disabled',true);
                                             $('body').addClass('loading');
                                             setTimeout(function(){
                                                 if(typeof settings.folio_valido != 'undefined'){
@@ -1817,9 +1818,7 @@
                 eventRender: function(event, element, view) {
                     if(view.name == 'agendaWeek'){
                         var height = $(element).innerHeight();
-                       
-                        
-                        //$(element).css('height', height + 3 'px');
+
                     }
                 }
         }

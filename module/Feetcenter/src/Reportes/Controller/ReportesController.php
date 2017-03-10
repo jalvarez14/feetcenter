@@ -672,6 +672,7 @@ class ReportesController extends AbstractActionController
                  
                 
                   //CLIENTES NUEVOS
+                  
                   $tmp['clientes_nuevos'] = \PacienteQuery::create()->filterByIdempleado($idempleado)->filterByPacienteFecharegistro(array('min' => $from, 'max' => $to))->count();
                   
                   //MEMBRESIAS
@@ -711,12 +712,22 @@ class ReportesController extends AbstractActionController
                   foreach ($pacientes as $idpaciente){
                       $num_visitas = \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio(\Criteria::ASC)->count();
                       if($num_visitas > 1){
+                          
                           $visita_base = \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio(\Criteria::ASC)->findOne();
+                          
                           $fecha = new \DateTime($visita_base->getVisitaFechainicio('Y-m-d'). "00:00:00");
-                          $fecha_copy = $fecha;
+                         
+                          $fecha_copy = new \DateTime($fecha->format('Y-m-d'));
+                           // echo '<pre>';var_dump($fecha_copy);echo '</pre>';
                           $tmp['tasa_retorno']['30dias']+=  \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $fecha, 'max' => $fecha_copy->modify('+30 days')))->filterByVisitaEstatuspago('pagada')->count();
+                          
+                          //echo '<pre>';var_dump($fecha_copy);echo '</pre>';
                           $tmp['tasa_retorno']['45dias']+=  \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $fecha, 'max' => $fecha_copy->modify('+15 days')))->filterByVisitaEstatuspago('pagada')->count();
+                         // echo '<pre>';var_dump($fecha_copy);echo '</pre>';
                           $tmp['tasa_retorno']['60dias']+=  \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $fecha, 'max' => $fecha_copy->modify('+15 days')))->filterByVisitaEstatuspago('pagada')->count();
+                          //echo '<pre>';var_dump($fecha_copy);echo '</pre>';
+                         // echo '<pre>';var_dump(date('Y-m-d', strtotime($fecha->format('Y-m-d'). ' + 30 days')));echo '</pre>';
+                          $fecha_copy = new \DateTime($fecha->format('Y-m-d'));
                       }
                       
                   }
