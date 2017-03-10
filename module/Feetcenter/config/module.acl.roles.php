@@ -258,6 +258,7 @@ return array(
             'seguimiento/serverside',
             'seguimiento/nuevo',
             'seguimiento/editar',
+            'seguimiento/historial',
             'seguimiento/quick',
             'pacientes-visitas',
             'pacientes-expediente',
