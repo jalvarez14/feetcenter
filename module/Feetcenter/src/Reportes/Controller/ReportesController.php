@@ -708,13 +708,21 @@ class ReportesController extends AbstractActionController
                       '60dias' => 0
                   );
                   $pacientes = \VisitaQuery::create()->filterByIdempleado($idempleado)->select('idpaciente')->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->groupByIdpaciente()->orderByVisitaFechainicio(\Criteria::ASC)->find()->toArray();
+                 
                   foreach ($pacientes as $idpaciente){
+                      
                       $num_visitas = \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio(\Criteria::ASC)->count();
                       if($num_visitas > 1){
                           $visita_base = \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio(\Criteria::ASC)->findOne();
                           $fecha = new \DateTime($visita_base->getVisitaFechainicio('Y-m-d'). "00:00:00");
                           $fecha_copy = $fecha;
-                          $tmp['tasa_retorno']['30dias']+=  \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $fecha, 'max' => $fecha_copy->modify('+30 days')))->filterByVisitaEstatuspago('pagada')->count();
+                          $fecha30dias =  date_add($fecha, date_interval_create_from_date_string('30 days'));
+                          $fecha45dias =  date_add($fecha, date_interval_create_from_date_string('45 days'));
+                          $fecha60dias =  date_add($fecha, date_interval_create_from_date_string('60 days'));
+                          
+                          var_dump($fecha);
+                          exit();
+                          $tmp['tasa_retorno']['30dias']+=  \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $fecha30dias, 'max' => $fecha_copy->modify('+30 days')))->filterByVisitaEstatuspago('pagada')->count();
                           $tmp['tasa_retorno']['45dias']+=  \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $fecha, 'max' => $fecha_copy->modify('+15 days')))->filterByVisitaEstatuspago('pagada')->count();
                           $tmp['tasa_retorno']['60dias']+=  \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $fecha, 'max' => $fecha_copy->modify('+15 days')))->filterByVisitaEstatuspago('pagada')->count();
                       }
