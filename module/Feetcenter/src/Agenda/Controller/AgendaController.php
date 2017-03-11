@@ -1137,12 +1137,7 @@ class AgendaController extends AbstractActionController
         if($request->isPost()){
             $post_data = $request->getPost();
             
-            foreach ($post_data as $k => $v){
-                if(empty($v)){
-                    unset($post_data[$k]);
-                }
-            }
-            
+
             $entity = new \Visita();
             
             foreach($post_data as $key => $value){
