@@ -532,6 +532,13 @@
                         $container.find('#table_indicadores tbody').append($tr);
                         
                         var $tr = $('<tr>');
+                        $tr.append('<td><b>Servicio de membresias</b></td>');
+                        for(var i=0; i<empleados.length;i++){
+                           $tr.append('<td></td>');
+                        }
+                        $container.find('#table_indicadores tbody').append($tr);
+                        
+                        var $tr = $('<tr>');
                         $tr.append('<td><b>Pagos anticipados</b></td>');
                         for(var i=0; i<empleados.length;i++){
                            $tr.append('<td></td>');
@@ -576,6 +583,7 @@
                              $container.find('#table_indicadores tbody tr').eq(4).find('td').eq(index+1).text(value.tiempo_promedio_servicio);
                              $container.find('#table_indicadores tbody tr').eq(5).find('td').eq(index+1).text(value.clientes_nuevos);
                              $container.find('#table_indicadores tbody tr').eq(6).find('td').eq(index+1).text(value.membresias);
+                             $container.find('#table_indicadores tbody tr').eq(6).find('td').eq(index+1).text(value.serviciomembresias);
                              $container.find('#table_indicadores tbody tr').eq(7).find('td').eq(index+1).text(value.pagos_anticipados);
                              $container.find('#table_indicadores tbody tr').eq(9).find('td').eq(index+1).text(value.tasa_retorno['30dias']);
                              $container.find('#table_indicadores tbody tr').eq(10).find('td').eq(index+1).text(value.tasa_retorno['45dias']);

@@ -693,6 +693,25 @@ class ReportesController extends AbstractActionController
                        }
                   }
                   
+                  
+                  //MEMBRESIAS
+                  $tmp['serviciomembresias'] = 0;
+                  $visita_detalles =  \VisitadetalleQuery::create()->filterByIdservicioclinica(NULL, \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->find();
+                  $detalle = new \Visitadetalle();
+                  foreach ($visita_detalles as $detalle){
+                      $serviciomembresia = $detalle->getServicioclinica();
+                      
+                        if($serviciomembresia->getServicio()->getServicioDependencia()=="membresia")
+                        {
+                              $membresiaitem  = \PacientemembresiadetalleQuery::create()->filterByIdvisitadetalle($detalle->getIdvisitadetalle())->findOne();
+                              if (strpos(strtoupper($membresiaitem->getPacientemembresia()->getMembresia()->getMembresiaNombre()), 'PAGO') == false)
+                              {
+                                $tmp['serviciomembresias']++;
+                              }
+                        }
+                      
+                  }
+                  
                   //PAGOS ANTICIPADOS
                   $tmp['pagos_anticipados'] = 0;
                   $visita_detalles =  \VisitadetalleQuery::create()->filterByIdmembresia(NULL, \Criteria::NOT_EQUAL)->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->find();
