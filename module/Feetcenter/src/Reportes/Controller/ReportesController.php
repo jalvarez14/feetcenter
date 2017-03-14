@@ -481,6 +481,9 @@ class ReportesController extends AbstractActionController
             $diff_month = $from->diff($to)->m + ($from->diff($to)->y*12);
             $today_from = new \DateTime();
             $today_from->setTime('0','0','0');
+            
+           // var_dump($today_from);
+            //exit();
             $today_to = new \DateTime();
             $diff_days = $today_from->diff($to)->days + ($today_from->diff($to)->y*12);
             //$diff_days2 = $from->diff($to)->days + ($from->diff($to)->y*12);
@@ -595,7 +598,7 @@ class ReportesController extends AbstractActionController
                  
                 
                  //DIAS RESTANTES
-                 $ausencias = \AusenciaempleadoQuery::create()->filterbyIdempleado($idempleado)->filterByAusenciaempleadoFecha(array('min' => $from, 'max' => $to))->count();
+                 $ausencias = \AusenciaempleadoQuery::create()->filterbyIdempleado($idempleado)->filterByAusenciaempleadoFecha(array('min' => $today_from, 'max' => $to))->count();
                  
                  $tmp['empleado_diasrestantes'] = $diff_days -  $ausencias;
                  
