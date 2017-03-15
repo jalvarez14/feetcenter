@@ -48,7 +48,7 @@ class VendidosController extends AbstractActionController
                     $emp['idempleado'] = $empleado->getIdempleado();
                     $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();
                     $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdservicioclinica($servicio->getIdservicioclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->find();
+                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdservicioclinica($servicio->getIdservicioclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaFechafin(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->find();
                     foreach($vendidosQuery as $vendido){
                         $vendidos+= (int)$vendido->getVisitadetalleCantidad();
                     }
@@ -73,9 +73,10 @@ class VendidosController extends AbstractActionController
                     $emp['idempleado'] = $empleado->getIdempleado();
                     $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();    
                     $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdproductoclinica($producto->getIdproductoclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->find();
+                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdproductoclinica($producto->getIdproductoclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaFechafin(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->find();
                     foreach($vendidosQuery as $vendido){
                         $vendidos+= (int)$vendido->getVisitadetalleCantidad();
+                        
                     }
                     $emp['vendidos'] = $vendidos;
                     $tmp['empleados'][] = $emp;
@@ -97,7 +98,7 @@ class VendidosController extends AbstractActionController
                     $emp['idempleado'] = $empleado->getIdempleado();
                     $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();    
                     $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdmembresia($membresia->getIdmembresia())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->find();
+                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdmembresia($membresia->getIdmembresia())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaFechafin(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->find();
                     $vendido = new \Visitadetalle();
                     foreach($vendidosQuery as $vendido){
                         $vendidos+= (int)$vendido->getVisitadetalleCantidad();
@@ -128,7 +129,7 @@ class VendidosController extends AbstractActionController
                     $emp['idempleado'] = $empleado->getIdempleado();
                     $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();
                     $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdservicioclinica($servicio->getIdservicioclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->count();
+                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdservicioclinica($servicio->getIdservicioclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaFechafin(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->count();
                     foreach($vendidosQuery as $vendido){
                         $vendidos+= (int)$vendido->getVisitadetalleCantidad();
                     }
@@ -137,6 +138,8 @@ class VendidosController extends AbstractActionController
                 }
                 $arrServicios[] = $tmp;
             }
+            
+            
             //Filtramos por producto
             $arrProductos = array();
             $productos = \ProductoclinicaQuery::create()->filterByIdclinica($idclinica)->find();
@@ -151,7 +154,7 @@ class VendidosController extends AbstractActionController
                     $emp['idempleado'] = $empleado->getIdempleado();
                     $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();    
                     $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdproductoclinica($producto->getIdproductoclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->count();
+                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdproductoclinica($producto->getIdproductoclinica())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaFechafin(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->count();
                     foreach($vendidosQuery as $vendido){
                         $vendidos+= (int)$vendido->getVisitadetalleCantidad();
                     }
@@ -174,7 +177,7 @@ class VendidosController extends AbstractActionController
                     $emp['idempleado'] = $empleado->getIdempleado();
                     $emp['empleado_nombre'] = $empleado->getEmpleado()->getEmpleadoNombre();    
                     $vendidos = 0;
-                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdmembresia($membresia->getIdmembresia())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaCreadaen(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->count();
+                    $vendidosQuery = \VisitadetalleQuery::create()->filterByIdmembresia($membresia->getIdmembresia())->useVisitaQuery()->filterByIdempleado($empleado->getIdempleado())->filterByVisitaFechafin(array('min' => $desde.' 00:00:00', 'max' => $hasta.' 23:59:59'))->filterByVisitaEstatuspago('pagada')->endUse()->count();
                     foreach($vendidosQuery as $vendido){
                         $vendidos+= (int)$vendido->getVisitadetalleCantidad();
                     }
