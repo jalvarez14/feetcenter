@@ -308,6 +308,8 @@ class AgendaController extends AbstractActionController
          
          $sesion = new \Shared\Session\AouthSession();
          $request = $this->getRequest();
+       
+        
          
          if($request->isPost()){
              $post_data = $request->getPost();
@@ -360,7 +362,8 @@ class AgendaController extends AbstractActionController
                 $entity->setVisitaDuracion($duracion);
                 
             }
-            
+            //agregamos esta línea para llevar el control a nivel de trigger quién fue el qué hizo cada mofidicación 
+            $entity->setIdempleadocreador($sesion->getIdempleado());
             $entity->save();
             
             $entity->getVisitadetalles()->delete();
