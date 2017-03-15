@@ -83,9 +83,16 @@ class ComisionesController extends AbstractActionController
         $session  = new \Shared\Session\AouthSession();
         $idrol = $session->getIdrol();
 
-        if(in_array($idrol,array(1,6))){ //Admnistrador
+        if(in_array($idrol,array(1,6,2))){ //Admnistrador
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
+            
+            if($idrol == 2){
+                $clinicas = \ClinicaQuery::create()->filterByIdclinica($session->getIdClinica())->find();
+                $idclinica = $session->getIdClinica();
+            }
+            
+            
         }else{ //Pedicurista
         
             //Obtenemos las comisiones del empleado en sesion

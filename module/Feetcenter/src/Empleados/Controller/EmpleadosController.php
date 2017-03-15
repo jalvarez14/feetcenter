@@ -19,9 +19,15 @@ class EmpleadosController extends AbstractActionController
         $sesion = new \Shared\Session\AouthSession();
         $idrol = $sesion->getIdrol();
         
-        if(in_array($idrol,array(1,6))){
+        if(in_array($idrol,array(1,6,2))){
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
+            
+            if($idrol == 2){
+                $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
+                $idclinica = $sesion->getIdClinica();
+            }
+            
         
         }else{
              $clinicas = \ClinicaQuery::create()->filterByIdclinica($sesion->getIdClinica())->find();
