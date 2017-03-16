@@ -1138,7 +1138,7 @@
                                                 }
                                                 $('body').removeClass('loading');
                                             },1000);
-                                            
+                                              pagarAction.attr('disabled',false);
                                          }));
                                      }
                                      
