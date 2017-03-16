@@ -42,7 +42,7 @@ class VisitasController extends AbstractActionController
                $query->usePacienteQuery()->usePacienteseguimientoQuery()->groupByIdpaciente()->orderByPacienteseguimientoFecha(\Criteria::ASC)->filterByIdestatusseguimiento($post_data['estatus'])->endUse()->endUse();
             }
             if(isset($post_data['estatusfecha']) && !empty($post_data['estatusfecha']['from']))  {
-                $query->usePacienteQuery()->usePacienteseguimientoQuery()->groupByIdpaciente()->withColumn('pacienteseguimiento_fecha')->orderByPacienteseguimientoFecha(\Criteria::DESC)->filterByPacienteseguimientoFecha(array('min' => $post_data['estatusfecha']['from'],'max' => $post_data['estatusfecha']['to']))->endUse()->endUse();
+                $query->usePacienteQuery()->usePacienteseguimientoQuery()->groupByIdpaciente()->withColumn('pacienteseguimiento_fecha')->orderByPacienteseguimientoFecha(\Criteria::DESC)->filterByPacienteseguimientoFecha(array('min' => $post_data['estatusfecha']['from']." 00:00:00",'max' => $post_data['estatusfecha']['to']." 23:59:00"))->endUse()->endUse();
             }
            
            
