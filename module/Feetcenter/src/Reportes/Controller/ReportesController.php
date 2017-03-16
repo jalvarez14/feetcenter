@@ -323,93 +323,93 @@ class ReportesController extends AbstractActionController
             $respone['clinica'] = \ClinicaQuery::create()->findPk($post_data['idclinica'])->toArray(\BasePeer::TYPE_FIELDNAME);
              
            $conn = \Propel::getConnection();  
-           $req1 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) =10 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=10 and MINUTE(visita_horainicio)<=29;";
+           $req1 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) =10 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=10 and MINUTE(visita_fechainicio)<=29;";
                         $st = $conn->prepare($req1);
                         $st->execute();
                         $slot1 = $st->fetchAll(\PDO::FETCH_ASSOC); 
-            $req2 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=10 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=10 and MINUTE(visita_horainicio)<=59 ;";
+            $req2 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=10 and MINUTE(visita_fechainicio)>=30 and HOUR(visita_fechainicio) <=10 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req2);
                         $st->execute();
                         $slot2 = $st->fetchAll(\PDO::FETCH_ASSOC); 
-            $req3 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=11 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=11 and MINUTE(visita_horainicio)<=29 ;";
+            $req3 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=11 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=11 and MINUTE(visita_fechainicio)<=29 ;";
                         $st = $conn->prepare($req3);
                         $st->execute();
                         $slot3 = $st->fetchAll(\PDO::FETCH_ASSOC);  
                         
                         
-            $req4 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=11 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=11 and MINUTE(visita_horainicio)<=59 ;";
+            $req4 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=11 and MINUTE(visita_fechainicio)>=30 and HOUR(visita_fechainicio) <=11 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req4);
                         $st->execute();
                         $slot4 = $st->fetchAll(\PDO::FETCH_ASSOC);
-            $req5 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=12 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=12 and MINUTE(visita_horainicio)<=29 ;";
+            $req5 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=12 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=12 and MINUTE(visita_fechainicio)<=29 ;";
                         $st = $conn->prepare($req5);
                         $st->execute();
                         $slot5 = $st->fetchAll(\PDO::FETCH_ASSOC); 
-            $req6 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=12 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=12 and MINUTE(visita_horainicio)<=59 ;";
+            $req6 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=12 and MINUTE(visita_fechainicio)>=30 and HOUR(visita_fechainicio) <=12 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req6);
                         $st->execute();
                         $slot6 = $st->fetchAll(\PDO::FETCH_ASSOC);
-            $req7 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=13 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=13 and MINUTE(visita_horainicio)<=29 ;";
+            $req7 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=13 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=13 and MINUTE(visita_fechainicio)<=29 ;";
                         $st = $conn->prepare($req7);
                         $st->execute();
                         $slot7 = $st->fetchAll(\PDO::FETCH_ASSOC); 
-            $req8 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=13 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=13 and MINUTE(visita_horainicio)<=59 ;";
+            $req8 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=13 and MINUTE(visita_fechainicio)>=30 and HOUR(visita_fechainicio) <=13 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req8);
                         $st->execute();
                         $slot8 = $st->fetchAll(\PDO::FETCH_ASSOC);
-            $req9 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=14 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=14 and MINUTE(visita_horainicio)<=29 ;";
+            $req9 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=14 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=14 and MINUTE(visita_fechainicio)<=29 ;";
                         $st = $conn->prepare($req9);
                         $st->execute();
                         $slot9 = $st->fetchAll(\PDO::FETCH_ASSOC); 
-            $req10 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=14 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=14 and MINUTE(visita_horainicio)<=59 ;";
+            $req10 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=14 and MINUTE(visita_fechainicio)>=30 and HOUR(visita_fechainicio) <=14 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req10);
                         $st->execute();
                         $slot10 = $st->fetchAll(\PDO::FETCH_ASSOC);
-            $req11 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=15 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=15 and MINUTE(visita_horainicio)<=29 ;";
+            $req11 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=15 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=15 and MINUTE(visita_fechainicio)<=29 ;";
                         $st = $conn->prepare($req11);
                         $st->execute();
                         $slot11 = $st->fetchAll(\PDO::FETCH_ASSOC); 
-            $req12 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada'  and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=15 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=15 and MINUTE(visita_horainicio)<=59 ;";
+            $req12 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada'  and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=15 and MINUTE(visita_fechainicio)>=30 and HOUR(visita_fechainicio) <=15 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req12);
                         $st->execute();
                         $slot12 = $st->fetchAll(\PDO::FETCH_ASSOC);
-            $req13 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=16 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=16 and MINUTE(visita_horainicio)<=29 ;";
+            $req13 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=16 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=16 and MINUTE(visita_fechainicio)<=29 ;";
                         $st = $conn->prepare($req13);
                         $st->execute();
                         $slot13 = $st->fetchAll(\PDO::FETCH_ASSOC); 
-            $req14 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=16 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=16 and MINUTE(visita_horainicio)<=59 ;";
+            $req14 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=16 and MINUTE(visita_fechainicio)>=30 and HOUR(visita_fechainicio) <=16 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req14);
                         $st->execute();
                         $slot14 = $st->fetchAll(\PDO::FETCH_ASSOC);
-            $req15 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=17 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=17 and MINUTE(visita_horainicio)<=29 ;";
+            $req15 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=17 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=17 and MINUTE(visita_fechainicio)<=29 ;";
                         $st = $conn->prepare($req15);
                         $st->execute();
                         $slot15 = $st->fetchAll(\PDO::FETCH_ASSOC); 
-            $req16 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=17 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=17 and MINUTE(visita_horainicio)<=59 ;";
+            $req16 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=17 and MINUTE(visita_fechainicio)>=30 and HOUR(visita_fechainicio) <=17 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req16);
                         $st->execute();
                         $slot16 = $st->fetchAll(\PDO::FETCH_ASSOC);
-            $req17 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=18 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=18 and MINUTE(visita_horainicio)<=29 ;";
+            $req17 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=18 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=18 and MINUTE(visita_fechainicio)<=29 ;";
                         $st = $conn->prepare($req17);
                         $st->execute();
                         $slot17 = $st->fetchAll(\PDO::FETCH_ASSOC); 
-            $req18 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=18 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=18 and MINUTE(visita_horainicio)<=59 ;";
+            $req18 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=18 and MINUTE(visita_fechainicio)>=30 and HOUR(visita_fechainicio) <=18 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req18);
                         $st->execute();
                         $slot18 = $st->fetchAll(\PDO::FETCH_ASSOC);
-            $req19 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=19 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=19 and MINUTE(visita_horainicio)<=29 ;";
+            $req19 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=19 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=19 and MINUTE(visita_fechainicio)<=29 ;";
                         $st = $conn->prepare($req19);
                         $st->execute();
                         $slot19 = $st->fetchAll(\PDO::FETCH_ASSOC); 
-            $req20 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada'and  visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=19 and MINUTE(visita_horainicio)>=30 and HOUR(visita_horainicio) <=19 and MINUTE(visita_horainicio)<=59 ;";
+            $req20 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada'and  visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=19 and MINUTE(visita_fechainicio)>=30 and HOUR(visita_fechainicio) <=19 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req20);
                         $st->execute();
                         $slot20 = $st->fetchAll(\PDO::FETCH_ASSOC);
-            $req21 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada'and  visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=20 and MINUTE(visita_horainicio)>=20 and HOUR(visita_horainicio) <=20 and MINUTE(visita_horainicio)<=29 ;";
+            $req21 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada'and  visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=20 and MINUTE(visita_fechainicio)>=20 and HOUR(visita_fechainicio) <=20 and MINUTE(visita_fechainicio)<=29 ;";
                         $st = $conn->prepare($req21);
                         $st->execute();
                         $slot21 = $st->fetchAll(\PDO::FETCH_ASSOC);
-            $req22 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_horainicio) >=20 and MINUTE(visita_horainicio)>=0 and HOUR(visita_horainicio) <=20 and MINUTE(visita_horainicio)<=59 ;";
+            $req22 = "SELECT count(idvisita) FROM visita WHERE visita_tipo='servicio' and idclinica='$post_data[idclinica]' and visita_estatuspago='pagada' and visita_fechainicio >= '$from' and visita_fechafin <='$to' and HOUR(visita_fechainicio) >=20 and MINUTE(visita_fechainicio)>=0 and HOUR(visita_fechainicio) <=20 and MINUTE(visita_fechainicio)<=59 ;";
                         $st = $conn->prepare($req22);
                         $st->execute();
                         $slot22 = $st->fetchAll(\PDO::FETCH_ASSOC);
@@ -545,7 +545,7 @@ class ReportesController extends AbstractActionController
              }
              
              //DIAS RESTANTES
-              $respone['clinica']['clinica_diasrestantes'] = $diff_days;
+              $respone['clinica']['clinica_diasrestantes'] = $diff_days+1;
               if($respone['clinica']['clinica_diasrestantes']>0){
                 $respone['clinica']['clinica_hoy'] =  ($respone['clinica']['clinica_meta']-$respone['clinica']['clinica_acumulado'])/$respone['clinica']['clinica_diasrestantes'];
               }else{
@@ -598,9 +598,10 @@ class ReportesController extends AbstractActionController
                  
                 
                  //DIAS RESTANTES
+               
                  $ausencias = \AusenciaempleadoQuery::create()->filterbyIdempleado($idempleado)->filterByAusenciaempleadoFecha(array('min' => $today_from, 'max' => $to))->count();
                  
-                 $tmp['empleado_diasrestantes'] = $diff_days -  $ausencias;
+                 $tmp['empleado_diasrestantes'] = $diff_days -  $ausencias+1;
                  
                 //$respone['clinica']['clinica_hoy'] =  ($respone['clinica']['clinica_meta']-$respone['clinica']['clinica_acumulado'])/$respone['clinica']['clinica_diasrestantes'];
 
@@ -703,14 +704,19 @@ class ReportesController extends AbstractActionController
                   $detalle = new \Visitadetalle();
                   foreach ($visita_detalles as $detalle){
                       $serviciomembresia = $detalle->getServicioclinica();
-                      
+                        //var_dump($detalle->getIdvisitadetalle());
                         if($serviciomembresia->getServicio()->getServicioDependencia()=="membresia")
                         {
+                            if(\PacientemembresiadetalleQuery::create()->filterByIdvisitadetalle($detalle->getIdvisitadetalle())->exists())
+                            {
                               $membresiaitem  = \PacientemembresiadetalleQuery::create()->filterByIdvisitadetalle($detalle->getIdvisitadetalle())->findOne();
+                             // var_dump($membresiaitem->getPacientemembresia()->getMembresia()->getMembresiaNombre());
+                              
                               if (strpos(strtoupper($membresiaitem->getPacientemembresia()->getMembresia()->getMembresiaNombre()), 'PAGO') == false)
                               {
                                 $tmp['serviciomembresias']++;
                               }
+                            }
                         }
                       
                   }
@@ -740,11 +746,11 @@ class ReportesController extends AbstractActionController
                           $visita_base = \VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->orderByVisitaFechainicio(\Criteria::ASC)->findOne();
                           
                           $fecha = new \DateTime($visita_base->getVisitaFechainicio('Y-m-d'). "00:00:00");
-                         // var_dump($fecha);
+                         
                            $fecha_copy = new \DateTime($fecha->format('Y-m-d'));
                          
                            
-                           // echo '<pre>';var_dump($fecha_copy);echo '</pre>';
+                            
                           if(\VisitaQuery::create()->filterByIdpaciente($idpaciente)->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $fecha, 'max' => $fecha_copy->modify('+30 days')))->filterByVisitaEstatuspago('pagada')->count() > 0) 
                           {
                               $tmp['tasa_retorno']['30dias']++;

@@ -585,9 +585,9 @@
                              $container.find('#table_indicadores tbody tr').eq(6).find('td').eq(index+1).text(value.membresias);
                              $container.find('#table_indicadores tbody tr').eq(6).find('td').eq(index+1).text(value.serviciomembresias);
                              $container.find('#table_indicadores tbody tr').eq(7).find('td').eq(index+1).text(value.pagos_anticipados);
-                             $container.find('#table_indicadores tbody tr').eq(9).find('td').eq(index+1).text(value.tasa_retorno['30dias']);
-                             $container.find('#table_indicadores tbody tr').eq(10).find('td').eq(index+1).text(value.tasa_retorno['45dias']);
-                             $container.find('#table_indicadores tbody tr').eq(11).find('td').eq(index+1).text(value.tasa_retorno['60dias']);
+                             $container.find('#table_indicadores tbody tr').eq(10).find('td').eq(index+1).text(value.tasa_retorno['30dias']);
+                             $container.find('#table_indicadores tbody tr').eq(11).find('td').eq(index+1).text(value.tasa_retorno['45dias']);
+                             $container.find('#table_indicadores tbody tr').eq(12).find('td').eq(index+1).text(value.tasa_retorno['60dias']);
                          });
                          $('body').removeClass('loading');
                     }
