@@ -1081,7 +1081,7 @@
                                         
                                         payMethodContainer.find('#addMethodPay').unbind();
                                         payMethodContainer.find('#addMethodPay').on('click',newMethodPay);
-                                        payMethodContainer.find('input').val(total);
+                                        payMethodContainer.find('input:not([name=recibi])').val(total);
                                         payDetailsContainer.find('input[name*=folio]').on('blur',valdarFolio);
                                         payDetailsContainer.slideDown();
                                         payMethodContainer.slideDown();
