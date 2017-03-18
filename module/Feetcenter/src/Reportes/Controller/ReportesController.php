@@ -632,7 +632,7 @@ class ReportesController extends AbstractActionController
                  $tmp['servicios_por_dia'] = 0;
                  //sólo se consideran los servicios que generan comisión
                  //$total_servicios = \VisitadetalleQuery::create()->filterByIdservicioclinica(NULL, \Criteria::NOT_EQUAL)->useServicioclinicaQuery()->useServicioQuery()->filterByServicioGeneracomision(1)->endUse()->endUse()->useVisitaQuery()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->endUse()->count();
-                 $total_servicios = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->filterByVisitaTotal(0, \Criteria::GREATER_THAN)->filterByVisitaTipo("servicio")->count();
+                 $total_servicios = \VisitaQuery::create()->filterByIdempleado($idempleado)->filterByIdclinica($post_data['idclinica'])->filterByVisitaFechafin(array('min' => $from, 'max' => $to))->filterByVisitaEstatuspago('pagada')->filterByVisitaTotal(-1, \Criteria::GREATER_THAN)->filterByVisitaTipo("servicio")->count();
                  
                  if($total_servicios>0){
                        $tmp['servicios_por_dia'] = $total_servicios / $diff_days3;
