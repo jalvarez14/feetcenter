@@ -158,7 +158,8 @@ class AgendaController extends AbstractActionController
         $diadelasemana = $this->params()->fromQuery('dia');
                 
         $array = array();
-            
+        var_dump($idclinica." ".$diadelasemana);
+        exit();
         $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->find();
             $empleado = new \Clinicaempleado();
             foreach ($empleados as $empleado){
@@ -572,7 +573,7 @@ class AgendaController extends AbstractActionController
           if($request->isPost()){
               
               $post_data = $request->getPost();
-              $idpaciente = $post_data['idpaciente'];
+              $idpaciente = $post_data['idpaciente'];   
               $idclinica = $post_data['idclinica'];
               
               //Actualizamos la visita
