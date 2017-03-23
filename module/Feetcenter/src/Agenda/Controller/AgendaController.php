@@ -35,22 +35,16 @@ class AgendaController extends AbstractActionController
         if ($this->params()->fromQuery('folio')){
             
             $folio = $this->params()->fromQuery('folio');
-            $idpaciente = $this->params()->fromQuery('idpaciente');
             
             if(\PacientemembresiaQuery::create()->filterByPacientemembresiaFolio($folio)->filterByPacientemembresiaEstatus('activa')->exists()){
-                //SI ESTAN RELACIONADOS
                 $paciente_membresia = \PacientemembresiaQuery::create()->filterByPacientemembresiaFolio($folio)->findOne();
-                 if(\GrupopersonalQuery::create()->filterByIdpaciente(array($paciente_membresia->getIdpaciente(),$idpaciente))->filterByIdpacienteagregado(array($paciente_membresia->getIdpaciente(),$idpaciente))->exists()){
-                    //Verificamos si existen cupones disponibles
-                    $cantidad = $this->params()->fromQuery('cantidad');
-                    if($paciente_membresia->getPacientemembresiaCuponesdisponibles()>=$cantidad){
-                        return $this->getResponse()->setContent(json_encode(array('response' => true, 'idpacientemembresia' => $paciente_membresia->getIdpacientemembresia())));
-                    }else{
-                         return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'Sin cupones disponibles en la membresia')));
-                    }
-                 }else{
-                    return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'No está relacionado al titular de la membresía')));
-                 }
+                //Verificamos si existen cupones disponibles
+                $cantidad = $this->params()->fromQuery('cantidad');
+                if($paciente_membresia->getPacientemembresiaCuponesdisponibles()>=$cantidad){
+                    return $this->getResponse()->setContent(json_encode(array('response' => true, 'idpacientemembresia' => $paciente_membresia->getIdpacientemembresia())));
+                }else{
+                     return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'Sin cupones disponibles en la membresia')));
+                }
             }else{
                 return $this->getResponse()->setContent(json_encode(array('response' => false, 'msg' => 'Folio invalido')));
             }
@@ -65,7 +59,7 @@ class AgendaController extends AbstractActionController
             4 => 'jueves',
             5 => 'viernes',
             6=> 'sabado',
-            0 => 'domingo'
+            7 => 'domingo'
         );
         
         return $days[$day];
@@ -78,7 +72,7 @@ class AgendaController extends AbstractActionController
         $idrol = $sesion->getIdrol();
         
         //Administrador
-        if(in_array($idrol,array(1,6))){ 
+        if($idrol == 1){
             $clinicas = \ClinicaQuery::create()->find();
             $idclinica = 1;
         }else{
@@ -161,8 +155,8 @@ class AgendaController extends AbstractActionController
     public function gethorariosbyclinicaAction(){
         
         $idclinica = $this->params()->fromRoute('id'); 
-        $date = new \DateTime($this->params()->fromQuery('dia'));
-     
+        $diadelasemana = $this->params()->fromQuery('dia');
+                
         $array = array();
             
         $empleados = \ClinicaempleadoQuery::create()->filterByIdclinica($idclinica)->find();
@@ -170,29 +164,16 @@ class AgendaController extends AbstractActionController
             foreach ($empleados as $empleado){
                 //Obtenemos su horario
                 $idempleado = $empleado->getIdempleado();
-                    
-                if(\EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($date->format('w')))->exists()){
-                 
-                    if(\AusenciaempleadoQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByAusenciaempleadoFecha($date)->exists()){
-                       
-                       
-                        $empleado_horario = \EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($date->format('w')))->findOne();
-                        $tmp['entrada'] = $empleado_horario->getEmpleadohorarioEntrada('H:i:s');
-                        $tmp['salida'] = $empleado_horario->getEmpleadohorarioSalida('H:i:s');
-                        $tmp['descanso'] = 1;
-                        $array[$idempleado] = $tmp;
-                    }else{
-                        $empleado_horario = \EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($date->format('w')))->findOne();
-                        $tmp['entrada'] = $empleado_horario->getEmpleadohorarioEntrada('H:i:s');
-                        $tmp['salida'] = $empleado_horario->getEmpleadohorarioSalida('H:i:s');
-                        $tmp['descanso'] = 0;
-                        $array[$idempleado] = $tmp;
-                    }
+                
+                if(\EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($diadelasemana))->exists()){
+                    $empleado_horario = \EmpleadohorarioQuery::create()->filterByIdempleado($empleado->getIdempleado())->filterByEmpleadohorarioDia($this->dayOfWeek($diadelasemana))->findOne();
+                    $tmp['entrada'] = $empleado_horario->getEmpleadohorarioEntrada('H:i:s');
+                    $tmp['salida'] = $empleado_horario->getEmpleadohorarioSalida('H:i:s');
+                    $tmp['descanso'] = $empleado_horario->getEmpleadohorarioDescanso();
+                    $array[$idempleado] = $tmp;
                 }else{
-                     $array[$idempleado] = NULL;
+                    $array[$idempleado] = NULL;
                 }
-                
-                
  
             }
             return $this->response->setContent(json_encode($array));
@@ -238,12 +219,7 @@ class AgendaController extends AbstractActionController
                     $entity_array['servicio'].=' C: '.$visita->getVisitaCuponmembresia();
                 }
             }
-            
             $status = $visita->getVisitaStatus();
-            if($visita->getVisitaEstatuspago()=="pagada")
-            {
-                $status= "pagado";
-            }
             $color = \EstatusvisitaQuery::create()->findOneByEstatusvisitaCssname($status);
             $entity_array['color'] = $color->getEstatusvisitaColor();
             
@@ -308,13 +284,10 @@ class AgendaController extends AbstractActionController
          
          $sesion = new \Shared\Session\AouthSession();
          $request = $this->getRequest();
-       
-        
          
          if($request->isPost()){
              $post_data = $request->getPost();
              
-            
            
              
              $entity = \VisitaQuery::create()->findPk($post_data['idvisita']);
@@ -346,24 +319,7 @@ class AgendaController extends AbstractActionController
                 
                
             }
-            
-            //para definir la duración de las citas de acuerdo al estatus de la visita
-            if($post_data['visita_status']=="en servicio")
-            {
-               $entity->setVisitaHorainicio(date('Y-m-d H:i:s'));
-            }
-            if($post_data['visita_status']=="terminado")
-            {
-                
-                $entity->setVisitaHorafin(date('Y-m-d H:i:s'));
-                $horainicio =  $entity->getVisitaHorainicio();
-                $segundos= strtotime('now')-strtotime($horainicio);
-                $duracion=intval($segundos/60);
-                $entity->setVisitaDuracion($duracion);
-                
-            }
-            //agregamos esta línea para llevar el control a nivel de trigger quién fue el qué hizo cada mofidicación 
-            $entity->setIdempleadocreador($sesion->getIdempleado());
+
             $entity->save();
             
             $entity->getVisitadetalles()->delete();
@@ -501,8 +457,7 @@ class AgendaController extends AbstractActionController
                        'class' => 'width-100',
                    ),
                 ));
-            }
-            else{
+            }else{
                 $form->add(array(
                     'type' => 'Select',
                     'name' => 'visita_status',
@@ -575,25 +530,10 @@ class AgendaController extends AbstractActionController
             $paciente_array = $paciente->toArray(\BasePeer::TYPE_FIELDNAME);
             $paciente_array['visita_total'] = \VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->count();
             $paciente_array['visita_ultima'] = '';
-           /* if(\VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
+            if(\VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
                  $visitas = \VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
-                 
                  $paciente_array['visita_ultima'] = $visitas->getVisitaFechainicio('d/m/Y - H:i:s');
             }
-            */
-            if(\VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists() && $paciente_array['visita_total']>1){
-                 $visitas = \VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->limit(2)->find();
-                 
-                 $paciente_array['visita_ultima'] = $visitas[1]->getVisitaFechainicio('d/m/Y - H:i:s');
-                
-            }
-            else if (\VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
-                 $visita = \VisitaQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
-                 
-                 $paciente_array['visita_ultima'] = $visita->getVisitaFechainicio('d/m/Y - H:i:s');
-                
-            }
-            
             $paciente_array['relacionados'] = \GrupopersonalQuery::create()->joinPacienteRelatedByIdpacienteagregado()->filterByIdpaciente($paciente->getIdpaciente())->withColumn('paciente_nombre')->withColumn('paciente_celular')->withColumn('paciente_telefono')->withColumn('idclinica')->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
             foreach ($paciente_array['relacionados'] as $key => $value){
                 $cliniva = \ClinicaQuery::create()->findPk($value['idclinica']);
@@ -606,16 +546,6 @@ class AgendaController extends AbstractActionController
                 $paciente_membresia = \PacientemembresiaQuery::create()->joinMembresia()->withColumn('membresia_nombre')->withColumn('membresia_servicios')->withColumn('membresia_cupones')->filterByIdpaciente($paciente->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->findOne();
                 $paciente_array['membresia'] = $paciente_membresia->toArray(\BasePeer::TYPE_FIELDNAME);
             }  
-            
-            //ultimo comentario
-            if(\PacienteseguimientoQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->orderByPacienteseguimientoFecha('desc')->exists()){
-                 $ultimocomentario = \PacienteseguimientoQuery::create()->filterByIdpaciente($paciente->getIdpaciente())->orderByPacienteseguimientoFecha(\Criteria::DESC)->limit(1)->findOne();
-                 
-                $paciente_array['visita_comentario'] = $ultimocomentario->getPacienteseguimientoComentario();
-                
-            }
-            
-            
 
             $viewModel = new ViewModel();
             $viewModel->setVariables(array(
@@ -641,51 +571,20 @@ class AgendaController extends AbstractActionController
          
           if($request->isPost()){
               
-              
               $post_data = $request->getPost();
-             $visitapago = \VisitapagoQuery::create()->filterByIdvisita($post_data['idvisita'])->exists();
-             
-             
-            if(!$visitapago)
-            {
+              $idpaciente = $post_data['idpaciente'];
+              $idclinica = $post_data['idclinica'];
               
-              
-              $visita_descuento = (!is_null($post_data['visita_descuento']) or  $post_data['visita_descuento'] != "" ) ? $post_data['visita_descuento'] : 0;
               //Actualizamos la visita
               $visita = \VisitaQuery::create()->findPk($post_data['idvisita']);
               $visita->setVisitaStatus('terminado')
                      ->setVisitaEstatuspago('pagada')
-                     ->setVisitaTotal($post_data['visita_total'])
-                     ->setVisitaDescuento($visita_descuento);
+                     ->setVisitaTotal($post_data['visita_total']);
               
-                
-                $visita->setVisitaHorafin(date('Y-m-d H:i:s'));
-                $horainicio =  $visita->getVisitaHorainicio();
-                $segundos= strtotime('now')-strtotime($horainicio);
-                $duracion=intval($segundos/60);
-                $visita->setVisitaDuracion($duracion);
-                
-          
               $visita->save();
               
-                //Actualizamos lo detalles de la visita
-                $visita->getVisitadetalles()->delete();
-              
-              
-              //La informacion de pago
-            if(isset($post_data['visitapago_tipo'])){
-                foreach ($post_data['visitapago_tipo'] as $pago){
-                   
-                    $visitapago = new \Visitapago();
-                    $visitapago->setIdvisita($visita->getIdvisita())
-                                  ->setVisitapagoTipo($pago['type'])
-                                  ->setVisitapagoCantidad($pago['cantidad'])
-                                  ->setVisitapagoFecha(new \DateTime());
-
-                    $visitapago->save();
-
-                }
-            }
+              //Actualizamos lo detalles de la visita
+              $visita->getVisitadetalles()->delete();
               
               /*
                * COMISIONES
@@ -719,7 +618,7 @@ class AgendaController extends AbstractActionController
                                   ->setVisitadetalleCantidad($detalle['cantidad'])
                                   ->setVisitadetalleSubtotal($detalle['subtotal']);
                     
-                    
+                     
                     if($detalle['type'] == 'producto'){
                        
                         $visitadetalle->setIdproductoclinica($detalle['id']);
@@ -1001,9 +900,7 @@ class AgendaController extends AbstractActionController
                             //Servicios vendidos
                             $current_vendidos = $empleado_comision->getEmpleadocomisionServiciosvendidos();
                             $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
-                            
-                            //se va a comentar esta línea para evitar que se contabilicen los servicios que no generar comisión.
-                            //$empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
+                            $empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
                             
                             //Acumulado
 //                            $current_acumulado = $empleado_comision->getEmpleadocomisionAcumulado();
@@ -1018,19 +915,19 @@ class AgendaController extends AbstractActionController
                         
                         //Asignamos la membresia al paciente
                         $membresia_paciente = new \Pacientemembresia();
-                        $membresia_paciente->setIdpaciente($post_data['idpaciente'])
-                                           ->setIdclinica($post_data['idclinica'])
-                                           ->setIdmembresia($detalle['id']);
+                        $membresia_paciente->setIdpaciente($idpaciente);
+                        $membresia_paciente->setIdclinica($idclinica);
+                        $membresia_paciente->setIdmembresia($detalle['id']);
                         
                         //Instanciamos nuestra membresia para obtener su informacion
-                        $membresia = \MembresiaQuery::create()->findPk($detalle['id']);
+                        $membresia = \MembresiaQuery::create()->findByIdmembresia($detalle['id']);
                         
-                        $membresia_paciente->setPacientemembresiaServiciosdisponibles($membresia->getMembresiaServicios())
-                                           ->setPacientemembresiaCuponesdisponibles($membresia->getMembresiaCupones())
-                                           ->setPacientemembresiaFolio($detalle['folio'])
-                                           ->setPacientemembresiaEstatus('activa')
-                                           ->setPacientemembresiaFechainicio($visita->getVisitaFechainicio())
-                                           ->save();
+                        $membresia_paciente->setPacientemembresiaServiciosdisponibles($membresia->getMembresiaServicios());
+                        $membresia_paciente->setPacientemembresiaCuponesdisponibles($membresia->getMembresiaCupones());
+                        $membresia_paciente->setPacientemembresiaFolio($detalle['folio']);
+                        $membresia_paciente->setPacientemembresiaEstatus('activa');
+                        $membresia_paciente->setPacientemembresiaFechainicio($visita->getVisitaFechainicio());
+                        $membresia_paciente->save();
                         
                         
                         $membresia_paciente = \PacientemembresiaQuery::create()->filterByIdpaciente($visita->getIdpaciente())->filterByPacientemembresiaEstatus('activa')->orderByPacientemembresiaFechainicio(\Criteria::ASC)->findOne();
@@ -1043,7 +940,7 @@ class AgendaController extends AbstractActionController
                         //Servicios vendidos
                         $current_vendidos = $empleado_comision->getEmpleadocomisionServiciosvendidos();
                         $new_vendidos = $current_vendidos +  $visitadetalle->getVisitadetalleCantidad();
-                        //$empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
+                        $empleado_comision->setEmpleadocomisionServiciosvendidos($new_vendidos);
                          
 
                         //Acumulado
@@ -1080,16 +977,17 @@ class AgendaController extends AbstractActionController
                                  
                                 //Insertamos en paciente membresia seguimiento
                                 $paciente_membresia_segumiento = new \Pacientemembresiadetalle();
-                                $paciente_membresia_segumiento->setIdpacientemembresia($membresia_paciente->getIdpacientemembresia())
-                                                              ->setPacientemembresiadetalleFecha(new \DateTime())
-                                                              ->setIdvisitadetalle($detalle->getIdvisitadetalle())
-                                                              ->save();
+                                $paciente_membresia_segumiento->setIdpacientemembresia($membresia_paciente->getIdpacientemembresia());
+                                $paciente_membresia_segumiento->setPacientemembresiadetalleFecha(new \DateTime());
+                                $paciente_membresia_segumiento->setIdvisitadetalle($detalle->getIdvisitadetalle());
+                                $paciente_membresia_segumiento->save();
                                 
                                 //Restamos de membresia paciente
                                 $current_servicios = $membresia_paciente->getPacientemembresiaServiciosdisponibles();
                                 $current_cupones = $membresia_paciente->getPacientemembresiaCuponesdisponibles();
                                 $new_servicios = $current_servicios - (int)$detalle->getVisitadetalleCantidad();
-                                $membresia_paciente->setPacientemembresiaServiciosdisponibles($new_servicios)->save();
+                                $membresia_paciente->setPacientemembresiaServiciosdisponibles($new_servicios);
+                                $membresia_paciente->save();
                                 if($new_servicios == 0 && $current_cupones == 0){
                                     $membresia_paciente->setPacientemembresiaEstatus('terminada')->save();
                                 }
@@ -1112,21 +1010,24 @@ class AgendaController extends AbstractActionController
                             //for($i=0; $i<(int)$detalle->getVisitadetalleCantidad();$i++){
                                 //Insertamos en paciente membresia seguimiento
                                 $paciente_membresia_segumiento = new \Pacientemembresiadetalle();
-                                $paciente_membresia_segumiento->setIdpacientemembresia($membresia_paciente->getIdpacientemembresia())
-                                                              ->setPacientemembresiadetalleFecha(new \DateTime())
-                                                              ->setIdvisitadetalle($detalle->getIdvisitadetalle())
-                                                              ->save();
+                                $paciente_membresia_segumiento->setIdpacientemembresia($membresia_paciente->getIdpacientemembresia());
+                                $paciente_membresia_segumiento->setPacientemembresiadetalleFecha(new \DateTime());
+                                $paciente_membresia_segumiento->setIdvisitadetalle($detalle->getIdvisitadetalle());
+                                $paciente_membresia_segumiento->save();
                                 
                                 //Restamos de membresia paciente
                                 $current_servicios = $membresia_paciente->getPacientemembresiaServiciosdisponibles();
                                 $current_cupones = $membresia_paciente->getPacientemembresiaCuponesdisponibles();
                                 $new_servicios = $current_servicios - (int)$detalle->getVisitadetalleCantidad();
-                                $membresia_paciente->setPacientemembresiaServiciosdisponibles($new_servicios)->save();
+                                $membresia_paciente->setPacientemembresiaServiciosdisponibles($new_servicios);
+                                $membresia_paciente->save();
+                                
                                 if($new_servicios == 0 && $current_cupones == 0){
                                     $membresia_paciente->setPacientemembresiaEstatus('terminada')->save();
                                 }
                                 //SETEAMOS LA MEMBRESIA EN LA VISITA
-                                $visita->setVisitaFoliomembresia($membresia_paciente->getPacientemembresiaFolio())->save();
+                                $visita->setVisitaFoliomembresia($membresia_paciente->getPacientemembresiaFolio());
+                                $visita->save();
                             //}
                         }
                     }
@@ -1136,10 +1037,22 @@ class AgendaController extends AbstractActionController
                 
             }
            
+            //La informacion de pago
+            if(isset($post_data['visitapago_tipo'])){
+                foreach ($post_data['visitapago_tipo'] as $pago){
+                   
+                    $visitapago = new \Visitapago();
+                    $visitapago->setIdvisita($visita->getIdvisita())
+                                  ->setVisitapagoTipo($pago['type'])
+                                  ->setVisitapagoCantidad($pago['cantidad'])
+                                  ->setVisitapagoFecha(new \DateTime());
+
+                    $visitapago->save();
+
+                }
+            }
             
-            
-          return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
-          }
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
          }
          
      }
@@ -1152,7 +1065,12 @@ class AgendaController extends AbstractActionController
         if($request->isPost()){
             $post_data = $request->getPost();
             
-
+            foreach ($post_data as $k => $v){
+                if(empty($v)){
+                    unset($post_data[$k]);
+                }
+            }
+            
             $entity = new \Visita();
             
             foreach($post_data as $key => $value){
@@ -1160,28 +1078,10 @@ class AgendaController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
-            
             $entity->setVisitaEstatuspago('no pagada');
             $entity->setVisitaYear($entity->getVisitaFechainicio('Y'));
             $entity->setVisitaMonth($entity->getVisitaFechainicio('m'));
             $entity->setVisitaDay($entity->getVisitaFechainicio('d'));
-            
-            //para definir la duración de las citas de acuerdo al estatus de la visita
-            if($post_data['visita_status']=="en servicio")
-            {
-               $entity->setVisitaHorainicio(date('Y-m-d H:i:s'));
-            }
-            if($post_data['visita_status']=="terminado")
-            {
-                
-                $entity->setVisitaHorafin(date('Y-m-d H:i:s'));
-                $horainicio =  $entity->getVisitaHorainicio();
-                $segundos=strtotime($horainicio) - strtotime('now');
-                $duracion=intval($segundos/60);
-                $entity->setVisitaDuracion($duracion);
-                
-            }
-            
             
             $entity->save();
           
@@ -1318,30 +1218,22 @@ class AgendaController extends AbstractActionController
         $query = $this->params()->fromQuery('q');
         
         $result = \PacienteQuery::create()->joinClinica()->withColumn('clinica_nombre')->filterByPacienteNombre('%'. $query .'%', \Criteria::LIKE)->_or()->filterByPacienteCelular('%'. $query .'%')->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME);
-        
+
         //Damos el formato
         $result_array = array();
         foreach ($result as $r){
             $tmp['id'] = $r['idpaciente'];  
-            $tmp['name'] = $r['paciente_ap']." ".$r['paciente_am'].", ".$r['paciente_name'].' - Celular: '.$r['paciente_celular'].' - Teléfono: '.$r['paciente_telefono'];
-            $tmp['paciente_nombre'] = $r['paciente_ap']." ".$r['paciente_am'].", ".$r['paciente_name'];
+            $tmp['name'] = $r['paciente_nombre'].' - Celular: '.$r['paciente_celular'].' - Teléfono: '.$r['paciente_telefono'];
+            $tmp['paciente_nombre'] = $r['paciente_nombre'];
             $tmp['clinica_nombre'] = $r['clinica_nombre'];
             $tmp['paciente_celular'] = $r['paciente_celular'];
             $tmp['paciente_telefono'] = $r['paciente_telefono'];
             //adicional
             $tmp['visita_total'] = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->count();
             $tmp['visita_ultima'] = '';
-            if(\VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists() && $tmp['visita_total']>1){
-                 $visitas = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->limit(2)->find();
-                 
-                 $tmp['visita_ultima'] = $visitas[1]->getVisitaFechainicio('d/m/Y - H:i:s');
-                
-            }
-            else if (\VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
-                 $visita = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
-                 
-                 $tmp['visita_ultima'] = $visita->getVisitaFechainicio('d/m/Y - H:i:s');
-                
+            if(\VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio('desc')->exists()){
+                 $visitas = \VisitaQuery::create()->filterByIdpaciente($r['idpaciente'])->filterByVisitaStatus('terminado')->orderByVisitaFechainicio(\Criteria::DESC)->findOne();
+                 $tmp['visita_ultima'] = $visitas->getVisitaFechainicio('d/m/Y - H:i:s');
             }
             //Los relacionados
             $tmp['relacionados'] = \GrupopersonalQuery::create()->joinPacienteRelatedByIdpacienteagregado()->filterByIdpaciente($r['idpaciente'])->withColumn('paciente_nombre')->withColumn('paciente_celular')->withColumn('paciente_telefono')->withColumn('idclinica')->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
@@ -1349,14 +1241,6 @@ class AgendaController extends AbstractActionController
                 $cliniva = \ClinicaQuery::create()->findPk($value['idclinica']);
                 $clinica_nombre = $cliniva->getClinicaNombre();
                 $tmp['relacionados'][$key]['clinica_nombre'] = $clinica_nombre;
-            }
-            
-            //ultimo comentario
-            if(\PacienteseguimientoQuery::create()->filterByIdpaciente($r['idpaciente'])->orderByPacienteseguimientoFecha('desc')->exists()){
-                 $ultimocomentario = \PacienteseguimientoQuery::create()->filterByIdpaciente($r['idpaciente'])->orderByPacienteseguimientoFecha(\Criteria::DESC)->limit(1)->findOne();
-                 
-                 $tmp['visita_comentario'] = $ultimocomentario->getPacienteseguimientoComentario();
-                
             }
            
             //Mmebresia
@@ -1372,7 +1256,6 @@ class AgendaController extends AbstractActionController
             $result_array[] = $tmp;
         }
         
-        
         return $this->getResponse()->setContent(\Zend\Json\Json::encode($result_array));
         
         
@@ -1384,30 +1267,18 @@ class AgendaController extends AbstractActionController
         
         if($request->isPost()){
             $post_data = $request->getPost();
-          
-            $paciente_exist = \PacienteQuery::create()->filterByPacienteName($post_data['paciente_name'])
-                                                      ->filterByPacienteAp($post_data['paciente_ap'])
-                                                      ->filterByPacienteAm($post_data['paciente_am'])
-                                                      ->exists();
+            $entity = new \Paciente();
             
-            if(!$paciente_exist){
-            
-                $entity = new \Paciente();
-
-                foreach($post_data as $key => $value){
-                    if(\PacientePeer::getTableMap()->hasColumn($key)){
-                        $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
-                    }
+            foreach($post_data as $key => $value){
+                if(\PacientePeer::getTableMap()->hasColumn($key)){
+                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
-                $entity->setPacienteNombre($post_data['paciente_ap']." ".$post_data['paciente_am'].", ".$post_data['paciente_name']);
-                $entity->setIdpaciente(NULL);
-                $entity->setPacienteFecharegistro(new \DateTime());
-                $entity->save();
-
-                return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'data' => $entity->toArray(\BasePeer::TYPE_FIELDNAME))));
-            }else{
-                return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => false,'msj' => 'Ya existe un paciente registrado con los mismos datos!')));
             }
+            $entity->setIdpaciente(NULL);
+            $entity->setPacienteFecharegistro(new \DateTime());
+            $entity->save();
+            
+            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true,'data' => $entity->toArray(\BasePeer::TYPE_FIELDNAME))));
 
         }
         
