@@ -501,7 +501,8 @@ class AgendaController extends AbstractActionController
                        'class' => 'width-100',
                    ),
                 ));
-            }else{
+            }
+            else{
                 $form->add(array(
                     'type' => 'Select',
                     'name' => 'visita_status',
@@ -640,7 +641,15 @@ class AgendaController extends AbstractActionController
          
           if($request->isPost()){
               
+              
               $post_data = $request->getPost();
+             $visitapago = \VisitapagoQuery::create()->filterByIdvisita($post_data['idvisita'])->exists();
+             
+             
+            if(!$visitapago)
+            {
+              
+              
               $visita_descuento = (!is_null($post_data['visita_descuento']) or  $post_data['visita_descuento'] != "" ) ? $post_data['visita_descuento'] : 0;
               //Actualizamos la visita
               $visita = \VisitaQuery::create()->findPk($post_data['idvisita']);
@@ -659,8 +668,24 @@ class AgendaController extends AbstractActionController
           
               $visita->save();
               
-              //Actualizamos lo detalles de la visita
-              $visita->getVisitadetalles()->delete();
+                //Actualizamos lo detalles de la visita
+                $visita->getVisitadetalles()->delete();
+              
+              
+              //La informacion de pago
+            if(isset($post_data['visitapago_tipo'])){
+                foreach ($post_data['visitapago_tipo'] as $pago){
+                   
+                    $visitapago = new \Visitapago();
+                    $visitapago->setIdvisita($visita->getIdvisita())
+                                  ->setVisitapagoTipo($pago['type'])
+                                  ->setVisitapagoCantidad($pago['cantidad'])
+                                  ->setVisitapagoFecha(new \DateTime());
+
+                    $visitapago->save();
+
+                }
+            }
               
               /*
                * COMISIONES
@@ -694,7 +719,7 @@ class AgendaController extends AbstractActionController
                                   ->setVisitadetalleCantidad($detalle['cantidad'])
                                   ->setVisitadetalleSubtotal($detalle['subtotal']);
                     
-                     
+                    
                     if($detalle['type'] == 'producto'){
                        
                         $visitadetalle->setIdproductoclinica($detalle['id']);
@@ -820,7 +845,8 @@ class AgendaController extends AbstractActionController
 //                            $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                         }
 
-                    }else if($detalle['type'] == 'servicio'){
+                    }
+                    else if($detalle['type'] == 'servicio'){
                         
                         $visitadetalle->setIdservicioclinica($detalle['id']);
                         $visitadetalle->save();
@@ -985,7 +1011,8 @@ class AgendaController extends AbstractActionController
 //                            $empleado_comision->setEmpleadocomisionAcumulado($new_acumulado);
                         }
                       
-                    }else{
+                    }
+                    else{
                         $visitadetalle->setIdmembresia($detalle['id']);
                         $visitadetalle->save();
                         
@@ -1109,22 +1136,10 @@ class AgendaController extends AbstractActionController
                 
             }
            
-            //La informacion de pago
-            if(isset($post_data['visitapago_tipo'])){
-                foreach ($post_data['visitapago_tipo'] as $pago){
-                   
-                    $visitapago = new \Visitapago();
-                    $visitapago->setIdvisita($visita->getIdvisita())
-                                  ->setVisitapagoTipo($pago['type'])
-                                  ->setVisitapagoCantidad($pago['cantidad'])
-                                  ->setVisitapagoFecha(new \DateTime());
-
-                    $visitapago->save();
-
-                }
-            }
             
-            return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
+            
+          return $this->getResponse()->setContent(\Zend\Json\Json::encode(array('result' => true)));
+          }
          }
          
      }
