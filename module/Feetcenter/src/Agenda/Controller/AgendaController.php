@@ -921,7 +921,7 @@ class AgendaController extends AbstractActionController
                         $membresia_paciente->setIdmembresia($detalle['id']);
                         
                         //Instanciamos nuestra membresia para obtener su informacion
-                        $membresia = \MembresiaQuery::create()->findByIdmembresia($detalle['id']);
+                        $membresia = \MembresiaQuery::create()->findPk($detalle['id']);
                         
                         $membresia_paciente->setPacientemembresiaServiciosdisponibles($membresia->getMembresiaServicios());
                         $membresia_paciente->setPacientemembresiaCuponesdisponibles($membresia->getMembresiaCupones());
